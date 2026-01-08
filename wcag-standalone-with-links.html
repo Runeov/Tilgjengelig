@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Accessibility Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        pre { white-space: pre-wrap; word-wrap: break-word; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app" class="min-h-screen p-6"></div>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Links to the split report files
+        const REPORT_LINKS = {
+            part1: 'split_reports/wcag_report_part1.html',
+            part2: 'split_reports/wcag_report_part2.html',
+            part3: 'split_reports/wcag_report_part3.html',
+            part4: 'split_reports/wcag_report_part4.html',
+            part5: 'split_reports/wcag_report_part5.html',
+            all: 'wcag_report_20260106_072928.html'
+        };
+
+        function WCAGAnalyzer() {
+            const [reports, setReports] = useState([]);
+            const [analysis, setAnalysis] = useState(null);
+            const [loading, setLoading] = useState(false);
+
+            const parseHTMLReport = (htmlContent) => {
+                console.log('=== STARTING HTML PARSE ===');
+                console.log('HTML content length: ' + htmlContent.length + ' characters');
+                
+                const issues = [];
+                
+                // Count all pages using a simpler approach
+                const pageCountMatches = htmlContent.match(/<div class="page">/gi);
+                console.log('Total pages found in HTML: ' + (pageCountMatches ? pageCountMatches.length : 0));
+                
+                // Parse each page using regex
+                const pageContentRegex = /<div class="page">([\s\S]*?)<\/div>\s*(?=<div class="page">|$)/gi;
+                let match;
+                let pageCount = 0;
+                
+                while ((match = pageContentRegex.exec(htmlContent)) !== null) {
+                    pageCount++;
+                    const pageHtml = match[1];
+                    
+                    // Extract page title
+                    const titleMatch = pageHtml.match(/<h3>([\s\S]*?)<\/h3>/i);
+                    const pageTitle = titleMatch ? titleMatch[1].trim().replace(/\s+/g, ' ') : 'Page ' + pageCount;
+                    
+                    // Find all issues in this page
+                    const issueRegex = /<div class="issue\s+([^"]*)">([\s\S]*?)<\/div>\s*/gi;
+                    let issueMatch;
+                    let issueCount = 0;
+                    
+                    while ((issueMatch = issueRegex.exec(pageHtml)) !== null) {
+                        issueCount++;
+                        const issueClass = issueMatch[1];
+                        const issueContent = issueMatch[2];
+                        
+                        // Determine impact from class
+                        let impact = 'unknown';
+                        if (issueClass.includes('critical')) impact = 'critical';
+                        else if (issueClass.includes('serious')) impact = 'serious';
+                        else if (issueClass.includes('moderate')) impact = 'moderate';
+                        else if (issueClass.includes('minor')) impact = 'minor';
+                        
+                        // Extract rule ID
+                        const ruleIdMatch = issueContent.match(/<span class="rule-id">([^<]*?)<\/span>/i);
+                        const ruleId = ruleIdMatch ? ruleIdMatch[1].trim() : 'Unknown';
+                        
+                        // Extract criterion
+                        const criterionMatch = issueContent.match(/<span class="criterion">([^<]*?)<\/span>/i);
+                        const criterion = criterionMatch ? criterionMatch[1].trim() : '';
+                        
+                        // Extract description from first <p>
+                        const descMatch = issueContent.match(/<p>([\s\S]*?)<\/p>/i);
+                        const description = descMatch ? descMatch[1].trim() : '';
+                        
+                        // Extract element
+                        const elementMatch = issueContent.match(/<div class="element">([\s\S]*?)<\/div>/i);
+                        const element = elementMatch ? elementMatch[1].trim().substring(0, 150) : '';
+                        
+                        // Extract fix
+                        const fixMatch = issueContent.match(/<div class="fix">([\s\S]*?)<\/div>/i);
+                        const fix = fixMatch ? fixMatch[1].trim() : '';
+                        
+                        issues.push({
+                            page: pageTitle,
+                            ruleId: ruleId,
+                            criterion: criterion,
+                            impact: impact,
+                            description: description,
+                            element: element,
+                            fix: fix
+                        });
+                    }
+                    
+                    console.log('Page "' + pageTitle + '": Parsed ' + issueCount + ' issues');
+                }
+                
+                console.log('=== PARSE COMPLETE ===');
+                console.log('Total pages processed: ' + pageCount);
+                console.log('Total issues found: ' + issues.length);
+                
+                // Log breakdown by impact
+                const byImpact = {};
+                issues.forEach(function(issue) {
+                    byImpact[issue.impact] = (byImpact[issue.impact] || 0) + 1;
+                });
+                console.log('Issues by impact:', byImpact);
+                
+                return issues;
+            };
+
+            const handleFileUpload = async (e) => {
+                const files = Array.from(e.target.files);
+                console.log(`\n📁 Uploading ${files.length} file(s)`);
+                setLoading(true);
+                
+                try {
+                    const parsedReports = [];
+                    
+                    for (const file of files) {
+                        console.log(`\n📄 Reading: ${file.name}`);
+                        console.log(`📊 Size: ${(file.size / 1024).toFixed(2)} KB`);
+                        
+                        const content = await file.text();
+                        const issues = parseHTMLReport(content);
+                        
+                        parsedReports.push({
+                            filename: file.name,
+                            issues: issues
+                        });
+                    }
+                    
+                    console.log(`\n✅ All files parsed successfully`);
+                    console.log(`Total reports: ${parsedReports.length}`);
+                    console.log(`Total issues: ${parsedReports.reduce((sum, r) => sum + r.issues.length, 0)}`);
+                    
+                    setReports(parsedReports);
+                    analyzeIssues(parsedReports);
+                } catch (error) {
+                    console.error('❌ Error:', error);
+                    alert('Error parsing: ' + error.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const analyzeIssues = (reportsData) => {
+                const allIssues = reportsData.flatMap(r => r.issues);
+                console.log(`\n📊 ANALYZING ${allIssues.length} ISSUES`);
+                
+                const byRule = {};
+                const byImpact = { critical: 0, serious: 0, moderate: 0, minor: 0, unknown: 0 };
+                const affectedPages = {};
+                
+                allIssues.forEach(issue => {
+                    // By rule
+                    if (!byRule[issue.ruleId]) {
+                        byRule[issue.ruleId] = {
+                            count: 0,
+                            impact: issue.impact,
+                            description: issue.description,
+                            fix: issue.fix,
+                            criterion: issue.criterion,
+                            examples: []
+                        };
+                    }
+                    byRule[issue.ruleId].count++;
+                    
+                    if (byRule[issue.ruleId].examples.length < 5) {
+                        byRule[issue.ruleId].examples.push({
+                            page: issue.page,
+                            element: issue.element ? issue.element.substring(0, 80) + '...' : ''
+                        });
+                    }
+                    
+                    // By impact
+                    byImpact[issue.impact] = (byImpact[issue.impact] || 0) + 1;
+                    
+                    // By page
+                    affectedPages[issue.page] = (affectedPages[issue.page] || 0) + 1;
+                });
+                
+                console.log('Impact breakdown:', byImpact);
+                console.log('Unique rules:', Object.keys(byRule).length);
+                
+                // Sort by priority
+                const impactWeight = { critical: 4, serious: 3, moderate: 2, minor: 1, unknown: 0 };
+                const topIssues = Object.entries(byRule)
+                    .map(([rule, data]) => ({
+                        rule,
+                        ...data,
+                        priority: data.count * (impactWeight[data.impact] || 1)
+                    }))
+                    .sort((a, b) => b.priority - a.priority);
+                
+                const topPages = Object.entries(affectedPages)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, 10);
+                
+                console.log('\nTop 5 issue types:');
+                topIssues.slice(0, 5).forEach((i, idx) => {
+                    console.log(`  ${idx+1}. ${i.rule}: ${i.count} occurrences (${i.impact})`);
+                });
+                
+                setAnalysis({
+                    totalIssues: allIssues.length,
+                    byImpact,
+                    topIssues,
+                    topPages,
+                    reportsCount: reportsData.length,
+                    uniquePages: Object.keys(affectedPages).length,
+                    uniqueRules: Object.keys(byRule).length
+                });
+            };
+
+            const getSolutionData = (ruleId) => {
+                const solutions = {
+                    'Testregel 2.4.4': {
+                        title: 'Empty Links / Link Purpose Issues',
+                        problem: 'Links without text or labels are impossible for screen readers to understand',
+                        code: `<!-- FIX SOCIAL MEDIA LINKS -->
+<a href="https://www.facebook.com/hasvikkommune/" 
+   aria-label="Følg Hasvik Kommune på Facebook"
+   class="env-link">
+  <svg aria-hidden="true">...</svg>
+</a>
+
+<a href="https://www.instagram.com/hasvikkommune/"
+   aria-label="Følg oss på Instagram"
+   class="env-link">
+  <svg aria-hidden="true">...</svg>
+</a>
+
+<!-- FIX LOGO LINK -->
+<a href="/" 
+   aria-label="Hasvik Kommune - Tilbake til forsiden"
+   class="env-link">
+  <svg aria-hidden="true">...</svg>
+</a>`,
+                        priority: 'CRITICAL',
+                        effort: '15 min',
+                        reportSection: REPORT_LINKS.part1
+                    },
+                    'Testregel 1.1.1': {
+                        title: 'SVG Missing Accessible Names',
+                        problem: 'Decorative SVGs need to be hidden from screen readers',
+                        code: `<!-- DECORATIVE ICONS -->
+<svg aria-hidden="true" 
+     role="presentation" 
+     class="env-icon">
+  <use xlink:href="/sitevision/envision-icons.svg#icon-search"></use>
+</svg>
+
+<!-- INFORMATIVE ICONS -->
+<button aria-label="Søk på nettstedet">
+  <svg aria-hidden="true" class="env-icon">...</svg>
+</button>`,
+                        priority: 'SERIOUS',
+                        effort: '30 min',
+                        reportSection: REPORT_LINKS.part1
+                    },
+                    'Testregel 4.1.2': {
+                        title: 'Region Missing Accessible Name',
+                        problem: 'Regions need labels for screen reader navigation',
+                        code: `<!-- ADD LABEL TO REGION -->
+<div role="region" 
+     aria-label="Hurtiglenker"
+     class="sv-custom-module">
+  ...
+</div>`,
+                        priority: 'SERIOUS',
+                        effort: '10 min',
+                        reportSection: REPORT_LINKS.part1
+                    },
+                    'Testregel 4.1.1': {
+                        title: 'Invalid HTML Nesting',
+                        problem: 'Nested paragraphs break HTML validation',
+                        code: `<!-- BEFORE (INVALID) -->
+<p>
+  Text
+  <p>Nested paragraph</p>
+</p>
+
+<!-- AFTER (VALID) -->
+<div>
+  <p>Text</p>
+  <p>Second paragraph</p>
+</div>`,
+                        priority: 'MODERATE',
+                        effort: '1 hour',
+                        reportSection: REPORT_LINKS.all
+                    }
+                };
+                
+                return solutions[ruleId] || {
+                    title: ruleId,
+                    problem: 'See report for details',
+                    code: '// No specific solution template available',
+                    priority: 'UNKNOWN',
+                    effort: 'Unknown',
+                    reportSection: REPORT_LINKS.all
+                };
+            };
+
+            const getImpactColor = (impact) => {
+                const colors = {
+                    critical: 'bg-red-100 text-red-800 border-red-300',
+                    serious: 'bg-orange-100 text-orange-800 border-orange-300',
+                    moderate: 'bg-yellow-100 text-yellow-800 border-yellow-300',
+                    minor: 'bg-green-100 text-green-800 border-green-300'
+                };
+                return colors[impact] || 'bg-gray-100 text-gray-800 border-gray-300';
+            };
+
+            const SolutionLink = ({ section, rule }) => (
+                <a href={section} 
+                   target="_blank"
+                   className="inline-flex items-center gap-1 text-blue-600 hover:text-blue-800 text-sm font-medium ml-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Se eksempler i rapport
+                </a>
+            );
+
+            return (
+                <div className="max-w-7xl mx-auto">
+                    <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <h1 className="text-3xl font-bold mb-2">🎯 WCAG Analyzer</h1>
+                        <p className="text-gray-600">Upload reports to get prioritized solutions</p>
+                        
+                        {/* Quick Links to Reports */}
+                        <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                            <p className="text-sm font-bold text-blue-900 mb-2">📁 Raske lenker til delrapporter:</p>
+                            <div className="flex flex-wrap gap-2">
+                                <a href={REPORT_LINKS.part1} target="_blank" className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Del 1</a>
+                                <a href={REPORT_LINKS.part2} target="_blank" className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Del 2</a>
+                                <a href={REPORT_LINKS.part3} target="_blank" className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Del 3</a>
+                                <a href={REPORT_LINKS.part4} target="_blank" className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Del 4</a>
+                                <a href={REPORT_LINKS.part5} target="_blank" className="px-3 py-1 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700">Del 5</a>
+                                <span className="text-gray-400 text-sm self-center">|</span>
+                                <a href={REPORT_LINKS.all} target="_blank" className="px-3 py-1 bg-gray-600 text-white rounded-full text-sm hover:bg-gray-700">Komplett rapport</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                        <label className="flex flex-col items-center justify-center h-40 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-blue-500 hover:bg-blue-50">
+                            <div className="text-center">
+                                <svg className="w-16 h-16 mx-auto mb-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                <p className="text-lg font-bold text-gray-700 mb-2">Upload WCAG Reports</p>
+                                <p className="text-sm text-gray-500">HTML files · Check console (F12) for debug info</p>
+                            </div>
+                            <input type="file" className="hidden" multiple accept=".html,.htm" onChange={handleFileUpload} />
+                        </label>
+                    </div>
+
+                    {loading && (
+                        <div className="bg-white rounded-xl p-12 text-center">
+                            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+                            <p className="font-medium">Analyzing... (check console with F12)</p>
+                        </div>
+                    )}
+
+                    {analysis && !loading && (
+                        <>
+                            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow-lg">
+                                    <p className="text-sm opacity-90">Total Issues</p>
+                                    <p className="text-4xl font-bold">{analysis.totalIssues}</p>
+                                    <p className="text-xs opacity-80">{analysis.uniquePages} pages</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-6 text-white shadow-lg">
+                                    <p className="text-sm opacity-90">Critical</p>
+                                    <p className="text-4xl font-bold">{analysis.byImpact.critical}</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow-lg">
+                                    <p className="text-sm opacity-90">Serious</p>
+                                    <p className="text-4xl font-bold">{analysis.byImpact.serious}</p>
+                                </div>
+                                <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-6 text-white shadow-lg">
+                                    <p className="text-sm opacity-90">Other</p>
+                                    <p className="text-4xl font-bold">{analysis.byImpact.moderate + analysis.byImpact.minor}</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+                                <h2 className="text-xl font-bold mb-4">📄 Most Affected Pages</h2>
+                                <div className="space-y-2">
+                                    {analysis.topPages.map(([page, count], idx) => (
+                                        <div key={idx} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                                            <span className="text-sm font-medium truncate flex-1">{page}</span>
+                                            <span className="px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-bold ml-3">
+                                                {count}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-xl shadow-lg p-6">
+                                <h2 className="text-2xl font-bold mb-6">🎯 Solutions</h2>
+                                <div className="space-y-6">
+                                    {analysis.topIssues.slice(0, 15).map((issue, idx) => {
+                                        const sol = getSolutionData(issue.rule);
+                                        return (
+                                            <div key={idx} className="border-l-4 border-blue-600 bg-blue-50 rounded-r-xl p-6">
+                                                <div className="flex items-center gap-2 mb-3 flex-wrap">
+                                                    <span className="text-2xl font-bold text-blue-600">#{idx+1}</span>
+                                                    <span className="font-bold text-lg">{sol.title}</span>
+                                                    <SolutionLink section={sol.reportSection} rule={issue.rule} />
+                                                    <span className={`px-3 py-1 text-xs font-bold rounded border ${getImpactColor(issue.impact)}`}>
+                                                        {issue.impact.toUpperCase()}
+                                                    </span>
+                                                    <span className="px-3 py-1 text-xs font-bold bg-red-600 text-white rounded">
+                                                        {issue.count}×
+                                                    </span>
+                                                </div>
+                                                <p className="text-sm text-gray-700 mb-3">{issue.description}</p>
+                                                <div className="bg-red-50 border-l-4 border-red-500 rounded p-4 mb-4">
+                                                    <p className="text-sm font-bold text-red-900">⚠️ {sol.problem}</p>
+                                                </div>
+                                                {issue.examples && issue.examples.length > 0 && (
+                                                    <div className="bg-gray-100 rounded p-3 mb-4">
+                                                        <p className="text-xs font-bold mb-2">📍 Found on:</p>
+                                                        {issue.examples.slice(0, 3).map((ex, i) => (
+                                                            <div key={i} className="text-xs text-gray-600">• {ex.page}</div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                                <div className="bg-white border-2 border-green-300 rounded-lg p-4">
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <span className="text-sm font-bold text-green-900">✅ Solution</span>
+                                                        <span className="text-xs text-gray-600">⏱️ {sol.effort}</span>
+                                                    </div>
+                                                    <pre className="bg-gray-900 text-gray-100 p-4 rounded text-xs overflow-x-auto"><code>{sol.code}</code></pre>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+
+                            <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-xl p-6 mt-6 text-white">
+                                <h3 className="text-xl font-bold mb-4">🚀 Action Plan</h3>
+                                <div className="space-y-3">
+                                    <div className="flex gap-3">
+                                        <span className="font-bold text-lg">1.</span>
+                                        <div>
+                                            <p className="font-bold">Fix {analysis.byImpact.critical} Critical Issues</p>
+                                            <p className="text-sm opacity-90">Add aria-labels to empty links</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <span className="font-bold text-lg">2.</span>
+                                        <div>
+                                            <p className="font-bold">Fix {analysis.byImpact.serious} Serious Issues</p>
+                                            <p className="text-sm opacity-90">Add role="presentation" to SVGs</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-3">
+                                        <span className="font-bold text-lg">3.</span>
+                                        <div>
+                                            <p className="font-bold">Review Others</p>
+                                            <p className="text-sm opacity-90">Fix moderate and minor issues</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
+                    {!analysis && !loading && (
+                        <div className="bg-white rounded-xl p-20 text-center">
+                            <svg className="w-24 h-24 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <h3 className="text-2xl font-bold text-gray-700 mb-3">Ready to Analyze</h3>
+                            <p className="text-gray-500">Upload WCAG reports · Press F12 for debug info</p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        ReactDOM.render(<WCAGAnalyzer />, document.getElementById('app'));
+    </script>
+</body>
+</html>

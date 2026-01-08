@@ -1,0 +1,358 @@
+County Number,County Name,Municipality Number,Municipality Name,Official Website
+03,Oslo,0301,Oslo,https://www.oslo.kommune.no
+11,Rogaland,1101,Eigersund,https://www.eigersund.kommune.no
+11,Rogaland,1103,Stavanger,https://www.stavanger.kommune.no
+11,Rogaland,1106,Haugesund,https://www.haugesund.kommune.no
+11,Rogaland,1108,Sandnes,https://www.sandnes.kommune.no
+11,Rogaland,1111,Sokndal,https://www.sokndal.kommune.no
+11,Rogaland,1112,Lund,https://www.lund.kommune.no
+11,Rogaland,1114,Bjerkreim,https://www.bjerkreim.kommune.no
+11,Rogaland,1119,Hå,https://www.ha.kommune.no
+11,Rogaland,1120,Klepp,https://www.klepp.kommune.no
+11,Rogaland,1121,Time,https://www.time.kommune.no
+11,Rogaland,1122,Gjesdal,https://www.gjesdal.kommune.no
+11,Rogaland,1124,Sola,https://www.sola.kommune.no
+11,Rogaland,1127,Randaberg,https://www.randaberg.kommune.no
+11,Rogaland,1130,Strand,https://www.strand.kommune.no
+11,Rogaland,1133,Hjelmeland,https://www.hjelmeland.kommune.no
+11,Rogaland,1134,Suldal,https://www.suldal.kommune.no
+11,Rogaland,1135,Sauda,https://www.sauda.kommune.no
+11,Rogaland,1144,Kvitsøy,https://www.kvitsoy.kommune.no
+11,Rogaland,1145,Bokn,https://www.bokn.kommune.no
+11,Rogaland,1146,Tysvær,https://www.tysver.kommune.no
+11,Rogaland,1149,Karmøy,https://www.karmoy.kommune.no
+11,Rogaland,1151,Utsira,https://www.utsira.kommune.no
+11,Rogaland,1160,Vindafjord,https://www.vindafjord.kommune.no
+15,Møre og Romsdal,1505,Kristiansund,https://www.kristiansund.kommune.no
+15,Møre og Romsdal,1506,Molde,https://www.molde.kommune.no
+15,Møre og Romsdal,1508,Ålesund,https://www.alesund.kommune.no
+15,Møre og Romsdal,1511,Vanylven,https://www.vanylven.kommune.no
+15,Møre og Romsdal,1514,Sande,https://www.sande-mr.kommune.no
+15,Møre og Romsdal,1515,Herøy,https://www.heroy-mr.kommune.no
+15,Møre og Romsdal,1516,Ulstein,https://www.ulstein.kommune.no
+15,Møre og Romsdal,1517,Hareid,https://www.hareid.kommune.no
+15,Møre og Romsdal,1520,Ørsta,https://www.orsta.kommune.no
+15,Møre og Romsdal,1525,Stranda,https://www.stranda.kommune.no
+15,Møre og Romsdal,1528,Sykkylven,https://www.sykkylven.kommune.no
+15,Møre og Romsdal,1531,Sula,https://www.sula.kommune.no
+15,Møre og Romsdal,1532,Giske,https://www.giske.kommune.no
+15,Møre og Romsdal,1535,Vestnes,https://www.vestnes.kommune.no
+15,Møre og Romsdal,1539,Rauma,https://www.rauma.kommune.no
+15,Møre og Romsdal,1547,Aukra,https://www.aukra.kommune.no
+15,Møre og Romsdal,1554,Averøy,https://www.averoy.kommune.no
+15,Møre og Romsdal,1557,Gjemnes,https://www.gjemnes.kommune.no
+15,Møre og Romsdal,1560,Tingvoll,https://www.tingvoll.kommune.no
+15,Møre og Romsdal,1563,Sunndal,https://www.sunndal.kommune.no
+15,Møre og Romsdal,1566,Surnadal,https://www.surnadal.kommune.no
+15,Møre og Romsdal,1573,Smøla,https://www.smola.kommune.no
+15,Møre og Romsdal,1576,Aure,https://www.aure.kommune.no
+15,Møre og Romsdal,1577,Volda,https://www.volda.kommune.no
+15,Møre og Romsdal,1578,Fjord,https://www.fjord.kommune.no
+15,Møre og Romsdal,1579,Hustadvika,https://www.hustadvika.kommune.no
+15,Møre og Romsdal,1580,Haram,https://www.haram.kommune.no
+18,Nordland,1804,Bodø,https://www.bodo.kommune.no
+18,Nordland,1806,Narvik,https://www.narvik.kommune.no
+18,Nordland,1811,Bindal,https://www.bindal.kommune.no
+18,Nordland,1812,Sømna,https://www.somna.kommune.no
+18,Nordland,1813,Brønnøy,https://www.bronnoysund.kommune.no
+18,Nordland,1815,Vega,https://www.vega.kommune.no
+18,Nordland,1816,Vevelstad,https://www.vevelstad.kommune.no
+18,Nordland,1818,Herøy,https://www.heroy-no.kommune.no
+18,Nordland,1820,Alstahaug,https://www.alstahaug.kommune.no
+18,Nordland,1822,Leirfjord,https://www.leirfjord.kommune.no
+18,Nordland,1824,Vefsn,https://www.vefsn.kommune.no
+18,Nordland,1825,Grane,https://www.grane.kommune.no
+18,Nordland,1826,Hattfjelldal,https://www.hattfjelldal.kommune.no
+18,Nordland,1827,Dønna,https://www.donna.kommune.no
+18,Nordland,1828,Nesna,https://www.nesna.kommune.no
+18,Nordland,1832,Hemnes,https://www.hemnes.kommune.no
+18,Nordland,1833,Rana,https://www.rana.kommune.no
+18,Nordland,1834,Lurøy,https://www.luroy.kommune.no
+18,Nordland,1835,Træna,https://www.trena.kommune.no
+18,Nordland,1836,Rødøy,https://www.rodoy.kommune.no
+18,Nordland,1837,Meløy,https://www.meloy.kommune.no
+18,Nordland,1838,Gildeskål,https://www.gildeskal.kommune.no
+18,Nordland,1839,Beiarn,https://www.beiarn.kommune.no
+18,Nordland,1840,Saltdal,https://www.saltdal.kommune.no
+18,Nordland,1841,Fauske,https://www.fauske.kommune.no
+18,Nordland,1845,Sørfold,https://www.sorfold.kommune.no
+18,Nordland,1848,Steigen,https://www.steigen.kommune.no
+18,Nordland,1851,Lødingen,https://www.lodingen.kommune.no
+18,Nordland,1853,Evenes,https://www.evenes.kommune.no
+18,Nordland,1856,Røst,https://www.rost.kommune.no
+18,Nordland,1857,Værøy,https://www.veroy.kommune.no
+18,Nordland,1859,Flakstad,https://www.flakstad.kommune.no
+18,Nordland,1860,Vestvågøy,https://www.vestvagoy.kommune.no
+18,Nordland,1865,Vågan,https://www.vagan.kommune.no
+18,Nordland,1866,Hadsel,https://www.hadsel.kommune.no
+18,Nordland,1867,Bø,https://www.boe.kommune.no
+18,Nordland,1868,Øksnes,https://www.oksnes.kommune.no
+18,Nordland,1870,Sortland,https://www.sortland.kommune.no
+18,Nordland,1871,Andøy,https://www.andoy.kommune.no
+18,Nordland,1874,Moskenes,https://www.moskenes.kommune.no
+18,Nordland,1875,Hamarøy,https://www.hamaroy.kommune.no
+31,Østfold,3101,Halden,https://www.halden.kommune.no
+31,Østfold,3103,Moss,https://www.moss.kommune.no
+31,Østfold,3105,Sarpsborg,https://www.sarpsborg.kommune.no
+31,Østfold,3107,Fredrikstad,https://www.fredrikstad.kommune.no
+31,Østfold,3110,Hvaler,https://www.hvaler.kommune.no
+31,Østfold,3112,Råde,https://www.raade.kommune.no
+31,Østfold,3114,Våler,https://www.vaaler-of.kommune.no
+31,Østfold,3116,Skiptvet,https://www.skiptvet.kommune.no
+31,Østfold,3118,Indre Østfold,https://www.io.kommune.no
+31,Østfold,3120,Rakkestad,https://www.rakkestad.kommune.no
+31,Østfold,3122,Marker,https://www.marker.kommune.no
+31,Østfold,3124,Aremark,https://www.aremark.kommune.no
+32,Akershus,3201,Bærum,https://www.baerum.kommune.no
+32,Akershus,3203,Asker,https://www.asker.kommune.no
+32,Akershus,3205,Lillestrøm,https://www.lillestrom.kommune.no
+32,Akershus,3207,Nordre Follo,https://www.nordrefollo.kommune.no
+32,Akershus,3209,Ullensaker,https://www.ullensaker.kommune.no
+32,Akershus,3212,Nesodden,https://www.nesodden.kommune.no
+32,Akershus,3214,Frogn,https://www.frogn.kommune.no
+32,Akershus,3216,Vestby,https://www.vestby.kommune.no
+32,Akershus,3218,Ås,https://www.as.kommune.no
+32,Akershus,3220,Enebakk,https://www.enebakk.kommune.no
+32,Akershus,3222,Lørenskog,https://www.lorenskog.kommune.no
+32,Akershus,3224,Rælingen,https://www.ralingen.kommune.no
+32,Akershus,3226,Aurskog-Høland,https://www.ahk.kommune.no
+32,Akershus,3228,Nes,https://www.nes.kommune.no
+32,Akershus,3230,Gjerdrum,https://www.gjerdrum.kommune.no
+32,Akershus,3232,Nittedal,https://www.nittedal.kommune.no
+32,Akershus,3234,Lunner,https://www.lunner.kommune.no
+32,Akershus,3236,Jevnaker,https://www.jevnaker.kommune.no
+32,Akershus,3238,Nannestad,https://www.nannestad.kommune.no
+32,Akershus,3240,Eidsvoll,https://www.eidsvoll.kommune.no
+32,Akershus,3242,Hurdal,https://www.hurdal.kommune.no
+33,Buskerud,3301,Drammen,https://www.drammen.kommune.no
+33,Buskerud,3303,Kongsberg,https://www.kongsberg.kommune.no
+33,Buskerud,3305,Ringerike,https://www.ringerike.kommune.no
+33,Buskerud,3310,Hole,https://www.hole.kommune.no
+33,Buskerud,3312,Lier,https://www.lier.kommune.no
+33,Buskerud,3314,Øvre Eiker,https://www.ovre-eiker.kommune.no
+33,Buskerud,3316,Modum,https://www.modum.kommune.no
+33,Buskerud,3318,Krødsherad,https://www.krodsherad.kommune.no
+33,Buskerud,3320,Flå,https://www.flaa.kommune.no
+33,Buskerud,3322,Nesbyen,https://www.nesbyen.kommune.no
+33,Buskerud,3324,Gol,https://www.gol.kommune.no
+33,Buskerud,3326,Hemsedal,https://www.hemsedal.kommune.no
+33,Buskerud,3328,Ål,https://www.aal.kommune.no
+33,Buskerud,3330,Hol,https://www.hol.kommune.no
+33,Buskerud,3332,Sigdal,https://www.sigdal.kommune.no
+33,Buskerud,3334,Flesberg,https://www.flesberg.kommune.no
+33,Buskerud,3336,Rollag,https://www.rollag.kommune.no
+33,Buskerud,3338,Nore og Uvdal,https://www.nore-og-uvdal.kommune.no
+34,Innlandet,3401,Kongsvinger,https://www.kongsvinger.kommune.no
+34,Innlandet,3403,Hamar,https://www.hamar.kommune.no
+34,Innlandet,3405,Lillehammer,https://www.lillehammer.kommune.no
+34,Innlandet,3407,Gjøvik,https://www.gjovik.kommune.no
+34,Innlandet,3411,Ringsaker,https://www.ringsaker.kommune.no
+34,Innlandet,3412,Løten,https://www.loten.kommune.no
+34,Innlandet,3413,Stange,https://www.stange.kommune.no
+34,Innlandet,3414,Nord-Odal,https://www.nord-odal.kommune.no
+34,Innlandet,3415,Sør-Odal,https://www.sor-odal.kommune.no
+34,Innlandet,3416,Eidskog,https://www.eidskog.kommune.no
+34,Innlandet,3417,Grue,https://www.grue.kommune.no
+34,Innlandet,3418,Åsnes,https://www.asnes.kommune.no
+34,Innlandet,3419,Våler,https://www.vaaler-he.kommune.no
+34,Innlandet,3420,Elverum,https://www.elverum.kommune.no
+34,Innlandet,3421,Trysil,https://www.trysil.kommune.no
+34,Innlandet,3422,Åmot,https://www.amot.kommune.no
+34,Innlandet,3423,Stor-Elvdal,https://www.stor-elvdal.kommune.no
+34,Innlandet,3424,Rendalen,https://www.rendalen.kommune.no
+34,Innlandet,3425,Engerdal,https://www.engerdal.kommune.no
+34,Innlandet,3426,Tolga,https://www.tolga.kommune.no
+34,Innlandet,3427,Tynset,https://www.tynset.kommune.no
+34,Innlandet,3428,Alvdal,https://www.alvdal.kommune.no
+34,Innlandet,3429,Folldal,https://www.folldal.kommune.no
+34,Innlandet,3430,Os,https://www.os.kommune.no
+34,Innlandet,3431,Dovre,https://www.dovre.kommune.no
+34,Innlandet,3432,Lesja,https://www.lesja.kommune.no
+34,Innlandet,3433,Skjåk,https://www.skjak.kommune.no
+34,Innlandet,3434,Lom,https://www.lom.kommune.no
+34,Innlandet,3435,Vågå,https://www.vaga.kommune.no
+34,Innlandet,3436,Nord-Fron,https://www.nord-fron.kommune.no
+34,Innlandet,3437,Sel,https://www.sel.kommune.no
+34,Innlandet,3438,Sør-Fron,https://www.sor-fron.kommune.no
+34,Innlandet,3439,Ringebu,https://www.ringebu.kommune.no
+34,Innlandet,3440,Øyer,https://www.oyer.kommune.no
+34,Innlandet,3441,Gausdal,https://www.gausdal.kommune.no
+34,Innlandet,3442,Østre Toten,https://www.ostre-toten.kommune.no
+34,Innlandet,3443,Vestre Toten,https://www.vestre-toten.kommune.no
+34,Innlandet,3446,Gran,https://www.gran.kommune.no
+34,Innlandet,3447,Søndre Land,https://www.sondre-land.kommune.no
+34,Innlandet,3448,Nordre Land,https://www.nordre-land.kommune.no
+34,Innlandet,3449,Sør-Aurdal,https://www.sor-aurdal.kommune.no
+34,Innlandet,3450,Etnedal,https://www.etnedal.kommune.no
+34,Innlandet,3451,Nord-Aurdal,https://www.nord-aurdal.kommune.no
+34,Innlandet,3452,Vestre Slidre,https://www.vestre-slidre.kommune.no
+34,Innlandet,3453,Øystre Slidre,https://www.oystre-slidre.kommune.no
+34,Innlandet,3454,Vang,https://www.vang.kommune.no
+39,Vestfold,3901,Horten,https://www.horten.kommune.no
+39,Vestfold,3903,Holmestrand,https://www.holmestrand.kommune.no
+39,Vestfold,3905,Tønsberg,https://www.tonsberg.kommune.no
+39,Vestfold,3907,Sandefjord,https://www.sandefjord.kommune.no
+39,Vestfold,3909,Larvik,https://www.larvik.kommune.no
+39,Vestfold,3911,Færder,https://www.ferder.kommune.no
+40,Telemark,4001,Porsgrunn,https://www.porsgrunn.kommune.no
+40,Telemark,4003,Skien,https://www.skien.kommune.no
+40,Telemark,4005,Notodden,https://www.notodden.kommune.no
+40,Telemark,4010,Siljan,https://www.siljan.kommune.no
+40,Telemark,4012,Bamble,https://www.bamble.kommune.no
+40,Telemark,4014,Kragerø,https://www.kragero.kommune.no
+40,Telemark,4016,Drangedal,https://www.drangedal.kommune.no
+40,Telemark,4018,Nome,https://www.nome.kommune.no
+40,Telemark,4020,Midt-Telemark,https://www.midt-telemark.kommune.no
+40,Telemark,4022,Seljord,https://www.seljord.kommune.no
+40,Telemark,4024,Hjartdal,https://www.hjartdal.kommune.no
+40,Telemark,4026,Tinn,https://www.tinn.kommune.no
+40,Telemark,4028,Kviteseid,https://www.kviteseid.kommune.no
+40,Telemark,4030,Nissedal,https://www.nissedal.kommune.no
+40,Telemark,4032,Fyresdal,https://www.fyresdal.kommune.no
+40,Telemark,4034,Tokke,https://www.tokke.kommune.no
+40,Telemark,4036,Vinje,https://www.vinje.kommune.no
+42,Agder,4201,Risør,https://www.risor.kommune.no
+42,Agder,4202,Grimstad,https://www.grimstad.kommune.no
+42,Agder,4203,Arendal,https://www.arendal.kommune.no
+42,Agder,4204,Kristiansand,https://www.kristiansand.kommune.no
+42,Agder,4205,Lindesnes,https://www.lindesnes.kommune.no
+42,Agder,4206,Farsund,https://www.farsund.kommune.no
+42,Agder,4207,Flekkefjord,https://www.flekkefjord.kommune.no
+42,Agder,4211,Gjerstad,https://www.gjerstad.kommune.no
+42,Agder,4212,Vegårshei,https://www.vegarshei.kommune.no
+42,Agder,4213,Tvedestrand,https://www.tvedestrand.kommune.no
+42,Agder,4214,Froland,https://www.froland.kommune.no
+42,Agder,4215,Lillesand,https://www.lillesand.kommune.no
+42,Agder,4216,Birkenes,https://www.birkenes.kommune.no
+42,Agder,4217,Åmli,https://www.amli.kommune.no
+42,Agder,4218,Iveland,https://www.iveland.kommune.no
+42,Agder,4219,Evje og Hornnes,https://www.e-h.kommune.no
+42,Agder,4220,Bygland,https://www.bygland.kommune.no
+42,Agder,4221,Valle,https://www.valle.kommune.no
+42,Agder,4222,Bykle,https://www.bykle.kommune.no
+42,Agder,4223,Vennesla,https://www.vennesla.kommune.no
+42,Agder,4224,Åseral,https://www.aseral.kommune.no
+42,Agder,4225,Lyngdal,https://www.lyngdal.kommune.no
+42,Agder,4226,Hægebostad,https://www.haegebostad.kommune.no
+42,Agder,4227,Kvinesdal,https://www.kvinesdal.kommune.no
+42,Agder,4228,Sirdal,https://www.sirdal.kommune.no
+46,Vestland,4601,Bergen,https://www.bergen.kommune.no
+46,Vestland,4602,Kinn,https://www.kinn.kommune.no
+46,Vestland,4611,Etne,https://www.etne.kommune.no
+46,Vestland,4612,Sveio,https://www.sveio.kommune.no
+46,Vestland,4613,Bømlo,https://www.bomlo.kommune.no
+46,Vestland,4614,Stord,https://www.stord.kommune.no
+46,Vestland,4615,Fitjar,https://www.fitjar.kommune.no
+46,Vestland,4616,Tysnes,https://www.tysnes.kommune.no
+46,Vestland,4617,Kvinnherad,https://www.kvinnherad.kommune.no
+46,Vestland,4618,Ullensvang,https://www.ullensvang.kommune.no
+46,Vestland,4619,Eidfjord,https://www.eidfjord.kommune.no
+46,Vestland,4620,Ulvik,https://www.ulvik.kommune.no
+46,Vestland,4621,Voss,https://www.voss.kommune.no
+46,Vestland,4622,Kvam,https://www.kvam.kommune.no
+46,Vestland,4623,Samnanger,https://www.samnanger.kommune.no
+46,Vestland,4624,Bjørnafjorden,https://www.bjornafjorden.kommune.no
+46,Vestland,4625,Austevoll,https://www.austevoll.kommune.no
+46,Vestland,4626,Øygarden,https://www.oygarden.kommune.no
+46,Vestland,4627,Askøy,https://www.askoy.kommune.no
+46,Vestland,4628,Vaksdal,https://www.vaksdal.kommune.no
+46,Vestland,4629,Modalen,https://www.modalen.kommune.no
+46,Vestland,4630,Osterøy,https://www.osteroy.kommune.no
+46,Vestland,4631,Alver,https://www.alver.kommune.no
+46,Vestland,4632,Austrheim,https://www.austrheim.kommune.no
+46,Vestland,4633,Fedje,https://www.fedje.kommune.no
+46,Vestland,4634,Masfjorden,https://www.masfjorden.kommune.no
+46,Vestland,4635,Gulen,https://www.gulen.kommune.no
+46,Vestland,4636,Solund,https://www.solund.kommune.no
+46,Vestland,4637,Hyllestad,https://www.hyllestad.kommune.no
+46,Vestland,4638,Høyanger,https://www.hoyanger.kommune.no
+46,Vestland,4639,Vik,https://www.vik.kommune.no
+46,Vestland,4640,Sogndal,https://www.sogndal.kommune.no
+46,Vestland,4641,Aurland,https://www.aurland.kommune.no
+46,Vestland,4642,Lærdal,https://www.laerdal.kommune.no
+46,Vestland,4643,Årdal,https://www.ardal.kommune.no
+46,Vestland,4644,Luster,https://www.luster.kommune.no
+46,Vestland,4645,Askvoll,https://www.askvoll.kommune.no
+46,Vestland,4646,Fjaler,https://www.fjaler.kommune.no
+46,Vestland,4647,Sunnfjord,https://www.sunnfjord.kommune.no
+46,Vestland,4648,Bremanger,https://www.bremanger.kommune.no
+46,Vestland,4649,Stad,https://www.stad.kommune.no
+46,Vestland,4650,Gloppen,https://www.gloppen.kommune.no
+46,Vestland,4651,Stryn,https://www.stryn.kommune.no
+50,Trøndelag,5001,Trondheim,https://www.trondheim.kommune.no
+50,Trøndelag,5006,Steinkjer,https://www.steinkjer.kommune.no
+50,Trøndelag,5007,Namsos,https://www.namsos.kommune.no
+50,Trøndelag,5014,Frøya,https://www.froya.kommune.no
+50,Trøndelag,5020,Osen,https://www.osen.kommune.no
+50,Trøndelag,5021,Oppdal,https://www.oppdal.kommune.no
+50,Trøndelag,5022,Rennebu,https://www.rennebu.kommune.no
+50,Trøndelag,5025,Røros,https://www.roros.kommune.no
+50,Trøndelag,5026,Holtålen,https://www.holtalen.kommune.no
+50,Trøndelag,5027,Midtre Gauldal,https://www.mgk.kommune.no
+50,Trøndelag,5028,Melhus,https://www.melhus.kommune.no
+50,Trøndelag,5029,Skaun,https://www.skaun.kommune.no
+50,Trøndelag,5031,Malvik,https://www.malvik.kommune.no
+50,Trøndelag,5032,Selbu,https://www.selbu.kommune.no
+50,Trøndelag,5033,Tydal,https://www.tydal.kommune.no
+50,Trøndelag,5034,Meråker,https://www.meraker.kommune.no
+50,Trøndelag,5035,Stjørdal,https://www.stjordal.kommune.no
+50,Trøndelag,5036,Frosta,https://www.frosta.kommune.no
+50,Trøndelag,5037,Levanger,https://www.levanger.kommune.no
+50,Trøndelag,5038,Verdal,https://www.verdal.kommune.no
+50,Trøndelag,5041,Snåsa,https://www.snasa.no
+50,Trøndelag,5042,Lierne,https://www.lierne.kommune.no
+50,Trøndelag,5043,Røyrvik,https://www.royrvik.kommune.no
+50,Trøndelag,5044,Namsskogan,https://www.namsskogan.kommune.no
+50,Trøndelag,5045,Grong,https://www.grong.kommune.no
+50,Trøndelag,5046,Høylandet,https://www.hoylandet.kommune.no
+50,Trøndelag,5047,Overhalla,https://www.overhalla.kommune.no
+50,Trøndelag,5049,Flatanger,https://www.flatanger.kommune.no
+50,Trøndelag,5052,Leka,https://www.leka.kommune.no
+50,Trøndelag,5053,Inderøy,https://www.inderoy.kommune.no
+50,Trøndelag,5054,Indre Fosen,https://www.indrefosen.kommune.no
+50,Trøndelag,5055,Heim,https://www.heim.kommune.no
+50,Trøndelag,5056,Hitra,https://www.hitra.kommune.no
+50,Trøndelag,5057,Ørland,https://www.orland.kommune.no
+50,Trøndelag,5058,Åfjord,https://www.afjord.kommune.no
+50,Trøndelag,5059,Orkland,https://www.orkland.kommune.no
+50,Trøndelag,5060,Nærøysund,https://www.naroysund.kommune.no
+50,Trøndelag,5061,Rindal,https://www.rindal.kommune.no
+55,Troms,5501,Tromsø,https://www.tromso.kommune.no
+55,Troms,5503,Harstad,https://www.harstad.kommune.no
+55,Troms,5510,Kvæfjord,https://www.kvafjord.kommune.no
+55,Troms,5512,Tjeldsund,https://www.tjeldsund.kommune.no
+55,Troms,5514,Ibestad,https://www.ibestad.kommune.no
+55,Troms,5516,Gratangen,https://www.gratangen.kommune.no
+55,Troms,5518,Lavangen,https://www.lavangen.kommune.no
+55,Troms,5520,Bardu,https://www.bardu.kommune.no
+55,Troms,5522,Salangen,https://www.salangen.kommune.no
+55,Troms,5524,Målselv,https://www.malselv.kommune.no
+55,Troms,5526,Sørreisa,https://www.sorreisa.kommune.no
+55,Troms,5528,Dyrøy,https://www.dyroy.kommune.no
+55,Troms,5530,Senja,https://www.senja.kommune.no
+55,Troms,5532,Balsfjord,https://www.balsfjord.kommune.no
+55,Troms,5534,Karlsøy,https://www.karlsoy.kommune.no
+55,Troms,5536,Lyngen,https://www.lyngen.kommune.no
+55,Troms,5538,Storfjord,https://www.storfjord.kommune.no
+55,Troms,5540,Kåfjord,https://www.kafjord.kommune.no
+55,Troms,5542,Skjervøy,https://www.skjervoy.kommune.no
+55,Troms,5544,Nordreisa,https://www.nordreisa.kommune.no
+55,Troms,5546,Kvænangen,https://www.kvanangen.kommune.no
+56,Finnmark,5601,Alta,https://www.alta.kommune.no
+56,Finnmark,5603,Hammerfest,https://www.hammerfest.kommune.no
+56,Finnmark,5605,Sør-Varanger,https://www.sor-varanger.kommune.no
+56,Finnmark,5607,Vadsø,https://www.vadso.kommune.no
+56,Finnmark,5610,Karasjok,https://www.karasjok.kommune.no
+56,Finnmark,5612,Kautokeino,https://www.kautokeino.kommune.no
+56,Finnmark,5614,Loppa,https://www.loppa.kommune.no
+56,Finnmark,5616,Hasvik,https://www.hasvik.kommune.no
+56,Finnmark,5618,Måsøy,https://www.masoy.kommune.no
+56,Finnmark,5620,Nordkapp,https://www.nordkapp.kommune.no
+56,Finnmark,5622,Porsanger,https://www.porsanger.kommune.no
+56,Finnmark,5624,Lebesby,https://www.lebesby.kommune.no
+56,Finnmark,5626,Gamvik,https://www.gamvik.kommune.no
+56,Finnmark,5628,Tana,https://www.tana.kommune.no
+56,Finnmark,5630,Berlevåg,https://www.berlevag.kommune.no
+56,Finnmark,5632,Båtsfjord,https://www.batsfjord.kommune.no
+56,Finnmark,5634,Vardø,https://www.vardo.kommune.no
+56,Finnmark,5636,Nesseby,https://www.nesseby.kommune.no

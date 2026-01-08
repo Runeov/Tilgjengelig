@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Analysis Report</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { 
+            background: linear-gradient(135deg, #003366, #004488); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .header h1 { margin: 0 0 10px 0; color: white; font-size: 2em; }
+        .header p { margin: 5px 0; opacity: 0.9; }
+        
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; 
+            margin-bottom: 30px; 
+        }
+        .stat-card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 12px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-value { font-size: 2.5em; font-weight: bold; margin-bottom: 5px; }
+        .stat-label { color: #666; font-size: 0.9em; }
+        .stat-good { color: #2e7d32; }
+        .stat-warn { color: #e65100; }
+        .stat-bad { color: #c62828; }
+        
+        .section { 
+            background: white; 
+            border-radius: 12px; 
+            padding: 25px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .section h2 { 
+            margin-top: 0; 
+            padding-bottom: 15px; 
+            border-bottom: 2px solid #003366; 
+        }
+        
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; color: #333; }
+        tr:hover { background: #f8f9fa; }
+        
+        .badge { 
+            display: inline-block;
+            padding: 4px 12px; 
+            border-radius: 20px; 
+            font-size: 0.85em; 
+            font-weight: 500; 
+        }
+        .badge-good { background: #e8f5e9; color: #2e7d32; }
+        .badge-warn { background: #fff3e0; color: #e65100; }
+        .badge-bad { background: #ffebee; color: #c62828; }
+        
+        .progress-bar { 
+            background: #e0e0e0; 
+            border-radius: 10px; 
+            height: 20px; 
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress-fill { 
+            height: 100%; 
+            background: linear-gradient(90deg, #4caf50, #8bc34a);
+            border-radius: 10px;
+            transition: width 0.5s;
+        }
+        
+        .municipality-list { 
+            columns: 2; 
+            column-gap: 30px; 
+        }
+        .municipality-list li { 
+            margin-bottom: 8px; 
+            break-inside: avoid;
+        }
+        
+        @media (max-width: 768px) {
+            .municipality-list { columns: 1; }
+            .stat-value { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG Compliance Analysis Report</h1>
+        <p>Norwegian Municipalities - Accessibility Check Results</p>
+        <p>Generated: 2026-01-08 06:32:32 | Data: 20260107_074243</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">357</div>
+            <div class="stat-label">Municipalities Checked</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value stat-good">282</div>
+            <div class="stat-label">Have Statement (79.0%)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value stat-warn">75</div>
+            <div class="stat-label">Missing Statement</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value stat-bad">119,193</div>
+            <div class="stat-label">Total WCAG Issues</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value stat-bad">9,705</div>
+            <div class="stat-label">Critical Issues</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">382.0</div>
+            <div class="stat-label">Avg Issues/Municipality</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <h2>Accessibility Statement Coverage</h2>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 79.0%"></div>
+        </div>
+        <p><strong>79.0%</strong> of municipalities have an accessibility statement (282 of 357)</p>
+    </div>
+    
+    <div class="section">
+        <h2>County Breakdown</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>County</th>
+                    <th>Municipalities</th>
+                    <th>With Statement</th>
+                    <th>Total Issues</th>
+                    <th>Critical</th>
+                    <th>Avg Issues</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td><strong>Innlandet</strong></td>
+                    <td>46</td>
+                    <td><span class="badge badge-good">38/46 (83%)</span></td>
+                    <td>18,284</td>
+                    <td>651</td>
+                    <td>397.5</td>
+                </tr>
+                <tr>
+                    <td><strong>Nordland</strong></td>
+                    <td>41</td>
+                    <td><span class="badge badge-good">38/41 (93%)</span></td>
+                    <td>17,293</td>
+                    <td>1,213</td>
+                    <td>421.8</td>
+                </tr>
+                <tr>
+                    <td><strong>Trøndelag</strong></td>
+                    <td>38</td>
+                    <td><span class="badge badge-good">36/38 (95%)</span></td>
+                    <td>12,006</td>
+                    <td>1,519</td>
+                    <td>315.9</td>
+                </tr>
+                <tr>
+                    <td><strong>Troms</strong></td>
+                    <td>21</td>
+                    <td><span class="badge badge-good">21/21 (100%)</span></td>
+                    <td>10,721</td>
+                    <td>1,548</td>
+                    <td>510.5</td>
+                </tr>
+                <tr>
+                    <td><strong>Agder</strong></td>
+                    <td>25</td>
+                    <td><span class="badge badge-good">24/25 (96%)</span></td>
+                    <td>9,946</td>
+                    <td>238</td>
+                    <td>397.8</td>
+                </tr>
+                <tr>
+                    <td><strong>Finnmark</strong></td>
+                    <td>18</td>
+                    <td><span class="badge badge-good">16/18 (89%)</span></td>
+                    <td>8,309</td>
+                    <td>1,364</td>
+                    <td>461.6</td>
+                </tr>
+                <tr>
+                    <td><strong>Møre og Romsdal</strong></td>
+                    <td>27</td>
+                    <td><span class="badge badge-bad">12/27 (44%)</span></td>
+                    <td>7,365</td>
+                    <td>142</td>
+                    <td>272.8</td>
+                </tr>
+                <tr>
+                    <td><strong>Telemark</strong></td>
+                    <td>17</td>
+                    <td><span class="badge badge-good">14/17 (82%)</span></td>
+                    <td>7,345</td>
+                    <td>468</td>
+                    <td>432.1</td>
+                </tr>
+                <tr>
+                    <td><strong>Vestland</strong></td>
+                    <td>43</td>
+                    <td><span class="badge badge-bad">21/43 (49%)</span></td>
+                    <td>6,943</td>
+                    <td>581</td>
+                    <td>161.5</td>
+                </tr>
+                <tr>
+                    <td><strong>Rogaland</strong></td>
+                    <td>23</td>
+                    <td><span class="badge badge-warn">16/23 (70%)</span></td>
+                    <td>5,891</td>
+                    <td>834</td>
+                    <td>256.1</td>
+                </tr>
+                <tr>
+                    <td><strong>Buskerud</strong></td>
+                    <td>18</td>
+                    <td><span class="badge badge-good">16/18 (89%)</span></td>
+                    <td>5,162</td>
+                    <td>321</td>
+                    <td>286.8</td>
+                </tr>
+                <tr>
+                    <td><strong>Akershus</strong></td>
+                    <td>21</td>
+                    <td><span class="badge badge-warn">15/21 (71%)</span></td>
+                    <td>4,641</td>
+                    <td>463</td>
+                    <td>221.0</td>
+                </tr>
+                <tr>
+                    <td><strong>Østfold</strong></td>
+                    <td>12</td>
+                    <td><span class="badge badge-warn">9/12 (75%)</span></td>
+                    <td>3,842</td>
+                    <td>363</td>
+                    <td>320.2</td>
+                </tr>
+                <tr>
+                    <td><strong>Vestfold</strong></td>
+                    <td>6</td>
+                    <td><span class="badge badge-good">5/6 (83%)</span></td>
+                    <td>1,381</td>
+                    <td>0</td>
+                    <td>230.2</td>
+                </tr>
+                <tr>
+                    <td><strong>Oslo</strong></td>
+                    <td>1</td>
+                    <td><span class="badge badge-good">1/1 (100%)</span></td>
+                    <td>64</td>
+                    <td>0</td>
+                    <td>64.0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Top 10 Municipalities with Most Issues</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Municipality</th>
+                    <th>County</th>
+                    <th>Total Issues</th>
+                    <th>Critical</th>
+                    <th>Serious</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td><strong>Hamar</strong></td>
+                    <td>Innlandet</td>
+                    <td><span class="badge badge-bad">2,311</span></td>
+                    <td>13</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>Hadsel</strong></td>
+                    <td>Nordland</td>
+                    <td><span class="badge badge-bad">1,869</span></td>
+                    <td>62</td>
+                    <td>1,382</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Trondheim</strong></td>
+                    <td>Trøndelag</td>
+                    <td><span class="badge badge-bad">1,422</span></td>
+                    <td>0</td>
+                    <td>1,235</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Gildeskål</strong></td>
+                    <td>Nordland</td>
+                    <td><span class="badge badge-bad">1,230</span></td>
+                    <td>42</td>
+                    <td>297</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Seljord</strong></td>
+                    <td>Telemark</td>
+                    <td><span class="badge badge-bad">1,132</span></td>
+                    <td>40</td>
+                    <td>419</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Herøy</strong></td>
+                    <td>Nordland</td>
+                    <td><span class="badge badge-bad">1,094</span></td>
+                    <td>45</td>
+                    <td>358</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Saltdal</strong></td>
+                    <td>Nordland</td>
+                    <td><span class="badge badge-bad">1,088</span></td>
+                    <td>63</td>
+                    <td>320</td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><strong>Måsøy</strong></td>
+                    <td>Finnmark</td>
+                    <td><span class="badge badge-bad">1,033</span></td>
+                    <td>315</td>
+                    <td>542</td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><strong>Stange</strong></td>
+                    <td>Innlandet</td>
+                    <td><span class="badge badge-bad">973</span></td>
+                    <td>31</td>
+                    <td>26</td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><strong>Nissedal</strong></td>
+                    <td>Telemark</td>
+                    <td><span class="badge badge-bad">959</span></td>
+                    <td>24</td>
+                    <td>545</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Top 10 Best Municipalities (Fewest Issues)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Municipality</th>
+                    <th>County</th>
+                    <th>Total Issues</th>
+                    <th>Statement</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>1</td>
+                    <td><strong>Oslo</strong></td>
+                    <td>Oslo</td>
+                    <td><span class="badge badge-good">64</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><strong>Asker</strong></td>
+                    <td>Akershus</td>
+                    <td><span class="badge badge-good">67</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><strong>Sunnfjord</strong></td>
+                    <td>Vestland</td>
+                    <td><span class="badge badge-good">78</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><strong>Vadsø</strong></td>
+                    <td>Finnmark</td>
+                    <td><span class="badge badge-good">78</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><strong>Lierne</strong></td>
+                    <td>Trøndelag</td>
+                    <td><span class="badge badge-good">81</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td><strong>Solund</strong></td>
+                    <td>Vestland</td>
+                    <td><span class="badge badge-good">86</span></td>
+                    <td><span class="badge badge-bad">No</span></td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td><strong>Grong</strong></td>
+                    <td>Trøndelag</td>
+                    <td><span class="badge badge-good">86</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td><strong>Rødøy</strong></td>
+                    <td>Nordland</td>
+                    <td><span class="badge badge-good">88</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td><strong>Vik</strong></td>
+                    <td>Vestland</td>
+                    <td><span class="badge badge-good">88</span></td>
+                    <td><span class="badge badge-bad">No</span></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td><strong>Halden</strong></td>
+                    <td>Østfold</td>
+                    <td><span class="badge badge-good">94</span></td>
+                    <td><span class="badge badge-good">Yes</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="section">
+        <h2>Municipalities Missing Accessibility Statement (75)</h2>
+        <ul class="municipality-list">
+            <li><strong>Bygland</strong> (Agder)</li>
+            <li><strong>Aurskog-Høland</strong> (Akershus)</li>
+            <li><strong>Eidsvoll</strong> (Akershus)</li>
+            <li><strong>Gjerdrum</strong> (Akershus)</li>
+            <li><strong>Hurdal</strong> (Akershus)</li>
+            <li><strong>Nannestad</strong> (Akershus)</li>
+            <li><strong>Nes</strong> (Akershus)</li>
+            <li><strong>Gol</strong> (Buskerud)</li>
+            <li><strong>Ål</strong> (Buskerud)</li>
+            <li><strong>Kautokeino</strong> (Finnmark)</li>
+            <li><strong>Porsanger</strong> (Finnmark)</li>
+            <li><strong>Grue</strong> (Innlandet)</li>
+            <li><strong>Lesja</strong> (Innlandet)</li>
+            <li><strong>Lom</strong> (Innlandet)</li>
+            <li><strong>Skjåk</strong> (Innlandet)</li>
+            <li><strong>Vang</strong> (Innlandet)</li>
+            <li><strong>Vestre Slidre</strong> (Innlandet)</li>
+            <li><strong>Vågå</strong> (Innlandet)</li>
+            <li><strong>Øystre Slidre</strong> (Innlandet)</li>
+            <li><strong>Aukra</strong> (Møre og Romsdal)</li>
+            <li><strong>Giske</strong> (Møre og Romsdal)</li>
+            <li><strong>Haram</strong> (Møre og Romsdal)</li>
+            <li><strong>Hareid</strong> (Møre og Romsdal)</li>
+            <li><strong>Herøy</strong> (Møre og Romsdal)</li>
+            <li><strong>Sande</strong> (Møre og Romsdal)</li>
+            <li><strong>Stranda</strong> (Møre og Romsdal)</li>
+            <li><strong>Sula</strong> (Møre og Romsdal)</li>
+            <li><strong>Sykkylven</strong> (Møre og Romsdal)</li>
+            <li><strong>Ulstein</strong> (Møre og Romsdal)</li>
+            <li><strong>Vanylven</strong> (Møre og Romsdal)</li>
+            <li><strong>Vestnes</strong> (Møre og Romsdal)</li>
+            <li><strong>Volda</strong> (Møre og Romsdal)</li>
+            <li><strong>Ålesund</strong> (Møre og Romsdal)</li>
+            <li><strong>Ørsta</strong> (Møre og Romsdal)</li>
+            <li><strong>Brønnøy</strong> (Nordland)</li>
+            <li><strong>Træna</strong> (Nordland)</li>
+            <li><strong>Værøy</strong> (Nordland)</li>
+            <li><strong>Bokn</strong> (Rogaland)</li>
+            <li><strong>Hjelmeland</strong> (Rogaland)</li>
+            <li><strong>Hå</strong> (Rogaland)</li>
+            <li><strong>Karmøy</strong> (Rogaland)</li>
+            <li><strong>Suldal</strong> (Rogaland)</li>
+            <li><strong>Time</strong> (Rogaland)</li>
+            <li><strong>Vindafjord</strong> (Rogaland)</li>
+            <li><strong>Fyresdal</strong> (Telemark)</li>
+            <li><strong>Nissedal</strong> (Telemark)</li>
+            <li><strong>Vinje</strong> (Telemark)</li>
+            <li><strong>Midtre Gauldal</strong> (Trøndelag)</li>
+            <li><strong>Snåsa</strong> (Trøndelag)</li>
+            <li><strong>Færder</strong> (Vestfold)</li>
+            <li><strong>Askvoll</strong> (Vestland)</li>
+            <li><strong>Bremanger</strong> (Vestland)</li>
+            <li><strong>Bømlo</strong> (Vestland)</li>
+            <li><strong>Eidfjord</strong> (Vestland)</li>
+            <li><strong>Etne</strong> (Vestland)</li>
+            <li><strong>Fjaler</strong> (Vestland)</li>
+            <li><strong>Hyllestad</strong> (Vestland)</li>
+            <li><strong>Høyanger</strong> (Vestland)</li>
+            <li><strong>Kinn</strong> (Vestland)</li>
+            <li><strong>Kvam</strong> (Vestland)</li>
+            <li><strong>Kvinnherad</strong> (Vestland)</li>
+            <li><strong>Lærdal</strong> (Vestland)</li>
+            <li><strong>Sogndal</strong> (Vestland)</li>
+            <li><strong>Solund</strong> (Vestland)</li>
+            <li><strong>Stad</strong> (Vestland)</li>
+            <li><strong>Stord</strong> (Vestland)</li>
+            <li><strong>Stryn</strong> (Vestland)</li>
+            <li><strong>Ulvik</strong> (Vestland)</li>
+            <li><strong>Vik</strong> (Vestland)</li>
+            <li><strong>Voss</strong> (Vestland)</li>
+            <li><strong>Årdal</strong> (Vestland)</li>
+            <li><strong>Øygarden</strong> (Vestland)</li>
+            <li><strong>Råde</strong> (Østfold)</li>
+            <li><strong>Sarpsborg</strong> (Østfold)</li>
+            <li><strong>Våler</strong> (Østfold)</li>
+
+        </ul>
+    </div>
+    
+</body>
+</html>
