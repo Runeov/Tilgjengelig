@@ -1,6 +1,6 @@
 """
-WCAG Checkers Package
-Individual check modules for WCAG 2.1 compliance testing.
+WCAG Accessibility Checkers Package
+All check functions accept 3 arguments: (soup, url, html)
 """
 
 from .images import check_images

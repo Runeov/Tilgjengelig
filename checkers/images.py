@@ -1,178 +1,167 @@
 """
-WCAG 1.1.1 Image Checker
-Checks that images have appropriate text alternatives.
+WCAG Image Accessibility Checker
+Covers: 1.1.1 Non-text Content
 """
 
-from bs4 import BeautifulSoup
-
-RULE_INFO = {
-    "1.1.1a": {
-        "criterion": "1.1.1",
-        "criterion_name": "Ikke-tekstlig innhold",
-        "criterion_name_en": "Non-text Content",
-        "level": "A",
-    },
-    "1.1.1b": {
-        "criterion": "1.1.1",
-        "criterion_name": "Ikke-tekstlig innhold",
-        "criterion_name_en": "Non-text Content",
-        "level": "A",
-    },
-}
+from dataclasses import dataclass
 
 
-def check_images(soup, url, **kwargs):
-    """
-    Check images for proper text alternatives.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
+
+
+def check_images(soup, url, html=None):
+    """Check images for accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["1.1.1a"]
-    
-    # Find all images
-    images = soup.find_all('img')
-    
-    missing_alt = []
-    empty_alt = []
-    decorative = []
-    has_alt = []
-    
-    for img in images:
-        # Check for alt attribute
-        if not img.has_attr('alt'):
-            missing_alt.append(img)
-        elif img['alt'].strip() == '':
-            # Empty alt is valid for decorative images
-            # Check if it seems decorative (in link, has aria-hidden, etc.)
-            parent_link = img.find_parent('a')
-            is_decorative = (
-                img.get('aria-hidden') == 'true' or
-                img.get('role') == 'presentation' or
-                'decorative' in img.get('class', []) or
-                'icon' in img.get('class', [])
-            )
-            
-            if parent_link and parent_link.get_text(strip=True):
-                # Image in link with text - empty alt is fine
-                decorative.append(img)
-            elif is_decorative:
-                decorative.append(img)
+    # Check all img elements
+    for img in soup.find_all('img'):
+        alt = img.get('alt')
+        src = img.get('src', '')
+        element_str = str(img)[:200]
+        
+        # Check for missing alt attribute
+        if alt is None:
+            issues.append(Issue(
+                rule_id="1.1.1a",
+                criterion_id="1.1.1",
+                criterion_name="Ikke-tekstlig innhold",
+                criterion_name_en="Non-text Content",
+                level="A",
+                impact="critical",
+                element=element_str,
+                selector=f'img[src="{src[:50]}"]',
+                issue="Image is missing alt attribute",
+                fix="Add alt attribute describing the image, or alt='' if decorative"
+            ))
+        elif alt == '' and not _is_decorative(img):
+            # Empty alt on potentially meaningful image
+            parent = img.parent
+            if parent and parent.name == 'a':
+                # Image inside link with empty alt - may be OK if link has other text
+                link_text = parent.get_text(strip=True)
+                if not link_text:
+                    issues.append(Issue(
+                        rule_id="1.1.1b",
+                        criterion_id="1.1.1",
+                        criterion_name="Ikke-tekstlig innhold",
+                        criterion_name_en="Non-text Content",
+                        level="A",
+                        impact="critical",
+                        element=element_str,
+                        selector=f'img[src="{src[:50]}"]',
+                        issue="Linked image has empty alt and link has no other text",
+                        fix="Add descriptive alt text to the image"
+                    ))
+                else:
+                    passed.append(f"1.1.1b: Linked image with alt='' has link text: {link_text[:30]}")
             else:
-                empty_alt.append(img)
+                passed.append(f"1.1.1a: Image has alt='' (decorative): {src[:50]}")
         else:
-            has_alt.append(img)
+            passed.append(f"1.1.1a: Image has alt text: {(alt or '')[:30]}")
     
-    # Report missing alt
-    for img in missing_alt[:10]:
-        src = img.get('src', 'ukjent')[:100]
-        element_str = str(img)[:200]
-        issues.append({
-            "rule_id": "1.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "critical",
-            "element": element_str,
-            "selector": _get_selector(img),
-            "issue": f"Bilde mangler alt-attributt: {src}",
-            "fix": "Legg til beskrivende alt-tekst, eller alt=\"\" for dekorative bilder"
-        })
+    # Check SVG elements
+    for svg in soup.find_all('svg'):
+        has_title = svg.find('title')
+        aria_label = svg.get('aria-label')
+        aria_hidden = svg.get('aria-hidden')
+        role = svg.get('role')
+        element_str = str(svg)[:200]
+        
+        if aria_hidden == 'true' or role == 'presentation':
+            passed.append("1.1.1: SVG marked as decorative")
+        elif not has_title and not aria_label:
+            issues.append(Issue(
+                rule_id="1.1.1a",
+                criterion_id="1.1.1",
+                criterion_name="Ikke-tekstlig innhold",
+                criterion_name_en="Non-text Content",
+                level="A",
+                impact="serious",
+                element=element_str,
+                selector="svg",
+                issue="SVG is missing accessible name",
+                fix="Add <title> element inside SVG, or aria-label attribute. Use role='presentation' if decorative"
+            ))
+        else:
+            passed.append("1.1.1: SVG has accessible name")
     
-    # Report suspicious empty alt
-    for img in empty_alt[:5]:
-        src = img.get('src', 'ukjent')[:100]
-        element_str = str(img)[:200]
-        warnings.append({
-            "rule_id": "1.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": element_str,
-            "selector": _get_selector(img),
-            "issue": f"Bilde har tom alt-tekst - verifiser at det er dekorativt: {src}",
-            "fix": "Hvis bildet formidler informasjon, legg til beskrivende alt-tekst"
-        })
+    # Check canvas elements
+    for canvas in soup.find_all('canvas'):
+        aria_label = canvas.get('aria-label')
+        inner_text = canvas.get_text(strip=True)
+        element_str = str(canvas)[:200]
+        
+        if not aria_label and not inner_text:
+            issues.append(Issue(
+                rule_id="1.1.1a",
+                criterion_id="1.1.1",
+                criterion_name="Ikke-tekstlig innhold",
+                criterion_name_en="Non-text Content",
+                level="A",
+                impact="serious",
+                element=element_str,
+                selector="canvas",
+                issue="Canvas element has no text alternative",
+                fix="Add aria-label or fallback text content inside canvas"
+            ))
     
-    # Check linked images
-    rule_b = RULE_INFO["1.1.1b"]
-    linked_images = soup.find_all('a')
-    
-    for link in linked_images:
-        img = link.find('img')
-        if img:
-            link_text = link.get_text(strip=True)
-            img_alt = img.get('alt', '').strip()
-            aria_label = link.get('aria-label', '').strip()
+    # Check image maps
+    for map_elem in soup.find_all('map'):
+        for area in map_elem.find_all('area'):
+            alt = area.get('alt')
+            href = area.get('href', '')
             
-            # If no link text and no alt and no aria-label, it's a problem
-            if not link_text and not img_alt and not aria_label:
-                element_str = str(link)[:200]
-                issues.append({
-                    "rule_id": "1.1.1b",
-                    "criterion_id": rule_b["criterion"],
-                    "criterion_name": rule_b["criterion_name"],
-                    "criterion_name_en": rule_b["criterion_name_en"],
-                    "level": rule_b["level"],
-                    "impact": "critical",
-                    "element": element_str,
-                    "selector": _get_selector(link),
-                    "issue": "Bildlenke mangler tekstalternativ",
-                    "fix": "Legg til alt-tekst på bildet eller aria-label på lenken"
-                })
-    
-    # Summary
-    total_images = len(images)
-    if total_images > 0:
-        if len(missing_alt) == 0 and len(empty_alt) == 0:
-            passed.append({
-                "rule_id": "1.1.1a",
-                "criterion_id": rule["criterion"],
-                "criterion_name": rule["criterion_name"],
-                "message": f"Alle {total_images} bilder har alt-attributt"
-            })
-    
-    if len(missing_alt) > 10:
-        warnings.append({
-            "rule_id": "1.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": "Multiple images",
-            "selector": "",
-            "issue": f"Fant {len(missing_alt)} bilder uten alt-attributt (viser kun de første 10)",
-            "fix": "Gjennomgå alle bilder og legg til passende tekstalternativer"
-        })
+            if not alt:
+                issues.append(Issue(
+                    rule_id="1.1.1c",
+                    criterion_id="1.1.1",
+                    criterion_name="Ikke-tekstlig innhold",
+                    criterion_name_en="Non-text Content",
+                    level="A",
+                    impact="critical",
+                    element=str(area)[:200],
+                    selector=f'area[href="{href[:30]}"]',
+                    issue="Image map area missing alt text",
+                    fix="Add alt attribute describing the clickable area"
+                ))
     
     return issues, passed, warnings
 
 
-def _get_selector(element):
-    """Generate a CSS-like selector for an element."""
-    parts = []
-    for parent in element.parents:
-        if parent.name is None:
-            break
-        if parent.name == '[document]':
-            break
-        parts.append(parent.name)
-    parts.reverse()
-    parts.append(element.name)
+def _is_decorative(img):
+    """Check if an image is likely decorative."""
+    # Check common decorative patterns
+    src = img.get('src', '').lower()
+    classes = ' '.join(img.get('class', [])).lower()
     
-    if element.get('id'):
-        parts[-1] += f"#{element['id']}"
-    elif element.get('class'):
-        classes = element['class']
-        if isinstance(classes, str):
-            classes = classes.split()
-        parts[-1] += f".{'.'.join(classes[:2])}"
+    decorative_patterns = [
+        'spacer', 'blank', 'pixel', 'transparent',
+        'decoration', 'decorative', 'ornament',
+        'bullet', 'separator', 'divider'
+    ]
     
-    return ' > '.join(parts[-4:])
+    for pattern in decorative_patterns:
+        if pattern in src or pattern in classes:
+            return True
+    
+    # Check for role="presentation" or aria-hidden
+    if img.get('role') == 'presentation':
+        return True
+    if img.get('aria-hidden') == 'true':
+        return True
+    
+    return False

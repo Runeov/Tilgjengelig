@@ -7,8 +7,6 @@ https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709
 
 import json
 import re
-import sys
-import os
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
 from typing import Optional
@@ -16,11 +14,6 @@ from urllib.parse import urljoin, urlparse
 from bs4 import BeautifulSoup
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
-
-# Add the script directory to path for imports
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-if SCRIPT_DIR not in sys.path:
-    sys.path.insert(0, SCRIPT_DIR)
 
 from checkers.images import check_images
 from checkers.headings import check_headings
@@ -33,20 +26,19 @@ from checkers.structure import check_structure
 from checkers.media import check_media
 from checkers.aria import check_aria
 from uu_test_rules import UU_TEST_RULES
-from checkers.use_of_color import check_use_of_color
-from checkers.name_role_value import check_name_role_value
-from checkers.non_text_contrast import check_non_text_contrast
 
-# Try to import accessibility statement checker (optional)
-STATEMENT_CHECKER_AVAILABLE = False
-try:
-    from accessibility_statement import AccessibilityStatementChecker, AccessibilityStatementResult
-    STATEMENT_CHECKER_AVAILABLE = True
-except ImportError as e:
-    print(f"Note: Accessibility statement checker not available: {e}")
-    print("Continuing without statement checking...")
-    AccessibilityStatementChecker = None
-    AccessibilityStatementResult = None
+
+@dataclass
+class AccessibilityStatementResult:
+    """Result of accessibility statement check."""
+    has_statement_page: bool = False
+    statement_page_url: str = None
+    uustatus_url: str = None
+    is_current: bool = False
+    last_updated: str = None
+    compliance_status: str = None
+    organization_name: str = None
+
 
 
 @dataclass
@@ -95,7 +87,7 @@ class SiteResult:
     base_url: str
     timestamp: str
     pages: list = field(default_factory=list)
-    accessibility_statement: Optional[object] = None  # AccessibilityStatementResult when available
+    accessibility_statement: any = None  # Statement check results
     
     @property
     def summary(self):
@@ -110,22 +102,9 @@ class SiteResult:
             total["serious"] += s["serious"]
             total["moderate"] += s["moderate"]
             total["minor"] += s["minor"]
-        
-        # Include accessibility statement info in summary
-        statement_info = {}
-        if self.accessibility_statement:
-            stmt = self.accessibility_statement
-            statement_info = {
-                "has_accessibility_statement": stmt.has_statement_page,
-                "statement_is_current": stmt.is_current,
-                "statement_last_updated": stmt.last_updated,
-                "statement_compliance": stmt.compliance_level
-            }
-        
         return {
             "pages_checked": len(self.pages),
-            **total,
-            **statement_info
+            **total
         }
 
 
@@ -157,11 +136,8 @@ class WCAGChecker:
         ]
         self.article_errors = {}  # Track deduplicated errors
         
-        # Accessibility statement checker (only if available)
-        self.check_statement = check_statement and STATEMENT_CHECKER_AVAILABLE
-        self.statement_checker = None
-        if self.check_statement and AccessibilityStatementChecker:
-            self.statement_checker = AccessibilityStatementChecker(session=self.session)
+        # Whether to check for accessibility statement
+        self.check_statement = check_statement
         
         self.checkers = [
             ("Images", check_images),
@@ -174,70 +150,7 @@ class WCAGChecker:
             ("Structure", check_structure),
             ("Media", check_media),
             ("ARIA", check_aria),
-            ("Use of Color", check_use_of_color),
-("Name Role Value", check_name_role_value),
-("Non-text Contrast", check_non_text_contrast),
         ]
-    
-    def check_accessibility_statement(self, url: str):
-        """Check for accessibility statement on the website."""
-        if not self.statement_checker:
-            print("\n[!] Accessibility statement checker not available")
-            return None
-        
-        try:
-            print("\n" + "=" * 60)
-            print("TILGJENGELIGHETSERKLARING SJEKK")
-            print("=" * 60)
-            
-            result = self.statement_checker.check(url)
-            
-            # Print results
-            if result.has_statement_page:
-                print(f"[OK] Tilgjengelighetserklaring funnet: {result.statement_page_url}")
-            else:
-                print("[X] Ingen tilgjengelighetserklaring funnet pa nettstedet")
-            
-            if result.has_uustatus_link:
-                print(f"[OK] Lenke til uustatus.no: {result.uustatus_url}")
-                
-                if result.uustatus_status:
-                    status_icon = "[OK]" if result.uustatus_status == 'published' else "[!]"
-                    print(f"   {status_icon} Status: {result.uustatus_status}")
-                
-                if result.last_updated:
-                    current_icon = "[OK]" if result.is_current else "[!]"
-                    print(f"   {current_icon} Sist oppdatert: {result.last_updated} ({result.days_since_update} dager siden)")
-                
-                if result.compliance_level:
-                    level_labels = {
-                        'full': '[OK] Fullt ut samsvar',
-                        'partial': '[!] Delvis samsvar', 
-                        'not_compliant': '[X] Ikke i samsvar'
-                    }
-                    print(f"   {level_labels.get(result.compliance_level, result.compliance_level)}")
-            else:
-                print("[!] Ingen lenke til uustatus.no funnet")
-            
-            if result.errors:
-                print("\n[X] Feil:")
-                for error in result.errors:
-                    print(f"   - {error}")
-            
-            if result.warnings:
-                print("\n[!] Advarsler:")
-                for warning in result.warnings:
-                    print(f"   - {warning}")
-            
-            print("=" * 60 + "\n")
-            
-            return result
-            
-        except Exception as e:
-            print(f"\n[!] Error checking accessibility statement: {e}")
-            print("Continuing without statement check...")
-            print("=" * 60 + "\n")
-            return None
     
     def should_skip_url(self, url: str) -> bool:
         """Check if URL should be skipped based on extension or pattern."""
@@ -349,30 +262,100 @@ class WCAGChecker:
         
         return page_result
     
+    def check_accessibility_statement(self, base_url: str) -> AccessibilityStatementResult:
+        """Check for accessibility statement on the site."""
+        result = AccessibilityStatementResult()
+        
+        # Common URLs for accessibility statements
+        statement_paths = [
+            '/tilgjengelighetserklaering',
+            '/tilgjengelighetserklaring', 
+            '/universell-utforming',
+            '/accessibility',
+            '/tilgjengelighet',
+        ]
+        
+        parsed = urlparse(base_url)
+        base_domain = f"{parsed.scheme}://{parsed.netloc}"
+        
+        # First, try to find statement link on homepage
+        try:
+            resp = self.session.get(base_url, timeout=20)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, 'html.parser')
+                
+                # Look for links to statement
+                for link in soup.find_all('a', href=True):
+                    href = link.get('href', '').lower()
+                    text = link.get_text().lower()
+                    
+                    if any(term in href or term in text for term in 
+                           ['tilgjengelighet', 'accessibility', 'universell']):
+                        full_url = urljoin(base_url, link['href'])
+                        result.statement_page_url = full_url
+                        result.has_statement_page = True
+                        break
+        except Exception:
+            pass
+        
+        # Try common paths if not found
+        if not result.has_statement_page:
+            for path in statement_paths:
+                try:
+                    test_url = base_domain + path
+                    resp = self.session.head(test_url, timeout=10, allow_redirects=True)
+                    if resp.status_code == 200:
+                        result.statement_page_url = test_url
+                        result.has_statement_page = True
+                        break
+                except Exception:
+                    continue
+        
+        # Check uustatus.no for registration
+        try:
+            domain = parsed.netloc.replace('www.', '')
+            uustatus_api = f"https://uustatus.no/api/declarations?url={domain}"
+            resp = self.session.get(uustatus_api, timeout=15)
+            if resp.status_code == 200:
+                data = resp.json()
+                if data and len(data) > 0:
+                    declaration = data[0]
+                    result.uustatus_url = f"https://uustatus.no/nb/erklaringer/publisert/{declaration.get('id', '')}"
+                    result.has_statement_page = True
+                    result.organization_name = declaration.get('name', '')
+                    result.compliance_status = declaration.get('status', '')
+                    
+                    # Check if current (within last year)
+                    updated = declaration.get('updated')
+                    if updated:
+                        result.last_updated = updated
+                        try:
+                            updated_date = datetime.fromisoformat(updated.replace('Z', '+00:00'))
+                            age_days = (datetime.now(updated_date.tzinfo) - updated_date).days
+                            result.is_current = age_days < 365
+                        except Exception:
+                            result.is_current = False
+        except Exception:
+            pass
+        
+        return result
+    
     def crawl_site(self, start_url: str, max_pages: int = 50, 
                    max_workers: int = 5) -> SiteResult:
         """Crawl a site and check multiple pages."""
-        
-        # First, check for accessibility statement
-        statement_result = None
-        if self.check_statement and self.statement_checker:
-            statement_result = self.check_accessibility_statement(start_url)
-            
-            # If statement check succeeded, show warnings if needed
-            if statement_result:
-                if statement_result.has_statement_page and not statement_result.is_current:
-                    if statement_result.last_updated:
-                        print(f"[!] ADVARSEL: Tilgjengelighetserklaringen er utdatert ({statement_result.days_since_update} dager gammel)")
-                        print("   Anbefaling: Oppdater erklaringen for WCAG-sjekk kjores")
-                elif not statement_result.has_statement_page:
-                    print("[!] ADVARSEL: Nettstedet mangler tilgjengelighetserklaring")
-                    print("   Dette er et lovkrav for offentlige nettsteder")
-        
         site_result = SiteResult(
             base_url=start_url,
-            timestamp=datetime.now().isoformat(),
-            accessibility_statement=statement_result
+            timestamp=datetime.now().isoformat()
         )
+        
+        # Check accessibility statement if enabled
+        if self.check_statement:
+            print("Checking accessibility statement...")
+            site_result.accessibility_statement = self.check_accessibility_statement(start_url)
+            if site_result.accessibility_statement.has_statement_page:
+                print(f"  ✓ Statement found: {site_result.accessibility_statement.statement_page_url or site_result.accessibility_statement.uustatus_url}")
+            else:
+                print("  ✗ No statement found")
         
         urls_to_check = [start_url]
         self.checked_urls = set()
@@ -492,122 +475,264 @@ class WCAGChecker:
             "summary": result.summary,
             "pages": [convert(p) for p in result.pages]
         }
-        
-        # Include accessibility statement if available
-        if result.accessibility_statement:
-            output["accessibility_statement"] = result.accessibility_statement.summary
-        
         return json.dumps(output, indent=2, default=str)
     
-    def _generate_statement_html(self, result: SiteResult) -> str:
-        """Generate HTML section for accessibility statement status."""
-        stmt = result.accessibility_statement
-        
-        if stmt is None:
-            return ""
-        
-        html = """
-    <div class="statement-section">
-        <h2>📋 Tilgjengelighetserklæring Status</h2>
-        <div class="statement-status">
-"""
-        
-        # Statement page status
-        if stmt.has_statement_page:
-            html += f'''
-            <div class="statement-item success">
-                ✅ <strong>Tilgjengelighetserklæring funnet</strong>
-            </div>'''
-            if stmt.statement_page_url:
-                html += f'''
-            <div class="statement-item">
-                🔗 <a href="{stmt.statement_page_url}" class="statement-link" target="_blank">Gå til erklæring</a>
-            </div>'''
-        else:
-            html += '''
-            <div class="statement-item error">
-                ❌ <strong>Ingen tilgjengelighetserklæring funnet</strong>
-            </div>'''
-        
-        # uustatus.no status
-        if stmt.has_uustatus_link:
-            html += f'''
-            <div class="statement-item success">
-                ✅ <strong>Registrert på uustatus.no</strong>
-            </div>'''
-            if stmt.uustatus_url:
-                html += f'''
-            <div class="statement-item">
-                🔗 <a href="{stmt.uustatus_url}" class="statement-link" target="_blank">Se på uustatus.no</a>
-            </div>'''
-        else:
-            html += '''
-            <div class="statement-item warning">
-                ⚠️ <strong>Mangler lenke til uustatus.no</strong>
-            </div>'''
-        
-        # Update status
-        if stmt.last_updated:
-            if stmt.is_current:
-                html += f'''
-            <div class="statement-item success">
-                ✅ <strong>Oppdatert:</strong> {stmt.last_updated} ({stmt.days_since_update} dager siden)
-            </div>'''
-            else:
-                html += f'''
-            <div class="statement-item warning">
-                ⚠️ <strong>Utdatert:</strong> {stmt.last_updated} ({stmt.days_since_update} dager siden)
-            </div>'''
-        
-        # Compliance level
-        if stmt.compliance_level:
-            compliance_info = {
-                'full': ('success', '✅ Fullt ut samsvar med kravene'),
-                'partial': ('warning', '⚠️ Delvis samsvar med kravene'),
-                'not_compliant': ('error', '❌ Ikke i samsvar med kravene')
-            }
-            class_name, text = compliance_info.get(stmt.compliance_level, ('', stmt.compliance_level))
-            html += f'''
-            <div class="statement-item {class_name}">
-                {text}
-            </div>'''
-        
-        html += """
-        </div>"""
-        
-        # Details section
-        if stmt.organization_name or stmt.errors or stmt.warnings:
-            html += """
-        <div class="statement-details">"""
-            
-            if stmt.organization_name:
-                html += f'''
-            <p><strong>Organisasjon:</strong> {stmt.organization_name}</p>'''
-            
-            if stmt.errors:
-                html += '<p style="color:#c00;"><strong>Feil:</strong></p><ul style="color:#c00;">'
-                for error in stmt.errors:
-                    html += f'<li>{error}</li>'
-                html += '</ul>'
-            
-            if stmt.warnings:
-                html += '<p style="color:#e65100;"><strong>Advarsler:</strong></p><ul style="color:#e65100;">'
-                for warning in stmt.warnings:
-                    html += f'<li>{warning}</li>'
-                html += '</ul>'
-            
-            html += """
-        </div>"""
-        
-        html += """
-    </div>
-"""
-        
-        return html
-    
     def _generate_html_report(self, result: SiteResult) -> str:
-        """Generate HTML report based on UU-tilsynet format."""
+        """Generate HTML report based on UU-tilsynet format with interactive features."""
         summary = result.summary
+        
+        # Enhanced CSS with interactive features
+        css = """
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        """
         
         html = f"""<!DOCTYPE html>
 <html lang="no">
@@ -615,69 +740,135 @@ class WCAGChecker:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WCAG 2.1 Tilgjengelighetsrapport - {result.base_url}</title>
-    <style>
-        * {{ box-sizing: border-box; }}
-        body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }}
-        h1, h2, h3 {{ color: #1a1a2e; }}
-        .header {{ background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }}
-        .header h1 {{ margin: 0; color: white; }}
-        .header p {{ margin: 10px 0 0 0; opacity: 0.9; }}
-        .statement-section {{ background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        .statement-section h2 {{ margin-top: 0; color: #003366; }}
-        .statement-status {{ display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }}
-        .statement-item {{ display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }}
-        .statement-item.success {{ background: #e8f5e9; color: #2e7d32; }}
-        .statement-item.warning {{ background: #fff3e0; color: #e65100; }}
-        .statement-item.error {{ background: #fee; color: #c00; }}
-        .statement-link {{ color: #003366; text-decoration: none; }}
-        .statement-link:hover {{ text-decoration: underline; }}
-        .statement-details {{ margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }}
-        .statement-details p {{ margin: 5px 0; }}
-        .summary {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
-                   gap: 15px; margin: 20px 0; }}
-        .stat {{ background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        .stat-value {{ font-size: 2em; font-weight: bold; }}
-        .stat-label {{ color: #666; }}
-        .critical {{ background: #fee; color: #c00; }}
-        .serious {{ background: #fff3e0; color: #e65100; }}
-        .moderate {{ background: #fff8e1; color: #f9a825; }}
-        .minor {{ background: #e8f5e9; color: #2e7d32; }}
-        .passed {{ background: #e8f5e9; }}
-        .page {{ background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        .page-header {{ background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }}
-        .page-header h3 {{ margin: 0; }}
-        .page-url {{ color: #666; font-size: 0.9em; word-break: break-all; }}
-        .issues {{ padding: 20px; }}
-        .issue {{ background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }}
-        .issue.critical {{ border-color: #c00; background: #fff5f5; }}
-        .issue.serious {{ border-color: #e65100; background: #fff8f0; }}
-        .issue.moderate {{ border-color: #f9a825; background: #fffdf0; }}
-        .issue.minor {{ border-color: #2e7d32; background: #f5fff5; }}
-        .issue-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }}
-        .rule-id {{ font-weight: bold; font-size: 1.1em; color: #003366; }}
-        .criterion {{ color: #666; font-size: 0.9em; }}
-        .impact {{ padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }}
-        .impact.critical {{ background: #c00; color: white; }}
-        .impact.serious {{ background: #e65100; color: white; }}
-        .impact.moderate {{ background: #f9a825; color: #333; }}
-        .impact.minor {{ background: #2e7d32; color: white; }}
-        .element {{ background: #f5f5f5; padding: 10px; font-family: monospace; 
-                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }}
-        .fix {{ background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }}
-        .fix::before {{ content: "💡 Løsning: "; font-weight: bold; }}
-        .no-issues {{ color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }}
-        details {{ margin: 10px 0; }}
-        summary {{ cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }}
-        summary:hover {{ background: #eee; }}
-        .legend {{ background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
-        .legend h3 {{ margin-top: 0; }}
-        .legend-items {{ display: flex; gap: 20px; flex-wrap: wrap; }}
-        .legend-item {{ display: flex; align-items: center; gap: 8px; }}
-        .legend-color {{ width: 16px; height: 16px; border-radius: 3px; }}
-        .footer {{ text-align: center; padding: 20px; color: #666; font-size: 0.9em; }}
-        .footer a {{ color: #003366; }}
-    </style>
+    <style>{css}</style>
+    <script>
+        var BASE_URL = "{result.base_url}";
+        var TOTAL_ISSUES = {summary['issues']};
+        var maxPages = {summary['pages_checked']};
+        var activeFilters = {{ critical: true, serious: true, moderate: true, minor: true }};
+        
+        function toggleFilter(severity) {{
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {{
+                if (activeFilters[severity]) {{ stat.classList.add('active'); }}
+                else {{ stat.classList.remove('active'); }}
+            }}
+            applyFilters();
+        }}
+        
+        function selectAll() {{
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {{
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }}
+            applyFilters();
+        }}
+        
+        function selectNone() {{
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {{
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }}
+            applyFilters();
+        }}
+        
+        function applyFilters() {{
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {{
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {{
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                }} else {{
+                    issue.classList.add('hidden');
+                }}
+            }}
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {{
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {{
+                    if (!childIssues[j].classList.contains('hidden')) {{ hasVisible = true; break; }}
+                }}
+                if (hasVisible) {{ detail.classList.remove('hidden'); }}
+                else {{ detail.classList.add('hidden'); }}
+            }}
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }}
+        
+        function expandAll() {{
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) {{ details[i].open = true; }}
+        }}
+        
+        function collapseAll() {{
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {{ details[i].open = false; }}
+        }}
+        
+        function adjustPages(delta) {{
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }}
+        
+        function showRescanModal() {{
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }}
+        
+        function closeRescanModal() {{
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }}
+        
+        function updateCommand() {{
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {{
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }}
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }}
+        
+        function copyCommand() {{
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {{
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() {{ alert('Kommando kopiert!'); }});
+            }}
+        }}
+        
+        document.addEventListener('click', function(e) {{
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        }});
+        document.addEventListener('keydown', function(e) {{
+            if (e.key === 'Escape') closeRescanModal();
+        }});
+        
+        document.addEventListener('DOMContentLoaded', function() {{
+            applyFilters();
+        }});
+    </script>
 </head>
 <body>
     <div class="header">
@@ -687,7 +878,7 @@ class WCAGChecker:
         <p><strong>Dato:</strong> {result.timestamp}</p>
     </div>
     
-    {self._generate_statement_html(result)}
+    {self._generate_statement_section_html(result)}
     
     <div class="legend">
         <h3>Alvorlighetsgrad</h3>
@@ -701,33 +892,55 @@ class WCAGChecker:
     
     <h2>Sammendrag</h2>
     <div class="summary">
-        <div class="stat">
-            <div class="stat-value">{summary['pages_checked']}</div>
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">{summary['pages_checked']}</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
             <div class="stat-label">Sider testet</div>
         </div>
         <div class="stat">
-            <div class="stat-value">{summary['issues']}</div>
-            <div class="stat-label">Totalt avvik</div>
+            <div class="stat-value" id="visibleTotal">{summary['issues']}</div>
+            <div class="stat-label">Synlige avvik</div>
         </div>
-        <div class="stat critical">
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
             <div class="stat-value">{summary['critical']}</div>
             <div class="stat-label">Kritiske</div>
         </div>
-        <div class="stat serious">
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
             <div class="stat-value">{summary['serious']}</div>
             <div class="stat-label">Alvorlige</div>
         </div>
-        <div class="stat moderate">
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
             <div class="stat-value">{summary['moderate']}</div>
             <div class="stat-label">Moderate</div>
         </div>
-        <div class="stat minor">
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
             <div class="stat-value">{summary['minor']}</div>
             <div class="stat-label">Mindre</div>
         </div>
         <div class="stat passed">
             <div class="stat-value">{summary['passed']}</div>
             <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">{summary['issues']}</strong> av {summary['issues']} avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
         </div>
     </div>
     
@@ -761,8 +974,9 @@ class WCAGChecker:
                     for issue in issues:
                         element_escaped = issue.element.replace('<', '&lt;').replace('>', '&gt;')
                         rule_id = getattr(issue, 'rule_id', issue.criterion_id)
+                        # Add data-severity attribute for filtering
                         html += f"""
-            <div class="issue {issue.impact}">
+            <div class="issue {issue.impact}" data-severity="{issue.impact}">
                 <div class="issue-header">
                     <div>
                         <span class="rule-id">Testregel {rule_id}</span>
@@ -782,12 +996,71 @@ class WCAGChecker:
     </div>
 """
         
-        html += """
+        # Add modal and footer
+        html += f"""
     <div class="footer">
         <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
     </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">{result.base_url}</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="{summary['pages_checked']}" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py {result.base_url} --max-pages {summary['pages_checked']} --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+"""
+        return html
+    
+    def _generate_statement_section_html(self, result: SiteResult) -> str:
+        """Generate accessibility statement section HTML."""
+        if not result.accessibility_statement:
+            return ""
+        
+        stmt = result.accessibility_statement
+        html = """
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+"""
+        if stmt.has_statement_page:
+            html += '            <div class="statement-item success">✅ <strong>Tilgjengelighetserklæring funnet</strong></div>\n'
+            if stmt.statement_page_url:
+                html += f'            <div class="statement-item">🔗 <a href="{stmt.statement_page_url}" class="statement-link" target="_blank">Gå til erklæring</a></div>\n'
+            if stmt.uustatus_url:
+                html += '            <div class="statement-item success">✅ <strong>Registrert på uustatus.no</strong></div>\n'
+                html += f'            <div class="statement-item">🔗 <a href="{stmt.uustatus_url}" class="statement-link" target="_blank">Se på uustatus.no</a></div>\n'
+            if stmt.is_current:
+                date_str = f" ({stmt.last_updated[:10]})" if stmt.last_updated else ""
+                html += f'            <div class="statement-item success">✅ <strong>Oppdatert{date_str}</strong></div>\n'
+            elif stmt.last_updated:
+                html += f'            <div class="statement-item warning">⚠️ Kan være utdatert (sist oppdatert: {stmt.last_updated[:10]})</div>\n'
+            if stmt.compliance_status:
+                status_class = "success" if "full" in stmt.compliance_status.lower() else "warning"
+                html += f'            <div class="statement-item {status_class}">📊 {stmt.compliance_status}</div>\n'
+        else:
+            html += '            <div class="statement-item error">❌ <strong>Ingen tilgjengelighetserklæring funnet</strong></div>\n'
+        
+        html += """        </div>
+"""
+        if stmt.organization_name:
+            html += f"""        <div class="statement-details">
+            <p><strong>Organisasjon:</strong> {stmt.organization_name}</p>
+        </div>
+"""
+        html += """    </div>
 """
         return html
     
@@ -848,14 +1121,11 @@ def main():
         print("  --format FORMAT     Output format: json, html, markdown (default: html)")
         print("  --exclude PATTERNS  Comma-separated URL patterns to skip")
         print("  --no-dedupe         Don't deduplicate article/news errors")
-        print("  --no-statement      Skip accessibility statement check")
         print("  --article-patterns  Comma-separated patterns that identify article pages")
-        print("  --output FILE       Output file name")
         print("")
         print("Example:")
         print("  python checker.py https://example.com --max-pages 100 --format html")
         print("  python checker.py https://example.com --exclude '/old/,/archive/'")
-        print("  python checker.py https://example.com --no-statement")
         sys.exit(1)
     
     url = sys.argv[1]
@@ -864,8 +1134,6 @@ def main():
     exclude_patterns = []
     dedupe_articles = True
     article_patterns = None
-    check_statement = True
-    output_file = None
     
     # Parse arguments
     args = sys.argv[2:]
@@ -883,14 +1151,8 @@ def main():
         elif args[i] == "--no-dedupe":
             dedupe_articles = False
             i += 1
-        elif args[i] == "--no-statement":
-            check_statement = False
-            i += 1
         elif args[i] == "--article-patterns" and i + 1 < len(args):
             article_patterns = [p.strip() for p in args[i + 1].split(',')]
-            i += 2
-        elif args[i] == "--output" and i + 1 < len(args):
-            output_file = args[i + 1]
             i += 2
         else:
             i += 1
@@ -898,13 +1160,11 @@ def main():
     checker = WCAGChecker(
         exclude_patterns=exclude_patterns,
         dedupe_articles=dedupe_articles,
-        article_patterns=article_patterns,
-        check_statement=check_statement
+        article_patterns=article_patterns
     )
     
     print(f"Starting WCAG check for: {url}")
     print(f"Max pages: {max_pages}")
-    print(f"Check accessibility statement: {'Yes' if check_statement else 'No'}")
     print(f"Skipping: PDFs and file downloads")
     if exclude_patterns:
         print(f"Excluding patterns: {exclude_patterns}")
@@ -925,11 +1185,8 @@ def main():
     report = checker.generate_report(result, format=output_format)
     
     # Save report
-    if output_file:
-        filename = output_file
-    else:
-        ext = {"json": "json", "html": "html", "markdown": "md"}[output_format]
-        filename = f"wcag_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext}"
+    ext = {"json": "json", "html": "html", "markdown": "md"}[output_format]
+    filename = f"wcag_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.{ext}"
     
     with open(filename, 'w', encoding='utf-8') as f:
         f.write(report)

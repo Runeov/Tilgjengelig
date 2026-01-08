@@ -21,7 +21,7 @@ if SCRIPT_DIR not in sys.path:
 
 # Configuration
 CSV_PATH = os.path.join(SCRIPT_DIR, "counties.csv")
-OUTPUT_DIR = os.path.join(SCRIPT_DIR, "reports")
+OUTPUT_BASE = os.path.join(SCRIPT_DIR, "reports")  # Base folder for all reports
 
 # Default parameters
 DEFAULT_MAX_PAGES = 20
@@ -242,6 +242,35 @@ def get_enhancement_js(base_url, total_count, pages_count):
         var TOTAL_ISSUES = %s;
         var maxPages = %s;
         var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        var isServerMode = false;
+        
+        // Check if running via server (can make API calls)
+        function checkServerMode() {
+            var serverModeEl = document.getElementById('serverMode');
+            var standaloneModeEl = document.getElementById('standaloneMode');
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/reports', true);
+            xhr.timeout = 2000;
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    isServerMode = true;
+                    console.log('Server mode enabled');
+                    if (serverModeEl) serverModeEl.style.display = 'block';
+                    if (standaloneModeEl) standaloneModeEl.style.display = 'none';
+                }
+            };
+            xhr.onerror = function() { console.log('Standalone mode'); };
+            xhr.ontimeout = function() { console.log('Standalone mode (timeout)'); };
+            try { xhr.send(); } catch(e) { console.log('Standalone mode'); }
+        }
+        
+        // Run on page load
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', checkServerMode);
+        } else {
+            checkServerMode();
+        }
         
         function toggleFilter(severity) {
             activeFilters[severity] = !activeFilters[severity];
@@ -327,6 +356,17 @@ def get_enhancement_js(base_url, total_count, pages_count):
             var inputEl = document.getElementById('maxPages');
             if (modal) modal.classList.add('active');
             if (inputEl) inputEl.value = maxPages;
+            
+            // Reset to form view
+            var scanForm = document.getElementById('scanForm');
+            var scanStatus = document.getElementById('scanStatus');
+            var scanComplete = document.getElementById('scanCompleteActions');
+            if (scanForm) scanForm.style.display = 'block';
+            if (scanStatus) scanStatus.style.display = 'none';
+            if (scanComplete) scanComplete.style.display = 'none';
+            
+            // Re-check server mode
+            checkServerMode();
             updateCommand();
         }
         
@@ -352,6 +392,81 @@ def get_enhancement_js(base_url, total_count, pages_count):
             if (cmdEl && navigator.clipboard) {
                 navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
             }
+        }
+        
+        // Live scan functions (server mode)
+        function startLiveScan() {
+            var inputEl = document.getElementById('maxPages');
+            var pages = parseInt(inputEl.value) || 20;
+            
+            var scanForm = document.getElementById('scanForm');
+            var scanStatus = document.getElementById('scanStatus');
+            var scanProgress = document.getElementById('scanProgress');
+            var scanMessage = document.getElementById('scanMessage');
+            var scanComplete = document.getElementById('scanCompleteActions');
+            
+            if (scanForm) scanForm.style.display = 'none';
+            if (scanStatus) scanStatus.style.display = 'block';
+            if (scanProgress) scanProgress.style.width = '0%%';
+            if (scanMessage) scanMessage.textContent = 'Starter skanning...';
+            if (scanComplete) scanComplete.style.display = 'none';
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/api/scan/start', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    if (data.scan_id) {
+                        pollScanStatus(data.scan_id);
+                    } else {
+                        if (scanMessage) scanMessage.textContent = 'Feil: ' + (data.error || 'Ukjent feil');
+                        if (scanComplete) scanComplete.style.display = 'flex';
+                    }
+                } else {
+                    if (scanMessage) scanMessage.textContent = 'Feil: Kunne ikke starte skanning';
+                    if (scanComplete) scanComplete.style.display = 'flex';
+                }
+            };
+            xhr.onerror = function() {
+                if (scanMessage) scanMessage.textContent = 'Feil: Nettverksfeil';
+                if (scanComplete) scanComplete.style.display = 'flex';
+            };
+            xhr.send(JSON.stringify({ url: BASE_URL, max_pages: pages }));
+        }
+        
+        function pollScanStatus(scanId) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/scan/status?id=' + scanId, true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    var scanProgress = document.getElementById('scanProgress');
+                    var scanMessage = document.getElementById('scanMessage');
+                    var scanComplete = document.getElementById('scanCompleteActions');
+                    var openReportBtn = document.getElementById('openReportBtn');
+                    
+                    if (scanProgress) scanProgress.style.width = data.progress + '%%';
+                    if (scanMessage) scanMessage.textContent = data.message;
+                    
+                    if (data.status === 'complete') {
+                        if (scanMessage) scanMessage.textContent = 'Ferdig! Rapporten er klar.';
+                        if (scanComplete) scanComplete.style.display = 'flex';
+                        if (openReportBtn) {
+                            openReportBtn.onclick = function() {
+                                window.location.href = '/' + data.output_file;
+                            };
+                        }
+                    } else if (data.status === 'error') {
+                        if (scanMessage) scanMessage.textContent = 'Feil: ' + data.error;
+                        if (scanComplete) scanComplete.style.display = 'flex';
+                        if (openReportBtn) openReportBtn.style.display = 'none';
+                    } else {
+                        setTimeout(function() { pollScanStatus(scanId); }, 1000);
+                    }
+                }
+            };
+            xhr.send();
         }
         
         document.addEventListener('click', function(e) {
@@ -460,18 +575,42 @@ def enhance_report(html_content):
     modal_html = """
     <div class="modal-overlay" id="rescanModal">
         <div class="modal">
-            <h3>🔄 Start ny skanning</h3>
-            <div class="modal-url">%s</div>
-            <div class="modal-pages">
-                <label>Antall sider:</label>
-                <input type="number" id="maxPages" value="%s" min="1" max="500" onchange="updateCommand()">
-                <span class="modal-pages-hint">1-500</span>
+            <h3>🔄 Skann på nytt</h3>
+            
+            <div id="scanForm">
+                <div class="modal-url">%s</div>
+                <div class="modal-pages">
+                    <label>Antall sider:</label>
+                    <input type="number" id="maxPages" value="%s" min="1" max="500" onchange="updateCommand()">
+                    <span class="modal-pages-hint">Flere sider = grundigere, men tregere</span>
+                </div>
+                
+                <div id="serverMode" style="display:none;">
+                    <div class="modal-actions">
+                        <button class="modal-btn secondary" onclick="closeRescanModal()">Avbryt</button>
+                        <button class="modal-btn primary" onclick="startLiveScan()">▶ Start skanning</button>
+                    </div>
+                </div>
+                
+                <div id="standaloneMode">
+                    <p style="font-size:13px;color:#666;margin:15px 0 8px">Kopier og kjør i terminal:</p>
+                    <div class="modal-command" id="rescanCommand">python checker.py %s --max-pages %s --format html</div>
+                    <div class="modal-actions">
+                        <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                        <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier kommando</button>
+                    </div>
+                </div>
             </div>
-            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
-            <div class="modal-command" id="rescanCommand">python checker.py %s --max-pages %s --format html</div>
-            <div class="modal-actions">
-                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
-                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            
+            <div id="scanStatus" style="display: none;">
+                <div style="background: #f0f0f0; border-radius: 8px; height: 24px; margin: 20px 0; overflow: hidden;">
+                    <div id="scanProgress" style="background: linear-gradient(90deg, #003366, #004488); height: 100%%; width: 0%%; transition: width 0.3s;"></div>
+                </div>
+                <p id="scanMessage" style="text-align: center; color: #666;">Starter...</p>
+                <div class="modal-actions" id="scanCompleteActions" style="display:none;">
+                    <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                    <button class="modal-btn primary" id="openReportBtn" onclick="">Åpne rapport</button>
+                </div>
             </div>
         </div>
     </div>
@@ -773,6 +912,46 @@ def generate_summary(results: List[MunicipalityResult], output_dir: str, mode: s
     return html_file
 
 
+def update_reports_index(output_base: str):
+    """Update the global reports index file."""
+    index_file = os.path.join(output_base, "reports_index.json")
+    
+    # Scan for all report folders
+    folders = []
+    if os.path.exists(output_base):
+        for item in os.listdir(output_base):
+            folder_path = os.path.join(output_base, item)
+            manifest_path = os.path.join(folder_path, "manifest.json")
+            if os.path.isdir(folder_path) and os.path.exists(manifest_path):
+                try:
+                    with open(manifest_path, 'r', encoding='utf-8') as f:
+                        manifest = json.load(f)
+                        folders.append({
+                            'folder': item,
+                            'timestamp': manifest.get('timestamp', ''),
+                            'mode': manifest.get('mode', ''),
+                            'description': manifest.get('description', ''),
+                            'total': manifest.get('total', 0),
+                            'with_statement': manifest.get('with_statement', 0),
+                            'total_issues': manifest.get('total_issues', 0),
+                            'critical_issues': manifest.get('critical_issues', 0)
+                        })
+                except:
+                    pass
+    
+    # Sort by timestamp descending
+    folders.sort(key=lambda x: x['timestamp'], reverse=True)
+    
+    # Write index
+    with open(index_file, 'w', encoding='utf-8') as f:
+        json.dump({
+            'updated': datetime.now().isoformat(),
+            'folders': folders
+        }, f, indent=2, ensure_ascii=False)
+    
+    return index_file
+
+
 def main():
     import argparse
     
@@ -783,8 +962,9 @@ def main():
     parser.add_argument('--municipality', type=str, help='Check specific municipality')
     parser.add_argument('--statement-only', action='store_true', help='Only check statement (fast)')
     parser.add_argument('--max-pages', type=int, default=DEFAULT_MAX_PAGES)
-    parser.add_argument('--output-dir', type=str, default=OUTPUT_DIR)
+    parser.add_argument('--output-base', type=str, default=OUTPUT_BASE, help='Base folder for reports')
     parser.add_argument('--csv', type=str, default=CSV_PATH)
+    parser.add_argument('--folder-name', type=str, help='Custom folder name (default: timestamp)')
     
     args = parser.parse_args()
     
@@ -792,29 +972,39 @@ def main():
     if args.municipality:
         all_munis = get_all_municipalities(args.csv)
         municipalities = [m for m in all_munis if args.municipality.lower() in m['municipality_name'].lower()]
+        desc = f"Municipality: {args.municipality}"
     elif args.county:
         all_munis = get_all_municipalities(args.csv)
         municipalities = [m for m in all_munis if args.county.lower() in m['county_name'].lower()]
+        desc = f"County: {args.county}"
     elif args.all:
         municipalities = get_all_municipalities(args.csv)
+        desc = "All municipalities"
     else:
         municipalities = get_unique_counties(args.csv)
+        desc = "One per county (sample)"
     
     if not municipalities:
         print("No municipalities found!")
         return
     
     mode = 'statement' if args.statement_only else 'full'
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    
+    # Create timestamped output folder
+    folder_name = args.folder_name if args.folder_name else timestamp
+    output_dir = os.path.join(args.output_base, folder_name)
     
     print("=" * 60)
     print("WCAG Batch Checker (Simple Version)")
     print("=" * 60)
     print(f"Mode: {'Statement only' if args.statement_only else 'Full WCAG'}")
+    print(f"Scope: {desc}")
     print(f"Municipalities: {len(municipalities)}")
-    print(f"Output: {args.output_dir}")
+    print(f"Output folder: {output_dir}")
     print("=" * 60)
     
-    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     
     results = []
     for i, muni in enumerate(municipalities, 1):
@@ -823,14 +1013,52 @@ def main():
         if args.statement_only:
             result = run_statement_check(muni)
         else:
-            result = run_full_check(muni, args.max_pages, args.output_dir)
+            result = run_full_check(muni, args.max_pages, output_dir)
         
         results.append(result)
     
     # Generate summary
     print("\n" + "=" * 60)
     print("Generating summary...")
-    summary_file = generate_summary(results, args.output_dir, mode)
+    summary_file = generate_summary(results, output_dir, mode)
+    
+    # Calculate totals
+    total_issues = sum(r.wcag_issues for r in results)
+    critical_issues = sum(r.wcag_critical for r in results)
+    
+    # Create manifest for this folder
+    manifest = {
+        'timestamp': timestamp,
+        'mode': mode,
+        'description': desc,
+        'total': len(results),
+        'with_statement': sum(1 for r in results if r.has_statement),
+        'statement_current': sum(1 for r in results if r.statement_current),
+        'errors': sum(1 for r in results if r.error),
+        'total_issues': total_issues,
+        'critical_issues': critical_issues,
+        'summary_file': os.path.basename(summary_file),
+        'reports': [
+            {
+                'municipality': r.municipality_name,
+                'county': r.county_name,
+                'file': os.path.basename(r.report_file) if r.report_file else None,
+                'issues': r.wcag_issues,
+                'critical': r.wcag_critical,
+                'has_statement': r.has_statement,
+                'statement_current': r.statement_current,
+                'statement_date': r.statement_last_updated[:10] if r.statement_last_updated else None
+            }
+            for r in results
+        ]
+    }
+    
+    manifest_file = os.path.join(output_dir, 'manifest.json')
+    with open(manifest_file, 'w', encoding='utf-8') as f:
+        json.dump(manifest, f, indent=2, ensure_ascii=False)
+    
+    # Update global index
+    index_file = update_reports_index(args.output_base)
     
     print("=" * 60)
     print("COMPLETE")
@@ -839,7 +1067,9 @@ def main():
     print(f"With statement: {sum(1 for r in results if r.has_statement)}")
     print(f"Current: {sum(1 for r in results if r.statement_current)}")
     print(f"Errors: {sum(1 for r in results if r.error)}")
-    print(f"\nSummary: {summary_file}")
+    print(f"\nOutput folder: {output_dir}")
+    print(f"Summary: {summary_file}")
+    print(f"Index updated: {index_file}")
 
 
 if __name__ == "__main__":

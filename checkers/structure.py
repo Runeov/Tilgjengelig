@@ -1,166 +1,245 @@
 """
-WCAG 1.3.1 Structure Checker
-Checks page structure including landmarks and regions.
+WCAG Structure Accessibility Checker
+Covers: 1.3.1 Info and Relationships, 2.4.1 Bypass Blocks, 4.1.1 Parsing
 """
 
-from bs4 import BeautifulSoup
-
-RULE_INFO = {
-    "1.3.1d": {
-        "criterion": "1.3.1",
-        "criterion_name": "Informasjon og relasjoner",
-        "criterion_name_en": "Info and Relationships",
-        "level": "A",
-    },
-    "4.1.1a": {
-        "criterion": "4.1.1",
-        "criterion_name": "Parsing",
-        "criterion_name_en": "Parsing",
-        "level": "A",
-    }
-}
+from dataclasses import dataclass
+import re
+from collections import Counter
 
 
-def check_structure(soup, url, **kwargs):
-    """
-    Check page structure for proper landmarks and valid markup.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
+
+
+def check_structure(soup, url, html=None):
+    """Check page structure for accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["1.3.1d"]
+    # Check for landmark regions
+    landmarks = {
+        'header': soup.find_all('header') + soup.find_all(role='banner'),
+        'nav': soup.find_all('nav') + soup.find_all(role='navigation'),
+        'main': soup.find_all('main') + soup.find_all(role='main'),
+        'footer': soup.find_all('footer') + soup.find_all(role='contentinfo'),
+        'aside': soup.find_all('aside') + soup.find_all(role='complementary'),
+    }
     
     # Check for main landmark
-    main = soup.find('main') or soup.find(attrs={'role': 'main'})
-    if not main:
-        warnings.append({
-            "rule_id": "1.3.1d",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": "Page",
-            "selector": "",
-            "issue": "Siden mangler <main> element eller role='main'",
-            "fix": "Legg til <main> element rundt hovedinnholdet"
-        })
+    if not landmarks['main']:
+        issues.append(Issue(
+            rule_id="1.3.1",
+            criterion_id="1.3.1",
+            criterion_name="Informasjon og relasjoner",
+            criterion_name_en="Info and Relationships",
+            level="A",
+            impact="moderate",
+            element="<body>",
+            selector="body",
+            issue="Page has no main landmark",
+            fix="Add <main> element or role='main' to wrap primary content"
+        ))
+    elif len(landmarks['main']) > 1:
+        issues.append(Issue(
+            rule_id="1.3.1",
+            criterion_id="1.3.1",
+            criterion_name="Informasjon og relasjoner",
+            criterion_name_en="Info and Relationships",
+            level="A",
+            impact="moderate",
+            element="<main>",
+            selector="main",
+            issue=f"Page has {len(landmarks['main'])} main landmarks (should have 1)",
+            fix="Use only one <main> element per page"
+        ))
     else:
-        passed.append({
-            "rule_id": "1.3.1d",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "message": "Siden har <main> landmark"
-        })
+        passed.append("1.3.1: Page has exactly one main landmark")
     
-    # Check for navigation
-    nav = soup.find('nav') or soup.find(attrs={'role': 'navigation'})
-    if not nav:
-        warnings.append({
-            "rule_id": "1.3.1d",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "minor",
-            "element": "Page",
-            "selector": "",
-            "issue": "Siden mangler <nav> element for navigasjon",
-            "fix": "Bruk <nav> element rundt navigasjonsmenyer"
-        })
+    # Check navigation landmark
+    if not landmarks['nav']:
+        warnings.append("2.4.1: Page has no navigation landmark - consider adding <nav>")
+    else:
+        # Multiple navs should have labels
+        if len(landmarks['nav']) > 1:
+            for nav in landmarks['nav']:
+                label = nav.get('aria-label') or nav.get('aria-labelledby')
+                if not label:
+                    issues.append(Issue(
+                        rule_id="1.3.1",
+                        criterion_id="1.3.1",
+                        criterion_name="Informasjon og relasjoner",
+                        criterion_name_en="Info and Relationships",
+                        level="A",
+                        impact="moderate",
+                        element=str(nav)[:200],
+                        selector="nav",
+                        issue="Multiple nav elements exist but this one has no label",
+                        fix="Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')"
+                    ))
+        passed.append(f"2.4.1: Page has {len(landmarks['nav'])} navigation landmark(s)")
     
-    # Check for header
-    header = soup.find('header') or soup.find(attrs={'role': 'banner'})
-    if not header:
-        warnings.append({
-            "rule_id": "1.3.1d",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "minor",
-            "element": "Page",
-            "selector": "",
-            "issue": "Siden mangler <header> element",
-            "fix": "Bruk <header> element for sidens toppseksjon"
-        })
+    # Check for skip link
+    first_link = soup.find('a')
+    has_skip_link = False
     
-    # Check for duplicate IDs (4.1.1)
-    rule_parsing = RULE_INFO["4.1.1a"]
-    all_ids = {}
-    duplicate_ids = []
+    if first_link:
+        href = first_link.get('href', '')
+        text = first_link.get_text(strip=True).lower()
+        
+        if href.startswith('#') and ('skip' in text or 'hopp' in text or 'main' in text or 'innhold' in text):
+            has_skip_link = True
+            passed.append("2.4.1: Page has skip link")
     
-    for element in soup.find_all(id=True):
-        element_id = element.get('id')
-        if element_id in all_ids:
-            duplicate_ids.append((element_id, element))
+    if not has_skip_link:
+        # Check first few links
+        for link in soup.find_all('a')[:5]:
+            href = link.get('href', '')
+            text = link.get_text(strip=True).lower()
+            if href.startswith('#') and ('skip' in text or 'hopp' in text):
+                has_skip_link = True
+                break
+        
+        if not has_skip_link:
+            issues.append(Issue(
+                rule_id="2.4.1",
+                criterion_id="2.4.1",
+                criterion_name="Hopp over blokker",
+                criterion_name_en="Bypass Blocks",
+                level="A",
+                impact="moderate",
+                element="<body>",
+                selector="body",
+                issue="Page has no skip link to bypass navigation",
+                fix="Add a skip link at the start of the page: <a href='#main'>Hopp til hovedinnhold</a>"
+            ))
+    
+    # Check for duplicate IDs
+    if html:
+        id_pattern = re.compile(r'id=["\']([^"\']+)["\']', re.I)
+        all_ids = id_pattern.findall(html)
+        id_counts = Counter(all_ids)
+        
+        duplicates = {id_val: count for id_val, count in id_counts.items() if count > 1}
+        
+        for id_val, count in duplicates.items():
+            issues.append(Issue(
+                rule_id="4.1.1",
+                criterion_id="4.1.1",
+                criterion_name="Parsing",
+                criterion_name_en="Parsing",
+                level="A",
+                impact="serious",
+                element=f'id="{id_val}"',
+                selector=f'[id="{id_val}"]',
+                issue=f"Duplicate ID found: '{id_val}' appears {count} times",
+                fix="Each ID must be unique on the page"
+            ))
+        
+        if not duplicates:
+            passed.append("4.1.1: No duplicate IDs found")
+    
+    # Check tables for proper structure
+    tables = soup.find_all('table')
+    for table in tables:
+        element_str = str(table)[:200]
+        
+        # Check for caption or aria-label
+        caption = table.find('caption')
+        aria_label = table.get('aria-label')
+        aria_labelledby = table.get('aria-labelledby')
+        
+        if not caption and not aria_label and not aria_labelledby:
+            # Check if it's a data table (has th) vs layout table
+            headers = table.find_all('th')
+            if headers:
+                issues.append(Issue(
+                    rule_id="1.3.1",
+                    criterion_id="1.3.1",
+                    criterion_name="Informasjon og relasjoner",
+                    criterion_name_en="Info and Relationships",
+                    level="A",
+                    impact="moderate",
+                    element=element_str,
+                    selector="table",
+                    issue="Data table has no caption or label",
+                    fix="Add <caption> element or aria-label to describe the table"
+                ))
+        
+        # Check for th elements
+        headers = table.find_all('th')
+        if not headers:
+            # Might be layout table
+            if table.get('role') != 'presentation':
+                warnings.append("1.3.1: Table has no header cells - add <th> if it's a data table, or role='presentation' if layout")
         else:
-            all_ids[element_id] = element
+            # Check th has scope
+            for th in headers:
+                if not th.get('scope') and not th.get('id'):
+                    issues.append(Issue(
+                        rule_id="1.3.1",
+                        criterion_id="1.3.1",
+                        criterion_name="Informasjon og relasjoner",
+                        criterion_name_en="Info and Relationships",
+                        level="A",
+                        impact="moderate",
+                        element=str(th)[:200],
+                        selector="th",
+                        issue="Table header cell missing scope attribute",
+                        fix="Add scope='col' or scope='row' to table headers"
+                    ))
+            
+            passed.append(f"1.3.1: Table has {len(headers)} header cells")
     
-    for dup_id, element in duplicate_ids[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "4.1.1a",
-            "criterion_id": rule_parsing["criterion"],
-            "criterion_name": rule_parsing["criterion_name"],
-            "criterion_name_en": rule_parsing["criterion_name_en"],
-            "level": rule_parsing["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": f"#{dup_id}",
-            "issue": f"Duplisert ID: '{dup_id}'",
-            "fix": "ID-er må være unike. Gi elementet en unik ID."
-        })
+    # Check lists are properly structured
+    for ul in soup.find_all(['ul', 'ol']):
+        children = [child for child in ul.children if child.name]
+        non_li = [child for child in children if child.name != 'li']
+        
+        if non_li:
+            issues.append(Issue(
+                rule_id="1.3.1",
+                criterion_id="1.3.1",
+                criterion_name="Informasjon og relasjoner",
+                criterion_name_en="Info and Relationships",
+                level="A",
+                impact="moderate",
+                element=str(ul)[:200],
+                selector=ul.name,
+                issue=f"List contains non-li elements: {[c.name for c in non_li[:3]]}",
+                fix="List elements (ul, ol) should only contain li children"
+            ))
     
-    if len(duplicate_ids) > 5:
-        warnings.append({
-            "rule_id": "4.1.1a",
-            "criterion_id": rule_parsing["criterion"],
-            "criterion_name": rule_parsing["criterion_name"],
-            "criterion_name_en": rule_parsing["criterion_name_en"],
-            "level": rule_parsing["level"],
-            "impact": "moderate",
-            "element": "Multiple elements",
-            "selector": "",
-            "issue": f"Fant {len(duplicate_ids)} dupliserte ID-er (viser kun de første 5)",
-            "fix": "Gjennomgå alle ID-er og sørg for at de er unike"
-        })
-    
-    if len(duplicate_ids) == 0:
-        passed.append({
-            "rule_id": "4.1.1a",
-            "criterion_id": rule_parsing["criterion"],
-            "criterion_name": rule_parsing["criterion_name"],
-            "message": f"Alle {len(all_ids)} ID-er er unike"
-        })
-    
-    # Check for empty containers (divs/spans with no content)
-    empty_containers = []
-    for element in soup.find_all(['div', 'span', 'p']):
-        text = element.get_text(strip=True)
-        children = list(element.children)
-        # Element is empty if no text and no meaningful children
-        if not text and not any(hasattr(c, 'name') and c.name not in [None, 'br'] for c in children):
-            # Check if it has aria attributes (might be for ARIA)
-            if not any(attr.startswith('aria-') for attr in element.attrs.keys()):
-                empty_containers.append(element)
-    
-    # Only report if there are many empty containers (might indicate issue)
-    if len(empty_containers) > 10:
-        warnings.append({
-            "rule_id": "1.3.1d",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "minor",
-            "element": "Multiple elements",
-            "selector": "",
-            "issue": f"Fant {len(empty_containers)} tomme container-elementer",
-            "fix": "Fjern unødvendige tomme elementer eller legg til innhold"
-        })
+    # Check definition lists
+    for dl in soup.find_all('dl'):
+        children = [child for child in dl.children if child.name]
+        valid_children = {'dt', 'dd', 'div'}
+        invalid = [child for child in children if child.name not in valid_children]
+        
+        if invalid:
+            issues.append(Issue(
+                rule_id="1.3.1",
+                criterion_id="1.3.1",
+                criterion_name="Informasjon og relasjoner",
+                criterion_name_en="Info and Relationships",
+                level="A",
+                impact="moderate",
+                element=str(dl)[:200],
+                selector="dl",
+                issue=f"Definition list contains invalid elements: {[c.name for c in invalid[:3]]}",
+                fix="Definition lists should only contain dt, dd, or div elements"
+            ))
     
     return issues, passed, warnings

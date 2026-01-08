@@ -1,156 +1,127 @@
 """
-WCAG 1.3.1 Headings Checker
-Checks heading structure and hierarchy.
+WCAG Headings Accessibility Checker
+Covers: 1.3.1 Info and Relationships, 2.4.6 Headings and Labels
 """
 
-from bs4 import BeautifulSoup
-
-RULE_INFO = {
-    "1.3.1a": {
-        "criterion": "1.3.1",
-        "criterion_name": "Informasjon og relasjoner",
-        "criterion_name_en": "Info and Relationships",
-        "level": "A",
-    }
-}
+from dataclasses import dataclass
 
 
-def check_headings(soup, url, **kwargs):
-    """
-    Check heading structure for proper hierarchy.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
+
+
+def check_headings(soup, url, html=None):
+    """Check heading structure for accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["1.3.1a"]
-    
-    # Find all headings
     headings = soup.find_all(['h1', 'h2', 'h3', 'h4', 'h5', 'h6'])
     
     if not headings:
-        warnings.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": "Page",
-            "selector": "",
-            "issue": "Siden har ingen overskrifter",
-            "fix": "Legg til overskrifter (h1-h6) for å strukturere innholdet"
-        })
+        issues.append(Issue(
+            rule_id="1.3.1",
+            criterion_id="1.3.1",
+            criterion_name="Informasjon og relasjoner",
+            criterion_name_en="Info and Relationships",
+            level="A",
+            impact="moderate",
+            element="<body>",
+            selector="body",
+            issue="Page has no headings",
+            fix="Add heading structure to organize page content"
+        ))
         return issues, passed, warnings
     
-    # Check for empty headings
-    empty_headings = []
-    for h in headings:
-        text = h.get_text(strip=True)
-        if not text:
-            empty_headings.append(h)
-    
-    for h in empty_headings[:5]:
-        element_str = str(h)[:200]
-        issues.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(h),
-            "issue": f"Tom overskrift ({h.name})",
-            "fix": "Legg til tekst i overskriften eller fjern den"
-        })
-    
-    # Check for multiple h1
+    # Check for h1
     h1_count = len(soup.find_all('h1'))
-    if h1_count > 1:
-        warnings.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": "Page",
-            "selector": "",
-            "issue": f"Siden har {h1_count} h1-overskrifter. Det anbefales kun én.",
-            "fix": "Bruk kun én h1-overskrift per side"
-        })
-    elif h1_count == 0:
-        issues.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": "Page",
-            "selector": "",
-            "issue": "Siden mangler h1-overskrift",
-            "fix": "Legg til en h1-overskrift som beskriver sidens hovedinnhold"
-        })
+    if h1_count == 0:
+        issues.append(Issue(
+            rule_id="2.4.2",
+            criterion_id="2.4.2",
+            criterion_name="Sidetittel",
+            criterion_name_en="Page Titled",
+            level="AA",
+            impact="serious",
+            element=str(soup.body)[:200] if soup.body else "<body>",
+            selector="body",
+            issue="Page is missing h1 heading",
+            fix="Add a single h1 heading that describes the page content"
+        ))
+    elif h1_count > 1:
+        warnings.append(f"2.4.2: Page has {h1_count} h1 headings (usually should have 1)")
+    else:
+        passed.append("2.4.2: Page has exactly one h1 heading")
     
-    # Check heading hierarchy (skip levels)
+    # Check heading hierarchy
     prev_level = 0
-    skip_issues = []
+    first_heading = headings[0]
+    first_level = int(first_heading.name[1])
     
-    for h in headings:
-        level = int(h.name[1])
+    # First heading should ideally be h1
+    if first_level != 1:
+        issues.append(Issue(
+            rule_id="1.3.1",
+            criterion_id="1.3.1",
+            criterion_name="Informasjon og relasjoner",
+            criterion_name_en="Info and Relationships",
+            level="A",
+            impact="moderate",
+            element=str(first_heading)[:200],
+            selector=first_heading.name,
+            issue=f"First heading is h{first_level}, should start with h1",
+            fix="Start your heading structure with h1"
+        ))
+    
+    for heading in headings:
+        level = int(heading.name[1])
+        text = heading.get_text(strip=True)
+        element_str = str(heading)[:200]
+        
+        # Check for empty headings
+        if not text:
+            issues.append(Issue(
+                rule_id="2.4.6",
+                criterion_id="2.4.6",
+                criterion_name="Overskrifter og ledetekster",
+                criterion_name_en="Headings and Labels",
+                level="AA",
+                impact="serious",
+                element=element_str,
+                selector=heading.name,
+                issue="Heading is empty",
+                fix="Add descriptive text to the heading, or remove it if not needed"
+            ))
+            continue
+        
+        # Check for skipped levels (only going down)
         if prev_level > 0 and level > prev_level + 1:
-            skip_issues.append((h, prev_level, level))
+            issues.append(Issue(
+                rule_id="1.3.1",
+                criterion_id="1.3.1",
+                criterion_name="Informasjon og relasjoner",
+                criterion_name_en="Info and Relationships",
+                level="A",
+                impact="moderate",
+                element=element_str,
+                selector=heading.name,
+                issue=f"Heading level skipped: h{prev_level} to h{level}",
+                fix=f"Don't skip heading levels. Use h{prev_level + 1} instead of h{level}"
+            ))
+        else:
+            passed.append(f"1.3.1: Heading h{level} follows proper hierarchy")
+        
         prev_level = level
     
-    for h, prev, curr in skip_issues[:3]:
-        element_str = str(h)[:200]
-        issues.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": element_str,
-            "selector": _get_selector(h),
-            "issue": f"Overskriftsnivå hoppes over: h{prev} til h{curr}",
-            "fix": f"Bruk h{prev + 1} i stedet for h{curr} for å opprettholde riktig hierarki"
-        })
-    
-    # Summary
-    if len(empty_headings) == 0 and len(skip_issues) == 0 and h1_count == 1:
-        passed.append({
-            "rule_id": "1.3.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "message": f"Overskriftsstruktur OK: {len(headings)} overskrifter med riktig hierarki"
-        })
-    
     return issues, passed, warnings
-
-
-def _get_selector(element):
-    """Generate a CSS-like selector for an element."""
-    parts = []
-    for parent in element.parents:
-        if parent.name is None:
-            break
-        if parent.name == '[document]':
-            break
-        parts.append(parent.name)
-    parts.reverse()
-    parts.append(element.name)
-    
-    if element.get('id'):
-        parts[-1] += f"#{element['id']}"
-    elif element.get('class'):
-        classes = element['class']
-        if isinstance(classes, str):
-            classes = classes.split()
-        parts[-1] += f".{'.'.join(classes[:2])}"
-    
-    return ' > '.join(parts[-4:])

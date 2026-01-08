@@ -1,181 +1,177 @@
 """
-WCAG 2.1.1 Keyboard Checker
-Checks keyboard accessibility.
+WCAG Keyboard Accessibility Checker
+Covers: 2.1.1 Keyboard, 2.1.2 No Keyboard Trap, 2.4.3 Focus Order, 2.4.7 Focus Visible
 """
 
-from bs4 import BeautifulSoup
+from dataclasses import dataclass
 import re
 
-RULE_INFO = {
-    "2.1.1a": {
-        "criterion": "2.1.1",
-        "criterion_name": "Tastatur",
-        "criterion_name_en": "Keyboard",
-        "level": "A",
-    },
-    "2.4.7a": {
-        "criterion": "2.4.7",
-        "criterion_name": "Synlig fokus",
-        "criterion_name_en": "Focus Visible",
-        "level": "AA",
-    }
-}
+
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
 
 
-def parse_inline_style(style_str):
-    """Parse inline style attribute to dict."""
-    if not style_str:
-        return {}
-    styles = {}
-    for declaration in style_str.split(';'):
-        if ':' in declaration:
-            prop, val = declaration.split(':', 1)
-            styles[prop.strip().lower()] = val.strip()
-    return styles
-
-
-def check_keyboard(soup, url, **kwargs):
-    """
-    Check keyboard accessibility issues.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+def check_keyboard(soup, url, html=None):
+    """Check for keyboard accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["2.1.1a"]
-    
-    # Check for tabindex > 0 (disrupts natural tab order)
-    positive_tabindex = soup.find_all(attrs={'tabindex': re.compile(r'^[1-9]')})
-    
-    for element in positive_tabindex[:5]:
-        tabindex = element.get('tabindex')
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "2.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"Positiv tabindex ({tabindex}) forstyrrer naturlig tabuleringsrekkefølge",
-            "fix": "Bruk tabindex='0' eller fjern tabindex helt. Ordne DOM-rekkefølgen i stedet."
-        })
-    
-    # Check for elements with onclick but not keyboard accessible
-    onclick_elements = soup.find_all(attrs={'onclick': True})
-    
-    non_focusable_with_click = []
-    for element in onclick_elements:
-        # Skip naturally focusable elements
-        if element.name in ('a', 'button', 'input', 'select', 'textarea'):
+    # Check for elements with onclick but no keyboard equivalent
+    onclick_elements = soup.find_all(onclick=True)
+    for elem in onclick_elements:
+        tag = elem.name
+        element_str = str(elem)[:200]
+        
+        # These elements are naturally keyboard accessible
+        if tag in ['a', 'button', 'input', 'select', 'textarea']:
+            # Check if anchor has href
+            if tag == 'a' and not elem.get('href'):
+                issues.append(Issue(
+                    rule_id="2.1.1",
+                    criterion_id="2.1.1",
+                    criterion_name="Tastatur",
+                    criterion_name_en="Keyboard",
+                    level="A",
+                    impact="critical",
+                    element=element_str,
+                    selector="a[onclick]",
+                    issue="Link with onclick but no href is not keyboard accessible",
+                    fix="Add href attribute or use a button element"
+                ))
+            else:
+                passed.append(f"2.1.1: {tag} with onclick is keyboard accessible")
             continue
         
-        # Check if made focusable
-        tabindex = element.get('tabindex')
-        role = element.get('role', '')
+        # Non-interactive elements with onclick
+        has_tabindex = elem.get('tabindex') is not None
+        has_role = elem.get('role') in ['button', 'link', 'menuitem', 'tab']
+        has_keydown = elem.get('onkeydown') or elem.get('onkeypress') or elem.get('onkeyup')
         
-        if tabindex is None and role not in ('button', 'link', 'checkbox', 'radio'):
-            non_focusable_with_click.append(element)
+        if not has_tabindex:
+            issues.append(Issue(
+                rule_id="2.1.1",
+                criterion_id="2.1.1",
+                criterion_name="Tastatur",
+                criterion_name_en="Keyboard",
+                level="A",
+                impact="critical",
+                element=element_str,
+                selector=f"{tag}[onclick]",
+                issue=f"<{tag}> with onclick has no tabindex - not keyboard focusable",
+                fix="Add tabindex='0' to make element focusable, or use a button/link"
+            ))
+        elif not has_keydown:
+            issues.append(Issue(
+                rule_id="2.1.1",
+                criterion_id="2.1.1",
+                criterion_name="Tastatur",
+                criterion_name_en="Keyboard",
+                level="A",
+                impact="critical",
+                element=element_str,
+                selector=f"{tag}[onclick]",
+                issue=f"<{tag}> with onclick has no keyboard handler",
+                fix="Add onkeydown handler for Enter/Space, or use a button element"
+            ))
+        else:
+            passed.append(f"2.1.1: {tag} with onclick has keyboard support")
     
-    for element in non_focusable_with_click[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "2.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "critical",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"Element ({element.name}) har onclick men er ikke tastaturtilgjengelig",
-            "fix": "Legg til tabindex='0' og onkeypress/onkeydown handler, eller bruk <button>"
-        })
+    # Check for positive tabindex (disrupts natural order)
+    positive_tabindex = soup.find_all(tabindex=re.compile(r'^[1-9]'))
+    for elem in positive_tabindex:
+        tabindex = elem.get('tabindex')
+        issues.append(Issue(
+            rule_id="2.4.3",
+            criterion_id="2.4.3",
+            criterion_name="Fokusrekkefølge",
+            criterion_name_en="Focus Order",
+            level="A",
+            impact="serious",
+            element=str(elem)[:200],
+            selector=f'[tabindex="{tabindex}"]',
+            issue=f"Positive tabindex ({tabindex}) disrupts natural focus order",
+            fix="Use tabindex='0' for focusable elements or '-1' for programmatic focus only"
+        ))
     
-    # Check for focus indicator removal
-    focus_rule = RULE_INFO["2.4.7a"]
-    elements_with_outline_none = []
+    # Check for tabindex="-1" on interactive elements
+    negative_tabindex = soup.find_all(['a', 'button', 'input', 'select', 'textarea'], 
+                                       tabindex='-1')
+    for elem in negative_tabindex:
+        if elem.name == 'a' and elem.get('href'):
+            warnings.append(f"2.4.3: Link with tabindex='-1' - may be intentionally unfocusable")
+        elif elem.name in ['button', 'input', 'select', 'textarea']:
+            issues.append(Issue(
+                rule_id="2.1.1",
+                criterion_id="2.1.1",
+                criterion_name="Tastatur",
+                criterion_name_en="Keyboard",
+                level="A",
+                impact="serious",
+                element=str(elem)[:200],
+                selector=f'{elem.name}[tabindex="-1"]',
+                issue=f"Interactive {elem.name} has tabindex='-1' - not keyboard accessible",
+                fix="Remove tabindex='-1' unless element is in an inactive state"
+            ))
     
-    for element in soup.find_all(True):
-        style = parse_inline_style(element.get('style', ''))
-        outline = style.get('outline', '').lower()
-        if 'none' in outline or outline == '0':
-            elements_with_outline_none.append(element)
+    # Check for outline:none or outline:0 (removes focus indicator)
+    outline_none = soup.find_all(style=re.compile(r'outline\s*:\s*(none|0)', re.I))
+    for elem in outline_none:
+        issues.append(Issue(
+            rule_id="2.4.7",
+            criterion_id="2.4.7",
+            criterion_name="Synlig fokus",
+            criterion_name_en="Focus Visible",
+            level="AA",
+            impact="serious",
+            element=str(elem)[:200],
+            selector=elem.name,
+            issue="Element has outline:none which may hide focus indicator",
+            fix="Provide alternative focus styling if removing default outline"
+        ))
     
-    for element in elements_with_outline_none[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "2.4.7a",
-            "criterion_id": focus_rule["criterion"],
-            "criterion_name": focus_rule["criterion_name"],
-            "criterion_name_en": focus_rule["criterion_name_en"],
-            "level": focus_rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": "Fokusindikator er fjernet (outline: none)",
-            "fix": "Behold eller erstatt fokusindikator med synlig alternativ"
-        })
+    # Check for accesskey (can cause issues)
+    accesskey_elements = soup.find_all(accesskey=True)
+    for elem in accesskey_elements:
+        key = elem.get('accesskey')
+        warnings.append(f"2.1.1: Element uses accesskey='{key}' - may conflict with browser/AT shortcuts")
     
-    # Check for skip link
-    first_link = soup.find('a', href=True)
-    has_skip_link = False
+    # Check for mouse-only events without keyboard equivalents
+    mouse_events = ['onmouseover', 'onmouseout', 'onmouseenter', 'onmouseleave', 'ondblclick']
+    keyboard_equivalents = ['onfocus', 'onblur', 'onkeydown', 'onkeypress', 'onkeyup']
     
-    if first_link:
-        href = first_link.get('href', '')
-        text = first_link.get_text(strip=True).lower()
-        if href.startswith('#') and ('hopp' in text or 'skip' in text or 'main' in text):
-            has_skip_link = True
+    for event in mouse_events:
+        elements = soup.find_all(attrs={event: True})
+        for elem in elements:
+            has_keyboard = any(elem.get(ke) for ke in keyboard_equivalents)
+            if not has_keyboard:
+                issues.append(Issue(
+                    rule_id="2.1.1",
+                    criterion_id="2.1.1",
+                    criterion_name="Tastatur",
+                    criterion_name_en="Keyboard",
+                    level="A",
+                    impact="serious",
+                    element=str(elem)[:200],
+                    selector=f'[{event}]',
+                    issue=f"Element has {event} without keyboard equivalent",
+                    fix=f"Add keyboard event handlers (onfocus, onblur, onkeydown) for equivalent functionality"
+                ))
     
-    if not has_skip_link:
-        warnings.append({
-            "rule_id": "2.4.1a",
-            "criterion_id": "2.4.1",
-            "criterion_name": "Hoppe over blokker",
-            "criterion_name_en": "Bypass Blocks",
-            "level": "A",
-            "impact": "moderate",
-            "element": "Page",
-            "selector": "",
-            "issue": "Ingen synlig 'hopp til hovedinnhold' lenke funnet",
-            "fix": "Legg til en 'Hopp til hovedinnhold' lenke i starten av siden"
-        })
-    
-    # Summary
-    total_issues = len(positive_tabindex) + len(non_focusable_with_click) + len(elements_with_outline_none)
-    if total_issues == 0:
-        passed.append({
-            "rule_id": "2.1.1a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "message": "Ingen åpenbare tastaturtilgjengelighetsproblemer funnet"
-        })
+    # Check for scroll hijacking (potential keyboard trap)
+    if html:
+        if 'scroll-behavior: smooth' in html or 'scrollIntoView' in html:
+            warnings.append("2.1.2: Page may use scroll behavior - verify no keyboard traps exist")
     
     return issues, passed, warnings
-
-
-def _get_selector(element):
-    """Generate a CSS-like selector for an element."""
-    parts = []
-    for parent in element.parents:
-        if parent.name is None:
-            break
-        if parent.name == '[document]':
-            break
-        parts.append(parent.name)
-    parts.reverse()
-    parts.append(element.name)
-    
-    if element.get('id'):
-        parts[-1] += f"#{element['id']}"
-    elif element.get('class'):
-        classes = element['class']
-        if isinstance(classes, str):
-            classes = classes.split()
-        parts[-1] += f".{'.'.join(classes[:2])}"
-    
-    return ' > '.join(parts[-4:])

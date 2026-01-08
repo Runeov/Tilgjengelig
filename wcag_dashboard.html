@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Dashboard - Norwegian Municipalities</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        :root {
+            --primary: #003366;
+            --primary-light: #004488;
+            --success: #2e7d32;
+            --warning: #e65100;
+            --danger: #c62828;
+            --bg: #f0f2f5;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --text-muted: #666;
+            --border: #e0e0e0;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .header h1 { font-size: 1.8em; font-weight: 600; }
+        .header p { opacity: 0.9; margin-top: 5px; }
+        
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+        .btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.25);
+        }
+        
+        /* Main Layout */
+        .main {
+            display: flex;
+            min-height: calc(100vh - 120px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: var(--card);
+            border-right: 1px solid var(--border);
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .folder-list {
+            list-style: none;
+        }
+        
+        .folder-item {
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .folder-item:hover {
+            background: #f5f7fa;
+        }
+        .folder-item.active {
+            background: #e8f0fe;
+            border-color: var(--primary);
+        }
+        .folder-item .folder-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+        .folder-item .folder-meta {
+            font-size: 0.85em;
+            color: var(--text-muted);
+        }
+        .folder-item .folder-stats {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            font-size: 0.8em;
+        }
+        .folder-item .folder-stats span {
+            padding: 2px 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .folder-item .folder-stats .issues {
+            background: #fee;
+            color: var(--danger);
+        }
+        
+        /* Content Area */
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        /* Welcome Screen */
+        .welcome {
+            text-align: center;
+            padding: 60px 40px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .welcome-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        .welcome h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--primary);
+        }
+        .welcome p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: var(--card);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: 700;
+        }
+        .stat-card .label {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        .stat-card.success .value { color: var(--success); }
+        .stat-card.warning .value { color: var(--warning); }
+        .stat-card.danger .value { color: var(--danger); }
+        
+        /* Section */
+        .section {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .section h3 {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        /* Table */
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--text-muted);
+        }
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+        .badge-success { background: #e8f5e9; color: var(--success); }
+        .badge-warning { background: #fff3e0; color: var(--warning); }
+        .badge-danger { background: #ffebee; color: var(--danger); }
+        
+        /* Links */
+        .link-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            font-size: 0.85em;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .link-btn:hover {
+            background: var(--primary-light);
+        }
+        .link-btn.secondary {
+            background: #f0f0f0;
+            color: var(--text);
+        }
+        .link-btn.secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filter-bar input,
+        .filter-bar select {
+            padding: 10px 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .filter-bar input {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            color: var(--text-muted);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s;
+        }
+        .tab:hover { color: var(--primary); }
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+        }
+        .modal-header h3 {
+            font-size: 1.3em;
+            color: var(--primary);
+        }
+        .modal-body { padding: 25px; }
+        .modal-footer {
+            padding: 20px 25px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1em;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+        .form-group .hint {
+            font-size: 0.85em;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+        
+        .command-preview {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .main { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                max-height: 300px;
+            }
+            .header { padding: 20px; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <h1>🔍 WCAG Dashboard</h1>
+            <p>Tilgjengelighetsskanninger for norske kommuner</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="showRunModal()">
+                ▶ Ny skanning
+            </button>
+            <button class="btn btn-primary" onclick="refreshFolders()">
+                ↻ Oppdater
+            </button>
+        </div>
+    </header>
+    
+    <div class="main">
+        <aside class="sidebar">
+            <h2>📁 Rapportmapper</h2>
+            <ul class="folder-list" id="folderList">
+                <!-- Populated by JavaScript -->
+            </ul>
+            <div class="empty-state" id="noFolders" style="display: none;">
+                <div class="empty-state-icon">📂</div>
+                <p>Ingen rapportmapper funnet.<br>Kjør en skanning for å komme i gang.</p>
+            </div>
+        </aside>
+        
+        <main class="content" id="mainContent">
+            <div class="welcome" id="welcomeScreen">
+                <div class="welcome-icon">📊</div>
+                <h2>Velkommen til WCAG Dashboard</h2>
+                <p>Velg en rapportmappe fra sidepanelet for å se resultater, eller kjør en ny skanning.</p>
+                
+                <div style="background: #fff3e0; border-radius: 8px; padding: 20px; margin: 20px 0; text-align: left;">
+                    <strong style="color: #e65100;">⚠️ Første gangs oppsett</strong>
+                    <p style="margin: 10px 0; font-size: 0.95em;">
+                        Hvis sidepanelet er tomt, må du:
+                    </p>
+                    <ol style="margin: 10px 0 10px 20px; font-size: 0.9em; color: #666;">
+                        <li>Bruke WCAG-serveren: <code style="background: #f5f5f5; padding: 2px 6px; border-radius: 3px;">python wcag_server.py</code></li>
+                        <li>Åpne: <a href="http://localhost:8000/wcag_dashboard.html">localhost:8000/wcag_dashboard.html</a></li>
+                        <li>Klikk "Ny skanning" for å starte</li>
+                    </ol>
+                </div>
+                
+                <button class="btn btn-primary" onclick="showRunModal()" style="background: var(--primary); color: white;">
+                    ▶ Start ny skanning
+                </button>
+            </div>
+            
+            <div id="folderView" style="display: none;">
+                <!-- Dynamic content -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Run Scan Modal -->
+    <div class="modal-overlay" id="runModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>▶ Kjør ny WCAG-skanning</h3>
+            </div>
+            <div class="modal-body">
+                <div id="scanFormSection">
+                    <div class="form-group">
+                        <label>Velg type</label>
+                        <select id="scanType" onchange="updateScanForm()">
+                            <option value="url">Spesifikk URL</option>
+                            <option value="municipality">Kommune (fra liste)</option>
+                            <option value="county">Fylke (alle kommuner)</option>
+                            <option value="sample">Utvalg (én per fylke)</option>
+                            <option value="all">Alle kommuner (tar lang tid)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="urlGroup">
+                        <label>Nettadresse</label>
+                        <input type="text" id="urlInput" placeholder="https://www.kommune.no" oninput="updateCommand()">
+                    </div>
+                    
+                    <div class="form-group" id="municipalityGroup" style="display: none;">
+                        <label>Kommunenavn</label>
+                        <input type="text" id="municipalityInput" placeholder="f.eks. Melhus" oninput="updateCommand()">
+                    </div>
+                    
+                    <div class="form-group" id="countyGroup" style="display: none;">
+                        <label>Fylkesnavn</label>
+                        <input type="text" id="countyInput" placeholder="f.eks. Trøndelag" oninput="updateCommand()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Maks antall sider</label>
+                        <input type="number" id="maxPages" value="20" min="1" max="100" oninput="updateCommand()">
+                        <div class="hint">Flere sider = grundigere, men tregere</div>
+                    </div>
+                    
+                    <div id="serverModeActions">
+                        <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                            <button class="btn" onclick="closeModal()" style="background: #f0f0f0; color: var(--text);">Avbryt</button>
+                            <button class="btn" onclick="startScan()" style="background: var(--primary); color: white;">
+                                ▶ Start skanning
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="standaloneModeActions" style="display: none;">
+                        <div class="form-group">
+                            <label>Kommando (kopier og kjør i terminal)</label>
+                            <div class="command-preview" id="commandPreview">
+                                python checker.py https://www.kommune.no --max-pages 20 --format html
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <button class="btn" onclick="closeModal()" style="background: #f0f0f0; color: var(--text);">Lukk</button>
+                            <button class="btn" onclick="copyCommand()" style="background: var(--primary); color: white;">
+                                📋 Kopier kommando
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="scanProgressSection" style="display: none;">
+                    <div style="text-align: center; padding: 20px 0;">
+                        <div style="font-size: 3em; margin-bottom: 15px;">🔍</div>
+                        <h4 id="scanTitle" style="margin: 0 0 20px 0;">Skanner...</h4>
+                    </div>
+                    
+                    <div style="background: #f0f0f0; border-radius: 8px; height: 28px; margin: 20px 0; overflow: hidden;">
+                        <div id="scanProgressBar" style="background: linear-gradient(90deg, var(--primary), #004488); height: 100%; width: 0%; transition: width 0.3s;"></div>
+                    </div>
+                    
+                    <p id="scanStatusMessage" style="text-align: center; color: var(--text-muted); margin: 15px 0;">Starter...</p>
+                    
+                    <div id="scanCompleteActions" style="display: none; justify-content: center; gap: 10px; margin-top: 20px;">
+                        <button class="btn" onclick="closeModal()" style="background: #f0f0f0; color: var(--text);">Lukk</button>
+                        <button class="btn" id="viewReportBtn" onclick="" style="background: var(--success); color: white;">
+                            📄 Åpne rapport
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // State
+        let folders = [];
+        let currentFolder = null;
+        let currentManifest = null;
+        let isServerMode = false;
+        let currentScanId = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            checkServerMode();
+            loadFolders();
+        });
+        
+        // Check if running via WCAG server
+        function checkServerMode() {
+            fetch('/api/reports')
+                .then(r => {
+                    if (r.ok) {
+                        isServerMode = true;
+                        document.getElementById('serverModeActions').style.display = 'block';
+                        document.getElementById('standaloneModeActions').style.display = 'none';
+                        console.log('Server mode enabled');
+                    }
+                })
+                .catch(() => {
+                    isServerMode = false;
+                    document.getElementById('serverModeActions').style.display = 'none';
+                    document.getElementById('standaloneModeActions').style.display = 'block';
+                    console.log('Standalone mode (copy command)');
+                });
+        }
+        
+        // Load folder index
+        async function loadFolders() {
+            try {
+                // Try multiple possible paths for the index
+                const paths = [
+                    'reports/reports_index.json',
+                    './reports/reports_index.json',
+                    '../reports/reports_index.json'
+                ];
+                
+                let data = null;
+                for (const path of paths) {
+                    try {
+                        const response = await fetch(path);
+                        if (response.ok) {
+                            data = await response.json();
+                            console.log('Loaded index from:', path);
+                            break;
+                        }
+                    } catch (e) {
+                        continue;
+                    }
+                }
+                
+                if (data && data.folders) {
+                    folders = data.folders;
+                    renderFolderList();
+                    
+                    // Auto-select first folder
+                    if (folders.length > 0) {
+                        selectFolder(folders[0].folder);
+                    }
+                } else {
+                    showNoFolders();
+                }
+            } catch (e) {
+                console.log('No index found, showing empty state:', e);
+                showNoFolders();
+            }
+        }
+        
+        function showNoFolders() {
+            document.getElementById('noFolders').style.display = 'block';
+            document.getElementById('folderList').innerHTML = '';
+        }
+        
+        function renderFolderList() {
+            const list = document.getElementById('folderList');
+            
+            if (folders.length === 0) {
+                showNoFolders();
+                return;
+            }
+            
+            document.getElementById('noFolders').style.display = 'none';
+            
+            list.innerHTML = folders.map(f => `
+                <li class="folder-item ${currentFolder === f.folder ? 'active' : ''}" 
+                    onclick="selectFolder('${f.folder}')">
+                    <div class="folder-name">${formatDate(f.timestamp)}</div>
+                    <div class="folder-meta">${f.description || f.mode}</div>
+                    <div class="folder-stats">
+                        <span>${f.total} kommuner</span>
+                        ${f.total_issues ? `<span class="issues">${f.total_issues.toLocaleString()} avvik</span>` : ''}
+                    </div>
+                </li>
+            `).join('');
+        }
+        
+        async function selectFolder(folderName) {
+            currentFolder = folderName;
+            renderFolderList();
+            
+            try {
+                const response = await fetch(`reports/${folderName}/manifest.json`);
+                if (response.ok) {
+                    currentManifest = await response.json();
+                    renderFolderView();
+                }
+            } catch (e) {
+                console.error('Failed to load manifest:', e);
+            }
+        }
+        
+        function renderFolderView() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            const view = document.getElementById('folderView');
+            view.style.display = 'block';
+            
+            const m = currentManifest;
+            const reports = m.reports || [];
+            
+            // Calculate stats
+            const withStatement = reports.filter(r => r.has_statement).length;
+            const totalIssues = reports.reduce((sum, r) => sum + (r.issues || 0), 0);
+            const criticalIssues = reports.reduce((sum, r) => sum + (r.critical || 0), 0);
+            
+            view.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="value">${m.total}</div>
+                        <div class="label">Kommuner</div>
+                    </div>
+                    <div class="stat-card success">
+                        <div class="value">${withStatement}</div>
+                        <div class="label">Har erklæring (${Math.round(withStatement/m.total*100)}%)</div>
+                    </div>
+                    <div class="stat-card warning">
+                        <div class="value">${m.total - withStatement}</div>
+                        <div class="label">Mangler erklæring</div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="value">${totalIssues.toLocaleString()}</div>
+                        <div class="label">Totalt avvik</div>
+                    </div>
+                    <div class="stat-card danger">
+                        <div class="value">${criticalIssues.toLocaleString()}</div>
+                        <div class="label">Kritiske avvik</div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h3>
+                        <span>📋 Rapporter</span>
+                        <a href="reports/${currentFolder}/${m.summary_file}" class="link-btn" target="_blank">
+                            Se full oppsummering
+                        </a>
+                    </h3>
+                    
+                    <div class="filter-bar">
+                        <input type="text" id="searchInput" placeholder="Søk etter kommune..." oninput="filterTable()">
+                        <select id="statementFilter" onchange="filterTable()">
+                            <option value="">Alle</option>
+                            <option value="yes">Har erklæring</option>
+                            <option value="no">Mangler erklæring</option>
+                        </select>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="reportsTable">
+                            <thead>
+                                <tr>
+                                    <th>Kommune</th>
+                                    <th>Fylke</th>
+                                    <th>Avvik</th>
+                                    <th>Kritiske</th>
+                                    <th>Erklæring</th>
+                                    <th>Oppdatert</th>
+                                    <th>Handling</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${reports.map(r => `
+                                    <tr data-name="${r.municipality.toLowerCase()}" data-statement="${r.has_statement ? 'yes' : 'no'}">
+                                        <td><strong>${r.municipality}</strong></td>
+                                        <td>${r.county}</td>
+                                        <td>
+                                            <span class="badge ${r.issues > 500 ? 'badge-danger' : r.issues > 100 ? 'badge-warning' : 'badge-success'}">
+                                                ${r.issues || 0}
+                                            </span>
+                                        </td>
+                                        <td>${r.critical || 0}</td>
+                                        <td>
+                                            <span class="badge ${r.has_statement ? 'badge-success' : 'badge-danger'}">
+                                                ${r.has_statement ? 'Ja' : 'Nei'}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            ${r.statement_date ? `<span class="badge ${r.statement_current ? 'badge-success' : 'badge-warning'}">${r.statement_date}</span>` : '-'}
+                                        </td>
+                                        <td>
+                                            ${r.file ? `<a href="reports/${currentFolder}/${r.file}" class="link-btn" target="_blank">Se rapport</a>` : '-'}
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const statement = document.getElementById('statementFilter').value;
+            
+            document.querySelectorAll('#reportsTable tbody tr').forEach(row => {
+                const name = row.dataset.name;
+                const stmt = row.dataset.statement;
+                const match = name.includes(search) && (!statement || stmt === statement);
+                row.style.display = match ? '' : 'none';
+            });
+        }
+        
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Unknown';
+            // Format: 20260108_123456
+            const year = timestamp.substring(0, 4);
+            const month = timestamp.substring(4, 6);
+            const day = timestamp.substring(6, 8);
+            const hour = timestamp.substring(9, 11);
+            const min = timestamp.substring(11, 13);
+            return `${day}.${month}.${year} ${hour}:${min}`;
+        }
+        
+        function refreshFolders() {
+            loadFolders();
+        }
+        
+        // Modal functions
+        function showRunModal() {
+            document.getElementById('runModal').classList.add('active');
+            // Reset to form view
+            document.getElementById('scanFormSection').style.display = 'block';
+            document.getElementById('scanProgressSection').style.display = 'none';
+            updateScanForm();
+            updateCommand();
+        }
+        
+        function closeModal() {
+            document.getElementById('runModal').classList.remove('active');
+        }
+        
+        function updateScanForm() {
+            const type = document.getElementById('scanType').value;
+            
+            document.getElementById('urlGroup').style.display = type === 'url' ? 'block' : 'none';
+            document.getElementById('municipalityGroup').style.display = type === 'municipality' ? 'block' : 'none';
+            document.getElementById('countyGroup').style.display = type === 'county' ? 'block' : 'none';
+            
+            updateCommand();
+        }
+        
+        function updateCommand() {
+            const type = document.getElementById('scanType').value;
+            const maxPages = document.getElementById('maxPages').value;
+            
+            let cmd = '';
+            
+            if (type === 'url') {
+                const url = document.getElementById('urlInput').value || 'https://www.kommune.no';
+                cmd = `python checker.py ${url} --max-pages ${maxPages} --format html`;
+            } else if (type === 'municipality') {
+                const muni = document.getElementById('municipalityInput').value;
+                cmd = `python batch_check_simple.py --municipality "${muni || 'Kommunenavn'}" --max-pages ${maxPages}`;
+            } else if (type === 'county') {
+                const county = document.getElementById('countyInput').value;
+                cmd = `python batch_check_simple.py --county "${county || 'Fylkesnavn'}" --max-pages ${maxPages}`;
+            } else if (type === 'sample') {
+                cmd = `python batch_check_simple.py --max-pages ${maxPages}`;
+            } else if (type === 'all') {
+                cmd = `python batch_check_simple.py --all --max-pages ${maxPages}`;
+            }
+            
+            document.getElementById('commandPreview').textContent = cmd;
+        }
+        
+        function copyCommand() {
+            const cmd = document.getElementById('commandPreview').textContent;
+            navigator.clipboard.writeText(cmd).then(() => {
+                alert('Kommando kopiert!');
+            });
+        }
+        
+        // Live scan functions
+        function startScan() {
+            const type = document.getElementById('scanType').value;
+            const maxPages = parseInt(document.getElementById('maxPages').value) || 20;
+            
+            let url = '';
+            let scanTitle = 'Skanner...';
+            
+            if (type === 'url') {
+                url = document.getElementById('urlInput').value.trim();
+                if (!url) {
+                    alert('Vennligst skriv inn en URL');
+                    return;
+                }
+                scanTitle = `Skanner ${url}`;
+            } else if (type === 'municipality') {
+                const muni = document.getElementById('municipalityInput').value.trim();
+                if (!muni) {
+                    alert('Vennligst skriv inn kommunenavn');
+                    return;
+                }
+                // For municipality, we need to look up URL from batch system
+                startBatchScan('municipality', muni, maxPages);
+                return;
+            } else if (type === 'county') {
+                const county = document.getElementById('countyInput').value.trim();
+                if (!county) {
+                    alert('Vennligst skriv inn fylkesnavn');
+                    return;
+                }
+                startBatchScan('county', county, maxPages);
+                return;
+            } else if (type === 'sample') {
+                startBatchScan('sample', '', maxPages);
+                return;
+            } else if (type === 'all') {
+                startBatchScan('all', '', maxPages);
+                return;
+            }
+            
+            // Show progress UI
+            document.getElementById('scanFormSection').style.display = 'none';
+            document.getElementById('scanProgressSection').style.display = 'block';
+            document.getElementById('scanTitle').textContent = scanTitle;
+            document.getElementById('scanProgressBar').style.width = '0%';
+            document.getElementById('scanStatusMessage').textContent = 'Starter skanning...';
+            document.getElementById('scanCompleteActions').style.display = 'none';
+            
+            // Start single URL scan
+            fetch('/api/scan/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    url: url,
+                    max_pages: maxPages
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.scan_id) {
+                    currentScanId = data.scan_id;
+                    pollScanStatus(data.scan_id);
+                } else {
+                    document.getElementById('scanStatusMessage').textContent = 'Feil: ' + (data.error || 'Ukjent feil');
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                }
+            })
+            .catch(err => {
+                document.getElementById('scanStatusMessage').textContent = 'Feil: ' + err.message;
+                document.getElementById('scanCompleteActions').style.display = 'flex';
+            });
+        }
+        
+        function startBatchScan(type, value, maxPages) {
+            // Show progress UI
+            document.getElementById('scanFormSection').style.display = 'none';
+            document.getElementById('scanProgressSection').style.display = 'block';
+            
+            let title = 'Skanner...';
+            if (type === 'municipality') title = `Skanner kommune: ${value}`;
+            else if (type === 'county') title = `Skanner fylke: ${value}`;
+            else if (type === 'sample') title = 'Skanner utvalg (én per fylke)';
+            else if (type === 'all') title = 'Skanner alle kommuner';
+            
+            document.getElementById('scanTitle').textContent = title;
+            document.getElementById('scanProgressBar').style.width = '0%';
+            document.getElementById('scanStatusMessage').textContent = 'Starter batch-skanning...';
+            document.getElementById('scanCompleteActions').style.display = 'none';
+            
+            fetch('/api/batch/start', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    type: type,
+                    value: value,
+                    max_pages: maxPages
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.scan_id) {
+                    currentScanId = data.scan_id;
+                    pollBatchStatus(data.scan_id);
+                } else {
+                    document.getElementById('scanStatusMessage').textContent = 'Feil: ' + (data.error || 'Ukjent feil');
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                }
+            })
+            .catch(err => {
+                document.getElementById('scanStatusMessage').textContent = 'Feil: ' + err.message;
+                document.getElementById('scanCompleteActions').style.display = 'flex';
+            });
+        }
+        
+        function pollScanStatus(scanId) {
+            fetch('/api/scan/status?id=' + scanId)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('scanProgressBar').style.width = data.progress + '%';
+                document.getElementById('scanStatusMessage').textContent = data.message;
+                
+                if (data.status === 'complete') {
+                    document.getElementById('scanStatusMessage').textContent = 'Ferdig! Rapporten er klar.';
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                    document.getElementById('viewReportBtn').onclick = () => {
+                        window.open('/' + data.output_file, '_blank');
+                        loadFolders(); // Refresh folder list
+                    };
+                } else if (data.status === 'error') {
+                    document.getElementById('scanStatusMessage').textContent = 'Feil: ' + data.error;
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                    document.getElementById('viewReportBtn').style.display = 'none';
+                } else {
+                    setTimeout(() => pollScanStatus(scanId), 1000);
+                }
+            })
+            .catch(err => {
+                document.getElementById('scanStatusMessage').textContent = 'Feil: ' + err.message;
+            });
+        }
+        
+        function pollBatchStatus(scanId) {
+            fetch('/api/batch/status?id=' + scanId)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('scanProgressBar').style.width = data.progress + '%';
+                document.getElementById('scanStatusMessage').textContent = data.message;
+                
+                if (data.status === 'complete') {
+                    document.getElementById('scanStatusMessage').textContent = 
+                        `Ferdig! ${data.completed || 0} kommuner skannet.`;
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                    document.getElementById('viewReportBtn').textContent = '📁 Se resultater';
+                    document.getElementById('viewReportBtn').onclick = () => {
+                        loadFolders(); // Refresh folder list
+                        closeModal();
+                        if (data.folder) {
+                            selectFolder(data.folder);
+                        }
+                    };
+                } else if (data.status === 'error') {
+                    document.getElementById('scanStatusMessage').textContent = 'Feil: ' + data.error;
+                    document.getElementById('scanCompleteActions').style.display = 'flex';
+                    document.getElementById('viewReportBtn').style.display = 'none';
+                } else {
+                    setTimeout(() => pollBatchStatus(scanId), 2000);
+                }
+            })
+            .catch(err => {
+                document.getElementById('scanStatusMessage').textContent = 'Feil: ' + err.message;
+            });
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('runModal').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('runModal')) {
+                closeModal();
+            }
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>

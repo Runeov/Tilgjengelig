@@ -1,177 +1,185 @@
 """
-WCAG 2.4.4 Link Purpose Checker
-Checks that links have descriptive text.
+WCAG Links Accessibility Checker
+Covers: 2.4.4 Link Purpose (In Context)
 """
 
-from bs4 import BeautifulSoup
+from dataclasses import dataclass
 import re
 
-RULE_INFO = {
-    "2.4.4a": {
-        "criterion": "2.4.4",
-        "criterion_name": "Formål med lenke (i kontekst)",
-        "criterion_name_en": "Link Purpose (In Context)",
-        "level": "A",
-    }
-}
 
-# Generic link texts that are not descriptive
-GENERIC_LINK_TEXTS = [
-    'les mer', 'read more', 'klikk her', 'click here', 'her', 'here',
-    'mer', 'more', 'lenke', 'link', 'gå', 'go', 'trykk her', 'press here',
-    'les', 'read', 'se mer', 'see more', 'åpne', 'open', 'vis', 'show',
-]
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
 
 
-def check_links(soup, url, **kwargs):
-    """
-    Check links for descriptive text and proper purpose.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+def check_links(soup, url, html=None):
+    """Check links for accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["2.4.4a"]
+    # Generic/unclear link texts
+    GENERIC_TEXTS = {
+        'click here', 'here', 'read more', 'les mer', 'more', 'mer',
+        'link', 'lenke', 'learn more', 'lær mer', 'info', 'details',
+        'this', 'denne', 'click', 'klikk', 'klikk her', 'last ned', 'download'
+    }
     
-    # Find all links
-    links = soup.find_all('a', href=True)
+    REDUNDANT_PHRASES = [
+        'link to', 'lenke til', 'go to', 'gå til', 'click to',
+        'click here to', 'klikk her for å'
+    ]
     
-    generic_links = []
-    empty_links = []
-    good_links = 0
-    
-    for link in links:
-        href = link.get('href', '')
+    for a in soup.find_all('a', href=True):
+        href = a.get('href', '')
+        element_str = str(a)[:200]
         
-        # Skip anchor links
-        if href.startswith('#') and len(href) <= 1:
+        # Get accessible name
+        text = a.get_text(strip=True)
+        aria_label = a.get('aria-label', '')
+        title = a.get('title', '')
+        
+        # Check images inside link for alt text
+        img = a.find('img')
+        img_alt = img.get('alt', '') if img else ''
+        
+        accessible_name = aria_label or text or img_alt or title
+        
+        # Check for empty links
+        if not accessible_name:
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="critical",
+                element=element_str,
+                selector=f'a[href="{href[:50]}"]',
+                issue="Link has no accessible name (empty link)",
+                fix="Add text content, aria-label, or image with alt text"
+            ))
             continue
         
-        # Get link text
-        link_text = link.get_text(strip=True).lower()
-        aria_label = link.get('aria-label', '').strip()
-        title = link.get('title', '').strip()
-        
-        # Check for image-only links
-        img = link.find('img')
-        if img and not link_text:
-            img_alt = img.get('alt', '').strip()
-            if img_alt:
-                link_text = img_alt.lower()
-        
-        # Effective link text
-        effective_text = aria_label or link_text or title
-        
-        if not effective_text:
-            empty_links.append(link)
-        elif effective_text.lower() in GENERIC_LINK_TEXTS:
-            generic_links.append((link, effective_text))
+        # Check for generic link text
+        if accessible_name.lower().strip() in GENERIC_TEXTS:
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="serious",
+                element=element_str,
+                selector=f'a[href="{href[:50]}"]',
+                issue=f"Link text is not descriptive: '{accessible_name}'",
+                fix="Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')"
+            ))
+        # Check for redundant phrases
+        elif any(phrase in accessible_name.lower() for phrase in REDUNDANT_PHRASES):
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="minor",
+                element=element_str,
+                selector=f'a[href="{href[:50]}"]',
+                issue=f"Link text has redundant phrase: '{accessible_name}'",
+                fix="Remove 'link to' or similar - screen readers already announce it as a link"
+            ))
+        # Check for URL as link text
+        elif re.match(r'^https?://', accessible_name) or accessible_name.startswith('www.'):
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="moderate",
+                element=element_str,
+                selector=f'a[href="{href[:50]}"]',
+                issue="Link text is a URL",
+                fix="Replace URL with descriptive text that explains the link destination"
+            ))
+        # Check for very long link text
+        elif len(accessible_name) > 100:
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="minor",
+                element=element_str,
+                selector=f'a[href="{href[:50]}"]',
+                issue=f"Link text is very long ({len(accessible_name)} characters)",
+                fix="Shorten link text to be concise while remaining descriptive"
+            ))
         else:
-            good_links += 1
-    
-    # Report empty links
-    for link in empty_links[:5]:
-        href = link.get('href', '')[:100]
-        element_str = str(link)[:200]
-        issues.append({
-            "rule_id": "2.4.4a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "critical",
-            "element": element_str,
-            "selector": _get_selector(link),
-            "issue": f"Lenke uten tekst: {href}",
-            "fix": "Legg til beskrivende lenketekst eller aria-label"
-        })
-    
-    # Report generic links
-    for link, text in generic_links[:5]:
-        element_str = str(link)[:200]
-        issues.append({
-            "rule_id": "2.4.4a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": element_str,
-            "selector": _get_selector(link),
-            "issue": f"Generisk lenketekst: '{text}'",
-            "fix": "Bruk beskrivende lenketekst som forklarer hvor lenken fører"
-        })
-    
-    # Check for redundant links (same href, different elements)
-    # This is a common issue in card layouts
-    href_counts = {}
-    for link in links:
-        href = link.get('href', '')
-        if href and not href.startswith('#'):
-            href_counts[href] = href_counts.get(href, 0) + 1
-    
-    redundant_count = sum(1 for count in href_counts.values() if count > 2)
-    if redundant_count > 5:
-        warnings.append({
-            "rule_id": "2.4.4a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "minor",
-            "element": "Multiple links",
-            "selector": "",
-            "issue": f"Fant {redundant_count} URL-er med mer enn 2 lenker. Vurder å konsolidere.",
-            "fix": "Unngå mange lenker til samme URL - kan forvirre skjermleserbrukere"
-        })
-    
-    # Summary
-    total_issues = len(empty_links) + len(generic_links)
-    if total_issues == 0 and len(links) > 0:
-        passed.append({
-            "rule_id": "2.4.4a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "message": f"Alle {len(links)} lenker har beskrivende tekst"
-        })
-    
-    if len(empty_links) > 5 or len(generic_links) > 5:
-        warnings.append({
-            "rule_id": "2.4.4a",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "moderate",
-            "element": "Multiple links",
-            "selector": "",
-            "issue": f"Fant {len(empty_links)} tomme og {len(generic_links)} generiske lenker (viser kun de første 5 av hver)",
-            "fix": "Gjennomgå alle lenker og forbedre lenketekstene"
-        })
+            passed.append(f"2.4.4: Link has descriptive text: {accessible_name[:30]}")
+        
+        # Check for target="_blank" without indication
+        if a.get('target') == '_blank':
+            if 'new window' not in accessible_name.lower() and \
+               'new tab' not in accessible_name.lower() and \
+               'nytt vindu' not in accessible_name.lower() and \
+               'ny fane' not in accessible_name.lower():
+                # Check for visually hidden text or icon
+                sr_text = a.find(class_=re.compile(r'sr-only|visually-hidden|screen-reader'))
+                if not sr_text:
+                    issues.append(Issue(
+                        rule_id="2.4.4",
+                        criterion_id="2.4.4",
+                        criterion_name="Formål med lenke",
+                        criterion_name_en="Link Purpose (In Context)",
+                        level="A",
+                        impact="moderate",
+                        element=element_str,
+                        selector=f'a[href="{href[:50]}"]',
+                        issue="Link opens in new window without indication",
+                        fix="Add text like '(opens in new tab)' or use visually-hidden text for screen readers"
+                    ))
+        
+        # Check for javascript: links
+        if href.startswith('javascript:'):
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="moderate",
+                element=element_str,
+                selector=f'a[href^="javascript:"]',
+                issue="Link uses javascript: URL",
+                fix="Use a button element for actions, or use href with progressive enhancement"
+            ))
+        
+        # Check for # links with onclick (should be buttons)
+        if href == '#' and a.get('onclick'):
+            issues.append(Issue(
+                rule_id="2.4.4",
+                criterion_id="2.4.4",
+                criterion_name="Formål med lenke",
+                criterion_name_en="Link Purpose (In Context)",
+                level="A",
+                impact="moderate",
+                element=element_str,
+                selector='a[href="#"]',
+                issue="Link with href='#' and onclick should be a button",
+                fix="Use <button> element for interactive controls, or add role='button'"
+            ))
     
     return issues, passed, warnings
-
-
-def _get_selector(element):
-    """Generate a CSS-like selector for an element."""
-    parts = []
-    for parent in element.parents:
-        if parent.name is None:
-            break
-        if parent.name == '[document]':
-            break
-        parts.append(parent.name)
-    parts.reverse()
-    parts.append(element.name)
-    
-    if element.get('id'):
-        parts[-1] += f"#{element['id']}"
-    elif element.get('class'):
-        classes = element['class']
-        if isinstance(classes, str):
-            classes = classes.split()
-        parts[-1] += f".{'.'.join(classes[:2])}"
-    
-    return ' > '.join(parts[-4:])

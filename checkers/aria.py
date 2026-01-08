@@ -1,247 +1,283 @@
 """
-WCAG ARIA Checker
-Checks proper use of ARIA attributes.
+WCAG ARIA Accessibility Checker
+Covers: 4.1.2 Name, Role, Value and ARIA best practices
 """
 
-from bs4 import BeautifulSoup
+from dataclasses import dataclass
 import re
 
-RULE_INFO = {
-    "4.1.2": {
-        "criterion": "4.1.2",
-        "criterion_name": "Navn, rolle, verdi",
-        "criterion_name_en": "Name, Role, Value",
-        "level": "A",
-    }
-}
+
+@dataclass
+class Issue:
+    rule_id: str
+    criterion_id: str
+    criterion_name: str
+    criterion_name_en: str
+    level: str
+    impact: str
+    element: str
+    selector: str
+    issue: str
+    fix: str
+    context: str = ""
+
 
 # Valid ARIA roles
 VALID_ROLES = {
     # Landmark roles
     'banner', 'complementary', 'contentinfo', 'form', 'main', 'navigation', 'region', 'search',
-    # Document structure roles
-    'article', 'cell', 'columnheader', 'definition', 'directory', 'document', 'feed', 'figure',
-    'group', 'heading', 'img', 'list', 'listitem', 'math', 'none', 'note', 'presentation',
-    'row', 'rowgroup', 'rowheader', 'separator', 'table', 'term', 'toolbar', 'tooltip',
     # Widget roles
     'alert', 'alertdialog', 'button', 'checkbox', 'dialog', 'gridcell', 'link', 'log',
     'marquee', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'option', 'progressbar',
     'radio', 'scrollbar', 'searchbox', 'slider', 'spinbutton', 'status', 'switch', 'tab',
-    'tabpanel', 'textbox', 'timer', 'treeitem',
-    # Composite roles
+    'tabpanel', 'textbox', 'timer', 'tooltip', 'treeitem',
+    # Composite widget roles
     'combobox', 'grid', 'listbox', 'menu', 'menubar', 'radiogroup', 'tablist', 'tree', 'treegrid',
-    # Live region roles
-    'alert', 'log', 'marquee', 'status', 'timer',
-    # Window roles
-    'alertdialog', 'dialog',
-    # Abstract roles (should not be used)
-    'application', 'generic'
+    # Document structure roles
+    'application', 'article', 'cell', 'columnheader', 'definition', 'directory', 'document',
+    'feed', 'figure', 'group', 'heading', 'img', 'list', 'listitem', 'math', 'none', 'note',
+    'presentation', 'row', 'rowgroup', 'rowheader', 'separator', 'table', 'term', 'toolbar',
+    # Abstract roles (should not be used directly)
 }
 
-# Roles that require certain attributes
+ABSTRACT_ROLES = {
+    'command', 'composite', 'input', 'landmark', 'range', 'roletype', 'section',
+    'sectionhead', 'select', 'structure', 'widget', 'window'
+}
+
+# Roles that require specific attributes
 ROLE_REQUIRED_ATTRS = {
     'checkbox': ['aria-checked'],
     'combobox': ['aria-expanded'],
     'heading': ['aria-level'],
     'meter': ['aria-valuenow'],
-    'option': [],
+    'option': ['aria-selected'],
     'radio': ['aria-checked'],
     'scrollbar': ['aria-controls', 'aria-valuenow'],
+    'searchbox': [],
     'slider': ['aria-valuenow'],
     'spinbutton': ['aria-valuenow'],
     'switch': ['aria-checked'],
+    'tab': ['aria-selected'],
+    'tabpanel': [],
+    'textbox': [],
+    'treeitem': [],
+}
+
+# Roles that require a name
+ROLES_REQUIRING_NAME = {
+    'alertdialog', 'dialog', 'form', 'region', 'article', 'figure',
+    'img', 'table', 'navigation', 'complementary'
 }
 
 
-def check_aria(soup, url, **kwargs):
-    """
-    Check ARIA usage for proper implementation.
-    
-    Returns tuple of (issues, passed, warnings).
-    """
+def check_aria(soup, url, html=None):
+    """Check ARIA usage for accessibility issues."""
     issues = []
     passed = []
     warnings = []
     
-    rule = RULE_INFO["4.1.2"]
+    # Check all elements with role attribute
+    elements_with_role = soup.find_all(role=True)
     
-    # Check for invalid roles
-    elements_with_role = soup.find_all(attrs={'role': True})
-    invalid_roles = []
-    
-    for element in elements_with_role:
-        role = element.get('role', '').lower()
-        if role and role not in VALID_ROLES:
-            invalid_roles.append((element, role))
-    
-    for element, role in invalid_roles[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"Ugyldig ARIA-rolle: '{role}'",
-            "fix": "Bruk en gyldig ARIA-rolle fra WAI-ARIA spesifikasjonen"
-        })
-    
-    # Check for missing required attributes
-    missing_attrs = []
-    for element in elements_with_role:
-        role = element.get('role', '').lower()
+    for elem in elements_with_role:
+        role = elem.get('role', '').lower()
+        element_str = str(elem)[:200]
+        
+        # Check for valid role
+        if role not in VALID_ROLES:
+            if role in ABSTRACT_ROLES:
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="serious",
+                    element=element_str,
+                    selector=f'[role="{role}"]',
+                    issue=f"Abstract role '{role}' should not be used",
+                    fix="Use a concrete role instead of abstract roles"
+                ))
+            else:
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="serious",
+                    element=element_str,
+                    selector=f'[role="{role}"]',
+                    issue=f"Invalid ARIA role: '{role}'",
+                    fix="Use a valid ARIA role from the specification"
+                ))
+            continue
+        
+        # Check for required attributes
         if role in ROLE_REQUIRED_ATTRS:
             required = ROLE_REQUIRED_ATTRS[role]
             for attr in required:
-                if not element.has_attr(attr):
-                    missing_attrs.append((element, role, attr))
+                if not elem.get(attr):
+                    issues.append(Issue(
+                        rule_id="4.1.2",
+                        criterion_id="4.1.2",
+                        criterion_name="Navn, rolle, verdi",
+                        criterion_name_en="Name, Role, Value",
+                        level="A",
+                        impact="serious",
+                        element=element_str,
+                        selector=f'[role="{role}"]',
+                        issue=f"Role '{role}' requires {attr} attribute",
+                        fix=f"Add {attr} attribute to element with role='{role}'"
+                    ))
+        
+        # Check roles that need accessible name
+        if role in ROLES_REQUIRING_NAME:
+            has_name = (elem.get('aria-label') or 
+                       elem.get('aria-labelledby') or
+                       elem.get('title') or
+                       elem.find('legend') or
+                       elem.find('figcaption'))
+            
+            if not has_name:
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="moderate",
+                    element=element_str,
+                    selector=f'[role="{role}"]',
+                    issue=f"Element with role='{role}' needs an accessible name",
+                    fix="Add aria-label or aria-labelledby attribute"
+                ))
+        
+        passed.append(f"4.1.2: Valid role found: {role}")
     
-    for element, role, attr in missing_attrs[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"Rolle '{role}' mangler påkrevd attributt: {attr}",
-            "fix": f"Legg til {attr} attributtet på elementet"
-        })
+    # Check aria-labelledby references
+    labelledby_elements = soup.find_all(attrs={'aria-labelledby': True})
+    for elem in labelledby_elements:
+        ref_id = elem.get('aria-labelledby')
+        ref_ids = ref_id.split()
+        
+        for rid in ref_ids:
+            ref = soup.find(id=rid)
+            if not ref:
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="serious",
+                    element=str(elem)[:200],
+                    selector=f'[aria-labelledby="{ref_id}"]',
+                    issue=f"aria-labelledby references non-existent ID: '{rid}'",
+                    fix="Ensure the referenced ID exists on the page"
+                ))
+    
+    # Check aria-describedby references
+    describedby_elements = soup.find_all(attrs={'aria-describedby': True})
+    for elem in describedby_elements:
+        ref_id = elem.get('aria-describedby')
+        ref_ids = ref_id.split()
+        
+        for rid in ref_ids:
+            ref = soup.find(id=rid)
+            if not ref:
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="moderate",
+                    element=str(elem)[:200],
+                    selector=f'[aria-describedby="{ref_id}"]',
+                    issue=f"aria-describedby references non-existent ID: '{rid}'",
+                    fix="Ensure the referenced ID exists on the page"
+                ))
+    
+    # Check aria-controls references
+    controls_elements = soup.find_all(attrs={'aria-controls': True})
+    for elem in controls_elements:
+        ref_id = elem.get('aria-controls')
+        ref_ids = ref_id.split()
+        
+        for rid in ref_ids:
+            ref = soup.find(id=rid)
+            if not ref:
+                warnings.append(f"4.1.2: aria-controls references '{rid}' which may be dynamically added")
     
     # Check for aria-hidden on focusable elements
-    aria_hidden_focusable = []
-    for element in soup.find_all(attrs={'aria-hidden': 'true'}):
+    aria_hidden = soup.find_all(attrs={'aria-hidden': 'true'})
+    for elem in aria_hidden:
         # Check if element or children are focusable
-        focusable_tags = ['a', 'button', 'input', 'select', 'textarea']
-        if element.name in focusable_tags:
-            aria_hidden_focusable.append(element)
-        else:
-            for child in element.find_all(focusable_tags):
-                if not child.has_attr('tabindex') or child.get('tabindex') != '-1':
-                    aria_hidden_focusable.append(element)
-                    break
+        focusable = elem.find_all(['a', 'button', 'input', 'select', 'textarea'])
+        focusable += [elem] if elem.name in ['a', 'button', 'input', 'select', 'textarea'] else []
+        
+        for foc in focusable:
+            if foc.get('tabindex') != '-1':
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="serious",
+                    element=str(foc)[:200],
+                    selector=f'{foc.name}[aria-hidden="true"]',
+                    issue="Focusable element is inside aria-hidden container",
+                    fix="Remove from tab order with tabindex='-1' or remove aria-hidden"
+                ))
     
-    for element in aria_hidden_focusable[:3]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "critical",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": "aria-hidden='true' på element med fokuserbart innhold",
-            "fix": "Fjern aria-hidden eller legg til tabindex='-1' på fokuserbare elementer inni"
-        })
+    # Check for conflicting roles on native elements
+    native_role_conflicts = [
+        ('button', ['link', 'checkbox', 'menuitem']),
+        ('a', ['button']),  # OK if href is missing
+        ('input', ['link']),
+        ('select', ['button', 'link']),
+    ]
     
-    # Check for aria-labelledby/describedby referencing non-existent IDs
-    broken_references = []
-    for attr in ['aria-labelledby', 'aria-describedby', 'aria-controls', 'aria-owns']:
-        for element in soup.find_all(attrs={attr: True}):
-            id_refs = element.get(attr, '').split()
-            for id_ref in id_refs:
-                if not soup.find(id=id_ref):
-                    broken_references.append((element, attr, id_ref))
+    for tag, bad_roles in native_role_conflicts:
+        for elem in soup.find_all(tag, role=True):
+            role = elem.get('role', '').lower()
+            if role in bad_roles:
+                # Exception: anchor without href can be button
+                if tag == 'a' and not elem.get('href') and role == 'button':
+                    continue
+                
+                issues.append(Issue(
+                    rule_id="4.1.2",
+                    criterion_id="4.1.2",
+                    criterion_name="Navn, rolle, verdi",
+                    criterion_name_en="Name, Role, Value",
+                    level="A",
+                    impact="moderate",
+                    element=str(elem)[:200],
+                    selector=f'{tag}[role="{role}"]',
+                    issue=f"<{tag}> element has conflicting role='{role}'",
+                    fix=f"Use native <{tag}> semantics or change to appropriate element"
+                ))
     
-    for element, attr, id_ref in broken_references[:5]:
-        element_str = str(element)[:200]
-        issues.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "serious",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"{attr} refererer til ikke-eksisterende ID: '{id_ref}'",
-            "fix": f"Sørg for at element med id='{id_ref}' finnes på siden"
-        })
-    
-    # Check for redundant roles on semantic elements
-    redundant_roles = {
-        'a': ['link'],
-        'article': ['article'],
-        'aside': ['complementary'],
-        'button': ['button'],
-        'footer': ['contentinfo'],
-        'form': ['form'],
-        'h1': ['heading'], 'h2': ['heading'], 'h3': ['heading'],
-        'h4': ['heading'], 'h5': ['heading'], 'h6': ['heading'],
-        'header': ['banner'],
-        'img': ['img'],
-        'input': ['textbox', 'checkbox', 'radio', 'button'],
-        'li': ['listitem'],
-        'main': ['main'],
-        'nav': ['navigation'],
-        'ol': ['list'],
-        'select': ['listbox'],
-        'table': ['table'],
-        'textarea': ['textbox'],
-        'ul': ['list'],
-    }
-    
-    redundant_found = []
-    for element in elements_with_role:
-        role = element.get('role', '').lower()
-        tag = element.name
-        if tag in redundant_roles and role in redundant_roles[tag]:
-            redundant_found.append((element, tag, role))
-    
-    for element, tag, role in redundant_found[:3]:
-        element_str = str(element)[:150]
-        warnings.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "criterion_name_en": rule["criterion_name_en"],
-            "level": rule["level"],
-            "impact": "minor",
-            "element": element_str,
-            "selector": _get_selector(element),
-            "issue": f"Overflødig rolle '{role}' på <{tag}> - dette er allerede implisitt",
-            "fix": f"Fjern role='{role}' attributtet - <{tag}> har denne rollen automatisk"
-        })
-    
-    # Summary
-    total_issues = len(invalid_roles) + len(missing_attrs) + len(aria_hidden_focusable) + len(broken_references)
-    if total_issues == 0 and len(elements_with_role) > 0:
-        passed.append({
-            "rule_id": "4.1.2",
-            "criterion_id": rule["criterion"],
-            "criterion_name": rule["criterion_name"],
-            "message": f"ARIA-attributter brukt korrekt på {len(elements_with_role)} elementer"
-        })
+    # Check for empty aria-label
+    aria_labels = soup.find_all(attrs={'aria-label': True})
+    for elem in aria_labels:
+        label = elem.get('aria-label', '').strip()
+        if not label:
+            issues.append(Issue(
+                rule_id="4.1.2",
+                criterion_id="4.1.2",
+                criterion_name="Navn, rolle, verdi",
+                criterion_name_en="Name, Role, Value",
+                level="A",
+                impact="serious",
+                element=str(elem)[:200],
+                selector='[aria-label=""]',
+                issue="Element has empty aria-label",
+                fix="Provide descriptive text in aria-label or remove if not needed"
+            ))
     
     return issues, passed, warnings
-
-
-def _get_selector(element):
-    """Generate a CSS-like selector for an element."""
-    parts = []
-    for parent in element.parents:
-        if parent.name is None:
-            break
-        if parent.name == '[document]':
-            break
-        parts.append(parent.name)
-    parts.reverse()
-    parts.append(element.name)
-    
-    if element.get('id'):
-        parts[-1] += f"#{element['id']}"
-    elif element.get('class'):
-        classes = element['class']
-        if isinstance(classes, str):
-            classes = classes.split()
-        parts[-1] += f".{'.'.join(classes[:2])}"
-    
-    return ' > '.join(parts[-4:])
