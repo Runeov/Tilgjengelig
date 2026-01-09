@@ -395,9 +395,17 @@ def get_enhancement_js(base_url, total_count, pages_count):
         }
         
         // Live scan functions (server mode)
+        function getCurrentFolder() {
+            // Detect folder from current URL path like /reports/20260108_130746/wcag_...
+            var path = window.location.pathname;
+            var match = path.match(/\/reports\/([^\/]+)\//);
+            return match ? match[1] : '';
+        }
+        
         function startLiveScan() {
             var inputEl = document.getElementById('maxPages');
             var pages = parseInt(inputEl.value) || 20;
+            var folder = getCurrentFolder();
             
             var scanForm = document.getElementById('scanForm');
             var scanStatus = document.getElementById('scanStatus');
@@ -432,7 +440,9 @@ def get_enhancement_js(base_url, total_count, pages_count):
                 if (scanMessage) scanMessage.textContent = 'Feil: Nettverksfeil';
                 if (scanComplete) scanComplete.style.display = 'flex';
             };
-            xhr.send(JSON.stringify({ url: BASE_URL, max_pages: pages }));
+            var payload = { url: BASE_URL, max_pages: pages };
+            if (folder) payload.output_folder = folder;
+            xhr.send(JSON.stringify(payload));
         }
         
         function pollScanStatus(scanId) {
