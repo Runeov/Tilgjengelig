@@ -1,5 +1,18 @@
 node_modules/
 reports/
 
-# Optional: Python cache
+# Python cache
 __pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Individual scan reports (keep summaries)
+wcag_report_*.html
+wcag_report_*.json
+*_deep_report.json
+*_report.json
+
+# Temporary test files
+hamsunsenteret_html.html

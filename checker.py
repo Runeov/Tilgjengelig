@@ -118,27 +118,33 @@ class WCAGChecker:
     
     def __init__(self, user_agent: str = None, exclude_patterns: list = None,
                  dedupe_articles: bool = True, article_patterns: list = None,
-                 check_statement: bool = True):
+                 check_statement: bool = True, use_browser: bool = False,
+                 wait_for: str = 'load'):
         self.session = requests.Session()
+        self.user_agent = user_agent or "WCAGChecker/1.0 (Accessibility Compliance Tool)"
         self.session.headers.update({
-            "User-Agent": user_agent or "WCAGChecker/1.0 (Accessibility Compliance Tool)"
+            "User-Agent": self.user_agent
         })
         self.checked_urls = set()
-        
+
         # URL patterns to exclude from crawling
         self.exclude_patterns = exclude_patterns or []
-        
+
         # Deduplication for article/news pages
         self.dedupe_articles = dedupe_articles
         self.article_patterns = article_patterns or [
-            '/aktuelt/', '/nyheter/', '/artikkel/', '/innhold/', '/news/', 
+            '/aktuelt/', '/nyheter/', '/artikkel/', '/innhold/', '/news/',
             '/article/', '/post/', '/blogg/', '/blog/'
         ]
         self.article_errors = {}  # Track deduplicated errors
-        
+
         # Whether to check for accessibility statement
         self.check_statement = check_statement
-        
+
+        # Browser-based fetching for JavaScript-heavy sites
+        self.use_browser = use_browser
+        self.wait_for = wait_for
+
         self.checkers = [
             ("Images", check_images),
             ("Headings", check_headings),
@@ -178,6 +184,19 @@ class WCAGChecker:
     
     def fetch_page(self, url: str, timeout: int = 30) -> Optional[tuple]:
         """Fetch a page and return (html, final_url) or None on error."""
+        if self.use_browser:
+            try:
+                from browser_fetch import fetch_page_with_browser
+                return fetch_page_with_browser(
+                    url,
+                    wait_for=self.wait_for,
+                    timeout=timeout * 1000,
+                    user_agent=self.user_agent
+                )
+            except ImportError as e:
+                print(f"Browser mode error: {e}")
+                return None
+
         try:
             response = self.session.get(url, timeout=timeout, allow_redirects=True)
             response.raise_for_status()
@@ -185,6 +204,15 @@ class WCAGChecker:
         except requests.RequestException as e:
             print(f"Error fetching {url}: {e}")
             return None
+
+    def close(self):
+        """Cleanup resources (browser if used)."""
+        if self.use_browser:
+            try:
+                from browser_fetch import close_browser
+                close_browser()
+            except ImportError:
+                pass
     
     def parse_html(self, html: str) -> BeautifulSoup:
         """Parse HTML content."""
@@ -353,9 +381,9 @@ class WCAGChecker:
             print("Checking accessibility statement...")
             site_result.accessibility_statement = self.check_accessibility_statement(start_url)
             if site_result.accessibility_statement.has_statement_page:
-                print(f"  ✓ Statement found: {site_result.accessibility_statement.statement_page_url or site_result.accessibility_statement.uustatus_url}")
+                print(f"  [OK] Statement found: {site_result.accessibility_statement.statement_page_url or site_result.accessibility_statement.uustatus_url}")
             else:
-                print("  ✗ No statement found")
+                print("  [NOT FOUND] No statement found")
         
         urls_to_check = [start_url]
         self.checked_urls = set()
@@ -383,16 +411,34 @@ class WCAGChecker:
                 else:
                     print(f"Checking: {url}")
                 
-                result = self.fetch_page(url)
-                if result is None:
-                    continue
-                
-                html, final_url = result
-                soup = self.parse_html(html)
-                
+                # Fetch page (with optional browser-based link extraction)
+                new_links = []
+                if self.use_browser:
+                    try:
+                        from browser_fetch import extract_links_from_browser
+                        result = extract_links_from_browser(
+                            url,
+                            wait_for=self.wait_for,
+                            timeout=30000,
+                            user_agent=self.user_agent
+                        )
+                        if result is None:
+                            continue
+                        html, final_url, new_links = result
+                    except ImportError as e:
+                        print(f"Browser mode error: {e}")
+                        continue
+                else:
+                    result = self.fetch_page(url)
+                    if result is None:
+                        continue
+                    html, final_url = result
+                    soup = self.parse_html(html)
+                    new_links = self.extract_links(soup, final_url)
+
                 # Check this page
                 page_result = self.check_page(final_url, html)
-                
+
                 # Handle article deduplication
                 if is_article and self.dedupe_articles:
                     for issue in page_result.issues:
@@ -407,17 +453,17 @@ class WCAGChecker:
                         self.article_errors[key]['count'] += 1
                         if len(self.article_errors[key]['example_urls']) < 3:
                             self.article_errors[key]['example_urls'].append(final_url)
-                    
+
                     # Don't add individual article page results
                     # We'll add a summary at the end
                 else:
                     site_result.pages.append(page_result)
-                
-                # Extract more links
-                new_links = self.extract_links(soup, final_url)
+
+                # Add discovered links to queue
                 for link in new_links:
-                    if link not in self.checked_urls and link not in urls_to_check:
-                        urls_to_check.append(link)
+                    if not self.should_skip_url(link):
+                        if link not in self.checked_urls and link not in urls_to_check:
+                            urls_to_check.append(link)
         
         # Add article summary page if we have deduplicated errors
         if self.article_errors and article_pages_checked > 0:
@@ -444,8 +490,11 @@ class WCAGChecker:
                 article_summary.issues.append(summary_issue)
             
             site_result.pages.append(article_summary)
-            print(f"\n📰 Deduplicated {sum(d['count'] for d in self.article_errors.values())} article errors into {len(self.article_errors)} unique types")
-        
+            print(f"\n[ARTICLES] Deduplicated {sum(d['count'] for d in self.article_errors.values())} article errors into {len(self.article_errors)} unique types")
+
+        # Cleanup browser if used
+        self.close()
+
         return site_result
     
     def generate_report(self, result: SiteResult, format: str = "json") -> str:
@@ -1122,10 +1171,15 @@ def main():
         print("  --exclude PATTERNS  Comma-separated URL patterns to skip")
         print("  --no-dedupe         Don't deduplicate article/news errors")
         print("  --article-patterns  Comma-separated patterns that identify article pages")
+        print("  --browser           Use headless browser for JavaScript rendering")
+        print("  --wait-for STRATEGY Wait strategy: networkidle, load, domcontentloaded,")
+        print("                      or CSS selector (default: load)")
         print("")
         print("Example:")
         print("  python checker.py https://example.com --max-pages 100 --format html")
         print("  python checker.py https://example.com --exclude '/old/,/archive/'")
+        print("  python checker.py https://spa-site.com --browser --max-pages 20")
+        print("  python checker.py https://spa-site.com --browser --wait-for '#main-content'")
         sys.exit(1)
     
     url = sys.argv[1]
@@ -1134,7 +1188,9 @@ def main():
     exclude_patterns = []
     dedupe_articles = True
     article_patterns = None
-    
+    use_browser = False
+    wait_for = 'load'
+
     # Parse arguments
     args = sys.argv[2:]
     i = 0
@@ -1154,13 +1210,21 @@ def main():
         elif args[i] == "--article-patterns" and i + 1 < len(args):
             article_patterns = [p.strip() for p in args[i + 1].split(',')]
             i += 2
+        elif args[i] == "--browser":
+            use_browser = True
+            i += 1
+        elif args[i] == "--wait-for" and i + 1 < len(args):
+            wait_for = args[i + 1]
+            i += 2
         else:
             i += 1
-    
+
     checker = WCAGChecker(
         exclude_patterns=exclude_patterns,
         dedupe_articles=dedupe_articles,
-        article_patterns=article_patterns
+        article_patterns=article_patterns,
+        use_browser=use_browser,
+        wait_for=wait_for
     )
     
     print(f"Starting WCAG check for: {url}")
@@ -1170,6 +1234,8 @@ def main():
         print(f"Excluding patterns: {exclude_patterns}")
     if dedupe_articles:
         print(f"Deduplicating article/news errors: Yes")
+    if use_browser:
+        print(f"Browser mode: Enabled (wait strategy: {wait_for})")
     print("-" * 50)
     
     result = checker.crawl_site(url, max_pages=max_pages)
@@ -1177,10 +1243,10 @@ def main():
     print("-" * 50)
     print(f"Checked {len(result.pages)} pages")
     print(f"Found {result.summary['issues']} issues")
-    print(f"  🔴 Critical: {result.summary['critical']}")
-    print(f"  🟠 Serious: {result.summary['serious']}")
-    print(f"  🟡 Moderate: {result.summary['moderate']}")
-    print(f"  🟢 Minor: {result.summary['minor']}")
+    print(f"  [CRITICAL] {result.summary['critical']}")
+    print(f"  [SERIOUS] {result.summary['serious']}")
+    print(f"  [MODERATE] {result.summary['moderate']}")
+    print(f"  [MINOR] {result.summary['minor']}")
     
     report = checker.generate_report(result, format=output_format)
     

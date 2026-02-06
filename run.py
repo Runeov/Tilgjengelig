@@ -70,6 +70,8 @@ Examples:
   %(prog)s https://example.com --max-pages 20
   %(prog)s https://example.com --format json --output results.json
   %(prog)s https://example.com --single-page
+  %(prog)s https://spa-site.com --browser --max-pages 20
+  %(prog)s https://spa-site.com --browser --wait-for "#main-content"
 
 For more information, see README.md
         """
@@ -85,7 +87,11 @@ For more information, see README.md
                         help='Only check the specified URL, do not crawl')
     parser.add_argument('--quiet', '-q', action='store_true',
                         help='Suppress progress output')
-    
+    parser.add_argument('--browser', action='store_true',
+                        help='Use headless browser for JavaScript rendering')
+    parser.add_argument('--wait-for', default='load',
+                        help='Wait strategy: networkidle, load, domcontentloaded, or CSS selector (default: load)')
+
     args = parser.parse_args()
     
     if not args.quiet:
@@ -96,12 +102,17 @@ For more information, see README.md
         args.url = 'https://' + args.url
     
     # Create checker
-    checker = WCAGChecker()
-    
+    checker = WCAGChecker(
+        use_browser=args.browser,
+        wait_for=args.wait_for
+    )
+
     if not args.quiet:
         print(f"  Target: {args.url}")
         print(f"  Max pages: {args.max_pages if not args.single_page else 1}")
         print(f"  Format: {args.format}")
+        if args.browser:
+            print(f"  Browser mode: Enabled (wait strategy: {args.wait_for})")
         print()
     
     try:
