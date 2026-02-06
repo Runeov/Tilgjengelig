@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamsunsenteret.no - Tilgjengelighetskontroll</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Merriweather', Georgia, serif;
+            background: #f8f7f4;
+            color: #1a1a1a;
+            line-height: 1.85;
+            font-size: 17px;
+        }
+
+        /* ── NFDI article preview banner ── */
+        .preview-banner {
+            background: #2c2c2c;
+            color: #ffc107;
+            text-align: center;
+            padding: 14px 20px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 3px solid #ffc107;
+        }
+        .preview-banner strong { color: #fff; }
+        .preview-banner a { color: #ffc107; }
+
+        /* ── NFDI "publication" header ── */
+        .publication-header {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 18px 0;
+            border-bottom: 4px solid #c0392b;
+        }
+        .publication-header .inner {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .publication-header .logo {
+            font-family: 'Source Sans 3', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .publication-header .logo span { color: #c0392b; }
+        .publication-header .nav {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 13px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            gap: 25px;
+            color: rgba(255,255,255,0.7);
+        }
+        .publication-header .nav a { color: rgba(255,255,255,0.7); text-decoration: none; }
+        .publication-header .nav a:hover { color: #fff; }
+
+        /* ── Article container ── */
+        .article-container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+
+        /* ── Hero section ── */
+        .hero {
+            padding: 60px 0 40px;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 40px;
+        }
+        .hero .category {
+            font-family: 'Source Sans 3', sans-serif;
+            color: #c0392b;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-size: 2.6em;
+            line-height: 1.2;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #0d0d0d;
+        }
+        .hero .subtitle {
+            font-size: 1.25em;
+            color: #444;
+            font-weight: 300;
+            line-height: 1.6;
+            font-style: italic;
+        }
+        .hero .meta {
+            margin-top: 28px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .hero .meta .date { }
+        .hero .meta .reading-time { }
+        .hero .meta .divider { color: #ccc; }
+
+        /* ── Article body ── */
+        .article-body p {
+            margin-bottom: 1.5em;
+        }
+
+        .article-body h2 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            margin: 2.5em 0 0.8em;
+            color: #1a1a2e;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .article-body .lead {
+            font-size: 1.15em;
+            color: #333;
+            font-weight: 400;
+        }
+
+        /* ── Stats callout ── */
+        .stats-box {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid #c0392b;
+            padding: 30px 35px;
+            margin: 35px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .stats-box h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #c0392b;
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .stat-number {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 2.2em;
+            font-weight: 800;
+            line-height: 1;
+        }
+        .stat-number.critical { color: #c0392b; }
+        .stat-number.serious { color: #e67e22; }
+        .stat-number.moderate { color: #b8860b; }
+        .stat-number.minor { color: #27ae60; }
+        .stat-label {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.9em;
+            color: #555;
+        }
+        .stat-total {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 15px 0 5px;
+            border-top: 1px solid #eee;
+            margin-top: 5px;
+        }
+        .stat-total .stat-number {
+            font-size: 3em;
+            color: #c0392b;
+        }
+        .stat-total .stat-label {
+            font-size: 1em;
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* ── Issue breakdown ── */
+        .issue-list {
+            margin: 25px 0;
+        }
+        .issue-item {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 6px;
+            padding: 22px 28px;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .issue-count {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 2em;
+            font-weight: 800;
+            color: #c0392b;
+            min-width: 70px;
+            text-align: center;
+            line-height: 1;
+            padding-top: 4px;
+        }
+        .issue-detail h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #1a1a2e;
+        }
+        .issue-detail p {
+            font-size: 0.92em;
+            color: #555;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* ── Law box ── */
+        .law-box {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+            color: #fff;
+            padding: 35px 40px;
+            border-radius: 8px;
+            margin: 40px 0;
+        }
+        .law-box h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #ffc107;
+            margin-bottom: 18px;
+        }
+        .law-box p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 1em;
+            font-size: 0.95em;
+        }
+        .law-box a {
+            color: #ffc107;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255,193,7,0.3);
+        }
+        .law-box a:hover {
+            border-bottom-color: #ffc107;
+        }
+        .law-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0 0;
+        }
+        .law-box ul li {
+            padding: 8px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.92em;
+        }
+        .law-box ul li:first-child { border-top: none; }
+        .law-box ul li::before {
+            content: '§';
+            color: #ffc107;
+            font-weight: 700;
+            margin-right: 10px;
+        }
+
+        /* ── No statement warning ── */
+        .no-statement {
+            background: #fff5f5;
+            border: 2px solid #c0392b;
+            border-radius: 8px;
+            padding: 28px 32px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .no-statement .icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .no-statement h4 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.15em;
+            color: #c0392b;
+            margin-bottom: 8px;
+        }
+        .no-statement p {
+            font-size: 0.92em;
+            color: #666;
+            margin: 0;
+        }
+
+        /* ── Pullquote ── */
+        .pullquote {
+            border-left: 4px solid #c0392b;
+            padding: 20px 30px;
+            margin: 35px 0;
+            font-size: 1.25em;
+            font-style: italic;
+            color: #333;
+            background: #fafafa;
+        }
+        .pullquote cite {
+            display: block;
+            font-size: 0.7em;
+            font-style: normal;
+            color: #888;
+            margin-top: 10px;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+
+        /* ── Footer ── */
+        .article-footer {
+            margin-top: 50px;
+            padding: 35px 0;
+            border-top: 2px solid #1a1a2e;
+            font-family: 'Source Sans 3', sans-serif;
+        }
+        .article-footer .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .article-footer .tag {
+            background: #eee;
+            color: #555;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .article-footer .share {
+            color: #888;
+            font-size: 13px;
+        }
+
+        .publication-footer {
+            background: #1a1a2e;
+            color: rgba(255,255,255,0.5);
+            padding: 40px 0;
+            margin-top: 60px;
+            text-align: center;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 13px;
+        }
+        .publication-footer .logo-footer {
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+        .publication-footer .logo-footer span { color: #c0392b; }
+
+        /* ── Letter section ── */
+        .letter-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 45px 50px;
+            margin: 45px 0;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        .letter-section .letter-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #eee;
+        }
+        .letter-section .letter-header h3 {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #999;
+            margin-bottom: 8px;
+        }
+        .letter-section .letter-header p {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .letter-section .salutation {
+            font-style: italic;
+            margin-bottom: 1.5em;
+        }
+
+        .letter-section .sign-off {
+            margin-top: 2.5em;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.8em; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .letter-section { padding: 25px 20px; }
+            .law-box { padding: 25px 20px; }
+            .issue-item { flex-direction: column; gap: 10px; }
+            .issue-count { min-width: auto; }
+            .publication-header .nav { display: none; }
+        }
+
+        @media print {
+            .preview-banner { display: none; }
+            body { background: #fff; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Preview banner - the subtle threat -->
+<div class="preview-banner">
+    FORHÅNDSVISNING: Slik vil artikkelen se ut ved publisering av <strong>NFDI (Norsk Forening for Digitalt Innsyn)</strong>
+</div>
+
+<!-- Fake publication header -->
+<header class="publication-header">
+    <div class="inner">
+        <div class="logo">NFDI<span>.</span>no</div>
+        <nav class="nav">
+            <a href="#">Undersøkelser</a>
+            <a href="#">Tilsyn</a>
+            <a href="#">Offentlige virksomheter</a>
+            <a href="#">Om oss</a>
+        </nav>
+    </div>
+</header>
+
+<article class="article-container">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="category">Undersøkelse &bull; Universell utforming</div>
+        <h1>Hamsunsenteret stenger ute mennesker med funksjons&shy;nedsettelser fra Hamsuns verden</h1>
+        <p class="subtitle">
+            Automatisert tilgjengelighetskontroll avdekker 4&nbsp;515 brudd på WCAG-kravene.
+            Det offentlig finansierte museet mangler også lovpålagt tilgjengelighetserklæring.
+        </p>
+        <div class="meta">
+            <span class="date">7. februar 2026</span>
+            <span class="divider">|</span>
+            <span class="reading-time">8 min lesetid</span>
+        </div>
+    </div>
+
+    <!-- Article body -->
+    <div class="article-body">
+
+        <p class="lead">
+            Knut Hamsun ga stemme til de stemmeløse. Han skrev om landstrykere, om mennesker i utkanten av samfunnet,
+            om livets råskap og skjønnhet sett fra perspektiver de fleste overså. Det er derfor ekstra vondt å avdekke at
+            senteret som bærer hans navn, eid av Nordland fylkeskommune og driftet av Nordlandsmuseet,
+            i praksis stenger den digitale døren for mennesker med funksjonsnedsettelser.
+        </p>
+
+        <h2>Den digitale inngangen som ikke finnes</h2>
+
+        <p>
+            For mange mennesker med funksjonsnedsettelser er den digitale inngangen den viktigste, og noen ganger
+            den eneste veien inn til kultur, kunnskap og opplevelser. En blind person kan ikke bare reise til Hamarøy
+            på impuls. En person med bevegelsesvansker kan ikke alltid ta seg gjennom et fysisk museum. Men en nettside?
+            Den kan nå alle. Den kan la en svaksynt person utforske Hamsuns univers med skjermleser. Den kan la et menneske
+            med kognitive utfordringer ta seg tid, gå tilbake, lese igjen.
+        </p>
+
+        <p>
+            Den <em>kunne</em> gjort det. Men slik hamsunsenteret.no er i dag, gjør den det ikke.
+        </p>
+
+        <p>
+            Tenk deg å navigere i et helt mørkt rom der alle dørene mangler skilt. Det er hverdagen
+            for en skjermleserbruker på hamsunsenteret.no. Nettsiden har 617 lenker som ikke forteller
+            hvor de leder. De annonseres bare som «lenke, lenke, lenke» uten noen
+            som helst indikasjon på innholdet.
+        </p>
+
+        <h2>Hva vi fant</h2>
+
+        <p>
+            NFDI har gjennomført en automatisert tilgjengelighetskontroll av hamsunsenteret.no basert på WCAG 2.1-standarden
+            og UU-tilsynets offisielle testregelverk. Resultatene er nedslående.
+        </p>
+
+        <!-- Stats box -->
+        <div class="stats-box">
+            <h3>Funn fra tilgjengelighetskontroll: hamsunsenteret.no</h3>
+            <div class="stats-grid">
+                <div class="stat-total">
+                    <div class="stat-number critical">4 515</div>
+                    <div class="stat-label">brudd på tilgjengelighetskravene totalt</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number critical">970</div>
+                    <div class="stat-label">Kritiske feil</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number serious">1 832</div>
+                    <div class="stat-label">Alvorlige feil</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number moderate">1 650</div>
+                    <div class="stat-label">Moderate feil</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number minor">63</div>
+                    <div class="stat-label">Mindre feil</div>
+                </div>
+            </div>
+        </div>
+
+        <p>De mest gjennomgående problemene:</p>
+
+        <div class="issue-list">
+            <div class="issue-item">
+                <div class="issue-count">617</div>
+                <div class="issue-detail">
+                    <h4>Tomme lenker</h4>
+                    <p>Lenker uten tekst eller beskrivelse. For en person som bruker skjermleser betyr dette at
+                    navigasjonen er et kaos av «lenke, lenke, lenke» uten noen indikasjon på hvor de leder.</p>
+                </div>
+            </div>
+            <div class="issue-item">
+                <div class="issue-count">198</div>
+                <div class="issue-detail">
+                    <h4>Bilder uten alternativtekst</h4>
+                    <p>Bilder av Hamsun, av senteret, av utstillinger. Alle stumme for den som ikke kan se dem.
+                    For et senter som lever av visuell formidling er dette et paradoks.</p>
+                </div>
+            </div>
+            <div class="issue-item">
+                <div class="issue-count">154</div>
+                <div class="issue-detail">
+                    <h4>Bildlenker uten beskrivelse</h4>
+                    <p>Klikkbare bilder som leder til innhold, men som for en skjermleserbruker er helt usynlige og ubrukelige.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pullquote">
+            «I Norge lever det over 600 000 mennesker med nedsatt funksjonsevne. Mange av disse er nettopp de menneskene
+            som har mest å hente fra digitale kulturtilbud, fordi det fysiske rommet ofte er utilgjengelig for dem.»
+        </div>
+
+        <!-- No statement warning -->
+        <div class="no-statement">
+            <div class="icon">&#9888;</div>
+            <h4>Ingen tilgjengelighetserklæring funnet</h4>
+            <p>
+                Hamsunsenteret har per 7. februar 2026 ingen publisert tilgjengelighetserklæring på
+                <a href="https://uustatus.no" target="_blank" style="color: #c0392b;">uustatus.no</a>.
+                Fristen for offentlige virksomheter var <strong>1. februar 2023</strong>.
+            </p>
+        </div>
+
+        <h2>Lovkravet som brytes</h2>
+
+        <p>
+            Hamsunsenteret er eid av Nordland fylkeskommune og driftet av stiftelsen Nordlandsmuseet. Det er
+            dermed en offentlig virksomhet, underlagt samme regelverk som gjelder for kommuner, fylkeskommuner
+            og statlige etater. Kravene er ikke vage anbefalinger. De er lov.
+        </p>
+
+        <div class="law-box">
+            <h3>Gjeldende lovkrav</h3>
+            <p>
+                Følgende regelverk stiller krav til universell utforming av IKT-løsninger og tilgjengelighetserklæring
+                for offentlige virksomheter:
+            </p>
+            <ul>
+                <li>
+                    <a href="https://lovdata.no/dokument/NL/lov/2017-06-16-51" target="_blank">Likestillings- og diskrimineringsloven</a>:
+                    forbyr diskriminering på grunn av funksjonsnedsettelse og pålegger universell utforming (§ 17 til 18)
+                </li>
+                <li>
+                    <a href="https://lovdata.no/dokument/SF/forskrift/2013-06-21-732" target="_blank">Forskrift om universell utforming av IKT-løsninger</a>:
+                    krever at nettsteder oppfyller WCAG 2.1 nivå AA, med tilgjengelighetserklæring for offentlig sektor
+                </li>
+                <li>
+                    <a href="https://www.uutilsynet.no/tilgjengelighetserklaering/om-tilgjengelegheitserklaering/1128" target="_blank">Krav om tilgjengelighetserklæring (UU-tilsynet)</a>:
+                    offentlige virksomheter skal ha publisert erklæring via uustatus.no. Fristen var 1. februar 2023.
+                </li>
+                <li>
+                    <a href="https://www.uutilsynet.no/regelverk/regelverk-og-krav/746" target="_blank">UU-tilsynets oversikt over regelverk og krav</a>:
+                    komplett oversikt over plikter for offentlige og private virksomheter
+                </li>
+            </ul>
+            <p style="margin-top: 15px; font-size: 0.88em; color: rgba(255,255,255,0.6);">
+                Tilsynet for universell utforming av IKT (Digdir) fører tilsyn og kan gi pålegg og bøter ved brudd.
+                Brukere kan klage til Diskrimineringsnemnda.
+            </p>
+        </div>
+
+        <p>
+            Det er verdt å understreke at dette ikke handler om teknisk perfeksjonisme. Det handler om at
+            Hamsunsenteret, som offentlig kulturinstitusjon, har en <em>lovpålagt plikt</em> til å gjøre sine
+            digitale tjenester tilgjengelige for alle. En plikt som har vært gjeldende i årevis, og som per i dag ikke etterleves.
+        </p>
+
+        <h2>Hamsuns arv fortjener bedre</h2>
+
+        <p>
+            Hamsunsenteret har en unik mulighet. Dere forvalter en av Norges mest kjente og mest
+            omdiskuterte forfattere. Det digitale tilbudet deres kan nå mennesker over hele verden,
+            uavhengig av fysiske begrensninger. Hamsuns liv, hans verk, hans kontroversielle historie:
+            alt dette burde være tilgjengelig for alle som ønsker å utforske det.
+        </p>
+
+        <p>
+            Mange av feilene som ble avdekket er teknisk sett overkommelige å rette. Tomme lenker trenger tekst.
+            Bilder trenger beskrivelser. Skjemafelt trenger etiketter. Det handler ikke om å bygge noe nytt,
+            men om å gjøre det som allerede finnes tilgjengelig for flere.
+        </p>
+
+        <div class="pullquote">
+            «For Hamsun skrev for alle. Da bør Hamsunsenteret også være for alle.»
+        </div>
+
+        <!-- The actual letter -->
+        <div class="letter-section">
+            <div class="letter-header">
+                <h3>Åpent brev til ledelsen</h3>
+                <p>Sendt til Hamsunsenteret / Nordlandsmuseet, 7. februar 2026</p>
+            </div>
+
+            <p class="salutation">Til ledelsen ved Hamsunsenteret,</p>
+
+            <p>
+                Jeg skriver dette brevet fordi jeg genuint bryr meg om det Hamsunsenteret representerer,
+                og fordi jeg mener dere ubevisst stenger ute en stor gruppe mennesker fra det dere tilbyr.
+            </p>
+
+            <p>
+                En tilgjengelighetskontroll av hamsunsenteret.no avdekket 4&nbsp;515 brudd på kravene til
+                universell utforming, hvorav 970 er klassifisert som kritiske. I tillegg mangler det
+                en lovpålagt tilgjengelighetserklæring som skulle vært på plass innen 1. februar 2023.
+            </p>
+
+            <p>
+                For mange mennesker med funksjonsnedsettelser er nettsiden den viktigste, og kanskje eneste,
+                inngangen til Hamsuns verden. En synshemmet bruker kan ikke bla gjennom utstillingen i Hamarøy.
+                Men med en tilgjengelig nettside kunne vedkommende utforsket Hamsuns liv, verk og historie
+                på egne premisser. Slik nettsiden er i dag, er det umulig.
+            </p>
+
+            <p>
+                Jeg deler gjerne den fullstendige tekniske rapporten med konkrete funn og anbefalinger.
+                Mitt mål er ikke å henge ut Hamsunsenteret, men å bidra til at flere mennesker
+                får ta del i det dere tilbyr.
+            </p>
+
+            <p>
+                Jeg håper dere tar dette på alvor.
+            </p>
+
+            <div class="sign-off">
+                <p>Med vennlig hilsen,</p>
+                <p><strong>[Ditt navn]</strong></p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer tags -->
+    <footer class="article-footer">
+        <div class="tags">
+            <span class="tag">Universell utforming</span>
+            <span class="tag">WCAG 2.1</span>
+            <span class="tag">Hamsunsenteret</span>
+            <span class="tag">Nordlandsmuseet</span>
+            <span class="tag">Offentlig sektor</span>
+            <span class="tag">Tilgjengelighetserklæring</span>
+        </div>
+        <div class="share">Del denne artikkelen: Twitter / Facebook / LinkedIn / E-post</div>
+    </footer>
+
+</article>
+
+<!-- Publication footer -->
+<div class="publication-footer">
+    <div class="logo-footer">NFDI<span>.</span>no</div>
+    <p>Norsk Forening for Digitalt Innsyn | Vi synliggjør det offentlige Norges digitale tilgjengelighet</p>
+    <p style="margin-top: 8px;">&copy; 2026 NFDI. Alle rettigheter reservert.</p>
+</div>
+
+</body>
+</html>
