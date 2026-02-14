@@ -1,0 +1,2975 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://vegvesen.no/trafikkstasjoner</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://vegvesen.no/trafikkstasjoner";
+        var TOTAL_ISSUES = 163;
+        var maxPages = 21;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://vegvesen.no/trafikkstasjoner</p>
+        <p><strong>Dato:</strong> 2026-02-13T16:56:06.165213</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item success">✅ <strong>Tilgjengelighetserklæring funnet</strong></div>
+            <div class="statement-item">🔗 <a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" class="statement-link" target="_blank">Gå til erklæring</a></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">21</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">163</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">43</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">46</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">74</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">3069</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">163</strong> av 163 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Finn trafikkstasjon | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/trafikkstasjoner</div>
+            <div>Avvik: 5 | Bestått: 97</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Teknologi | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/fag/teknologi/</div>
+            <div>Avvik: 5 | Bestått: 102</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Vei, trafikk, kjøretøy og førerkort | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/</div>
+            <div>Avvik: 6 | Bestått: 130</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="link-card-list"&gt;
+&lt;article class="link-card"&gt;
+&lt;a data-gtm-name="fp-shortcut" href="/om-oss/kontakt-oss/nettsvindel/"&gt;
+&lt;h3&gt;&lt;span&gt;Svindel på SMS og e-post&lt;/span&gt;&lt;/h3&gt;
+&lt;div class="link-card__i</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Find a Driver and Vehicle Licensing Office | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/en/about-us/contact-us/find-a-dvlo/</div>
+            <div>Avvik: 4 | Bestått: 70</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Go to main content'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Go to main content&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2fen%2floggut%2f</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Logg inn på Din side | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/dinside/</div>
+            <div>Avvik: 6 | Bestått: 106</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-label="Link Har du ikke tilgang på Bank ID, Buypass eller Commfides?" class="fui-Link ___1q1shib f2hkw1w f3rmtva f1ewtqcl fyind8e f1k6fduh f1w7gpdv fk6fouc fjoy568 figsok6 f1s184ao f1mk8lai fn</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Personvern  | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/om-organisasjonen/personvern/</div>
+            <div>Avvik: 9 | Bestått: 98</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (6 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (156 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/personvern/statens-vegvesens-personvernerklaering/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Statens vegvesens personvernerklæring&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Her kan </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (161 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/personvern/vegvesenno-informasjonskapsler/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Informasjonskapsler (cookies)&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Når du bruker nettstedet</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (140 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/personvern/sporsmal-om-personvern/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Spørsmål om personvern?&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Ta kontakt med oss om du har spørsmål </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (143 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/personvern/chatbot-eller-talerobot/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Chatbot eller talerobot&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Denne siden beskriver hvordan dine pe</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Leverandørinformasjon | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/fag/leverandor/</div>
+            <div>Avvik: 7 | Bestått: 95</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (168 characters)</p>
+                <div class="element">&lt;a href="/fag/leverandor/dette-ma-du-som-leverandor-vite/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Dette må du som leverandør vite&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Her har vi samlet informasjon om blant ann</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Planlagte og pågående anskaffelserHer finner du prosjekter og anskaffelser som er under planlegging og vil bli kunngjort. I tillegg finner du lenke til de konkurransene som er kunngjort.'</p>
+                <div class="element">&lt;a href="/fag/leverandor/planlagte-og-pagaende-anskaffelser/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Planlagte og pågående anskaffelser&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Her finner du prosjekter og anskaffe</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Finn trafikkstasjon | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/trafikkstasjoner</div>
+            <div>Avvik: 5 | Bestått: 97</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Publikasjoner | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/fag/publikasjoner/</div>
+            <div>Avvik: 5 | Bestått: 96</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Nasjonal transportplan (NTP) | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/vegprosjekter/nasjonal-transportplan/</div>
+            <div>Avvik: 13 | Bestått: 98</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (10 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (176 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/nasjonal-transportplan-2025-2036/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Nasjonal transportplan 2025-2036&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Meldingen om Nasjo</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (174 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/gjennomforingsplan-20252030/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Gjennomføringsplan 2025–2030&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Statens vegvesens gjennomfø</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (167 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/nasjonal-transportplan-2029-2040/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Nasjonal transportplan 2029-2040&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Samferdselsdeparte</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (153 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/byvekstavtaler/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Byvekstavtaler&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Byvekstavtalene er avtaler som skal legge til rette fo</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (177 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/portefoljestyring-av-riksveiinvesteringer/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Porteføljestyring av riksveiinvesteringer&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (113 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/transportanalyser/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Transportanalyser&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Her finner du et utvalg av de mest relevante rap</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (142 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/den-nasjonale-reisevaneundersokelsen/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Den nasjonale reisevaneundersøkelsen&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Undersøkel</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (138 characters)</p>
+                <div class="element">&lt;a href="/vegprosjekter/nasjonal-transportplan/tidligere-nasjonale-transportplaner/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Tidligere nasjonale transportplaner&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Her finner d</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Søk | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/sok/</div>
+            <div>Avvik: 6 | Bestått: 96</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg fill="none" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;g clip-path="url(#a)"&gt;
+&lt;path d="M23.836 22.575l-6.047-6.047a.557.557 0 00-.398-.164h-.483A9.707 9.707 0 0019.5 9.75 9.749 9.74</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Presse | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/presse/</div>
+            <div>Avvik: 7 | Bestått: 106</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (121 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/innsyn-etter-offentligloven/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Innsyn etter offentligloven&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;I eInnsyn publiseres Statens vegvesens p</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (118 characters)</p>
+                <div class="element">&lt;a href="/om-oss/presse/foto-film/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Foto og film&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Du kan fritt laste ned og ta i bruk foto, film og illustrasjoner fra Statens vegvese</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Nettstedskart | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/om-organisasjonen/om-vegvesenno/nettstedskart/</div>
+            <div>Avvik: 5 | Bestått: 125</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Kjøp og salg | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/kjoretoy/kjop-og-salg/</div>
+            <div>Avvik: 6 | Bestått: 130</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="link-card-list"&gt;&lt;article class="link-card link-card--emphasised"&gt;
+&lt;a href="/kjoretoy/kjop-og-salg/salgsmelding-og-omregistrering/"&gt;
+&lt;div class="link-card__img-container"&gt;
+&lt;img alt="" class</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Høringer veiprosjekter | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/vegprosjekter/hoeringer-vegprosjekter/</div>
+            <div>Avvik: 5 | Bestått: 111</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Informasjonskapsler på vegvesen.no | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/om-organisasjonen/personvern/vegvesenno-informasjonskapsler/</div>
+            <div>Avvik: 5 | Bestått: 119</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Offentlige høringer | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/fag/publikasjoner/hoeringer/</div>
+            <div>Avvik: 34 | Bestått: 893</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (31 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/25-239132-horing-om-forslag-til-endringer-i-bilforskriften-og-bruksforskriften-om-godkjenning-og-brukskontroll-av-kjoretoy-med-tilhengerkob</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (126 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/24-206770-endring-av-forskrift-om-bruk-av-kjoretoy/"&gt;Endring av forskrift om bruk av kjøretøy - økt totalvekt til 54/56 tonn for utvalgte v</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (106 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-endring-av-forskrift-om-periodisk-kontroll-av-kjoretoy-for-innforing-av-innsamling-av-obfcm-data/"&gt;Høring om endring av forskrift</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (103 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/23-120804-forslag-til-forskrift-om-gebyr-pa-tjenester-utfort-av-statens-vegvesen-pa-trafikant--og-kjoretoyomradet/"&gt;Forslag til forskrift o</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing---forslag-om-a-ta-inn-et-underskilt-som-viser-fartsgrenseskilt-80-kmt-i-miniatyr-i-skiltforskriften/"&gt;Høring - forslag om å ta inn e</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (103 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-endringer-om-i-forskrift-om-energi--og-miljokrav-ved-anskaffelse-av-kjoretoy-til-veitransport/"&gt;Høring om endringer om i forskrif</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (123 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-endringer-i-vegtrafikkloven-vedr.-kjoretoyfabrikanters-plikter-etter-forordning-eu-2019621-og-endring-i--19-b"&gt;Høring om endringe</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing--nye-bestemmelser-om-lengde-og-bredde/"&gt;Høring – nye bestemmelser om lengde og bredde ved vinterdrift av veg og aksellast for dumper</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (166 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing--forslag-til-endring-i-bruksforskriften-for-obligatorisk-registrering-av-leasingtaker/"&gt;Høring – forslag til endring i bruksforskrif</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (109 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-til-endringer-i-yrkestransportloven-og-ny-forskrift-om-gebyr-for-overtredelser-av-yrkestransportloven/"&gt;Forslag til endringer i yrk</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (122 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-til-endringer-i-skiltforskriften--skilt-for-fartsgrensesone-sykkel-og-endringer-i-forskrift-om-forenklet-forelegg/"&gt;Forslag til end</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (103 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-til-endringer-i-diverse-forskrifter-for-a-redusere-hastighetsforskjeller-mellom-kjoretoy-pa-veg/"&gt;Forslag til endringer i diverse f</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (202 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-forslag-til-forskrift-om-endringer-i-forskrift-om-midlertidig-forlengelse-av-utlopt-forerett-utrykningskompetanse-og-yrkessjaforkomp</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (131 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-om-a-etablere-hjemler-som-gir-myndighetene-rett-til-a-bestemme-farge-og-profilering-pa-utrykningskjoretoy-og-andre-kjoretoy/"&gt;Forsl</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (109 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-erstatte-uttrykket-vegdirektoratet-med-statens-vegvesen-i-diverse-forskrifter-pa-kjoretoyomradet/"&gt;Høring – erstatte uttrykket «Vegd</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (108 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-forslag-til-endring-av-forskrift-om-universell-utforming-av-motorvogn-i-loyvepliktig-transport-mv/"&gt;Høring om forslag til endring</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (172 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-endringer-i-vegtrafikkloven-og-yrkestransportloven.tilbakehold-av-kjoretoy-for-a-sikre-betaling-av-okonomisk-sanksjon-for-overtre</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (108 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/horing-om-vogntog-med-lengde-24-00-m-pa-modulvogntogvegnettet-og-okt-lengde-ved-transport-av/"&gt;Høring om vogntog med lengde 24,00 m på modu</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (109 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/endring-av-yrkestransportforskriften-for-etablering-av-register-over-vegtransportforetaks-disponible-kjoretoy/"&gt;Endring av yrkestransportfo</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/unntak-fra-kjore-og-hviletidsregler-for-kjoretoy-inntil-7-500-kg-som-bruker-alternativt-drivstoff-mv/"&gt;Unntak fra kjøre- og hviletidsregler</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (148 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/unntak-fra-vektbegrensningene-i-forerkortklasse-b-for-kjoretoy-med-alternativt-drivstoff-med-tillatt-totalvekt-over-3-500-kg-men-ikke-over-</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (138 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-om-endring-av-bilforskriften-traktorforskriften-motorsykkelforskriften-kjoretoyforskriften-og-forskrift-om-amatorbygde-kjoretoy/"&gt;F</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (106 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/indeksregulering-av-gebyrer-knyttet-til-kjoretoy-og-forerkort-m.m.samt-korrigering-av-forslag-til-gebyrer"&gt;Indeksregulering av gebyrer knyt</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-til-forskrift-for-trafikklast-pa-bruer-ferjekaier-og-andre-baerende-konstruksjoner-i-det-offentlige-vegnettet/"&gt;Forslag til forskri</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (105 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/krav-om-at-opplaeringsinstitusjon-ma-ha-disposisjonsrett-over-forerprovevogn-klasse-b-og-laerevogn-klasse-b/"&gt;Krav om at opplæringsinstitus</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (121 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/soknad-fra-oslo-kommune-og-akershus-fylkeskommune-om-fastsetting-av-forskrift-om-midlertidige-okte-bompengetakster-i-oslo/"&gt;Søknad fra Oslo</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (124 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/implementering-av-europa-kommisjonens-forordning-2016-1004-eu-og-forslag-om-a-innta-bilforskriften-som-formell-korttittel/"&gt;Implementering </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (151 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/utkast-til-forskrifter-om-gjennomforing-av-delegert-kommisjonsforordning-eu-nr.886-2013-og-nr.885-2013-forordninger-iht.its-direktivet-2010</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (105 characters)</p>
+                <div class="element">&lt;a class="editorial-link" href="/fag/publikasjoner/hoeringer/forslag-til-endringsforskrifter-til-forskrift-om-trafikkopplaering-og-forerprove-og-forskrift-om-forerkort/"&gt;Forslag til endringsforskrifte</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Innsyn etter offentligloven | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/om-organisasjonen/innsyn-etter-offentligloven/</div>
+            <div>Avvik: 5 | Bestått: 115</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Yrkestransport | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/kjoretoy/yrkestransport/</div>
+            <div>Avvik: 6 | Bestått: 145</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="link-card-list"&gt;&lt;article class="link-card link-card--emphasised"&gt;
+&lt;a href="/kjoretoy/yrkestransport/kjore-og-hviletid/"&gt;
+&lt;div class="link-card__img-container"&gt;
+&lt;img alt="" class="icon" src</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Trafikksikkerhet | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/trafikkinformasjon/trafikksikkerhet/</div>
+            <div>Avvik: 6 | Bestått: 130</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="link-card-list"&gt;&lt;article class="link-card"&gt;
+&lt;a href="/trafikkinformasjon/trafikksikkerhet/sikker-kjoring/"&gt;
+&lt;h2&gt;&lt;span&gt;Sikker kjøring&lt;/span&gt;&lt;/h2&gt;
+&lt;div class="link-card__img-container"&gt;
+&lt;img</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Kontakt oss | Statens vegvesen</h3>
+            <div class="page-url">https://www.vegvesen.no/om-oss/kontakt-oss/</div>
+            <div>Avvik: 13 | Bestått: 110</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (10 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hovedinnhold'</p>
+                <div class="element">&lt;a class="skiplinks _js-skiplink-main" href="#mainContent"&gt;Gå til hovedinnhold&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/chat/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Chat med Statens vegvesen&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Har du spørsmål om førerkort eller kjøretøy, kan du chatte med oss i St</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (153 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/nettsvindel/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Svindel på SMS og e-post&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Har du fått en SMS eller e-post fra Statens vegvesen som du ikke </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (154 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/faktura--post--og-besoksadresser/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Faktura-, post- og besøksadresser&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Finn post- og besøksadresser og ele</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (142 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/vegtrafikksentralen/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Veitrafikksentralene&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Du kan melde om feil og mangler på riks- og fylkesveier, tips</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (104 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/varsler-og-tips/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Varsler og tips&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Vi ønsker varsler, tips og informasjon om kritikkverdige, useriøse og </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/innsyn-i-personopplysninger/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Innsyn i personopplysninger&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Alle kan be om innsyn i, retting og sletting a</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (121 characters)</p>
+                <div class="element">&lt;a href="/om-oss/om-organisasjonen/innsyn-etter-offentligloven/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Innsyn etter offentligloven&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;I eInnsyn publiseres Statens vegvesens p</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (101 characters)</p>
+                <div class="element">&lt;a href="/om-oss/kontakt-oss/klage/"&gt;
+&lt;div class="article-link-list__item__heading"&gt;
+&lt;h2&gt;Klage på vedtak&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p&gt;Du kan klage på vedtak fra Statens vegvesen hvis du mener at et vedtak ikke er r</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/9e4d3e08-9ae7-42e4-89df-26b152ced243" target="_blank"&gt;Tilgjengelighetserklæring&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.4.1 Hopp over blokker (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no skip link to bypass navigation</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add a skip link at the start of the page: &lt;a href='#main'&gt;Hopp til hovedinnhold&lt;/a&gt;</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-5FKSPBXS" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="my-page-banner__logout" href="https://oidc-login.atlas.vegvesen.no/idporten/logout?returnUrl=https%3a%2f%2fwww.vegvesen.no%2floggut%2f%3fgoto%3dhttps%3a%2f%2fwww.vegvesen.no%2floggut%2f"&gt;
+&lt;s</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://vegvesen.no/trafikkstasjoner</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="21" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://vegvesen.no/trafikkstasjoner --max-pages 21 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

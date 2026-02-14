@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Østfold WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Østfold WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Østfold</p>
+        <p><strong>Skannet:</strong> 2026-02-12 01:46</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">52</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">52</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">712</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">1735</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">10326</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">20373</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.moss-havn.no" target="_blank">Moss Havn KF</a></td>
+                <td>Moss</td>
+                <td class="contact"><a href="mailto:firmapost@moss-havn.no">firmapost@moss-havn.no</a><br>69 20 87 00</td>
+                <td>17</td>
+                <td><span class="badge critical">321</span></td>
+                <td>242</td>
+                <td>407</td>
+                <td>988</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\moss_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gallerif15.no" target="_blank">Galleri f 15 AS</a></td>
+                <td>Moss</td>
+                <td class="contact"><a href="mailto:gallerif15@gallerif15.no">gallerif15@gallerif15.no</a><br>69 27 10 33</td>
+                <td>21</td>
+                <td><span class="badge critical">302</span></td>
+                <td>184</td>
+                <td>172</td>
+                <td>660</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\galleri_f_15_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.daiv.no" target="_blank">Driftsassistansen i Viken IKS</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact"><a href="mailto:post@daiv.no">post@daiv.no</a></td>
+                <td>20</td>
+                <td><span class="badge critical">170</span></td>
+                <td>1001</td>
+                <td>100</td>
+                <td>1271</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\driftsassistansen_i_viken_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hiof.no" target="_blank">Høgskolen i Østfold</a></td>
+                <td>Halden</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge critical">152</span></td>
+                <td>13</td>
+                <td>14</td>
+                <td>202</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\høgskolen_i_østfold.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.movar.no" target="_blank">Movar IKS</a></td>
+                <td>Moss</td>
+                <td class="contact"><a href="mailto:postmottak@movar.no">postmottak@movar.no</a><br>69 20 52 00</td>
+                <td>21</td>
+                <td><span class="badge critical">137</span></td>
+                <td>80</td>
+                <td>287</td>
+                <td>505</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\movar_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://movar.no" target="_blank">MOVAR IKS</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">108</span></td>
+                <td>78</td>
+                <td>316</td>
+                <td>502</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\movar_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ostfold-kollektiv.no" target="_blank">Østfold kollektivtrafikk AS</a></td>
+                <td>Østfold</td>
+                <td class="contact">-</td>
+                <td>20</td>
+                <td><span class="badge critical">85</span></td>
+                <td>25</td>
+                <td>87</td>
+                <td>225</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/vaaler-svinndal" target="_blank">Våler Kirkelige Fellesråd</a></td>
+                <td>Våler</td>
+                <td class="contact"><a href="mailto:kirkeverge@vpgo.net">kirkeverge@vpgo.net</a><br>69 28 88 30</td>
+                <td>21</td>
+                <td><span class="badge critical">66</span></td>
+                <td>683</td>
+                <td>129</td>
+                <td>892</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\våler_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.iorenovasjon.no" target="_blank">Indre Østfold Renovasjon IKS</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact"><a href="mailto:ior@iorenovasjon.no">ior@iorenovasjon.no</a><br>69 88 79 50</td>
+                <td>21</td>
+                <td><span class="badge serious">49</span></td>
+                <td>15</td>
+                <td>163</td>
+                <td>252</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\indre_østfold_renovasjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.borg-havn.no" target="_blank">Borg Havn IKS</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact"><a href="mailto:firmapost@borg-havn.no">firmapost@borg-havn.no</a><br>69 35 89 00</td>
+                <td>21</td>
+                <td><span class="badge serious">46</span></td>
+                <td>28</td>
+                <td>202</td>
+                <td>276</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\borg_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.iobr.no" target="_blank">Indre Østfold Brann og Redning IKS</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact"><a href="mailto:post@iobr.no">post@iobr.no</a></td>
+                <td>18</td>
+                <td><span class="badge serious">38</span></td>
+                <td>56</td>
+                <td>257</td>
+                <td>352</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\indre_østfold_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.valer.kommune.no" target="_blank">Våler Kommune</a></td>
+                <td>Våler</td>
+                <td class="contact"><a href="mailto:postmottak@valer.kommune.no">postmottak@valer.kommune.no</a><br>69 28 91 00</td>
+                <td>18</td>
+                <td><span class="badge serious">36</span></td>
+                <td>513</td>
+                <td>204</td>
+                <td>776</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\våler_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.dnbe.no" target="_blank">Stiftelsen Det Norske Blåseensemble Anno 1734</a></td>
+                <td>Halden</td>
+                <td class="contact"><a href="mailto:post@dnbe.no">post@dnbe.no</a><br>69 17 82 50</td>
+                <td>21</td>
+                <td><span class="badge serious">27</span></td>
+                <td>211</td>
+                <td>168</td>
+                <td>419</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\stiftelsen_det_norske_blåseensemble_anno_1734.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/indreostfold" target="_blank">Indre Østfold Kirkelige Fellesråd</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">27</span></td>
+                <td>811</td>
+                <td>328</td>
+                <td>1189</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\indre_østfold_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://arkivo.no" target="_blank">Arkiv Øst IKS</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact"><a href="mailto:post@arkivo.no">post@arkivo.no</a><br>69 11 63 05</td>
+                <td>21</td>
+                <td><span class="badge serious">23</span></td>
+                <td>1440</td>
+                <td>190</td>
+                <td>1662</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\arkiv_øst_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tomb.no" target="_blank">Tomb videregående skole og folkehøgskole</a></td>
+                <td>Moss</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">22</span></td>
+                <td>22</td>
+                <td>269</td>
+                <td>313</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\tomb_videregående_skole_og_folkehøgskole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.eidsberg.kirken.no" target="_blank">Eidsberg Kirkelige Fellesråd</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact"><a href="mailto:kirkekontoret@eidsberg.kommune.no">kirkekontoret@eidsberg.kommune.no</a><br>69 70 22 65</td>
+                <td>21</td>
+                <td><span class="badge serious">20</span></td>
+                <td>751</td>
+                <td>197</td>
+                <td>972</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\eidsberg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Halden fengsel</a></td>
+                <td>Halden</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge serious">17</span></td>
+                <td>88</td>
+                <td>259</td>
+                <td>368</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\halden_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/borg" target="_blank">Borg bispedømme</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">17</span></td>
+                <td>649</td>
+                <td>215</td>
+                <td>885</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\borg_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fredrikstad.kirken.no/" target="_blank">Fredrikstad Kirkelige Fellesråd</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact"><a href="mailto:kirkevergen@fredrikstad.kommune.no">kirkevergen@fredrikstad.kommune.no</a><br>69 95 98 00</td>
+                <td>21</td>
+                <td><span class="badge serious">16</span></td>
+                <td>744</td>
+                <td>143</td>
+                <td>915</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\fredrikstad_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/sarpsborg" target="_blank">Sarpsborg Kirkelige Fellesråd</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact"><a href="mailto:post.sarpsborg@kirken.no">post.sarpsborg@kirken.no</a><br>40 70 17 00</td>
+                <td>21</td>
+                <td><span class="badge serious">15</span></td>
+                <td>708</td>
+                <td>205</td>
+                <td>938</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\sarpsborg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.halden.kirken.no" target="_blank">Halden Kirkelige Fellesråd</a></td>
+                <td>Halden</td>
+                <td class="contact"><a href="mailto:fellesraadet@kirkenshus.halden.no">fellesraadet@kirkenshus.halden.no</a><br>69 17 95 30</td>
+                <td>18</td>
+                <td><span class="badge serious">12</span></td>
+                <td>689</td>
+                <td>107</td>
+                <td>827</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\halden_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hvaler.kommune.no/" target="_blank">Hvaler Kommune</a></td>
+                <td>Hvaler</td>
+                <td class="contact"><a href="mailto:postmottak@hvaler.kommune.no">postmottak@hvaler.kommune.no</a><br>69 37 50 00</td>
+                <td>4</td>
+                <td><span class="badge serious">12</span></td>
+                <td>3</td>
+                <td>27</td>
+                <td>50</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\hvaler_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ostfoldmuseene.no" target="_blank">Østfoldmuseene Sti</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact"><a href="mailto:postmottak@ostfoldmuseene.no">postmottak@ostfoldmuseene.no</a><br>69 11 56 50</td>
+                <td>21</td>
+                <td><span class="badge moderate">7</span></td>
+                <td>112</td>
+                <td>158</td>
+                <td>317</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfoldmuseene_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Østfold kollektivtrafikk AS</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>36</td>
+                <td>428</td>
+                <td>646</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sykehuset-ostfold.no" target="_blank">Sykehuset Østfold HF</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact"><a href="mailto:postmottak@so-hf.no">postmottak@so-hf.no</a><br>69 86 00 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>2</td>
+                <td>18</td>
+                <td>74</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\sykehuset_østfold_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rakkestad.kommune.no/" target="_blank">Rakkestad Kommune</a></td>
+                <td>Rakkestad</td>
+                <td class="contact"><a href="mailto:postmottak@rakkestad.kommune.no">postmottak@rakkestad.kommune.no</a><br>69 22 55 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>29</td>
+                <td>114</td>
+                <td>430</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\rakkestad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.marker.kommune.no/" target="_blank">Marker Kommune</a></td>
+                <td>Marker</td>
+                <td class="contact"><a href="mailto:post@marker.kommune.no">post@marker.kommune.no</a><br>69 81 05 00</td>
+                <td>20</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>26</td>
+                <td>121</td>
+                <td>357</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\marker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aremark.kommune.no" target="_blank">Aremark Kommune</a></td>
+                <td>Aremark</td>
+                <td class="contact"><a href="mailto:post@aremark.kommune.no">post@aremark.kommune.no</a><br>69 19 96 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>30</td>
+                <td>62</td>
+                <td>223</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\aremark_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/ost" target="_blank">Øst politidistrikt</a></td>
+                <td>Østfold</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>29</td>
+                <td>106</td>
+                <td>161</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\øst_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ostfoldfk.no" target="_blank">Østfold fylkeskommune</a></td>
+                <td>Østfold</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://halden.kommune.no" target="_blank">Halden kommune</a></td>
+                <td>Halden</td>
+                <td class="contact"><a href="mailto:postmottak@halden.kommune.no">postmottak@halden.kommune.no</a><br>69 17 45 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>58</td>
+                <td>31</td>
+                <td>111</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\halden_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://halden.vgs.no" target="_blank">Halden videregående skole</a></td>
+                <td>Halden</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\halden_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://smartenergymarkets.no" target="_blank">NCE Smart Energy Markets</a></td>
+                <td>Halden</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\nce_smart_energy_markets.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.moss.kommune.no" target="_blank">Moss Kommune</a></td>
+                <td>Moss</td>
+                <td class="contact"><a href="mailto:post@moss.kommune.no">post@moss.kommune.no</a><br>69 24 80 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>106</td>
+                <td>64</td>
+                <td>205</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\moss_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://borg.vgs.no" target="_blank">Borg videregående skole</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\borg_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sarpsborg.com/" target="_blank">Sarpsborg Kommune</a></td>
+                <td>Sarpsborg</td>
+                <td class="contact"><a href="mailto:postmottak@sarpsborg.com">postmottak@sarpsborg.com</a><br>69116000</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>355</td>
+                <td>376</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\sarpsborg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://frederik2.vgs.no" target="_blank">Frederik II videregående skole</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\frederik_ii_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fredrikstadbrann.no" target="_blank">Fredrikstad brann- og feiervesen</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\fredrikstad_brann-_og_feiervesen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fredrikstad.kommune.no" target="_blank">Fredrikstad kommune</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact"><a href="mailto:postmottak@fredrikstad.kommune.no">postmottak@fredrikstad.kommune.no</a><br>69306000</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\fredrikstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://glemmen.vgs.no" target="_blank">Glemmen videregående skole</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\glemmen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.ofrfk.no" target="_blank">Tannhelsetjenesten Østfold</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\tannhelsetjenesten_østfold.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ofk.no/fylkesbibliotek" target="_blank">Østfold fylkesbibliotek</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ofk.no/tilskudd" target="_blank">Østfold fylkeskommune tilskudd</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ostfold-kollektivtrafikk.no" target="_blank">Østfold kollektivtrafikk</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_kollektivtrafikk.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/ostfold" target="_blank">Østfold tingrett</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact">-</td>
+                <td>3</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>5</td>
+                <td>6</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østfold_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://okrev.no" target="_blank">Østre Viken Kommunerevisjon IKS</a></td>
+                <td>Fredrikstad</td>
+                <td class="contact"><a href="mailto:post@okrev.no">post@okrev.no</a><br>69 30 77 00</td>
+                <td>7</td>
+                <td><span class="badge good">0</span></td>
+                <td>226</td>
+                <td>92</td>
+                <td>358</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\østre_viken_kommunerevisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rade.kommune.no/" target="_blank">Råde Kommune</a></td>
+                <td>Råde</td>
+                <td class="contact"><a href="mailto:postmottak@rade.kommune.no">postmottak@rade.kommune.no</a><br>69 29 50 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>512</td>
+                <td>42</td>
+                <td>563</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\råde_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://malakoff.vgs.no" target="_blank">Malakoff videregående skole</a></td>
+                <td>Moss</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\malakoff_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.skiptvet.kommune.no/" target="_blank">Skiptvet Kommune</a></td>
+                <td>Skiptvet</td>
+                <td class="contact"><a href="mailto:postmottak@skiptvet.kommune.no">postmottak@skiptvet.kommune.no</a><br>69 80 60 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>23</td>
+                <td>65</td>
+                <td>722</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\skiptvet_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://io.kommune.no" target="_blank">Indre Østfold kommune</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact"><a href="mailto:post@asker.kommune.no">post@asker.kommune.no</a><br>66 70 00 00</td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>102</td>
+                <td>274</td>
+                <td>385</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\indre_østfold_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://iofr.no" target="_blank">Indre Østfold regionråd</a></td>
+                <td>Indre Østfold</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="østfold\indre_østfold_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

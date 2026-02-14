@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.kommuneskog.net</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://www.kommuneskog.net";
+        var TOTAL_ISSUES = 177;
+        var maxPages = 16;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.kommuneskog.net</p>
+        <p><strong>Dato:</strong> 2026-02-10T04:02:26.071794</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item error">❌ <strong>Ingen tilgjengelighetserklæring funnet</strong></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">16</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">177</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">21</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">44</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">112</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">1258</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">177</strong> av 177 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Stor-Elvdal Kommuneskoger | Skog, fjell , jakt, fiske og friluftsliv</h3>
+            <div class="page-url">https://www.kommuneskog.net/</div>
+            <div>Avvik: 15 | Bestått: 86</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-large size-large wp-post-image" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 960px) 100vw, 960px" src="https://www.kommuneskog.net/wp-content/upl</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-large size-large wp-post-image" decoding="async" height="1024" loading="lazy" sizes="auto, (max-width: 682px) 100vw, 682px" src="https://www.kommuneskog.net/wp-content/up</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h6, should start with h1</p>
+                <div class="element">&lt;h6 class="kt-adv-heading952_c9511e-5d wp-block-kadence-advancedheading has-theme-palette-2-color has-text-color" data-kb-block="kb-adv-heading952_c9511e-5d"&gt;Stor-Elvdal Kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 class="kt-adv-heading952_aa9f9d-db wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading952_aa9f9d-db"&gt;Jakt&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (7 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/jakt/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/hyttetomter/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/hytteutleie/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/fiske/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'les mer'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn952_6ec202-2e kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn952_9b78f8-6d kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Jakt - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/jakt/</div>
+            <div>Avvik: 9 | Bestått: 53</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1139 page-parent wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-s</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1139_8309c1-41 wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1139_8309c1-41"&gt;Jakt&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://kommuneskog.net/jakt/elgjakt"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://kommuneskog.net/jakt/smaviltjakt"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Hytteutleie - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/hytteutleie/</div>
+            <div>Avvik: 9 | Bestått: 48</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1240 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1240_4c4e34-6a wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1240_4c4e34-6a"&gt;Utleie av hytter&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'les mer'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1240_4d5e58-64 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="htt</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'les mer'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1240_15c973-92 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="htt</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Stor-Elvdal Kommuneskoger | Skog, fjell , jakt, fiske og friluftsliv</h3>
+            <div class="page-url">https://www.kommuneskog.net/</div>
+            <div>Avvik: 15 | Bestått: 86</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-large size-large wp-post-image" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 960px) 100vw, 960px" src="https://www.kommuneskog.net/wp-content/upl</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-large size-large wp-post-image" decoding="async" height="1024" loading="lazy" sizes="auto, (max-width: 682px) 100vw, 682px" src="https://www.kommuneskog.net/wp-content/up</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h6, should start with h1</p>
+                <div class="element">&lt;h6 class="kt-adv-heading952_c9511e-5d wp-block-kadence-advancedheading has-theme-palette-2-color has-text-color" data-kb-block="kb-adv-heading952_c9511e-5d"&gt;Stor-Elvdal Kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 class="kt-adv-heading952_aa9f9d-db wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading952_aa9f9d-db"&gt;Jakt&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (7 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/jakt/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/hyttetomter/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/hytteutleie/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/fiske/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'les mer'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn952_6ec202-2e kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn952_9b78f8-6d kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-false wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Kontakt Oss - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/kontakt-oss/</div>
+            <div>Avvik: 10 | Bestått: 57</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-948 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standard</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading948_661162-6f wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading948_661162-6f"&gt;Kontakt Oss&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>3.3.2 Ledetekster eller instruksjoner (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 3.3.2</span>
+                        <span class="criterion">(3.3.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Form input has no label</p>
+                <div class="element">&lt;textarea class="g-recaptcha-response" id="g-recaptcha-response-100000" name="g-recaptcha-response" style="width: 250px; height: 40px; border: 1px solid rgb(193, 193, 193); margin: 10px 25px; padding:</div>
+                <div class="fix">Add a &lt;label&gt; element with for attribute pointing to input id</div>
+            </div>
+</details><details><summary>2.1.1 Tastatur (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive input has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;input aria-hidden="true" autocomplete="new-password" class="kadence-blocks-field verify" data-1p-ignore="true" data-lpignore="true" name="_kb_verify_email" placeholder="Email" tabindex="-1" type="tex</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe style="display: none;"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Friluftsliv - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/friluftsliv/</div>
+            <div>Avvik: 12 | Bestått: 53</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1297 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1297_44ac84-3b wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1297_44ac84-3b"&gt;Friluftsliv&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h4 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h5 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (6 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'les mer'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1297_90788b-20 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1297_90788b-20 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'Last ned'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1297_c2d2db-ab kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1297_c2d2db-ab kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1297_d9521f-25 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Konstituering av ny daglig leder - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/konstituering-av-ny-daglig-leder/</div>
+            <div>Avvik: 16 | Bestått: 222</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg focusable="false" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"&gt;&lt;/p</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg focusable="false" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"&gt;&lt;/p</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.1.1 Tastatur (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide02" aria-label="Go to slide 2" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide03" aria-label="Go to slide 3" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide04" aria-label="Go to slide 4" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (7 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide02" aria-label="Go to slide 2" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide03" aria-label="Go to slide 3" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide04" aria-label="Go to slide 4" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a aria-hidden="true" aria-label="Utlysning reinsjakt 2024" class="post-thumbnail kadence-thumbnail-ratio-2-3" href="https://www.kommuneskog.net/utlysning-reinsjakt-2024/" role="presentation"&gt;
+&lt;div cl</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a aria-hidden="true" aria-label="Elgjakt tildeling 2020-2023" class="post-thumbnail kadence-thumbnail-ratio-2-3" href="https://www.kommuneskog.net/elgjakt-tildeling-2020-2023/" role="presentation"&gt;
+&lt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a aria-hidden="true" aria-label="Utlysning av elgjakt i Nedre Løvenglia 2022-2023" class="post-thumbnail kadence-thumbnail-ratio-2-3" href="https://www.kommuneskog.net/utlysning-av-elgjakt-i-nedre-lo</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Utlysning elgjakt 2024</h3>
+            <div class="page-url">https://www.kommuneskog.net/utlysning-av-elgjakt-4-arsperiode-kf-stor-elvdal-kommuneskog/</div>
+            <div>Avvik: 16 | Bestått: 205</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg focusable="false" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"&gt;&lt;/p</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg focusable="false" height="40" viewbox="0 0 40 40" width="40" xmlns="http://www.w3.org/2000/svg"&gt;&lt;path d="m15.5 0.932-4.3 4.38 14.5 14.6-14.5 14.5 4.3 4.4 14.6-14.6 4.4-4.3-4.4-4.4-14.6-14.6z"&gt;&lt;/p</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="https://www.kommuneskog.net/jakt/elgjakt/"&gt;https://www.kommuneskog.net/jakt/elgjakt/&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="https://kommuneskog.net/soknadsskjema-elgjakt/"&gt;https://kommuneskog.net/soknadsskjema-elgjakt/&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.1.1 Tastatur (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide02" aria-label="Go to slide 2" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide03" aria-label="Go to slide 3" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button aria-controls="splide01-slide04" aria-label="Go to slide 4" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (5 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide02" aria-label="Go to slide 2" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide03" aria-label="Go to slide 3" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Role 'tab' requires aria-selected attribute</p>
+                <div class="element">&lt;button aria-controls="splide01-slide04" aria-label="Go to slide 4" class="splide__pagination__page" role="tab" tabindex="-1" type="button"&gt;&lt;/button&gt;</div>
+                <div class="fix">Add aria-selected attribute to element with role='tab'</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a aria-hidden="true" aria-label="Utlysning av elgjakt i Nedre Løvenglia 2022-2023" class="post-thumbnail kadence-thumbnail-ratio-2-3" href="https://www.kommuneskog.net/utlysning-av-elgjakt-i-nedre-lo</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a aria-hidden="true" aria-label="Elgjakt tildeling 2020-2023" class="post-thumbnail kadence-thumbnail-ratio-2-3" href="https://www.kommuneskog.net/elgjakt-tildeling-2020-2023/" role="presentation"&gt;
+&lt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Salgs og leveringsbetingelser - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/salgs-og-leveringsbetingelser/</div>
+            <div>Avvik: 11 | Bestått: 73</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1844 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1844_e465ad-bb wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1844_e465ad-bb"&gt;Salgs og leveringsbetingelser&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="http://www.lovdata.no/" rel="noreferrer noopener" target="_blank"&gt;www.lovdata.no.&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="http://www.lovdata.no/" rel="noreferrer noopener" target="_blank"&gt;www.lovdata.no.&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="https://www.forbrukertilsynet.no/"&gt;www.forbrukertilsynet.no&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="http://ec.europa.eu/odr"&gt;http://ec.europa.eu/odr&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Fiske - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/fiske/</div>
+            <div>Avvik: 11 | Bestått: 59</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1226 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1226_250598-5e wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1226_250598-5e"&gt;Fiske&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1226_7d351d-6d kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1226_6e9b26-79 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1226_f2e0c5-2c kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1226_3b6afd-1c kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Reinsjakt – KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/kategori/reinsjakt/</div>
+            <div>Avvik: 7 | Bestått: 60</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="archive category category-reinsjakt category-9 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js hfeed footer-on-bottom hide-focus-outline link-style-standa</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="entry-title"&gt;&lt;a href="https://www.kommuneskog.net/utlysning-reinsjakt-2025/" rel="bookmark"&gt;Utlysning reinsjakt 2025&lt;/a&gt;&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Hyttetomter - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/hyttetomter/</div>
+            <div>Avvik: 20 | Bestått: 65</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg preserveaspectratio="none" viewbox="0 0 1000 100"&gt;&lt;path d="M1000,0l-1000,100l1000,0l0,-100Z"&gt;&lt;/path&gt;&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1324 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1324_04bb3e-7a wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1324_04bb3e-7a"&gt;Tryvang Sør&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h4 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h5 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (13 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://kommuneskog.net/jakt/elgjakt"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://kommuneskog.net/jakt/smaviltjakt"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'Last ned'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_6dd782-9a kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_6dd782-9a kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'Last ned'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_6dfd8b-af kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_6dfd8b-af kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'Last ned'</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_e45517-17 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="kb-button kt-button button kb-btn1324_e45517-17 kt-btn-size-standard kt-btn-width-type-auto kb-btn-global-fill kt-btn-has-text-true kt-btn-has-svg-true wp-block-kadence-singlebtn" href="http</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/jakt/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://www.facebook.com/groups/1839608709648323/" rel="noopener noreferrer" target="_blank"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://kommuneskog.net/friluftsliv/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a class="kb-section-link-overlay" href="https://www.stor-elvdal.kommune.no/" rel="noopener noreferrer" target="_blank"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Elgjakt – KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/kategori/elgjakt/</div>
+            <div>Avvik: 7 | Bestått: 70</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="archive category category-elgjakt category-8 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js hfeed footer-on-bottom hide-focus-outline link-style-standard</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="entry-title"&gt;&lt;a href="https://www.kommuneskog.net/utlysning-av-elgjakt-4-arsperiode-kf-stor-elvdal-kommuneskog/" rel="bookmark"&gt;Utlysning av elgjakt 2024 – KF. Stor-Elvdal Kommuneskoger&lt;/a&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Utlysning reinsjakt 2025</h3>
+            <div class="page-url">https://www.kommuneskog.net/utlysning-reinsjakt-2025/</div>
+            <div>Avvik: 6 | Bestått: 60</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h3 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h4 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog"&gt;https://www.facebook.com/Kommuneskog&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Løvmyra hundepark - KF Stor-Elvdal kommuneskoger</h3>
+            <div class="page-url">https://www.kommuneskog.net/lovmyra-hundepark/</div>
+            <div>Avvik: 6 | Bestått: 61</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="wp-singular page-template-default page page-id-1807 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="kt-adv-heading1807_9217e3-fd wp-block-kadence-advancedheading has-theme-palette-9-color has-text-color" data-kb-block="kb-adv-heading1807_9217e3-fd"&gt;Løvmyra hundepark i Stor-Elvdal&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style']</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Recurring Issues in Article/News Pages (1 pages scanned)</h3>
+            <div class="page-url">[ARTICLE PAGES SUMMARY - 1 pages]</div>
+            <div>Avvik: 7 | Bestått: 0</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading (×1 across article pages)</p>
+                <div class="element">&lt;body class="archive category category-nyheter category-12 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js hfeed footer-on-bottom hide-focus-outline link-style-standar</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1 (×1 across article pages)</p>
+                <div class="element">&lt;h2 class="entry-title"&gt;&lt;a href="https://www.kommuneskog.net/konstituering-av-ny-daglig-leder/" rel="bookmark"&gt;Konstituering av ny daglig leder&lt;/a&gt;&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h6 (×1 across article pages)</p>
+                <div class="element">&lt;h6 class="wp-block-heading has-theme-palette-9-color has-text-color has-link-color wp-elements-cf2a36a330fbd93770ce655209f50840"&gt;KF Stor-Elvdal kommuneskoger&lt;/h6&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h6</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has 2 main landmarks (should have 1) (×1 across article pages)</p>
+                <div class="element">&lt;main&gt;</div>
+                <div class="fix">Use only one &lt;main&gt; element per page</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['style', 'style', 'style'] (×1 across article pages)</p>
+                <div class="element">&lt;ul class="kt-svg-icon-list"&gt;&lt;style&gt;.kt-svg-icon-list-item-8f2015-05 .kt-svg-icon-list-text mark.kt-highlight{background-color:unset;font-style:normal;color:#f76a0c;-webkit-box-decoration-break:clone;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication (×1 across article pages)</p>
+                <div class="element">&lt;a href="https://www.facebook.com/Kommuneskog" rel="noreferrer noopener" target="_blank"&gt;Facebook&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='img' needs an accessible name (×1 across article pages)</p>
+                <div class="element">&lt;img alt="❤️" class="emoji" draggable="false" role="img" src="https://s.w.org/images/core/emoji/17.0.2/svg/2764.svg"/&gt;</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://www.kommuneskog.net</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="16" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://www.kommuneskog.net --max-pages 16 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

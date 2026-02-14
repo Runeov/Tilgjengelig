@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buskerud WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Buskerud WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Buskerud</p>
+        <p><strong>Skannet:</strong> 2026-02-11 12:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">78</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">78</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">802</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">4052</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">10810</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">34646</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Drammen fengsel</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>481</td>
+                <td>155</td>
+                <td>943</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/rollag" target="_blank">Rollag Kirkelige Fellesråd</a></td>
+                <td>Rollag</td>
+                <td class="contact"><a href="mailto:oyvor.sekkelsten@rollag.kommune.no">oyvor.sekkelsten@rollag.kommune.no</a><br>31 02 38 32</td>
+                <td>16</td>
+                <td><span class="badge critical">299</span></td>
+                <td>568</td>
+                <td>2479</td>
+                <td>3352</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\rollag_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/drammen" target="_blank">Drammen Kirkelige Fellesråd</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post.drammen@kirken.no">post.drammen@kirken.no</a><br>32 98 91 00</td>
+                <td>16</td>
+                <td><span class="badge critical">272</span></td>
+                <td>584</td>
+                <td>2377</td>
+                <td>3244</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/lier" target="_blank">Lier Kirkelige Fellesråd</a></td>
+                <td>Lier</td>
+                <td class="contact"><a href="mailto:lier@kirken.no">lier@kirken.no</a><br>40 92 49 50</td>
+                <td>15</td>
+                <td><span class="badge critical">269</span></td>
+                <td>525</td>
+                <td>2169</td>
+                <td>2969</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\lier_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/kongsberg" target="_blank">Kongsberg Kirkelige Fellesråd</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:kirkevergen@kongsberg.kommune.no">kirkevergen@kongsberg.kommune.no</a><br>32 86 60 30</td>
+                <td>15</td>
+                <td><span class="badge critical">263</span></td>
+                <td>540</td>
+                <td>2202</td>
+                <td>3017</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsberg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aal.kyrkja.no" target="_blank">Ål Kyrkjelege Fellesråd</a></td>
+                <td>Ål</td>
+                <td class="contact"><a href="mailto:post.aal@kyrkja.no">post.aal@kyrkja.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">218</span></td>
+                <td>3</td>
+                <td>164</td>
+                <td>385</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ål_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sigdalkirke.no" target="_blank">Sigdal Kirkelige Fellesråd</a></td>
+                <td>Sigdal</td>
+                <td class="contact"><a href="mailto:mette.flaagan@sigdalkirke.no">mette.flaagan@sigdalkirke.no</a><br>32 71 14 44</td>
+                <td>16</td>
+                <td><span class="badge critical">200</span></td>
+                <td>27</td>
+                <td>143</td>
+                <td>370</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\sigdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://pptogot.no" target="_blank">Hallingdal Pedagogisk-psykologisk Tjeneste og Oppfølgingstjenesten IKS</a></td>
+                <td>Gol</td>
+                <td class="contact"><a href="mailto:ppt@gol.kommune.no">ppt@gol.kommune.no</a><br>32 02 95 20</td>
+                <td>11</td>
+                <td><span class="badge critical">195</span></td>
+                <td>228</td>
+                <td>48</td>
+                <td>471</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hallingdal_pedagogisk-psykologisk_tjeneste_og_oppf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ringerike.kirken.no" target="_blank">Ringerike Kirkelige Fellesråd</a></td>
+                <td>Ringerike</td>
+                <td class="contact"><a href="mailto:post.ringerike@kirken.no">post.ringerike@kirken.no</a><br>32 18 15 20</td>
+                <td>16</td>
+                <td><span class="badge critical">179</span></td>
+                <td>33</td>
+                <td>243</td>
+                <td>455</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ringerike_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nore.kirken.no" target="_blank">Nore og Uvdal Kirkelige Fellesråd</a></td>
+                <td>Nore Og Uvdal</td>
+                <td class="contact"><a href="mailto:kirkevergen@nore.kirken.no">kirkevergen@nore.kirken.no</a><br>32 74 25 90</td>
+                <td>15</td>
+                <td><span class="badge critical">175</span></td>
+                <td>17</td>
+                <td>84</td>
+                <td>276</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\nore_og_uvdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.brageteatret.no" target="_blank">Brageteatret - Regionteater for Buskerud AS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@brageteatret.no">post@brageteatret.no</a><br>32 23 39 40</td>
+                <td>16</td>
+                <td><span class="badge critical">155</span></td>
+                <td>320</td>
+                <td>378</td>
+                <td>855</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\brageteatret_-_regionteater_for_buskerud_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flesberg.kirken.no/" target="_blank">Flesberg Kirkelige Fellesråd</a></td>
+                <td>Flesberg</td>
+                <td class="contact"><a href="mailto:kirke@flesberg.kommune.no">kirke@flesberg.kommune.no</a><br>31 02 28 31</td>
+                <td>16</td>
+                <td><span class="badge critical">137</span></td>
+                <td>13</td>
+                <td>95</td>
+                <td>248</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\flesberg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vikenfilmsenter.no" target="_blank">Viken Filmsenter AS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@vikenfilmsenter.no">post@vikenfilmsenter.no</a><br>90 25 88 88</td>
+                <td>15</td>
+                <td><span class="badge critical">117</span></td>
+                <td>154</td>
+                <td>487</td>
+                <td>771</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\viken_filmsenter_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://drammenhavn.no" target="_blank">Drammen Havn</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">107</span></td>
+                <td>442</td>
+                <td>542</td>
+                <td>1093</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_havn.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hol.kommune.no/" target="_blank">Hol Kommune</a></td>
+                <td>Hol</td>
+                <td class="contact"><a href="mailto:postmottak@hol.kommune.no">postmottak@hol.kommune.no</a><br>32 09 21 00</td>
+                <td>15</td>
+                <td><span class="badge critical">85</span></td>
+                <td>103</td>
+                <td>352</td>
+                <td>772</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hol_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kongsberginnovasjon.no" target="_blank">Kongsberg Innovasjon AS</a></td>
+                <td>Kongsberg</td>
+                <td class="contact">-</td>
+                <td>11</td>
+                <td><span class="badge critical">83</span></td>
+                <td>122</td>
+                <td>67</td>
+                <td>275</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsberg_innovasjon_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://usn.no" target="_blank">Universitetet i Sørøst-Norge</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:postmottak@usn.no">postmottak@usn.no</a><br>+4731008000</td>
+                <td>15</td>
+                <td><span class="badge critical">83</span></td>
+                <td>357</td>
+                <td>348</td>
+                <td>794</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\universitetet_i_sørøst-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesbyen.kommune.no" target="_blank">Nesbyen Kommune</a></td>
+                <td>Nesbyen</td>
+                <td class="contact"><a href="mailto:postmottak@nesbyen.kommune.no">postmottak@nesbyen.kommune.no</a><br>32 06 83 00</td>
+                <td>15</td>
+                <td><span class="badge critical">83</span></td>
+                <td>101</td>
+                <td>345</td>
+                <td>663</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\nesbyen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flaa.kommune.no/" target="_blank">Flå Kommune</a></td>
+                <td>Flå</td>
+                <td class="contact"><a href="mailto:postmottak@flaa.kommune.no">postmottak@flaa.kommune.no</a><br>32 05 36 00</td>
+                <td>14</td>
+                <td><span class="badge critical">79</span></td>
+                <td>96</td>
+                <td>244</td>
+                <td>580</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\flå_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gol.kommune.no/" target="_blank">Gol Kommune</a></td>
+                <td>Gol</td>
+                <td class="contact"><a href="mailto:postmottak@gol.kommune.no">postmottak@gol.kommune.no</a><br>32 02 90 00</td>
+                <td>15</td>
+                <td><span class="badge critical">79</span></td>
+                <td>98</td>
+                <td>284</td>
+                <td>637</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\gol_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://brakar.no" target="_blank">Brakar AS</a></td>
+                <td>Buskerud</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">73</span></td>
+                <td>1162</td>
+                <td>447</td>
+                <td>1691</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\brakar_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hemsedal.kommune.no/" target="_blank">Hemsedal Kommune</a></td>
+                <td>Hemsedal</td>
+                <td class="contact"><a href="mailto:postmottak@hemsedal.kommune.no">postmottak@hemsedal.kommune.no</a><br>31 40 88 00</td>
+                <td>14</td>
+                <td><span class="badge critical">73</span></td>
+                <td>94</td>
+                <td>114</td>
+                <td>428</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hemsedal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aal.kommune.no/" target="_blank">Ål Kommune</a></td>
+                <td>Ål</td>
+                <td class="contact"><a href="mailto:postmottak@aal.kommune.no">postmottak@aal.kommune.no</a><br>32 08 50 00</td>
+                <td>13</td>
+                <td><span class="badge critical">69</span></td>
+                <td>76</td>
+                <td>201</td>
+                <td>454</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ål_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lier.kommune.no" target="_blank">Lier Eiendomsselskap KF</a></td>
+                <td>Lier</td>
+                <td class="contact"><a href="mailto:postmottak@lier.kommune.no">postmottak@lier.kommune.no</a><br>32 22 01 00</td>
+                <td>15</td>
+                <td><span class="badge critical">62</span></td>
+                <td>20</td>
+                <td>140</td>
+                <td>238</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\lier_eiendomsselskap_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ovre-eiker.kommune.no/" target="_blank">Øvre Eiker Kommune</a></td>
+                <td>Øvre Eiker</td>
+                <td class="contact"><a href="mailto:post@ovre-eiker.kommune.no">post@ovre-eiker.kommune.no</a><br>32 25 10 00</td>
+                <td>16</td>
+                <td><span class="badge critical">54</span></td>
+                <td>52</td>
+                <td>195</td>
+                <td>311</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\øvre_eiker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.drbv.no" target="_blank">Drammensregionens Brannvesen IKS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:drbv@drbv.no">drbv@drbv.no</a><br>32 04 44 00</td>
+                <td>16</td>
+                <td><span class="badge critical">53</span></td>
+                <td>122</td>
+                <td>370</td>
+                <td>545</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammensregionens_brannvesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://drammensregionen.no" target="_blank">Drammensregionen IPR</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge serious">47</span></td>
+                <td>90</td>
+                <td>245</td>
+                <td>390</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammensregionen_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://unionscene.no" target="_blank">Union Scene</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">38</span></td>
+                <td>393</td>
+                <td>186</td>
+                <td>621</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\union_scene.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kongsbergkino.no" target="_blank">KF Kongsberg Kino</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:kino@kongsberg.kommune.no">kino@kongsberg.kommune.no</a><br>48 22 61 41</td>
+                <td>16</td>
+                <td><span class="badge serious">33</span></td>
+                <td>388</td>
+                <td>174</td>
+                <td>614</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kf_kongsberg_kino.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ringerike.kommune.no/" target="_blank">Ringerike Kommune</a></td>
+                <td>Ringerike</td>
+                <td class="contact"><a href="mailto:postmottak@ringerike.kommune.no">postmottak@ringerike.kommune.no</a><br>32 11 74 00</td>
+                <td>3</td>
+                <td><span class="badge serious">31</span></td>
+                <td>26</td>
+                <td>59</td>
+                <td>135</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ringerike_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.drammen.kommune.no" target="_blank">Drammen Eiendom KF</a></td>
+                <td>Drammen</td>
+                <td class="contact">32 04 30 00</td>
+                <td>16</td>
+                <td><span class="badge serious">28</span></td>
+                <td>25</td>
+                <td>25</td>
+                <td>85</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_eiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rfd.no" target="_blank">Renovasjonsselskapet for Drammensregionen IKS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:firmapost@rfd.no">firmapost@rfd.no</a><br>32 04 97 00</td>
+                <td>13</td>
+                <td><span class="badge serious">21</span></td>
+                <td>41</td>
+                <td>148</td>
+                <td>253</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\renovasjonsselskapet_for_drammensregionen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hallingdalrenovasjon.no" target="_blank">Hallingdal Renovasjon IKS</a></td>
+                <td>Ål</td>
+                <td class="contact"><a href="mailto:firmapost@hallingdalrenovasjon.no">firmapost@hallingdalrenovasjon.no</a><br>32 08 61 10</td>
+                <td>16</td>
+                <td><span class="badge serious">21</span></td>
+                <td>9</td>
+                <td>343</td>
+                <td>374</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hallingdal_renovasjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.norskbergverksmuseum.no/" target="_blank">Norsk Bergverksmuseum Sti</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:post.mottak@bvm.no">post.mottak@bvm.no</a></td>
+                <td>16</td>
+                <td><span class="badge serious">17</span></td>
+                <td>35</td>
+                <td>98</td>
+                <td>169</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\norsk_bergverksmuseum_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.krodsherad.kommune.no/" target="_blank">Krødsherad Kommune</a></td>
+                <td>Krødsherad</td>
+                <td class="contact"><a href="mailto:krodsherad.kommune@krodsherad.kommune.no">krodsherad.kommune@krodsherad.kommune.no</a><br>32 15 00 00</td>
+                <td>12</td>
+                <td><span class="badge serious">12</span></td>
+                <td>94</td>
+                <td>28</td>
+                <td>196</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\krødsherad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nore-og-uvdal.kommune.no/" target="_blank">Nore og Uvdal Kommune</a></td>
+                <td>Nore Og Uvdal</td>
+                <td class="contact"><a href="mailto:postmottak@nore-og-uvdal.kommune.no">postmottak@nore-og-uvdal.kommune.no</a><br>31024000</td>
+                <td>14</td>
+                <td><span class="badge serious">12</span></td>
+                <td>34</td>
+                <td>263</td>
+                <td>483</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\nore_og_uvdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hallingdal-museum.no" target="_blank">Stiftelsen Hallingdal Museum</a></td>
+                <td>Nesbyen</td>
+                <td class="contact"><a href="mailto:firmapost@hallingdal-museum.no">firmapost@hallingdal-museum.no</a><br>32 07 14 85</td>
+                <td>16</td>
+                <td><span class="badge moderate">9</span></td>
+                <td>104</td>
+                <td>77</td>
+                <td>190</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\stiftelsen_hallingdal_museum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ikakongsberg.no" target="_blank">Interkommunalt Arkiv for Buskerud Vestfold og Telemark IKS</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:postmottak@ikakongsberg.no">postmottak@ikakongsberg.no</a><br>32 76 40 20</td>
+                <td>16</td>
+                <td><span class="badge moderate">6</span></td>
+                <td>55</td>
+                <td>125</td>
+                <td>187</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\interkommunalt_arkiv_for_buskerud_vestfold_og_tele.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kkekf.no" target="_blank">Kongsberg Kommunale Eiendom KF</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:eiendom@kongsberg.kommune.no">eiendom@kongsberg.kommune.no</a><br>32 86 61 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>13</td>
+                <td>60</td>
+                <td>93</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsberg_kommunale_eiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.buskerudmuseet.no" target="_blank">Stiftelsen Buskerudmuseene</a></td>
+                <td>Ringerike</td>
+                <td class="contact"><a href="mailto:post@buskerudmuseet.no">post@buskerudmuseet.no</a><br>99 47 39 10</td>
+                <td>16</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>95</td>
+                <td>58</td>
+                <td>212</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\stiftelsen_buskerudmuseene.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vegfinans.no" target="_blank">Vegfinans Bypakke Nedre Glomma AS</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>225</td>
+                <td>14</td>
+                <td>246</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\vegfinans_bypakke_nedre_glomma_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.e18vestfold.no" target="_blank">Vegfinans E18 Vestfold AS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:e18@vegfinans.no">e18@vegfinans.no</a><br>32 80 82 70</td>
+                <td>14</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>195</td>
+                <td>14</td>
+                <td>216</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\vegfinans_e18_vestfold_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bfrk.no" target="_blank">Buskerud fylkeskommune</a></td>
+                <td>Buskerud</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\buskerud_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/sor-ost" target="_blank">Sør-Øst politidistrikt</a></td>
+                <td>Buskerud</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>19</td>
+                <td>101</td>
+                <td>145</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\sør-øst_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestreviken.no" target="_blank">Vestre Viken HF</a></td>
+                <td>Buskerud</td>
+                <td class="contact"><a href="mailto:postmottak@vestreviken.no">postmottak@vestreviken.no</a><br>32 86 11 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>1175</td>
+                <td>104</td>
+                <td>1329</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\vestre_viken_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://samskfrisor.no" target="_blank">Studentsamskipnaden i Sørøst-Norge</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\studentsamskipnaden_i_sørøst-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bfrkrevisjon.no" target="_blank">Buskerud Kommunerevisjon IKS</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\buskerud_kommunerevisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bfk.no/fylkesbibliotek" target="_blank">Buskerud fylkesbibliotek</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>232</td>
+                <td>62</td>
+                <td>298</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\buskerud_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bfrfk.no/tilskudd" target="_blank">Buskerud fylkeskommune tilskudd</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\buskerud_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/buskerud" target="_blank">Buskerud tingrett</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\buskerud_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://drammenbibliotek.no" target="_blank">Drammen bibliotek</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_bibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://drammen.vgs.no" target="_blank">Drammen videregående skole</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.drammensbadet.no" target="_blank">Drammensbadet KF</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@drammensbadet.no">post@drammensbadet.no</a><br>32 04 45 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>47</td>
+                <td>166</td>
+                <td>213</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\drammensbadet_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://gfrlitreenergi.no" target="_blank">Glitre Energi AS</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\glitre_energi_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://gfrlitre.no" target="_blank">Glitrevannverket IKS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@glitre.no">post@glitre.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\glitrevannverket_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://husbanken.no" target="_blank">Husbanken region øst</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>233</td>
+                <td>164</td>
+                <td>398</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\husbanken_region_øst.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://papirbredden.vgs.no" target="_blank">Papirbredden videregående skole</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\papirbredden_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sykehuspartner.no" target="_blank">Sykehuspartner HF</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@sykehuspartner.no">post@sykehuspartner.no</a><br>32 23 53 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>739</td>
+                <td>110</td>
+                <td>887</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\sykehuspartner_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.bfrfk.no" target="_blank">Tannhelsetjenesten Buskerud</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\tannhelsetjenesten_buskerud.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bkr.no" target="_blank">Viken Kommunerevisjon IKS</a></td>
+                <td>Drammen</td>
+                <td class="contact"><a href="mailto:post@bkr.no">post@bkr.no</a><br>32 20 15 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\viken_kommunerevisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://assiden.vgs.no" target="_blank">Åssiden videregående skole</a></td>
+                <td>Drammen</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\åssiden_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kongsberg.kommune.no/" target="_blank">Kongsberg Kommune</a></td>
+                <td>Kongsberg</td>
+                <td class="contact"><a href="mailto:postmottak@kongsberg.kommune.no">postmottak@kongsberg.kommune.no</a><br>32 86 60 00</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>24</td>
+                <td>135</td>
+                <td>183</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsberg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kongsberg.vgs.no" target="_blank">Kongsberg videregående skole</a></td>
+                <td>Kongsberg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsberg_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kongsberg-regionen.no" target="_blank">Kongsbergregionen</a></td>
+                <td>Kongsberg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\kongsbergregionen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ringerikenering.no" target="_blank">Ringerike Utvikling AS</a></td>
+                <td>Ringerike</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ringerike_utvikling_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ringerike.vgs.no" target="_blank">Ringerike videregående skole</a></td>
+                <td>Ringerike</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ringerike_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hole.kommune.no/" target="_blank">Hole Kommune</a></td>
+                <td>Hole</td>
+                <td class="contact"><a href="mailto:postmottak@hole.kommune.no">postmottak@hole.kommune.no</a><br>32 16 11 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>22</td>
+                <td>119</td>
+                <td>187</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hole_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ringeriksbadet.no" target="_blank">Ringeriksbadet IKS</a></td>
+                <td>Hole</td>
+                <td class="contact"><a href="mailto:post@ringeriksbadet.no">post@ringeriksbadet.no</a></td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>112</td>
+                <td>135</td>
+                <td>254</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\ringeriksbadet_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.eiker.kirken.no" target="_blank">Øvre Eiker Kirkelige Fellesråd</a></td>
+                <td>Øvre Eiker</td>
+                <td class="contact"><a href="mailto:kirkevergen@eiker.kirken.no">kirkevergen@eiker.kirken.no</a><br>32 25 26 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\øvre_eiker_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.modum.kommune.no" target="_blank">Modum Boligeiendom KF</a></td>
+                <td>Modum</td>
+                <td class="contact"><a href="mailto:post@modum.kommune.no">post@modum.kommune.no</a><br>32 78 93 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>23</td>
+                <td>125</td>
+                <td>156</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\modum_boligeiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hn.no" target="_blank">Hallingdal Næringshage AS</a></td>
+                <td>Gol</td>
+                <td class="contact">-</td>
+                <td>10</td>
+                <td><span class="badge good">0</span></td>
+                <td>3</td>
+                <td>27</td>
+                <td>30</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hallingdal_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hol-fjellstyre.no" target="_blank">Hol Fjellstyre</a></td>
+                <td>Hol</td>
+                <td class="contact"><a href="mailto:pa-knuds@online.no">pa-knuds@online.no</a><br>32 09 21 23</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hol_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hol.kirken.no" target="_blank">Hol Kirkelige Fellesråd</a></td>
+                <td>Hol</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\hol_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sigdal.kommune.no/" target="_blank">Sigdal Kommune</a></td>
+                <td>Sigdal</td>
+                <td class="contact"><a href="mailto:post@sigdal.kommune.no">post@sigdal.kommune.no</a><br>32 71 14 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\sigdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flesberg.kommune.no/" target="_blank">Flesberg Kommune</a></td>
+                <td>Flesberg</td>
+                <td class="contact"><a href="mailto:postmottak@flesberg.kommune.no">postmottak@flesberg.kommune.no</a><br>31 02 20 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\flesberg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.idrettsskolen.com" target="_blank">Numedal Folkehøgskole og Rollag Ressurssenter KF</a></td>
+                <td>Rollag</td>
+                <td class="contact"><a href="mailto:kontor@idrettsskolen.com">kontor@idrettsskolen.com</a><br>31 02 38 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\numedal_folkehøgskole_og_rollag_ressurssenter_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rollag.kommune.no/" target="_blank">Rollag Kommune</a></td>
+                <td>Rollag</td>
+                <td class="contact"><a href="mailto:postmottak@rollag.kommune.no">postmottak@rollag.kommune.no</a><br>31 02 30 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\rollag_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://jevnaker.kommune.no" target="_blank">Jevnaker kommune</a></td>
+                <td>Jevnaker</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>21</td>
+                <td>154</td>
+                <td>253</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="buskerud\jevnaker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

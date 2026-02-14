@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nordland WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Nordland WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Nordland</p>
+        <p><strong>Skannet:</strong> 2026-02-11 14:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">167</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">167</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">488</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">1166</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">11983</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">23210</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Bodø fengsel</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>372</td>
+                <td>212</td>
+                <td>894</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/bodo" target="_blank">Bodø Kirkelige Fellesråd</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:post.bodo@kirken.no">post.bodo@kirken.no</a><br>75 50 03 00</td>
+                <td>15</td>
+                <td><span class="badge critical">266</span></td>
+                <td>541</td>
+                <td>2167</td>
+                <td>2981</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordlandsbuss.no" target="_blank">Nordlandsbuss AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge critical">129</span></td>
+                <td>234</td>
+                <td>380</td>
+                <td>762</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordlandsbuss_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Nordnorsk Opera og Symfoniorkester</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">84</span></td>
+                <td>144</td>
+                <td>340</td>
+                <td>702</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordnorsk_opera_og_symfoniorkester.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sivilforsvaret.no/nordland" target="_blank">Nordland sivilforsvarsdistrikt</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge critical">68</span></td>
+                <td>600</td>
+                <td>634</td>
+                <td>1336</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_sivilforsvarsdistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://boreal.no/nord" target="_blank">Boreal Transport Nord</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">60</span></td>
+                <td>120</td>
+                <td>293</td>
+                <td>475</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\boreal_transport_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://arbeidstilsynet.no/nord" target="_blank">Arbeidstilsynet Nord-Norge</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">59</span></td>
+                <td>1835</td>
+                <td>369</td>
+                <td>2310</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\arbeidstilsynet_nord-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bodohavn.no" target="_blank">Bodø Havn KF</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:firmapost@bodohavn.no">firmapost@bodohavn.no</a><br>75 55 10 80</td>
+                <td>15</td>
+                <td><span class="badge serious">50</span></td>
+                <td>132</td>
+                <td>155</td>
+                <td>362</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.salten.no" target="_blank">Salten Regionråd - Kommunalt Oppgavefellesskap</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:regionradet@salten.no">regionradet@salten.no</a><br>75 54 86 00</td>
+                <td>16</td>
+                <td><span class="badge serious">48</span></td>
+                <td>389</td>
+                <td>446</td>
+                <td>884</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\salten_regionråd_-_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://forsvaret.no/foh" target="_blank">Forsvarets operative hovedkvarter (FOH)</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">20</span></td>
+                <td>237</td>
+                <td>247</td>
+                <td>581</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\forsvarets_operative_hovedkvarter_(foh).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://forsvaret.no/luftforsvaret" target="_blank">Luftforsvaret</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">19</span></td>
+                <td>233</td>
+                <td>242</td>
+                <td>569</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\luftforsvaret.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bodo.kommune.no/va" target="_blank">Bodø kommune Vann og Avløp</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">17</span></td>
+                <td>116</td>
+                <td>42</td>
+                <td>281</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_kommune_vann_og_avløp.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/bodo" target="_blank">Bodø Lufthavn</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>98</td>
+                <td>138</td>
+                <td>252</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_lufthavn.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://forsvaret.no/sjoforsvaret" target="_blank">Sjøforsvaret</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>11</td>
+                <td><span class="badge serious">13</span></td>
+                <td>165</td>
+                <td>166</td>
+                <td>398</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sjøforsvaret.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordlandsmuseet.no" target="_blank">Nordlandsmuseet</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>596</td>
+                <td>396</td>
+                <td>997</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordlandsmuseet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innovasjonnorge.no/nordland" target="_blank">Innovasjon Norge region Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>48</td>
+                <td>346</td>
+                <td>432</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\innovasjon_norge_region_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.luftambulanse.no" target="_blank">Luftambulansetjenesten HF</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:postmottak@luftambulansetjenesten.no">postmottak@luftambulansetjenesten.no</a><br>75 54 99 50</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>961</td>
+                <td>124</td>
+                <td>1123</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\luftambulansetjenesten_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-nord.no" target="_blank">Helse Nord RHF</a></td>
+                <td>Nordland</td>
+                <td class="contact"><a href="mailto:postmottak@helse-nord.no">postmottak@helse-nord.no</a><br>75 51 29 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1409</td>
+                <td>105</td>
+                <td>1543</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helse_nord_rhf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fiskeridir.no/nord" target="_blank">Fiskeridirektoratet region Nord</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>6</td>
+                <td>104</td>
+                <td>230</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\fiskeridirektoratet_region_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://imdi.no/nord" target="_blank">IMDi region Nord</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>198</td>
+                <td>80</td>
+                <td>349</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\imdi_region_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nordlandssykehuset.no" target="_blank">Nordlandssykehuset HF</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:postmottak@nordlandssykehuset.no">postmottak@nordlandssykehuset.no</a><br>75 53 40 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1440</td>
+                <td>118</td>
+                <td>1652</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordlandssykehuset_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandssykehuset.no" target="_blank">Helgelandssykehuset HF</a></td>
+                <td>Nordland</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>1004</td>
+                <td>90</td>
+                <td>1132</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/halogaland" target="_blank">Hålogaland lagmannsrett</a></td>
+                <td>Nordland</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hålogaland_lagmannsrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nft.no" target="_blank">Nordland fylkes trafikk AS</a></td>
+                <td>Nordland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_fylkes_trafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfk.no" target="_blank">Nordland fylkeskommune</a></td>
+                <td>Nordland</td>
+                <td class="contact"><a href="mailto:post@nfk.no">post@nfk.no</a><br>75 65 00 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>141</td>
+                <td>151</td>
+                <td>294</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/nordland" target="_blank">Nordland politidistrikt</a></td>
+                <td>Nordland</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>27</td>
+                <td>116</td>
+                <td>168</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordlanfrssykehuset.no/ambulanse" target="_blank">Ambulanse Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\ambulanse_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://arkivverket.no/nord" target="_blank">Arkivverket region nord</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>83</td>
+                <td>248</td>
+                <td>333</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\arkivverket_region_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.noso.no" target="_blank">Arktisk Filharmoni AS</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:post@noso.no">post@noso.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\arktisk_filharmoni_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bfrodo.kommune.no/aspmyra" target="_blank">Aspmyra stadion</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\aspmyra_stadion.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bodin.vgs.no" target="_blank">Bodin videregående skole</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>269</td>
+                <td>355</td>
+                <td>629</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodin_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bodo.kommune.no/" target="_blank">Bodø Kommune</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:postmottak@bodo.kommune.no">postmottak@bodo.kommune.no</a><br>75 55 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bodobibliotek.no" target="_blank">Bodø bibliotek</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_bibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bodo.vgs.no" target="_blank">Bodø videregående skole</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>7</td>
+                <td><span class="badge good">0</span></td>
+                <td>58</td>
+                <td>110</td>
+                <td>174</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bodø_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagskolen-nordland.no" target="_blank">Fagskolen i Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\fagskolen_i_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hovedredningssentralen.no/nord" target="_blank">Hovedredningssentralen Nord-Norge</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hovedredningssentralen_nord-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.iris-salten.no" target="_blank">Iris Salten IKS</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:iris@iris-salten.no">iris@iris-salten.no</a><br>75 50 75 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\iris_salten_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kpb.no" target="_blank">Kunnskapsparken Bodø AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\kunnskapsparken_bodø_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kystverket.no/nordland" target="_blank">Kystverket Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>49</td>
+                <td>225</td>
+                <td>289</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\kystverket_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/hjelpemidler/nordland" target="_blank">NAV Hjelpemiddelsentral Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nav_hjelpemiddelsentral_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordkraft.no" target="_blank">Nordkraft AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordkraft_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfk.no/fylkesbibliotek" target="_blank">Nordland fylkesbibliotek</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>124</td>
+                <td>178</td>
+                <td>307</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfk.no/kollektiv" target="_blank">Nordland fylkeskommune kollektiv</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>124</td>
+                <td>178</td>
+                <td>307</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_fylkeskommune_kollektiv.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfk.no/tilskudd" target="_blank">Nordland fylkeskommune tilskudd</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>153</td>
+                <td>186</td>
+                <td>344</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordland_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nnfrs.no" target="_blank">Nordnorsk filmsenter</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nordnorsk_filmsenter.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.luftfart.museum.no" target="_blank">Norsk Luftfartsmuseum Sti</a></td>
+                <td>Bodø</td>
+                <td class="contact">75 50 78 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\norsk_luftfartsmuseum_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skfrskraft.no" target="_blank">SKS Produksjon AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sks_produksjon_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.saltenbrann.no" target="_blank">Salten Brann IKS</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:post@saltenbrann.no">post@saltenbrann.no</a><br>75 55 74 05</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>77</td>
+                <td>37</td>
+                <td>114</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\salten_brann_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/salten-og-lofoten" target="_blank">Salten og Lofoten tingrett</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\salten_og_lofoten_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://salfrten.no" target="_blank">Salten regionråd</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\salten_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sbr.no" target="_blank">Saltens Bilruter AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\saltens_bilruter_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skatteetaten.no/nord" target="_blank">Skatteetaten - Skatt Nord</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\skatteetaten_-_skatt_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sparebank1.no/nord-norge" target="_blank">SpareBank 1 Nord-Norge</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:privat@snn.no">privat@snn.no</a><br>02244</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sparebank_1_nord-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skreiv.no" target="_blank">Statens innkrevingssentral - Bodø</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\statens_innkrevingssentral_-_bodø.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statsforvalteren.no/nordland" target="_blank">Statsforvalteren i Nordland</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:sftlpost@statsforvalteren.no">sftlpost@statsforvalteren.no</a><br>74 16 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\statsforvalteren_i_nordland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stormen.no" target="_blank">Stormen Konserthus Bodø KF</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:billettsalg@stormen.no">billettsalg@stormen.no</a><br>75 54 90 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\stormen_konserthus_bodø_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://storfrmen.no" target="_blank">Stormen konserthus</a></td>
+                <td>Bodø</td>
+                <td class="contact"><a href="mailto:arneh.kristensen@ringnett.no">arneh.kristensen@ringnett.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\stormen_konserthus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/sorhalogaland" target="_blank">Sør-Hålogaland bispedømme</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sør-hålogaland_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://torghatten-nord.no" target="_blank">Torghatten Nord AS</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\torghatten_nord_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://visitfrbodo.com" target="_blank">Visit Bodø</a></td>
+                <td>Bodø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\visit_bodø.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://futurum.no" target="_blank">Futurum AS</a></td>
+                <td>Narvik</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\futurum_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hrs.no" target="_blank">Hålogaland Ressursselskap IKS</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:post@hrs.no">post@hrs.no</a><br>76 92 20 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hålogaland_ressursselskap_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.halogaland-friluftsrad.no" target="_blank">Midtre Hålogaland Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:emil.bjorna@narvik.kommune.no">emil.bjorna@narvik.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\midtre_hålogaland_friluftsråd_kommunalt_oppgavefel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://narvikhavn.no" target="_blank">Narvik Havn KF</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:firmapost@narvikhavn.no">firmapost@narvikhavn.no</a><br>76 95 03 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\narvik_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://Kirken.no/narvik" target="_blank">Narvik Kirkelige Fellesråd</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:post.narvik@kirken.no">post.narvik@kirken.no</a><br>91 75 78 11</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\narvik_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.narvikvann.no" target="_blank">Narvik Vann KF</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:postmottak@narvikvann.no">postmottak@narvikvann.no</a><br>76 91 37 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\narvik_vann_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://narvik.kommune.no" target="_blank">Narvik kommune</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:postmottak@narvik.kommune.no">postmottak@narvik.kommune.no</a><br>76 91 20 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\narvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ofoten-brann.no" target="_blank">Ofoten Brann og Redning IKS</a></td>
+                <td>Narvik</td>
+                <td class="contact"><a href="mailto:post@ofoten-brann.no">post@ofoten-brann.no</a><br>76 91 35 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\ofoten_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bindal.kommune.no/" target="_blank">Bindal Kommune</a></td>
+                <td>Bindal</td>
+                <td class="contact"><a href="mailto:postmottak@bindal.kommune.no">postmottak@bindal.kommune.no</a><br>75 03 25 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bindal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.somna.kommune.no" target="_blank">Sømna Kommune</a></td>
+                <td>Sømna</td>
+                <td class="contact"><a href="mailto:post@somna.kommune.no">post@somna.kommune.no</a><br>75 01 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sømna_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bronnoyhavn.no" target="_blank">Brønnøy Havn KF</a></td>
+                <td>Brønnøy</td>
+                <td class="contact"><a href="mailto:bronnoy.havn@bronnoy.kommune.no">bronnoy.havn@bronnoy.kommune.no</a><br>75 01 20 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\brønnøy_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.brønnøy.kirk.no" target="_blank">Brønnøy Kirkelige Fellesråd</a></td>
+                <td>Brønnøy</td>
+                <td class="contact"><a href="mailto:post@bronnoykirke.no">post@bronnoykirke.no</a><br>75 00 95 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\brønnøy_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bronnoy.kommune.no" target="_blank">Brønnøy kommune</a></td>
+                <td>Brønnøy</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\brønnøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://brreg.no/bronnoy" target="_blank">Brønnøysundregistrene Brønnøysund</a></td>
+                <td>Brønnøy</td>
+                <td class="contact"><a href="mailto:firmapost@brreg.no">firmapost@brreg.no</a><br>75 00 75 09</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\brønnøysundregistrene_brønnøysund.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.trollfjellgeopark.no" target="_blank">Trollfjell Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Brønnøy</td>
+                <td class="contact"><a href="mailto:magne.ekker@trollfjellfriluftsraad.no">magne.ekker@trollfjellfriluftsraad.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\trollfjell_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vega.kommune.no/" target="_blank">Vega Kommune</a></td>
+                <td>Vega</td>
+                <td class="contact"><a href="mailto:postkasse@vega.kommune.no">postkasse@vega.kommune.no</a><br>75 03 58 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vega_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vevelstad.kommune.no" target="_blank">Vevelstad Kommune</a></td>
+                <td>Vevelstad</td>
+                <td class="contact"><a href="mailto:post@vevelstad.kommune.no">post@vevelstad.kommune.no</a><br>75 03 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vevelstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.heroy-no.kommune.no/" target="_blank">Herøy Kommune</a></td>
+                <td>Herøy</td>
+                <td class="contact"><a href="mailto:post@heroy-no.kommune.no">post@heroy-no.kommune.no</a><br>75 06 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\herøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.alstahaug.kommune.no" target="_blank">Alstahaug Kommune</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:post@alstahaug.kommune.no">post@alstahaug.kommune.no</a><br>75 07 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\alstahaug_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.helgelandhavn.no" target="_blank">Helgeland Havn IKS</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:post@helgelandhavn.no">post@helgelandhavn.no</a><br>75 07 57 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hel.no" target="_blank">Helgeland Interkommunalt Politisk Råd</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:post@hel.no">post@hel.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_interkommunalt_politisk_råd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgeland.no" target="_blank">Helgelandsrådet</a></td>
+                <td>Alstahaug</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandsrådet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.helgelandssykehuset.no" target="_blank">Helgelandssykehuset HF</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:postmottak@helgelandssykehuset.no">postmottak@helgelandssykehuset.no</a><br>75 12 51 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandssykehuset.no/sandnessjoen" target="_blank">Helgelandssykehuset HF - Sandnessjøen</a></td>
+                <td>Alstahaug</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf_-_sandnessjøen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rkkyh" target="_blank">Kommunalt Oppgavefellesskap Studiesenter Rkk Ytre Helgeland</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:rkkyh@rkkyh.no">rkkyh@rkkyh.no</a><br>75 07 57 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\kommunalt_oppgavefellesskap_studiesenter_rkk_ytre_.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/alstahaug" target="_blank">Leirfjord og Alstahaug Kirkelige Fellesråd</a></td>
+                <td>Alstahaug</td>
+                <td class="contact"><a href="mailto:kirkekontoret@alstahaug.kommune.no">kirkekontoret@alstahaug.kommune.no</a><br>75 07 57 22</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\leirfjord_og_alstahaug_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.leirfjord.kommune.no/" target="_blank">Leirfjord Kommune</a></td>
+                <td>Leirfjord</td>
+                <td class="contact"><a href="mailto:postmottak@leirfjord.kommune.no">postmottak@leirfjord.kommune.no</a><br>75074000</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\leirfjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://friluftsrad.no/helgeland" target="_blank">Helgeland Friluftsråd, Kommunalt Oppgavefellesskap</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:helgeland@friluftsrad.no">helgeland@friluftsrad.no</a><br>75 10 18 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_friluftsråd,_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandnaeringshage.no" target="_blank">Helgeland Næringshage AS</a></td>
+                <td>Vefsn</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandssykehuset.no/mosjoen" target="_blank">Helgelandssykehuset HF - Mosjøen</a></td>
+                <td>Vefsn</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf_-_mosjøen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mosjoenhavn.no" target="_blank">Mosjøen Havn KF</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post@mosjoenhavn.no">post@mosjoenhavn.no</a><br>75 10 18 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\mosjøen_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mon.no" target="_blank">Mosjøen og Omegn Næringsselskap KF</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post@mon.no">post@mon.no</a><br>75 11 13 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\mosjøen_og_omegn_næringsselskap_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.helgelandmuseum.no" target="_blank">Stiftelsen Helgeland Museum</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post@helgelandmuseum.no">post@helgelandmuseum.no</a><br>75 11 01 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\stiftelsen_helgeland_museum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.shmil.no" target="_blank">Søndre Helgeland Miljøverk</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post@shmil.no">post@shmil.no</a><br>75 11 39 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\søndre_helgeland_miljøverk.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vefsn.kirken.no" target="_blank">Vefsn Kirkelige Fellesråd</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post.kirken@vefsn.kommune.no">post.kirken@vefsn.kommune.no</a><br>91 58 20 49</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vefsn_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vefsn.kommune.no/" target="_blank">Vefsn Kommune</a></td>
+                <td>Vefsn</td>
+                <td class="contact"><a href="mailto:post@vefsn.kommune.no">post@vefsn.kommune.no</a><br>75 10 10 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vefsn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grane.kommune.no/" target="_blank">Grane Kommune</a></td>
+                <td>Grane</td>
+                <td class="contact"><a href="mailto:post@grane.kommune.no">post@grane.kommune.no</a><br>75 18 22 20</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\grane_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hattfjelldal.kommune.no" target="_blank">Hattfjelldal Kommune</a></td>
+                <td>Hattfjelldal</td>
+                <td class="contact"><a href="mailto:post@hattfjelldal-kommune.no">post@hattfjelldal-kommune.no</a><br>75 18 48 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hattfjelldal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.donna.kommune.no/" target="_blank">Dønna Kommune</a></td>
+                <td>Dønna</td>
+                <td class="contact"><a href="mailto:post@donna.kommune.no">post@donna.kommune.no</a><br>75 05 22 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\dønna_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesna.kommune.no/" target="_blank">Nesna Kommune</a></td>
+                <td>Nesna</td>
+                <td class="contact"><a href="mailto:postmottak@nesna.kommune.no">postmottak@nesna.kommune.no</a><br>75 06 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\nesna_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hemnes.kommune.no/" target="_blank">Hemnes Kommune</a></td>
+                <td>Hemnes</td>
+                <td class="contact"><a href="mailto:postmottak@hemnes.kommune.no">postmottak@hemnes.kommune.no</a><br>75 19 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hemnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hemnes.kirken.no" target="_blank">Hemnes og Hattfjelldal Kirkelige Fellesråd</a></td>
+                <td>Hemnes</td>
+                <td class="contact"><a href="mailto:kirkeverge@hemnes.kirken.no">kirkeverge@hemnes.kirken.no</a><br>75 19 75 30</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hemnes_og_hattfjelldal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.haf.no" target="_blank">Helgeland Avfallsforedling IKS</a></td>
+                <td>Rana</td>
+                <td class="contact"><a href="mailto:haf@haf.no">haf@haf.no</a><br>75 19 82 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_avfallsforedling_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hfrelgelandmuseum.no" target="_blank">Helgeland Museum</a></td>
+                <td>Rana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_museum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/helgeland" target="_blank">Helgeland tingrett</a></td>
+                <td>Rana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgeland_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandssykehuset.no/mo-i-rana" target="_blank">Helgelandssykehuset HF - Mo i Rana</a></td>
+                <td>Rana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf_-_mo_i_rana.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.moiranahavn.no" target="_blank">Mo i Rana Havn KF</a></td>
+                <td>Rana</td>
+                <td class="contact"><a href="mailto:bt@moiranahavn.no">bt@moiranahavn.no</a><br>75 13 47 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\mo_i_rana_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://polarsirkelen.vgs.no" target="_blank">Polarsirkelen videregående skole</a></td>
+                <td>Rana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\polarsirkelen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://polarsirkelradet.no" target="_blank">Polarsirkelrådet</a></td>
+                <td>Rana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\polarsirkelrådet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rana.kirken.no/" target="_blank">Rana Kirkelige Fellesråd</a></td>
+                <td>Rana</td>
+                <td class="contact"><a href="mailto:post@rana.kirken.no">post@rana.kirken.no</a><br>75 12 33 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\rana_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rana.kommune.no/" target="_blank">Rana Kommune</a></td>
+                <td>Rana</td>
+                <td class="contact"><a href="mailto:postmottak@rana.kommune.no">postmottak@rana.kommune.no</a><br>75 14 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\rana_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://luroy.kirken.no" target="_blank">Lurøy Kirkelig Fellesråd</a></td>
+                <td>Lurøy</td>
+                <td class="contact"><a href="mailto:kirkeverge@luroy.kirken.no">kirkeverge@luroy.kirken.no</a><br>75 09 15 34</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lurøy_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.luroy.kommune.no/" target="_blank">Lurøy Kommune</a></td>
+                <td>Lurøy</td>
+                <td class="contact"><a href="mailto:postmottak@luroy.kommune.no">postmottak@luroy.kommune.no</a><br>75 09 15 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lurøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.trana.kommune.no/" target="_blank">Træna Kommune</a></td>
+                <td>Træna</td>
+                <td class="contact"><a href="mailto:ingebjorg.vamrak@trana.kommune.no">ingebjorg.vamrak@trana.kommune.no</a><br>75 09 58 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\træna_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rodoy.kommune.no/" target="_blank">Rødøy Kommune</a></td>
+                <td>Rødøy</td>
+                <td class="contact"><a href="mailto:postmottak@rodoy.kommune.no">postmottak@rodoy.kommune.no</a><br>75 09 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\rødøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.meloy.kirken.no/" target="_blank">Meløy Kirkelige Fellesråd</a></td>
+                <td>Meløy</td>
+                <td class="contact"><a href="mailto:postmottak@meloy.kirken.no">postmottak@meloy.kirken.no</a><br>75 72 12 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\meløy_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.meloy.kommune.no/" target="_blank">Meløy Kommune</a></td>
+                <td>Meløy</td>
+                <td class="contact"><a href="mailto:postmottak@meloy.kommune.no">postmottak@meloy.kommune.no</a><br>75 71 00 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\meløy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gildeskal.kommune.no/" target="_blank">Gildeskål Kommune</a></td>
+                <td>Gildeskål</td>
+                <td class="contact"><a href="mailto:postmottak@gildeskal.kommune.no">postmottak@gildeskal.kommune.no</a><br>75 76 06 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\gildeskål_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.beiarn.kommune.no/" target="_blank">Beiarn Kommune</a></td>
+                <td>Beiarn</td>
+                <td class="contact"><a href="mailto:post@beiarn.kommune.no">post@beiarn.kommune.no</a><br>75 56 90 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\beiarn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.saltdalkirken.no/" target="_blank">Saltdal Kirkelige Fellesråd</a></td>
+                <td>Saltdal</td>
+                <td class="contact"><a href="mailto:post@saltdalkirken.no">post@saltdalkirken.no</a><br>75 69 14 22</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\saltdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.saltdal.kommune.no/" target="_blank">Saltdal Kommune</a></td>
+                <td>Saltdal</td>
+                <td class="contact"><a href="mailto:postmottak@saltdal.kommune.no">postmottak@saltdal.kommune.no</a><br>75 68 20 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\saltdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.saltdalutvikling.no" target="_blank">Saltdal Utvikling KF</a></td>
+                <td>Saltdal</td>
+                <td class="contact"><a href="mailto:firmapost@saltdalutvikling.no">firmapost@saltdalutvikling.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\saltdal_utvikling_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.faunakf.no" target="_blank">Fauna KF (næring- og Stedsutvikling i Fauske)</a></td>
+                <td>Fauske</td>
+                <td class="contact"><a href="mailto:kristian@faunakf.no">kristian@faunakf.no</a><br>75 64 10 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\fauna_kf_(næring-_og_stedsutvikling_i_fauske).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fauskekirken.no/" target="_blank">Fauske Kirkelige Fellesråd</a></td>
+                <td>Fauske</td>
+                <td class="contact"><a href="mailto:fellesraad@fauskekirken.no">fellesraad@fauskekirken.no</a><br>75 60 10 80</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\fauske_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fauske.kommune.no/" target="_blank">Fauske Kommune</a></td>
+                <td>Fauske</td>
+                <td class="contact"><a href="mailto:postmottak@fauske.kommune.no">postmottak@fauske.kommune.no</a><br>75 60 40 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\fauske_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sorfold.kommune.no/" target="_blank">Sørfold Kommune</a></td>
+                <td>Sørfold</td>
+                <td class="contact"><a href="mailto:post@sorfold.kommune.no">post@sorfold.kommune.no</a><br>75 68 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sørfold_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sorfoldnett.no" target="_blank">Sørfoldnett KF</a></td>
+                <td>Sørfold</td>
+                <td class="contact"><a href="mailto:post@sorfoldnett.no">post@sorfoldnett.no</a><br>75 68 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sørfoldnett_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.steigen.kommune.no/" target="_blank">Steigen Kommune</a></td>
+                <td>Steigen</td>
+                <td class="contact"><a href="mailto:postmottak@steigen.kommune.no">postmottak@steigen.kommune.no</a><br>75 77 88 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\steigen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lodingenhavn.no" target="_blank">Lødingen Havn KF</a></td>
+                <td>Lødingen</td>
+                <td class="contact"><a href="mailto:atle.andersen@lodingen.kommune.no">atle.andersen@lodingen.kommune.no</a><br>76 98 66 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lødingen_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lodingen.kommune.no/" target="_blank">Lødingen Kommune</a></td>
+                <td>Lødingen</td>
+                <td class="contact"><a href="mailto:postmottak@lodingen.kommune.no">postmottak@lodingen.kommune.no</a><br>76 98 66 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lødingen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.evenes.kommune.no/" target="_blank">Evenes Kommune / Evenássi Suohkan</a></td>
+                <td>Evenes</td>
+                <td class="contact"><a href="mailto:postmottak@evenes.kommune.no">postmottak@evenes.kommune.no</a><br>76981500</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\evenes_kommune_evenássi_suohkan.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://evenes.kommune.no" target="_blank">Evenes kommune</a></td>
+                <td>Evenes</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\evenes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rost.kommune.no/" target="_blank">Røst Kommune</a></td>
+                <td>Røst</td>
+                <td class="contact"><a href="mailto:postkasse@rost.kommune.no">postkasse@rost.kommune.no</a><br>76 05 05 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\røst_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.varoy.kommune.no/" target="_blank">Værøy Kommune</a></td>
+                <td>Værøy</td>
+                <td class="contact"><a href="mailto:postmottak@varoy.kommune.no">postmottak@varoy.kommune.no</a><br>95 42 06 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\værøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flakstad.kommune.no" target="_blank">Flakstad Kommune</a></td>
+                <td>Flakstad</td>
+                <td class="contact"><a href="mailto:postmottak@flakstad.kommune.no">postmottak@flakstad.kommune.no</a><br>76 05 22 01</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\flakstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.las-lofoten.no" target="_blank">Lofoten Avfallsselskap IKS</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact"><a href="mailto:post@las-lofoten.no">post@las-lofoten.no</a><br>760 54030</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofoten_avfallsselskap_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lofotenfriluft.no" target="_blank">Lofoten Friluftsråd, Kommunalt Oppgavefellesskap</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact"><a href="mailto:lofoten@friluftsrad.no">lofoten@friluftsrad.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofoten_friluftsråd,_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lofoten-matpark.no" target="_blank">Lofoten Matpark AS</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofoten_matpark_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lofotr.no" target="_blank">Lofotr Vikingmuseum</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofotr_vikingmuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lofotradet.no" target="_blank">Lofotrådet Interkommunalt Politisk Råd</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact"><a href="mailto:post@lofotradet.no">post@lofotradet.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofotrådet_interkommunalt_politisk_råd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vest-lofoten.vgs.no" target="_blank">Vest-Lofoten videregående skole</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vest-lofoten_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestvagoy.kirken.no" target="_blank">Vestvågøy Kirkelige Fellesråd</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact"><a href="mailto:post.vestvagoy@kirken.no">post.vestvagoy@kirken.no</a><br>76 05 67 30</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vestvågøy_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestvagoy.kommune.no/" target="_blank">Vestvågøy Kommune</a></td>
+                <td>Vestvågøy</td>
+                <td class="contact"><a href="mailto:postmottak@vestvagoy.kommune.no">postmottak@vestvagoy.kommune.no</a><br>76 05 60 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vestvågøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lofotenkulturhus.no" target="_blank">Lofoten Kulturhus KF</a></td>
+                <td>Vågan</td>
+                <td class="contact"><a href="mailto:post@lofotenkulturhus.no">post@lofotenkulturhus.no</a><br>75 42 02 27</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\lofoten_kulturhus_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lofotakvariet.no" target="_blank">Skrei Eiendom AS</a></td>
+                <td>Vågan</td>
+                <td class="contact"><a href="mailto:johannes@skipnes.com">johannes@skipnes.com</a><br>76 07 86 65</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\skrei_eiendom_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vaganhavn.no" target="_blank">Vågan Havnevesen KF</a></td>
+                <td>Vågan</td>
+                <td class="contact"><a href="mailto:vaganhavn@vagan.kommune.no">vaganhavn@vagan.kommune.no</a><br>76 06 79 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vågan_havnevesen_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vagan.kommune.no/" target="_blank">Vågan Kommune</a></td>
+                <td>Vågan</td>
+                <td class="contact"><a href="mailto:postmottak@vagan.kommune.no">postmottak@vagan.kommune.no</a><br>75 42 00 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\vågan_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hadsel.kommune.no" target="_blank">Hadsel Eiendom KF</a></td>
+                <td>Hadsel</td>
+                <td class="contact"><a href="mailto:hadsel.eiendom@hadsel.kommune.no">hadsel.eiendom@hadsel.kommune.no</a><br>76 16 45 44</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hadsel_eiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hadselhavn.no" target="_blank">Hadsel Havn KF</a></td>
+                <td>Hadsel</td>
+                <td class="contact"><a href="mailto:hadsel.havn@hadsel.kommune.no">hadsel.havn@hadsel.kommune.no</a><br>76 16 46 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hadsel_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hadsel.vgs.no" target="_blank">Hadsel videregående skole</a></td>
+                <td>Hadsel</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hadsel_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.museumnord.no" target="_blank">Stiftelsen Museum NORD</a></td>
+                <td>Hadsel</td>
+                <td class="contact"><a href="mailto:post@museumnord.no">post@museumnord.no</a><br>76 15 40 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\stiftelsen_museum_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.boe.kommune.no/" target="_blank">Bø Kommune</a></td>
+                <td>Bø</td>
+                <td class="contact"><a href="mailto:post@boe.kommune.no">post@boe.kommune.no</a><br>76 11 43 05</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\bø_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helgelandssykehuset.no/bronnoysund" target="_blank">Helgelandssykehuset HF - Brønnøysund</a></td>
+                <td>Øksnes</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\helgelandssykehuset_hf_-_brønnøysund.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://mfrn.no" target="_blank">Museum Nord - Vesterålsmuseet</a></td>
+                <td>Øksnes</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\museum_nord_-_vesterålsmuseet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.oksnes.kommune.no" target="_blank">Øksnes Havnevesen KF</a></td>
+                <td>Øksnes</td>
+                <td class="contact"><a href="mailto:havnekontoret@oksnes.kommune.no">havnekontoret@oksnes.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\øksnes_havnevesen_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://oksnes.kommune.no" target="_blank">Øksnes kommune</a></td>
+                <td>Øksnes</td>
+                <td class="contact"><a href="mailto:postmottak@bronnoy.kommune.no">postmottak@bronnoy.kommune.no</a><br>75 01 20 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\øksnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kulturfabrikkensortland.no" target="_blank">Kulturfabrikken Sortland KF</a></td>
+                <td>Sortland</td>
+                <td class="contact"><a href="mailto:postmottak@kulturfabrikkensortland.no">postmottak@kulturfabrikkensortland.no</a><br>76 10 91 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\kulturfabrikken_sortland_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.reno-vest.no" target="_blank">Reno-vest IKS</a></td>
+                <td>Sortland</td>
+                <td class="contact"><a href="mailto:post@reno-vest.no">post@reno-vest.no</a><br>76 11 29 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\reno-vest_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sortland-havn.no" target="_blank">Sortland Havn KF</a></td>
+                <td>Sortland</td>
+                <td class="contact"><a href="mailto:havnekontoret@sortland.kommune.no">havnekontoret@sortland.kommune.no</a><br>75 57 71 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sortland_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sortland.kommune.no/" target="_blank">Sortland Kommune / Suorttá Souhkan</a></td>
+                <td>Sortland</td>
+                <td class="contact"><a href="mailto:postmottak@sortland.kommune.no">postmottak@sortland.kommune.no</a><br>76 10 90 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sortland_kommune_suorttá_souhkan.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sortland.kommune.no" target="_blank">Sortland kommune</a></td>
+                <td>Sortland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sortland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sortland.vgs.no" target="_blank">Sortland videregående skole</a></td>
+                <td>Sortland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\sortland_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://andoy.kommune.no" target="_blank">Andøy Havn KF</a></td>
+                <td>Andøy</td>
+                <td class="contact"><a href="mailto:postmottak@andoy.kommune.no">postmottak@andoy.kommune.no</a><br>76 14 11 13</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\andøy_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.andoy.kommune.no" target="_blank">Andøy Kommune</a></td>
+                <td>Andøy</td>
+                <td class="contact"><a href="mailto:postmottak@andoy.kommune.no">postmottak@andoy.kommune.no</a><br>76 11 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\andøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.moskenes.kommune.no" target="_blank">Moskenes Kommune</a></td>
+                <td>Moskenes</td>
+                <td class="contact"><a href="mailto:postmottak@moskenes.kommune.no">postmottak@moskenes.kommune.no</a><br>76 05 31 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\moskenes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://narvik.vgs.no" target="_blank">Narvik videregående skole</a></td>
+                <td>Narvik</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\narvik_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hamaroy.kommune.no/" target="_blank">Hamarøy Kommune</a></td>
+                <td>Hamarøy</td>
+                <td class="contact"><a href="mailto:postmottak@hamaroy.kommune.no">postmottak@hamaroy.kommune.no</a><br>75765000</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="nordland\hamarøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

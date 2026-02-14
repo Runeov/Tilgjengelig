@@ -1,0 +1,35 @@
+{
+  "updated": "2026-01-22T09:07:44.771005",
+  "folders": [
+    {
+      "folder": "counties",
+      "timestamp": "counties",
+      "mode": "unknown",
+      "description": "Imported folder",
+      "total": 375,
+      "with_statement": 0,
+      "total_issues": 0,
+      "critical_issues": 0
+    },
+    {
+      "folder": "20260122_090049",
+      "timestamp": "20260122_090049",
+      "mode": "full",
+      "description": "One per county (sample)",
+      "total": 15,
+      "with_statement": 14,
+      "total_issues": 5870,
+      "critical_issues": 84
+    },
+    {
+      "folder": "20260108_130746",
+      "timestamp": "20260108_130746",
+      "mode": "full",
+      "description": "County: Finnmark",
+      "total": 18,
+      "with_statement": 16,
+      "total_issues": 7763,
+      "critical_issues": 481
+    }
+  ]
+}

@@ -1,0 +1,3570 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://bergenbibliotek.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://bergenbibliotek.no";
+        var TOTAL_ISSUES = 197;
+        var maxPages = 21;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://bergenbibliotek.no</p>
+        <p><strong>Dato:</strong> 2026-02-13T11:41:39.396988</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item error">❌ <strong>Ingen tilgjengelighetserklæring funnet</strong></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">21</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">197</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">79</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">110</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">4</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">2122</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">197</strong> av 197 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergenbibliotek — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/</div>
+            <div>Avvik: 1 | Bestått: 112</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h3, should start with h1</p>
+                <div class="element">&lt;h3 data-mce-style="text-align: center;" style="text-align: center;"&gt;&lt;a data-linktype="internal" data-mce-href="../resolveuid/76acac10f514097c7664dae292ecc2f1" data-val="76acac10f514097c7664dae292ecc2</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Quiz</div>
+            <div>Avvik: 13 | Bestått: 131</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arrangement/bibliotekets-allmenquiz/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/spill/igm/quiz-til-internasjonal-spilluke/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arrangement/bibliotekets-filmquiz/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2018/maria-parr-keeperen-og-havet/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2018/gudrun-skretting-anton-og-andre-flokkdyr/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2018/ingunn-aamodt-dukkens-rette-eier/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2018/arnfinn-kolerud-snillionen/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2018/ingrid-ovedie-volden-hjertet-er-en-knyttneve/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2017/quiz-lars-er-lol/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arkiv/arkiv-barn/barnas-bokpris-arkiv/barnas-bokpris-2017/quiz-hvor-gammel-blir-en-tiger/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Quiz"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class="next"&gt;
+&lt;a href="ht</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Statistikk — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/statistikk</div>
+            <div>Avvik: 4 | Bestått: 33</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://bibliotekutvikling.no/statistikk/forside/statistikk-for-folkebibliotek/" data-val="https://bibliotekutvikling.no/statistikk/forside/statistikk-for-fo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe src="https://app.powerbi.com/view?r=eyJrIjoiODZiNzEyYTgtZTZlZC00ZTFmLTk1YzMtNjhiZWJiYmQ4Y2E0IiwidCI6ImQ0MWNhYWE5LWE0MWEtNGUwZi05YmY2LTA1Y2QxZjQ4ZDI3MSIsImMiOjh9"&gt;
+&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bli låner — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/om-oss/bli-laaner</div>
+            <div>Avvik: 6 | Bestått: 58</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/om-oss/bli-laaner/@@plone.app.standardtiles.image/0debf2a4ab544588a87724d9b4c3f55f/@@images/3830a3ff-83cc-4352-9a6c-c0f236673e2a.jpeg" width="400"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/om-oss/bli-laaner/@@plone.app.standardtiles.image/738f055e9a6e423999926ea37d9b18df/@@images/7aaeccdb-cc5c-4a92-8292-e992ee176a83.jpeg" width="400"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/om-oss/bli-laaner/@@plone.app.standardtiles.image/0476840ea38f44aaa252dc12c80dd31d/@@images/3cb97abe-5fc7-4dd8-b212-dd0eac529140.jpeg" width="400"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3 data-mce-style="text-align: left;" style="text-align: left;"&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/m2?mode=ln-kanskjenylaaner" data-val="https://mitt.b</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>A til Å — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/tjenester-a-a</div>
+            <div>Avvik: 21 | Bestått: 231</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.6 Overskrifter og ledetekster (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h1&gt;&lt;/h1&gt;</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;&lt;strong&gt;Se også: &lt;a data-linktype="internal" data-mce-href="../resolveuid/5ab77741d70e162b1c6b1393f70049b7" data-val="5ab77741d70e162b1c6b1393f70049b7" href="https://bergenbibliotek.no/om-oss/faq"</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (16 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="../e-bibliotek/atekst" data-val="https://bergenbibliotek.no/e-bibliotek/atekst" href="https://bergenbibliotek.no/e-bibliotek/atekst" target="_blank"&gt;Atekst: </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/258fe81dd2d14ec398c5ddbd81c29859" data-val="258fe81dd2d14ec398c5ddbd81c29859" href="https://bergenbibliotek.no/resolveuid/258fe81dd2d14ec398c5d</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/a2f03f658a23462cba5c7901dad8810b" data-val="a2f03f658a23462cba5c7901dad8810b" href="https://bergenbibliotek.no/e-bibliotek/e-boker"&gt;&lt;br/&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/a2f03f658a23462cba5c7901dad8810b" data-val="a2f03f658a23462cba5c7901dad8810b" href="https://bergenbibliotek.no/e-bibliotek/e-boker"&gt;&lt;br/&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/d25d2b0d6a804c23af9b8f02b3fde491" data-val="d25d2b0d6a804c23af9b8f02b3fde491" href="https://bergenbibliotek.no/in-english" target="_blank"&gt;Engl</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/d4758e708c2d4be590bc9426231fe0c0" data-val="d4758e708c2d4be590bc9426231fe0c0" href="https://bergenbibliotek.no/musikkogfilm/lan-et-instrument"&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="http://brgbib.bergen.folkebibl.no/kikkhullet/" data-val="http://brgbib.bergen.folkebibl.no/kikkhullet/" href="http://brgbib.bergen.folkebibl.no/kikkhullet/"&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/22be4977fbb8451a90d4278489b87cfb" data-val="22be4977fbb8451a90d4278489b87cfb" href="https://bergenbibliotek.no/om-oss/lesekiosker" target="_bla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/51cc10aa99e4474f8c5455878f8b660b" data-val="51cc10aa99e4474f8c5455878f8b660b" href="https://bergenbibliotek.no/barn/lesekroken" target="_blank"</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="http://lovdata.no/pro/ip" data-val="http://lovdata.no/pro/ip" href="http://lovdata.no/pro/ip"&gt;&lt;br/&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/def0627047df42fbba71609a8ee9df2b" data-val="def0627047df42fbba71609a8ee9df2b" href="https://bergenbibliotek.no/musikkogfilm/mandagsfilmen-pa-bi</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/717d286f26674611abfeef9961a91633" data-val="717d286f26674611abfeef9961a91633" href="https://bergenbibliotek.no/tjenester-a-a/merapent-bibliotek</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/8a6389e47eed4f05b295cf2846da49ba" data-val="8a6389e47eed4f05b295cf2846da49ba" href="https://bergenbibliotek.no/musikkogfilm/musikkbloggen"&gt;&lt;br/</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.subscribepage.com/e8g0u1" data-val="https://www.subscribepage.com/e8g0u1" href="https://www.subscribepage.com/e8g0u1" target="_blank"&gt;Nyhetsbrev&lt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/a957310ee1d34ef59f09cff8426f855e" data-val="a957310ee1d34ef59f09cff8426f855e" href="https://bergenbibliotek.no/litteraturen/tegneserier"&gt;&lt;br/&gt;&lt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../../../../resolveuid/0dba61c0e7a346509784cee3cf4ec67d" data-val="0dba61c0e7a346509784cee3cf4ec67d" href="https://bergenbibliotek.no/resolveuid/0dba61c0e7a3</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'breadcrumbs-current' appears 2 times</p>
+                <div class="element">id="breadcrumbs-current"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Filmoteket — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/musikkogfilm/filmoteket</div>
+            <div>Avvik: 6 | Bestått: 53</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/musikkogfilm/filmoteket/@@plone.app.standardtiles.image/2470fa68705842a3bc041b5034cf99db/@@images/4cb8dbbd-6510-4e15-a2c3-f7cf7af0f019.jpeg" width="1510"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Symaskin — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/laering/utstyr-i-baerekraftslaben/symaskin</div>
+            <div>Avvik: 10 | Bestått: 54</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/laering/utstyr-i-baerekraftslaben/symaskin/@@plone.app.standardtiles.image/deac4a07032741a7baea7d3738c21c31/@@images/52327cf9-ea95-4ea4-b5e9-5f892106af33.jpeg" wid</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/laering/utstyr-i-baerekraftslaben/symaskin/@@plone.app.standardtiles.image/784cbda199ff4e0baa9c35528efc81c4/@@images/dc733163-5972-465a-a3e8-5e64ce681abe.jpeg" wid</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/laering/utstyr-i-baerekraftslaben/symaskin/@@plone.app.standardtiles.image/f6a44874438b491ba2969b02b5a4ca00/@@images/7d3fd07a-4d9c-43c5-a280-eb2fa0e0e812.jpeg" wid</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (6 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;Våre symaskiner&lt;br/&gt;&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;&lt;strong&gt;&lt;span data-contrast="none"&gt;Pfaff Passport 3.0 symaskin &lt;/span&gt;&lt;/strong&gt; &lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Familielørdag: På dinosaurjakt med Detektiv Trine! — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-loddefjord/familielordag-loddefjord-140226</div>
+            <div>Avvik: 6 | Bestått: 46</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a class="url" href="https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-loddefjord/familielordag-loddefjord-140226" itemprop="url"&gt;https://bergenbibliotek.no/bibliotekene/laksev</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Spesialsamlinger — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/spesialsamlinger</div>
+            <div>Avvik: 4 | Bestått: 68</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img src="https://bergenbibliotek.no/spesialsamlinger/@@plone.app.standardtiles.image/ccc57cc74a8f40b59fd378b0e56ad77c/@@images/093df524-0be7-43c9-ab9f-da2fc2193551.jpeg" width="1140"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>2.4.6 Overskrifter og ledetekster (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h3&gt;&lt;strong&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/websok?mode=vt&amp;eccl=(avd%3dhmlf)+&amp;st=p" data-val="https://mitt.bergenbibliotek.no/cgi-bin/websok?</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Spill — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/spill</div>
+            <div>Avvik: 14 | Bestått: 118</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (11 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/m2?mode=saker-vissaker" data-val="https://mitt.bergenbibliotek.no/cgi-bin/m2?mode=saker-vissaker" href="https://m</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 data-mce-style="text-align: center;" style="text-align: center;"&gt;&lt;strong&gt;&lt;a data-linktype="external" data-mce-href="../arrangement/filter/spill" data-val="https://bergenbibliotek.no/arrangement/fi</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 data-mce-style="text-align: center;" style="text-align: center;"&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/m2?mode=vt&amp;hpid=26307&amp;nyttsok=1&amp;pubs</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 data-mce-style="text-align: center;" style="text-align: center;"&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/m2?mode=vt&amp;hpid=1627369520&amp;nyttsok=1&amp</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4 data-mce-style="text-align: center;" style="text-align: center;"&gt;&lt;a data-linktype="external" data-mce-href="https://mitt.bergenbibliotek.no/cgi-bin/m2?tnr=651743" data-val="https://mitt.bergenbibl</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;&lt;a data-linktype="external" data-mce-href="artikler-tema-og-lister" data-val="/spill/artikler-tema-og-lister" href="https://bergenbibliotek.no/spill/artikler-tema-og-lister"&gt;&lt;strong&gt;Les flere arti</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;&lt;a data-linktype="external" data-mce-href="tips-og-nytt" data-val="/spill/tips-og-nytt" href="https://bergenbibliotek.no/spill/tips-og-nytt"&gt;&lt;strong&gt;Les flere anbefalinger&lt;/strong&gt;&lt;/a&gt;&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a class="imageLink" href="https://bergenbibliotek.no/spill/tips-og-nytt/cat-rescue-story"&gt;
+&lt;div class="author"&gt;
+                Tivola Publishing GmbH,
+                2024
+              &lt;/div&gt;
+&lt;h2&gt;C</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (167 characters)</p>
+                <div class="element">&lt;a class="imageLink" href="https://bergenbibliotek.no/spill/heroes-feast"&gt;
+&lt;div class="author"&gt;
+                Kyle Newman; Jon Peterson; Michael Witwer; Adam Ried (oppskrifter); Ray Katchatorian (fo</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Strøm film — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/e-bibliotek/strom-film</div>
+            <div>Avvik: 5 | Bestått: 39</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Lån det på biblioteket — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/lan-det-pa-biblioteket</div>
+            <div>Avvik: 2 | Bestått: 66</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Digitalt</div>
+            <div>Avvik: 13 | Bestått: 115</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/spraak/laer-spraak-paa-nettet/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/strom-film/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/podkast-om-barnelitteratur/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/e-bibliotek-forside/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/pressreader/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/tv/bobtv-junior/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/aktuelt/opprop-for-et-bedre-e-lydboktilbud-i-biblioteket/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/elektronisk-litteratur/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/bobcast/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/tv/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Digitalt"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li class="next"&gt;
+&lt;a href</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Litteratur</div>
+            <div>Avvik: 14 | Bestått: 143</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/lesetips/jeg-har-enna-ikke-sett-verden-av-roskva-koritzinsky/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/spill/trollmenn-tyver/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/bobcast/bobcast-150-helene-uri-om-kvinner-menn-og-sprak/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/lesetips/boka-om-baltimorefamilien/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/lesetips/live-green/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arrangement/manedens-klassiker-det-blodige-rommet-av-angela-carter-den-beste-forfatteren-du-aldri-har-hort-om/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arrangement/kremen-av-krim-den-svarte-serie-og-staalesen-under-lupen/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/actionfylte-johnny-777-vinner-barnas-bokpris-2021/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/aktuelt/urfolk-i-litteraturen/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/skolestart/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (101 characters)</p>
+                <div class="element">&lt;a class="state-published" href="https://bergenbibliotek.no/arrangement/manedens-klassiker-det-blodige-rommet-av-angela-carter-den-beste-forfatteren-du-aldri-har-hort-om"&gt;Månedens klassiker: Det blodi</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Litteratur"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://b</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Lokalhistorie</div>
+            <div>Avvik: 13 | Bestått: 156</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/aasane/slektgransking-pa-asane-bibliotek-1/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/aasane/slektgransking-pa-asane-bibliotek-2/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/aasane/slektgransking-pa-asane-bibliotek-3/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/aasane/slektgransking-pa-asane-bibliotek-4/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-laksevag/copy2_of_kom-i-gang-med-slektsgranskningdes/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/fana/slektsgransking-pa-fana-bibliotek-1/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/lokalhistorie/slektsgransking/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-laksevag/kom-i-gang-med-slektsgranskning2/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-laksevag/kom-i-gang-med-slektsgranskning3/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/laksevag-bydel/faste-hendelser-pa-laksevag/kom-i-gang-med-slektsgranskning4/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Lokalhistorie"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https:</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bibliotekets allmenquiz — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/arrangement/bibliotekets-allmenquiz</div>
+            <div>Avvik: 8 | Bestått: 44</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (6 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h4</p>
+                <div class="element">&lt;h4&gt;Kontakt&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="previous"&gt;
+&lt;a href="https://bergenbibliotek.no/arrangement/huskonsert-vinterkonsert-med-griegakademiets-jazzvokalister" title="Gå til forrige element"&gt;
+       </div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a class="url" href="https://bergenbibliotek.no/arrangement/bibliotekets-allmenquiz" itemprop="url"&gt;https://bergenbibliotek.no/arrangement/bibliotekets-allmenquiz&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Musikk</div>
+            <div>Avvik: 13 | Bestått: 125</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/e-bibliotek/bobcast/bobcast-156-lyden-av-manchester-og-bergen/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/arrangement/huskonsert-vinterkonsert-med-griegakademiets-jazzvokalister/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/arilds-favoritter/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/musikk-ny-folke/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/dee-dee/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/anarki/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/crosby/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/beethoven-strauss/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/kila-kila-kila/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/musikkogfilm/tips-og-nytt/dissing/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Musikk"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://berge</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Digitalt — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/e-bibliotek</div>
+            <div>Avvik: 6 | Bestått: 95</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;Apper&lt;br/&gt;&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bergen Offentlige Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/@@search?Subject%3Alist=Barn</div>
+            <div>Avvik: 13 | Bestått: 160</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (10 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/tips-og-nytt/tarer-forandrer-ingenting/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/spill/tips-og-nytt/cat-rescue-story/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/actionfylte-johnny-777-vinner-barnas-bokpris-2021/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/superlaner/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/skolestart/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/kalenderboker/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/aarstadbibliotekene/for-skole-hoytspilling-og-verksted-pa-barnas-biblab/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/barn/norlandia-erleveien-barnehage-er-sertifisert-som-lesefro-barnehage/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/bibliotekene/fana/vinterferien-pa-biblioteket-aktiviteter-i-salen-for-store-og-sma/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="image-icon" src="https://bergenbibliotek.no/spill/tips-og-nytt/snufkin/@@images/image/thumb"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="autotoc-nav" id="searchResultsSort"&gt;
+&lt;span class="autotab-heading"&gt;Sortèr etter&lt;/span&gt;
+&lt;span id="sorting-options"&gt;
+&lt;a class="active" data-order="" href="https://bergenbibliotek.no/@@search</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination"&gt;
+&lt;ul&gt;
+&lt;li class="active"&gt;
+&lt;span&gt;1&lt;/span&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenbibliotek.no/@@search?b_start:int=10&amp;Subject:list=Barn"&gt;2&lt;/a&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;a href="https://bergenb</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bibliotekene — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/bibliotekene</div>
+            <div>Avvik: 17 | Bestått: 123</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (15 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til hjelpesider og kontaktinformasjon'</p>
+                <div class="element">&lt;a href="https://bergenbibliotek.no/kontakt"&gt;
+&lt;div class="tilelabel"&gt;
+&lt;h2&gt;Gå til hjelpesider og kontaktinformasjon&lt;/h2&gt;
+&lt;/div&gt;
+&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/04bda4ea7d4748719aee2c297458e560" data-val="04bda4ea7d4748719aee2c297458e560" href="https://bergenbibliotek.no/besoke-biblioteket" target="_bla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cfeaec9f71d63%3A0xf8d8c8ef1f3363f7!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipMLZuD6Fz9Gj9j4fH</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.facebook.com/fanabibliotek" data-val="https://www.facebook.com/fanabibliotek" href="https://www.facebook.com/fanabibliotek" target="_blank"&gt;Faceb</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.instagram.com/fanabibliotek" data-val="https://www.instagram.com/fanabibliotek" href="https://www.instagram.com/fanabibliotek" target="_blank"&gt;In</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/place/Fana+library/@60.3169583,5.3535693,3a,75y,90t/data=!3m8!1e2!3m6!1sAF1QipN7uZUeZPl1fSMXfZJ_8UJtEd6Wu4aMTVm6dlke!2e10!3e12!6s</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cfbc57e4ef861%3A0x5fde29c9e93986b0!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipNXrUyeWDDdlAu2Y2</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cfdf5c4e0f7db%3A0xf35fa0e991b7ebec!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipOqEAW5EdESiGN211</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cfb0cb44b1dcd%3A0xc9730bbed62aea18!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipM4XRImftoSMWTh3N</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://goo.gl/maps/CiH6t2TqWHCreXJf8" data-val="https://goo.gl/maps/CiH6t2TqWHCreXJf8" href="https://goo.gl/maps/CiH6t2TqWHCreXJf8" target="_blank"&gt;Landås b</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://goo.gl/maps/gz1NUAxRNEbGcAzZ9" data-val="https://goo.gl/maps/gz1NUAxRNEbGcAzZ9" href="https://goo.gl/maps/gz1NUAxRNEbGcAzZ9" target="_blank"&gt;Barnas B</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/13a609c614b84c3d83393b0451bcbc35" data-val="13a609c614b84c3d83393b0451bcbc35" href="https://bergenbibliotek.no/resolveuid/13a609c614b84c3d83393</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://goo.gl/maps/p1owcJqc5MKAL6Tw5" data-val="https://goo.gl/maps/p1owcJqc5MKAL6Tw5" href="https://goo.gl/maps/p1owcJqc5MKAL6Tw5" target="_blank"&gt;Ny-Krohn</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cfdfa9636d1b7%3A0xa30df58a1da8f9ab!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipM4ckR2wDpZ7mZX40</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="https://www.google.com/maps/uv?pb=!1s0x463cffdcba7dcb1b%3A0xb700f36c5862fdcf!3m1!7e115!4shttps%3A%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipPdqLfpjudJXtgu2n</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Barn — Bergen Offentlige  Bibliotek</h3>
+            <div class="page-url">https://bergenbibliotek.no/barn</div>
+            <div>Avvik: 8 | Bestått: 152</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;&lt;a data-linktype="internal" data-mce-href="../resolveuid/90fa4adc1f554aa9a26bdf348a3d52fe" data-val="90fa4adc1f554aa9a26bdf348a3d52fe" href="https://bergenbibliotek.no/barn/lesetips-for-barn-fra-0</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-navbar" id="portal-globalnav-wrapper"&gt;
+&lt;div class="container"&gt;
+&lt;div class="plone-navbar-header"&gt;
+&lt;button class="plone-navbar-toggle" data-target="#portal-globalnav-collapse" data-tog</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="plone-breadcrumb" id="portal-breadcrumbs"&gt;
+&lt;div class="container"&gt;
+&lt;span class="hiddenStructure" id="breadcrumbs-you-are-here"&gt;Du er her:&lt;/span&gt;
+&lt;ol aria-labelledby="breadcrumbs-you-are-he</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="internal" data-mce-href="../resolveuid/dbcdc87785e04570bd87dc4e0b910e61" data-val="dbcdc87785e04570bd87dc4e0b910e61" href="https://bergenbibliotek.no/ung/ungdom-anbefaler" target="_b</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-linktype="external" data-mce-href="../arrangement/filter/barn" data-val="https://bergenbibliotek.no/arrangement/filter/barn" href="https://bergenbibliotek.no/arrangement/filter/barn" target="_</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="documentByLine" id="category" role="navigation"&gt;
+&lt;span id="categories-filed-under"&gt;arkivert under:&lt;/span&gt;
+&lt;ul aria-labelledby="categories-filed-under"&gt;
+&lt;li&gt;
+&lt;a class="link-category" href="</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://bergenbibliotek.no</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="21" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://bergenbibliotek.no --max-pages 21 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,3146 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.hallingdal-museum.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://www.hallingdal-museum.no";
+        var TOTAL_ISSUES = 190;
+        var maxPages = 16;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.hallingdal-museum.no</p>
+        <p><strong>Dato:</strong> 2026-02-09T15:42:22.695680</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item error">❌ <strong>Ingen tilgjengelighetserklæring funnet</strong></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">16</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">190</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">9</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">104</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">77</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">1293</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">190</strong> av 190 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/</div>
+            <div>Avvik: 13 | Bestått: 92</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--210 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="nn" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Hallingdal Museum&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://maps.app.goo.gl/axpNvqapEdmhBmFp7" rel="noopener" target="_blank"&gt; Kart &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '210' appears 3 times</p>
+                <div class="element">id="210"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33305' appears 2 times</p>
+                <div class="element">id="33305"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Våre samlingar - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/vare-samlingar</div>
+            <div>Avvik: 11 | Bestått: 80</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://digitaltmuseum.no/hfn/" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--s layout--img align--default valign--default skin-b</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '210' appears 2 times</p>
+                <div class="element">id="210"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Chr. Skredsvig Hagan</h3>
+            <div class="page-url">https://buskerudmuseene.no/skredsvig</div>
+            <div>Avvik: 13 | Bestått: 84</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (5 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/019EGHDm5MWrb?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/019EGHDm5MWrb?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJDBe4mVc?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJDBe4mVc?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="108" viewbox="0 0 198 108" width="198" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="108" width="198"&gt;&lt;/rect&gt;&lt;/clippat</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="108" viewbox="0 0 198 108" width="198" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="108" width="198"&gt;&lt;/rect&gt;&lt;/clippat</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Hagan&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.no/maps/place/Christian+Skredsvig,+Museum/@60.2567312,9.3383789,14z/data=!4m6!3m5!1s0x464063c1abeeeb3b:0x6e915da08ecefd9d!8m2!3d60.2567309!4d9.3589795!16s%</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/@skredsvigshagan" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook"&gt;&lt;/i&gt;&lt;b clas</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/galleri_skredsvig/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '217' appears 3 times</p>
+                <div class="element">id="217"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33317' appears 2 times</p>
+                <div class="element">id="33317"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Gol Bygdemuseum - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/gol-bygdemuseum</div>
+            <div>Avvik: 14 | Bestått: 74</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--210 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="nn" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Gol Bygdemuseum&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (6 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://maps.app.goo.gl/mAqC9CubDQcDJ4Uc9" rel="noopener" target="_blank"&gt; Kart &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module__button" data-document="" href="https://www.golinfo.no/historisk-vandring-golreppen/" rel="noopener" target="_blank"&gt; Historisk vandring &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://digitaltmuseum.no/021105991662/gol-bygdemuseum-skaga-bygninger" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--l-m layout-</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ledige stillinger - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/ledige-stillinger</div>
+            <div>Avvik: 9 | Bestått: 65</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Eggedal Mølle</h3>
+            <div class="page-url">https://buskerudmuseene.no/eggedalmolle</div>
+            <div>Avvik: 12 | Bestått: 77</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="72" viewbox="0 0 305 72" width="305" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="72" width="305"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="72" viewbox="0 0 305 72" width="305" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="72" width="305"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--225 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="no" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Eggedal Mølle&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.com/maps/place/60%C2%B013'50.0%22N+9%C2%B021'41.3%22E/@60.2308649,9.3606041,18.5z/data=!4m4!3m3!8m2!3d60.230565!4d9.361467?entry=ttu&amp;g_ep=EgoyMDI0MDkyM</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/profile.php?id=100076328776933" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/eggedalmolle/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b class="b</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '225' appears 3 times</p>
+                <div class="element">id="225"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33780' appears 2 times</p>
+                <div class="element">id="33780"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Holsdagen - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/holsdagen</div>
+            <div>Avvik: 9 | Bestått: 70</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module__button" data-document="" href="https://bondebryllaup.no/no/" rel="noopener" target="_blank"&gt; For meir om Holsdagen &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Dagali Museum - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/dagali-museum</div>
+            <div>Avvik: 13 | Bestått: 73</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--210 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="nn" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Dagali Museum&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (5 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://maps.app.goo.gl/CokWZTuZM76beodp6" rel="noopener" target="_blank"&gt; Kart &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://digitaltmuseum.no/021105997565/dagali-museum-dagali-bygninger" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--l-m layout--</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Villa  Fridheim</h3>
+            <div class="page-url">https://buskerudmuseene.no/villafridheim</div>
+            <div>Avvik: 12 | Bestått: 81</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="110" viewbox="0 0 376 110" width="376" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="a"&gt;&lt;rect fill="none" height="100.524" width="367.5</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="110" viewbox="0 0 376 110" width="376" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="110" width="376"&gt;&lt;/rect&gt;&lt;/clippat</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--223 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="no" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Villa Fridheim&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module__button" data-document="" href="https://www.google.com/maps/place/Villa+Fridheim/@60.1676816,9.6283942,17z/data=!3m1!4b1!4m6!3m5!1s0x4640f69e63047959:0x983d91acbaf6d6c2!8m2!3d60.16767</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/villafridheim" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook"&gt;&lt;/i&gt;&lt;b class="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/villafridheim/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b class="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '223' appears 3 times</p>
+                <div class="element">id="223"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33453' appears 2 times</p>
+                <div class="element">id="33453"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Krøderbanen</h3>
+            <div class="page-url">https://buskerudmuseene.no/kroderbanen</div>
+            <div>Avvik: 15 | Bestått: 71</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (8 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/019EGHiJR2eLf?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/019EGHiJR2eLf?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJDQn3iZs?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJDQn3iZs?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJi4qauEf?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJi4qauEf?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJi4qauAP?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJi4qauAP?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJi4qau5u?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJi4qau5u?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="backslide pos-center" fetchpriority="high" src="https://ems.dimu.org/image/069EGJi4qauAQ?dimension=1200x1200" srcset="
+             https://ems.dimu.org/image/069EGJi4qauAQ?dimension=800x8</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="141" viewbox="0 0 257 141" width="257" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="141" width="257"&gt;&lt;/rect&gt;&lt;/clippat</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--222 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="no" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Krøderbanen&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.com/maps/place/Kr%C3%B8deren+stasjon/@60.1277926,9.7777762,17z/data=!3m1!4b1!4m6!3m5!1s0x4640fa1d55b3b263:0x8d07f1e091e7583!8m2!3d60.12779!4d9.7803511!16s%</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://njk.no/" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--s-m layout--textlines align--default valign--default skin-pearl-gr</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/kroderbanen" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook"&gt;&lt;/i&gt;&lt;b class="bu</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/kroderbanen/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b class="bu</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '222' appears 2 times</p>
+                <div class="element">id="222"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Lågdalsmuseet</h3>
+            <div class="page-url">https://buskerudmuseene.no/laagdalsmuseet</div>
+            <div>Avvik: 13 | Bestått: 81</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--215 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="no" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Lågdalsmuseet&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.com/maps/place/L%C3%A5gdalsmuseet/@59.6670362,9.6546056,16z/data=!3m1!4b1!4m6!3m5!1s0x4640d0808d5ade53:0xb3e03c98656a19c2!8m2!3d59.6670335!4d9.6571805!16s%</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://digitaltmuseum.org/lk/" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--s layout--default align--default valign--default sk</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/profile.php?id=100063724622733" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/laagdalsmuseetoglabromuseene/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '215' appears 3 times</p>
+                <div class="element">id="215"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33310' appears 2 times</p>
+                <div class="element">id="33310"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Veien  Kulturminnepark</h3>
+            <div class="page-url">https://buskerudmuseene.no/veienkulturminnepark</div>
+            <div>Avvik: 16 | Bestått: 119</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="38" viewbox="0 0 364 38" width="364" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="38" width="364"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="38" viewbox="0 0 364 38" width="364" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="38" width="364"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--218 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="no" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Velkommen til Veien kulturminnepark&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.no/maps/place/Veien+Kulturminnepark/@60.1706255,10.22438,14z/data=!4m2!3m1!1s0x464100b3b778798f:0x64fd9a21b454b306?hl=no" rel="noopener" target="_blank"&gt; K</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/veienkulturminnepark" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook"&gt;&lt;/i&gt;&lt;b </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/veienkulturminnepark" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b c</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>2.1.1 Tastatur (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button class="material-icons stopBackslides" lang="no" onclick="toggleVideoPlay('video_1_069EGJhWDrMwX')" tabindex="-1" title="Stans video"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.1.1</span>
+                        <span class="criterion">(2.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Interactive button has tabindex='-1' - not keyboard accessible</p>
+                <div class="element">&lt;button class="material-icons startBackslides" lang="no" onclick="toggleVideoPlay('video_1_069EGJhWDrMwX')" tabindex="-1" title="Start video"&gt;&lt;/button&gt;</div>
+                <div class="fix">Remove tabindex='-1' unless element is in an inactive state</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '218' appears 3 times</p>
+                <div class="element">id="218"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33448' appears 2 times</p>
+                <div class="element">id="33448"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details><details><summary>1.2.2 Teksting (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.2.2</span>
+                        <span class="criterion">(1.2.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Video has no captions track</p>
+                <div class="element">&lt;video class="inviewAutoPlay hls videodata-loaded" controlslist="nodownload" id="video_1_069EGJhWDrMwX" loop="" muted="" playsinline="" src="https://ems.dimu.org/streaming/adaptive/069EGJhWDrMwX/index</div>
+                <div class="fix">Add &lt;track kind='captions' src='captions.vtt' srclang='nb' label='Norsk'&gt;</div>
+            </div>
+</details><details><summary>1.4.2 Styring av lyd (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.4.2</span>
+                        <span class="criterion">(1.4.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Video has no native controls</p>
+                <div class="element">&lt;video class="inviewAutoPlay hls videodata-loaded" controlslist="nodownload" id="video_1_069EGJhWDrMwX" loop="" muted="" playsinline="" src="https://ems.dimu.org/streaming/adaptive/069EGJhWDrMwX/index</div>
+                <div class="fix">Add controls attribute or provide custom accessible controls</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Buskerud Fylkesfotoarkiv</h3>
+            <div class="page-url">https://buskerudmuseene.no/buskerudfylkesfotoarkiv</div>
+            <div>Avvik: 7 | Bestått: 78</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="78" viewbox="0 0 376 78" width="376" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="78" width="376"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://www.google.no/maps/place/Ringerikes+Museum/@60.1318625,10.265847,17z/data=!3m1!4b1!4m6!3m5!1s0x464106fb46d5e4af:0xd7bdfcba3214e530!8m2!3d60.1318625!4d10.2684219!16s%2</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/profile.php?id=61553982571238" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/buskerudfylkesfotoarkiv/?fbclid=IwZXh0bgNhZW0CMTEAAR2Y0cZiYf3rU_OKdg9VPckZUMrWiUEeUYqNw33yCLvm_HnS6bKT4gkR9</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '219' appears 4 times</p>
+                <div class="element">id="219"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33449' appears 2 times</p>
+                <div class="element">id="33449"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forside - Fossesholm Herregård</h3>
+            <div class="page-url">https://buskerudmuseene.no/fossesholm</div>
+            <div>Avvik: 9 | Bestått: 85</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="57" viewbox="0 0 181 57" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="57" width="181"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="57" viewbox="0 0 181 57" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="57" width="181"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/fossesholm" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-facebook"&gt;&lt;/i&gt;&lt;b class="but</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/fossesholmherregard/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b c</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (4 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '214' appears 3 times</p>
+                <div class="element">id="214"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '33309' appears 2 times</p>
+                <div class="element">id="33309"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Hemsedal Bygdatun - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/hemsedal</div>
+            <div>Avvik: 15 | Bestått: 76</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.2 Sidetittel (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="template site--210 template--article theme-default template-- pagetype-auto" id="m24top" ng-click="closeFilters()"&gt;&lt;a class="accessible" href="#main" lang="nn" tabindex="0"&gt; &lt;span&gt; Hopp t</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="hyphenate module__heading h-default t-normal f-default line-dark"&gt;Hemsedal Bygdatun&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (7 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-document="" href="https://maps.app.goo.gl/TkARLmMvKFSJEtGs7" rel="noopener" target="_blank"&gt; Kart &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module__button" data-document="" href="https://hemsedal.com/topp-20/storh%C3%B8vda" rel="noopener" target="_blank"&gt; Storhøvda &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module__button" data-document="" href="https://hemsedal.com/topp-20/skogshorn" rel="noopener" target="_blank"&gt; Skogshorn &lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="module--link" href="https://digitaltmuseum.no/021105989466/hemsedal-bygdatun-ovre-lokji-bygninger" rel="noopener" target="_blank"&gt; &lt;div class="module module--grid module--banner module--l-m </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Grupper - Hallingdal Museum</h3>
+            <div class="page-url">https://buskerudmuseene.no/hallingdal-museum/grupper</div>
+            <div>Avvik: 9 | Bestått: 87</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="73" viewbox="0 0 195 73" width="195" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath id="b"&gt;&lt;rect height="73" width="195"&gt;&lt;/rect&gt;&lt;/clippath&gt;&lt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg height="114" viewbox="0 0 181 114" width="181" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"&gt;&lt;defs&gt;&lt;clippath 181"="" height="114" id="footer_logo_path&gt;&lt;rect </div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="facebooklink" class="button button--social" href="https://www.facebook.com/hallingdalmuseum/?locale=nb_NO" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-faceboo</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="instalink" class="button button--social" href="https://www.instagram.com/hallingdalmuseum1/" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-instagram"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-labelledby="youtubelink" class="button button--social" href="https://www.youtube.com/@hallingdalmuseum599" rel="noreferrer" target="_blank"&gt; &lt;i class="button__icon i-social-youtube"&gt;&lt;/i&gt;&lt;b cla</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="header__menu"&gt;&lt;ul class="nav-menu" data-items="6" id="mainmenu"&gt;&lt;li&gt;&lt;a class="nav-item menu__link" href="//buskerudmuseene.no/hallingdal-museum/hva-skjer" id="mainmenu-1"&gt; Kva skjer &lt;/a&gt;&lt;/</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'b' appears 2 times</p>
+                <div class="element">id="b"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'a' appears 2 times</p>
+                <div class="element">id="a"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://www.hallingdal-museum.no</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="16" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://www.hallingdal-museum.no --max-pages 16 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

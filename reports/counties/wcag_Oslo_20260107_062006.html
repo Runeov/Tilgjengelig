@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.oslo.kommune.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        h1, h2, h3 { color: #1a1a2e; }
+        
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, #003366 0%, #004080 100%); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        
+        /* Control Bar */
+        .control-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .control-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-label {
+            font-weight: 600;
+            color: #333;
+            margin-right: 5px;
+        }
+        
+        /* Filter Buttons */
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-btn:hover { background: #f5f5f5; }
+        .filter-btn.active { border-color: #003366; background: #e3f2fd; }
+        .filter-btn.critical { border-color: #c00; }
+        .filter-btn.critical.active { background: #fee; border-color: #c00; }
+        .filter-btn.serious { border-color: #e65100; }
+        .filter-btn.serious.active { background: #fff3e0; border-color: #e65100; }
+        .filter-btn.moderate { border-color: #f9a825; }
+        .filter-btn.moderate.active { background: #fff8e1; border-color: #f9a825; }
+        .filter-btn.minor { border-color: #2e7d32; }
+        .filter-btn.minor.active { background: #e8f5e9; border-color: #2e7d32; }
+        
+        .filter-count {
+            background: #666;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .filter-btn.critical .filter-count { background: #c00; }
+        .filter-btn.serious .filter-count { background: #e65100; }
+        .filter-btn.moderate .filter-count { background: #f9a825; color: #333; }
+        .filter-btn.minor .filter-count { background: #2e7d32; }
+        
+        /* Action Buttons */
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-btn.primary {
+            background: #003366;
+            color: white;
+        }
+        .action-btn.primary:hover { background: #004080; }
+        .action-btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .action-btn.secondary:hover { background: #eee; }
+        .action-btn.rescan {
+            background: #2e7d32;
+            color: white;
+        }
+        .action-btn.rescan:hover { background: #1b5e20; }
+        
+        /* Statement Section */
+        .statement-section { 
+            background: white; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Summary Grid */
+        .summary { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .stat { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; }
+        
+        /* Page Navigation */
+        .page-nav {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .page-nav h3 { margin: 0 0 10px 0; font-size: 14px; color: #666; }
+        .page-nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .page-nav-item {
+            padding: 6px 12px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .page-nav-item:hover { background: #e0e0e0; }
+        .page-nav-item .issue-count {
+            background: #c00;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+        
+        /* Page Results */
+        .page { 
+            background: white; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            overflow: hidden; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .page.hidden { display: none; }
+        .page-header { 
+            background: #f8f9fa; 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .page-header-left { flex: 1; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .page-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .page-stat {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .page-stat.critical { background: #fee; color: #c00; }
+        .page-stat.serious { background: #fff3e0; color: #e65100; }
+        .page-stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .page-stat.minor { background: #e8f5e9; color: #2e7d32; }
+        
+        .issues { padding: 20px; }
+        .issue { 
+            background: #fff; 
+            border-left: 4px solid #ccc; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 0 4px 4px 0; 
+        }
+        .issue.hidden { display: none; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+        }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { 
+            background: #f5f5f5; 
+            padding: 10px; 
+            font-family: monospace; 
+            font-size: 0.9em; 
+            overflow-x: auto; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+        }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        
+        /* Details/Summary */
+        details { margin: 10px 0; }
+        details.hidden { display: none; }
+        summary { 
+            cursor: pointer; 
+            padding: 12px 15px; 
+            background: #f5f5f5; 
+            border-radius: 4px; 
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary:hover { background: #eee; }
+        summary::marker { content: ''; }
+        summary::before { 
+            content: '▶'; 
+            margin-right: 10px; 
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        details[open] summary::before { transform: rotate(90deg); }
+        .summary-badges {
+            display: flex;
+            gap: 6px;
+        }
+        .summary-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .summary-badge.critical { background: #c00; color: white; }
+        .summary-badge.serious { background: #e65100; color: white; }
+        .summary-badge.moderate { background: #f9a825; color: #333; }
+        .summary-badge.minor { background: #2e7d32; color: white; }
+        
+        /* Legend */
+        .legend { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        
+        /* Footer */
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Visible count */
+        .visible-count {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #666;
+        }
+        .visible-count strong { color: #333; }
+        
+        /* Rescan Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .modal h3 { margin-top: 0; }
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        .modal-input:focus { border-color: #003366; outline: none; }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.oslo.kommune.no</p>
+        <p><strong>Dato:</strong> 2026-01-07T06:20:08.711942</p>
+    </div>
+    
+    <!-- Control Bar -->
+    <div class="control-bar">
+        <div class="control-group">
+            <span class="control-label">Filter:</span>
+            <button class="filter-btn critical active" data-filter="critical" onclick="toggleFilter('critical')">
+                Kritisk <span class="filter-count">0</span>
+            </button>
+            <button class="filter-btn serious active" data-filter="serious" onclick="toggleFilter('serious')">
+                Alvorlig <span class="filter-count">5</span>
+            </button>
+            <button class="filter-btn moderate active" data-filter="moderate" onclick="toggleFilter('moderate')">
+                Moderat <span class="filter-count">23</span>
+            </button>
+            <button class="filter-btn minor active" data-filter="minor" onclick="toggleFilter('minor')">
+                Mindre <span class="filter-count">36</span>
+            </button>
+        </div>
+        
+        <div class="control-group">
+            <button class="action-btn secondary" onclick="expandAll()">📂 Vis alle</button>
+            <button class="action-btn secondary" onclick="collapseAll()">📁 Skjul alle</button>
+        </div>
+        
+        <div class="control-group" style="margin-left: auto;">
+            <button class="action-btn rescan" onclick="showRescanModal()">🔄 Ny skanning</button>
+        </div>
+    </div>
+    
+    <!-- Visible Count -->
+    <div class="visible-count" id="visibleCount">
+        Viser <strong>64</strong> av 64 avvik
+    </div>
+
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+
+            <div class="statement-item success">
+                ✅ <strong>Tilgjengelighetserklæring funnet</strong>
+            </div>
+
+            <div class="statement-item">
+                🔗 <a href="https://uustatus.no/nb/erklaringer/publisert/1ec23640-b121-4a63-918c-0d4d707fb7af" class="statement-link" target="_blank">Gå til erklæring</a>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat" onclick="scrollToPage(0)">
+            <div class="stat-value">21</div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">64</div>
+            <div class="stat-label">Totalt avvik</div>
+        </div>
+        <div class="stat critical" onclick="filterOnly('critical')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious" onclick="filterOnly('serious')">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate" onclick="filterOnly('moderate')">
+            <div class="stat-value">23</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor" onclick="filterOnly('minor')">
+            <div class="stat-value">36</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+    </div>
+
+    <div class="page-nav">
+        <h3>HURTIGNAVIGASJON TIL SIDER</h3>
+        <div class="page-nav-list">
+
+            <a class="page-nav-item" onclick="scrollToPage(0)">
+                Oslo kommune - Startsiden
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(1)">
+                Oslo kommunes personvernerklæring - Oslo...
+                <span class="issue-count">9</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(2)">
+                Medvirkning - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(3)">
+                Byutvikling - Oslo kommune
+                <span class="issue-count">7</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(4)">
+                Miljø og klima - Oslo kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(5)">
+                Satsingsområder og prosjekter - Oslo kom...
+                <span class="issue-count">7</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(6)">
+                Min side - Oslo kommune
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(7)">
+                For våre leverandører - Oslo kommune
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(8)">
+                Jobb i Oslo kommune - Oslo kommune
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(9)">
+                Oslo kommune - English
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(10)">
+                Innsyn - Oslo kommune
+                <span class="issue-count">2</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(11)">
+                Slik bygger vi Oslo - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(12)">
+                Beredskap - Oslo kommune
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(13)">
+                Etater, foretak og ombud - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(14)">
+                Jobb i Oslo kommune - Oslo kommune
+                <span class="issue-count">3</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(15)">
+                Barnehage - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(16)">
+                Valg - Politikk - Oslo kommune
+                <span class="issue-count">2</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(17)">
+                Utmerkelser og priser - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(18)">
+                Brannvern, ildsted og feiing - Oslo komm...
+                <span class="issue-count">2</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(19)">
+                Folkehelse og miljørettet helsevern - Os...
+                <span class="issue-count">2</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(20)">
+                Kontakt Oslo kommune - Oslo kommune
+                <span class="issue-count">1</span>
+            </a>
+
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page" id="page-0">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Oslo kommune - Startsiden</h3>
+                <div class="page-url">https://www.oslo.kommune.no/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">2 alvorlige</span><span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-serious" open><summary><span>2.4.2 Page Titled (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="runtime-cid-4200 runtime-ctid-231 menuroot-cid-4200 frontpage" data-host="www.oslo.kommune.no" data-search-api-key="d65e49a96b9298490fde834fbcf9f922" data-search-app-id="NJ4QX1MFJ2" data-search-hosts-url="search.web.oslo.kommune.no" data-search-index="prod_internet_norwegian" id="io-body"&gt;</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-serious" open><summary><span>4.1.1 Parsing (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'io-my-page'</p>
+                <div class="element">&lt;a class="ods-button ods-button--outline" href="https://www.oslo.kommune.no/min-side/" id="io-my-page"&gt;</div>
+                <div class="fix">Ensure all ID values are unique within the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-1">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Oslo kommunes personvernerklæring - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/personvern-og-informasjonskapsler/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">8 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (8 avvik)</span><span class="summary-badges"><span class="summary-badge minor">8 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (114 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/om-personvernerklaringen/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (188 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/hvorfor-og-hvordan-behandler-vi-personopplysningene-dine/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (149 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/hvilke-personopplysninger-behandler-vi/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (131 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/i-hvilke-sammenhenger-kan-oslo-kommune-behandle-dine-personopplysninger/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (153 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/hvordan-skal-du-ga-frem-for-a-bruke-personvernrettighetene-dine/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (131 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/behandler-vi-personopplysninger-utenfor-eu-eos/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (127 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/vil-du-snakke-med-vart-personvernombud/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (151 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/personvern-og-informasjonskapsler/vil-du-klage-pa-oslo-kommunes-behandling-av-dine-personopplysninger/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-2">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Medvirkning - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/medvirkning-i-oslo/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-3">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Byutvikling - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/byutvikling/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">6 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-minor" open><summary><span>1.1.1 Non-text Content (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Alt text is very long (158 characters)</p>
+                <div class="element">&lt;img alt="Illustrasjon av to høye bygg på gamle postens brevsenter med Oslo S sporområde i forgrunnen. To nye høyhus ved siden av postterminalen med plaza i bakgrunnen." class="ods-image" src="https://img.oslo.kommune.no/_aktuelt-prod_/Bilder/to-nye-hoyhus-og-park-pa-taket-av-brevsentralen/00-Oslo-Horisont-Rodeo-arkitekter.jpg?w=400&aspect_ratio=16:9&gravity=50p,50p" title=""/&gt;</div>
+                <div class="fix">Consider using aria-describedby to link to a longer description</div>
+            </div>
+</details><details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (5 avvik)</span><span class="summary-badges"><span class="summary-badge minor">5 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/politikk/kommuneplan/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (142 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/byutvikling/hvordan-kan-du-medvirke-i-byutviklingen/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (136 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/byutvikling/bolig-og-omradereserven/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (136 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/byutvikling/levende-oslo/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/statistikk/boligpriser-boforhold-og-byggevirksomhet/boligdashbord/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-4">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Miljø og klima - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/miljo-og-klima/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">3 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (3 avvik)</span><span class="summary-badges"><span class="summary-badge minor">3 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (140 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/miljo-og-klima/slik-jobber-vi-med-miljo-og-klima/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="/tilskudd-legater-og-stipend/#f_topic_energy_and_environment=true"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/miljo-og-klima/internasjonalt-samarbeid-pa-miljo/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-5">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Satsingsområder og prosjekter - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/satsingsomrader-og-prosjekter/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">6 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (6 avvik)</span><span class="summary-badges"><span class="summary-badge minor">6 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/byutvikling/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/satsingsomrader-og-prosjekter/hovedstadsloftet/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (104 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/oxlo/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/miljo-og-klima/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (106 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/satsingsomrader-og-prosjekter/naringsutvikling/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (115 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/satsingsomrader-og-prosjekter/inkluderende-rekruttering/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-6">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Min side - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/min-side/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (122 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/faktura-og-kontonummer/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (140 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://infocenter.ine.oslo.kommune.no/DebitorPortal2/Login"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-7">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>For våre leverandører - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/for-vare-leverandorer/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (114 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/for-vare-leverandorer/antikorrupsjon/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/for-vare-leverandorer/stotte-til-test-og-utviklingsprosjekter/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-8">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Jobb i Oslo kommune - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/jobb-i-oslo-kommune/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">1 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;Seniorpolitikk&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til oversikt over alle fagforeninger Oslo kommu'</p>
+                <div class="element">&lt;a href="https://www.oslo.kommune.no/jobb-i-oslo-kommune/fagforeninger/"&gt;Gå til oversikt over alle fagforeninger Oslo kommune har avtale med&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-9">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Oslo kommune - English</h3>
+                <div class="page-url">https://www.oslo.kommune.no/english/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">2 alvorlige</span><span class="page-stat moderate">1 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-serious" open><summary><span>2.4.2 Page Titled (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.2</span>
+                        <span class="criterion">(2.4.2 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Page is missing h1 heading</p>
+                <div class="element">&lt;body class="runtime-cid-9294 runtime-ctid-232 menuroot-cid-9294 frontpage" data-host="www.oslo.kommune.no" data-search-api-key="d65e49a96b9298490fde834fbcf9f922" data-search-app-id="NJ4QX1MFJ2" data-search-hosts-url="search.web.oslo.kommune.no" data-search-index="prod_internet_english" id="io-body"&gt;</div>
+                <div class="fix">Add a single h1 heading that describes the page content</div>
+            </div>
+</details><details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;English&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Go to content'</p>
+                <div class="element">&lt;a class="ods-sr-only io-focus-visible" href="#zone-b"&gt;Go to content&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (115 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/english/permits-and-licences/" target="_self"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details class="has-serious" open><summary><span>4.1.1 Parsing (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'io-my-page'</p>
+                <div class="element">&lt;a class="ods-button ods-button--outline" href="https://www.oslo.kommune.no/min-side/" id="io-my-page"&gt;</div>
+                <div class="fix">Ensure all ID values are unique within the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-10">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Innsyn - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/innsyn/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">1 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (104 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/politikk/bystyret/okonomiregister/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-11">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Slik bygger vi Oslo - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/slik-bygger-vi-oslo/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-12">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Beredskap - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/beredskap/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/beredskap/bortfall-av-elektronisk-kommunikasjon-ekom/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (110 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/beredskap/psykisk-helse-i-kriser/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-13">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Etater, foretak og ombud - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/etater-foretak-og-ombud/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-14">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Jobb i Oslo kommune - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/jobb-i-oslo-kommune/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">1 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;Seniorpolitikk&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til oversikt over alle fagforeninger Oslo kommu'</p>
+                <div class="element">&lt;a href="https://www.oslo.kommune.no/jobb-i-oslo-kommune/fagforeninger/"&gt;Gå til oversikt over alle fagforeninger Oslo kommune har avtale med&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-15">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Barnehage - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/barnehage/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-16">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Valg - Politikk - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/politikk/valg/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">1 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/politikk/valg/valgresultater-og-statistikk/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-17">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Utmerkelser og priser - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/utmerkelser-og-priser/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-18">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Brannvern, ildsted og feiing - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/brannvern-ildsted-og-feiing/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.6 Headings and Labels (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h2 class="ods-text--size-juliett ods-text--size-hotel-breakpoint-medium ods-text--size-delta-breakpoint-large ods-margin-top-4 ods-margin-top-0-breakpoint-medium"&gt;
+&lt;/h2&gt;</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-19">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Folkehelse og miljørettet helsevern - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/folkehelse-og-miljorettet-helsevern/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span><span class="page-stat minor">1 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details class="has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (1 avvik)</span><span class="summary-badges"><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a class="ods-service-link" href="https://www.oslo.kommune.no/folkehelse-og-miljorettet-helsevern/folkehelseundersokelsen-i-oslo-2024/"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-20">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kontakt Oslo kommune - Oslo kommune</h3>
+                <div class="page-url">https://www.oslo.kommune.no/kontakt/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">1 moderate</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>1.3.1 Info and Relationships (1 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">1 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="ods-navbar-menu__heading"&gt;Tjenester og tilbud&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+    
+    <!-- Rescan Modal -->
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <p>Skriv inn URL-en du vil skanne:</p>
+            <input type="text" class="modal-input" id="rescanUrl" value="https://www.oslo.kommune.no" placeholder="https://example.com">
+            <p style="font-size: 13px; color: #666;">
+                Kopier og kjør denne kommandoen i terminalen:
+            </p>
+            <div class="element" id="rescanCommand" style="font-size: 12px;">
+                python checker.py https://www.oslo.kommune.no --max-pages 20 --format html
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn secondary" onclick="closeRescanModal()">Avbryt</button>
+                <button class="action-btn primary" onclick="copyCommand()">📋 Kopier kommando</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Filter state
+        const activeFilters = {
+            critical: true,
+            serious: true,
+            moderate: true,
+            minor: true
+        };
+        
+        // Toggle individual filter
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            
+            // Update button state
+            const btn = document.querySelector(`[data-filter="${severity}"]`);
+            btn.classList.toggle('active', activeFilters[severity]);
+            
+            applyFilters();
+        }
+        
+        // Filter to show only one severity
+        function filterOnly(severity) {
+            // Turn off all filters
+            Object.keys(activeFilters).forEach(key => {
+                activeFilters[key] = false;
+                document.querySelector(`[data-filter="${key}"]`).classList.remove('active');
+            });
+            
+            // Turn on selected filter
+            activeFilters[severity] = true;
+            document.querySelector(`[data-filter="${severity}"]`).classList.add('active');
+            
+            applyFilters();
+        }
+        
+        // Apply current filters to all issues
+        function applyFilters() {
+            let visibleCount = 0;
+            const totalCount = 64;
+            
+            // Filter individual issues
+            document.querySelectorAll('.issue[data-severity]').forEach(issue => {
+                const severity = issue.dataset.severity;
+                const visible = activeFilters[severity];
+                issue.classList.toggle('hidden', !visible);
+                if (visible) visibleCount++;
+            });
+            
+            // Update details visibility based on whether they have visible issues
+            document.querySelectorAll('details').forEach(detail => {
+                const hasVisible = Array.from(detail.querySelectorAll('.issue[data-severity]'))
+                    .some(issue => !issue.classList.contains('hidden'));
+                detail.classList.toggle('hidden', !hasVisible);
+            });
+            
+            // Update visible count display
+            document.getElementById('visibleCount').innerHTML = 
+                `Viser <strong>${visibleCount}</strong> av ${totalCount} avvik`;
+        }
+        
+        // Expand all details
+        function expandAll() {
+            document.querySelectorAll('details:not(.hidden)').forEach(d => d.open = true);
+        }
+        
+        // Collapse all details
+        function collapseAll() {
+            document.querySelectorAll('details').forEach(d => d.open = false);
+        }
+        
+        // Scroll to page
+        function scrollToPage(index) {
+            const page = document.getElementById(`page-${index}`);
+            if (page) {
+                page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Rescan modal
+        function showRescanModal() {
+            document.getElementById('rescanModal').classList.add('active');
+            updateRescanCommand();
+        }
+        
+        function closeRescanModal() {
+            document.getElementById('rescanModal').classList.remove('active');
+        }
+        
+        function updateRescanCommand() {
+            const url = document.getElementById('rescanUrl').value;
+            document.getElementById('rescanCommand').textContent = 
+                `python checker.py ${url} --max-pages 20 --format html`;
+        }
+        
+        document.getElementById('rescanUrl').addEventListener('input', updateRescanCommand);
+        
+        function copyCommand() {
+            const command = document.getElementById('rescanCommand').textContent;
+            navigator.clipboard.writeText(command).then(() => {
+                alert('Kommando kopiert til utklippstavlen!');
+            });
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('rescanModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRescanModal();
+        });
+        
+        // Keyboard shortcut (Escape to close modal)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+    </script>
+</body>
+</html>

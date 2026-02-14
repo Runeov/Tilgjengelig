@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance: Finnmark</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  h1 { font-size: 1.5rem; color: #1a237e; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .stat .value { font-size: 1.8rem; font-weight: 700; }
+  .stat .label { font-size: 0.8rem; color: #888; }
+  .stat .value.green { color: #2e7d32; }
+  .stat .value.orange { color: #e65100; }
+  .stat .value.red { color: #c62828; }
+  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .mod-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .mod-card h3 { font-size: 0.9rem; color: #1a237e; margin-bottom: 8px; }
+  .mod-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .mod-bar-fill { height: 100%; border-radius: 4px; }
+  .mod-bar-fill.good { background: #4caf50; }
+  .mod-bar-fill.warn { background: #ff9800; }
+  .mod-bar-fill.bad { background: #f44336; }
+  .mod-stat { font-size: 0.8rem; color: #666; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  th { background: #1a237e; color: white; padding: 10px 12px; text-align: left; font-size: 0.85rem; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+  tr:hover { background: #f8f9ff; }
+  .score-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+  .score-badge.good { background: #e8f5e9; color: #2e7d32; }
+  .score-badge.warn { background: #fff3e0; color: #e65100; }
+  .score-badge.bad { background: #ffebee; color: #c62828; }
+  a { color: #1a237e; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: #999; font-size: 0.8rem; margin-top: 24px; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Compliance Audit: Finnmark</h1>
+  <p class="subtitle">80 virksomheter skannet &mdash; 2026-02-14 18:26</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value" style="color:#f44336">32%</div>
+      <div class="label">Gjennomsnittlig score</div>
+    </div>
+    <div class="stat">
+      <div class="value">80</div>
+      <div class="label">Virksomheter</div>
+    </div>
+    <div class="stat">
+      <div class="value green">1</div>
+      <div class="label">Score &ge; 60%</div>
+    </div>
+    <div class="stat">
+      <div class="value red">23</div>
+      <div class="label">Score &lt; 30%</div>
+    </div>
+  </div>
+
+  <div class="modules">
+
+    <div class="mod-card">
+      <h3>CSRD / Bærekraft</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:3%"></div></div>
+      <div class="mod-stat">4/136 bestått (3%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Cookies / Ekomlov</h3>
+      <div class="mod-bar"><div class="mod-bar-fill warn" style="width:46%"></div></div>
+      <div class="mod-stat">137/298 bestått (46%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>EAA / Tilgjengelighet</h3>
+      <div class="mod-bar"><div class="mod-bar-fill good" style="width:76%"></div></div>
+      <div class="mod-stat">104/136 bestått (76%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Åpenhetsloven</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:0%"></div></div>
+      <div class="mod-stat">1/204 bestått (0%)</div>
+    </div>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Virksomhet</th>
+        <th>Kommune</th>
+        <th>Score</th>
+        <th>Åpenhetsloven</th>
+        <th>Cookies</th>
+        <th>CSRD</th>
+        <th>EAA</th>
+        <th>Rapport</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>1</td>
+        <td><a href="https://tannhelse.ffk.no" target="_blank">Tannhelsetjenesten Finnmark</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td><a href="https://vestfinnmark.no" target="_blank">Vest-Finnmark regionråd</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td><a href="https://visitfrlta.com" target="_blank">Visit Alta</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td><a href="https://ostfinnmark.no" target="_blank">Øst-Finnmark regionråd</a></td>
+        <td>Vardø</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td><a href="https://www.alta.museum.no" target="_blank">Verdensarvsenter for Bergkunst- Alta Museum IKS</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td><a href="https://www.finnmarkssyskehuset.no" target="_blank">Finnmarkssykehuset HF</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td><a href="https://www.hammerfest.havn" target="_blank">Hammerfest Havn KF</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td><a href="https://samefrtinget.no" target="_blank">Sametingets administrasjon</a></td>
+        <td>Karasjok</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td><a href="https://www.havoysundhavnevesen.no" target="_blank">Måsøy Næring og Havn KF</a></td>
+        <td>Måsøy</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td><a href="https://sapmi.no" target="_blank">Sápmi Næringshage AS</a></td>
+        <td>Tana</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td><a href="https://www.batsfjord.havn.no" target="_blank">Båtsfjord Havn KF</a></td>
+        <td>Båtsfjord</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td><a href="https://www.dvmv.no" target="_blank">Stiftelsen Deanu ja Vàrjjat Museasiida/ Tana og Varanger Museumssiida</a></td>
+        <td>Nesseby</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>13</td>
+        <td><a href="https://barents.no" target="_blank">Barentssekretariatet</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">8%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_barentssekretariatet.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td><a href="https://norasenteret.no" target="_blank">Norasenteret Senter Mot Vold og Seksuelle Overgrep i Øst-finnmark IKS</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">8%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_norasenteret_senter_mot_vold_og_seksuelle_overgrep.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td><a href="https://www.nordkynhavn.no" target="_blank">Gamvik-nordkyn Havn KF</a></td>
+        <td>Gamvik</td>
+        <td><span class="score-badge bad">8%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_gamvik-nordkyn_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td><a href="https://politiet.no/finnmark" target="_blank">Finnmark politidistrikt</a></td>
+        <td>Finnmark</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_finnmark_politidistrikt.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td><a href="https://museumnord.no/gjenreisningsmuseet" target="_blank">Gjenreisningsmuseet for Finnmark</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_gjenreisningsmuseet_for_finnmark.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td><a href="https://domstol.no/vestre-finnmark" target="_blank">Vestre Finnmark tingrett</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_vestre_finnmark_tingrett.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td><a href="https://domstol.no/indre-og-ostre-finnmark" target="_blank">Indre og Østre Finnmark tingrett</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_indre_og_østre_finnmark_tingrett.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td><a href="https://www.berlevag-havn.no" target="_blank">Berlevåg Havn KF</a></td>
+        <td>Berlevåg</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_berlevåg_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>21</td>
+        <td><a href="https://probarents.no" target="_blank">Pro Barents AS</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge bad">17%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_pro_barents_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>22</td>
+        <td><a href="https://www.kirkeneshavn.no" target="_blank">Kirkenes Havn Sør-varanger Kommunalt Foretak</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">17%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_kirkenes_havn_sør-varanger_kommunalt_foretak.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>23</td>
+        <td><a href="https://kirkeneshavn.no" target="_blank">Kirkenes Havnevesen</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">17%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_kirkenes_havnevesen.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>24</td>
+        <td><a href="https://www.ikaf.no" target="_blank">Ika Finnmark IKS</a></td>
+        <td>Porsanger</td>
+        <td><span class="score-badge bad">17%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_ika_finnmark_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>25</td>
+        <td><a href="https://altamuseum.no" target="_blank">Alta Museum</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_alta_museum.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>26</td>
+        <td><a href="https://varangermuseum.no" target="_blank">Varanger Museum IKS</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_varanger_museum_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>27</td>
+        <td><a href="https://www.rdm.no" target="_blank">Riddoduottarmuseat Sti</a></td>
+        <td>Karasjok</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_riddoduottarmuseat_sti.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td><a href="https://www.kautokeino.kommune.no/" target="_blank">Guovdageainnu Suohkan / Kautokeino Kommune</a></td>
+        <td>Kautokeino</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_guovdageainnu_suohkan_kautokeino_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>29</td>
+        <td><a href="https://kautokeino.kommune.no" target="_blank">Kautokeino kommune</a></td>
+        <td>Kautokeino</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_kautokeino_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>30</td>
+        <td><a href="https://www.kystmuseene.no" target="_blank">Museene for Kystkultur og Gjenreising i Finnmark IKS</a></td>
+        <td>Nordkapp</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_museene_for_kystkultur_og_gjenreising_i_finnmark_i.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>31</td>
+        <td><a href="https://www.varangermuseum.no" target="_blank">Varanger Museum IKS</a></td>
+        <td>Vardø</td>
+        <td><span class="score-badge bad">25%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_varanger_museum_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>32</td>
+        <td><a href="https://www.samediggi.no" target="_blank">Samediggi / Sametinget</a></td>
+        <td>Karasjok</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_samediggi_sametinget.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>33</td>
+        <td><a href="https://www.tana.kommune.no/" target="_blank">Deanu Gielda / Tana Kommune</a></td>
+        <td>Tana</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_deanu_gielda_tana_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>34</td>
+        <td><a href="https://tana.kommune.no" target="_blank">Tana kommune</a></td>
+        <td>Tana</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_tana_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>35</td>
+        <td><a href="https://www.vardo.kommune.no/" target="_blank">Vardø Kommune</a></td>
+        <td>Vardø</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vardø_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>36</td>
+        <td><a href="https://ffk.no/fylkesbibliotek" target="_blank">Finnmark fylkesbibliotek</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_finnmark_fylkesbibliotek.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>37</td>
+        <td><a href="https://nasjonalparkstyre.no/seiland" target="_blank">Seiland Nasjonalparkstyre</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_seiland_nasjonalparkstyre.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>38</td>
+        <td><a href="https://hammerfest.kommune.no" target="_blank">Hammerfest kommune</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_hammerfest_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>39</td>
+        <td><a href="https://www.barentshallene.no" target="_blank">Barentshallene Sør-varanger KF</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_barentshallene_sør-varanger_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>40</td>
+        <td><a href="https://nasjonalparkstyre.no" target="_blank">Øvre Pasvik Nasjonalparkstyre/ Báhcaveaji Álbmotmeahcci</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_øvre_pasvik_nasjonalparkstyre_báhcaveaji_álbmotmea.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>41</td>
+        <td><a href="https://www.vadsohavn.no" target="_blank">Vadsø Havn KF</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vadsø_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>42</td>
+        <td><a href="https://www.nasjonalparkstyre.no/Stabbursdalen" target="_blank">Stabbursdalen Nasjonalparkstyre</a></td>
+        <td>Porsanger</td>
+        <td><span class="score-badge bad">33%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_stabbursdalen_nasjonalparkstyre.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>43</td>
+        <td><a href="https://snelandia.no" target="_blank">Snelandia AS</a></td>
+        <td>Finnmark</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_snelandia_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>44</td>
+        <td><a href="https://finnmarkssykehuset.no/hammerfest" target="_blank">Finnmarkssykehuset HF - Hammerfest sykehus</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_finnmarkssykehuset_hf_-_hammerfest_sykehus.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>45</td>
+        <td><a href="https://finnmarkssykehuset.no/kirkenes" target="_blank">Finnmarkssykehuset HF - Kirkenes sykehus</a></td>
+        <td>Kirkenes</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_finnmarkssykehuset_hf_-_kirkenes_sykehus.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>46</td>
+        <td><a href="https://www.altahavn.no" target="_blank">Alta Havn KF</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_alta_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>47</td>
+        <td><a href="https://www.alta.kommune.no" target="_blank">Alta Kommune</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_alta_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>48</td>
+        <td><a href="https://www.kusek.no" target="_blank">Kontrollutvalgssekretariatet i Vest-finnmark IKS/ Oarje-finnmarku Sgo Darkkistanlavdegottecallingoddi</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_kontrollutvalgssekretariatet_i_vest-finnmark_iks_o.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>49</td>
+        <td><a href="https://www.vefas.no" target="_blank">Vest-finnmark Avfallsselskap, Oarje-finnmarkku Rihpafitnodat Vefas IKS</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_vest-finnmark_avfallsselskap,_oarje-finnmarkku_rih.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>50</td>
+        <td><a href="https://hammerfestparkering.no" target="_blank">Hammerfest Parkering KF</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_hammerfest_parkering_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>51</td>
+        <td><a href="https://husbanken.no" target="_blank">Husbanken Nord</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_husbanken_nord.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>52</td>
+        <td><a href="https://www.sor-varanger.kommune.no/" target="_blank">Sør-varanger Kommune</a></td>
+        <td>Sør-Varanger</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_sør-varanger_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>53</td>
+        <td><a href="https://www.vadso.kommune.no/" target="_blank">Vadsø Kommune</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vadsø_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>54</td>
+        <td><a href="https://vadso.kommune.no" target="_blank">Vadsø Vann og Avløp KF</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vadsø_vann_og_avløp_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>55</td>
+        <td><a href="https://www.karasjok.kommune.no/" target="_blank">Karasjoga Gielda / Karasjok Kommune</a></td>
+        <td>Karasjok</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_karasjoga_gielda_karasjok_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>56</td>
+        <td><a href="https://karasjok.kommune.no" target="_blank">Karasjok kommune</a></td>
+        <td>Karasjok</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_karasjok_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>57</td>
+        <td><a href="https://www.hasvik.kommune.no/" target="_blank">Hasvik Kommune</a></td>
+        <td>Hasvik</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_hasvik_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>58</td>
+        <td><a href="https://www.masoy.kommune.no/" target="_blank">Måsøy Kommune</a></td>
+        <td>Måsøy</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_måsøy_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>59</td>
+        <td><a href="https://www.nordkapp.kommune.no" target="_blank">Nordkapp Havn KF</a></td>
+        <td>Nordkapp</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_nordkapp_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>60</td>
+        <td><a href="https://www.porsanger.kommune.no/" target="_blank">Porsanger Kommune</a></td>
+        <td>Porsanger</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_porsanger_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>61</td>
+        <td><a href="https://www.lebesby.kommune.no/" target="_blank">Lebesby Kommune</a></td>
+        <td>Lebesby</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_lebesby_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>62</td>
+        <td><a href="https://www.gamvik.kommune.no/" target="_blank">Gamvik Kommune</a></td>
+        <td>Gamvik</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_gamvik_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>63</td>
+        <td><a href="https://www.berlevag.kommune.no/" target="_blank">Berlevåg Kommune</a></td>
+        <td>Berlevåg</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_berlevåg_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>64</td>
+        <td><a href="https://www.batsfjord.kommune.no" target="_blank">Båtsfjord Kommune</a></td>
+        <td>Båtsfjord</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_båtsfjord_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>65</td>
+        <td><a href="https://nesseby.kommune.no" target="_blank">Nesseby kommune</a></td>
+        <td>Nesseby</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_nesseby_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>66</td>
+        <td><a href="https://www.nesseby.kommune.no/" target="_blank">Unjargga Gielda / Nesseby Kommune</a></td>
+        <td>Nesseby</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_unjargga_gielda_nesseby_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>67</td>
+        <td><a href="https://ffk.no" target="_blank">Finnmark fylkeskommune</a></td>
+        <td>Finnmark</td>
+        <td><span class="score-badge warn">42%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_finnmark_fylkeskommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>68</td>
+        <td><a href="https://finnmarkkraft.no" target="_blank">Finnmark Kraft AS</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">42%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_finnmark_kraft_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>69</td>
+        <td><a href="https://ffk.no/tilskudd" target="_blank">Finnmark fylkeskommune tilskudd</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">42%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_finnmark_fylkeskommune_tilskudd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>70</td>
+        <td><a href="https://orinor.no" target="_blank">Orinor AS</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">42%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><a href="finnmark/compliance_orinor_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>71</td>
+        <td><a href="https://hammerfest.vgs.no" target="_blank">Hammerfest videregående skole</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_hammerfest_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>72</td>
+        <td><a href="https://alta.vgs.no" target="_blank">Alta videregående skole</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_alta_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>73</td>
+        <td><a href="https://kirkenes.vgs.no" target="_blank">Kirkenes videregående skole</a></td>
+        <td>Kirkenes</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_kirkenes_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>74</td>
+        <td><a href="https://vadso.vgs.no" target="_blank">Vadsø videregående skole</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vadsø_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>75</td>
+        <td><a href="https://kirken.no/alta" target="_blank">Alta Kirkelige Fellesråd</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_alta_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>76</td>
+        <td><a href="https://www.kirken.hammerfest.no" target="_blank">Hammerfest Kirkelige Fellesråd</a></td>
+        <td>Hammerfest</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_hammerfest_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>77</td>
+        <td><a href="https://kriminalomsorgen.no" target="_blank">Vadsø fengsel</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_vadsø_fengsel.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>78</td>
+        <td><a href="https://loppa.kommune.no" target="_blank">Loppa kommune</a></td>
+        <td>Loppa</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_loppa_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>79</td>
+        <td><a href="https://avinor.no/flyplass/alta" target="_blank">Alta Lufthavn</a></td>
+        <td>Alta</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_alta_lufthavn.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>80</td>
+        <td><a href="https://sykehusinnkjop.no" target="_blank">Sykehusinnkjøp HF</a></td>
+        <td>Vadsø</td>
+        <td><span class="score-badge good">64%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><a href="finnmark/compliance_sykehusinnkjøp_hf.html">Vis</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Generert av Batch Compliance Scanner &mdash; 2026-02-14 18:26</p>
+  </div>
+</div>
+</body>
+</html>

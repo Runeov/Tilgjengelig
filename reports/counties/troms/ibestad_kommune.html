@@ -1,0 +1,2794 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.ibestad.kommune.no/</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://www.ibestad.kommune.no/";
+        var TOTAL_ISSUES = 151;
+        var maxPages = 20;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.ibestad.kommune.no/</p>
+        <p><strong>Dato:</strong> 2026-02-12T02:14:26.418127</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item success">✅ <strong>Tilgjengelighetserklæring funnet</strong></div>
+            <div class="statement-item">🔗 <a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" class="statement-link" target="_blank">Gå til erklæring</a></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">20</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">151</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">25</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">90</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">36</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">1182</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">151</strong> av 151 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/</div>
+            <div>Avvik: 16 | Bestått: 110</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (6 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon" viewbox="0 0 19 17" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;path d="m18.781 8.056-6.723-6.662a1.792 1.792 0 0 0-2.527.055 1.8 1.8 0 0 0-.048 2.527l2.657 2.555a.157.157 0 0 1 .041.18</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon" viewbox="0 0 19 17" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;path d="m18.781 8.056-6.723-6.662a1.792 1.792 0 0 0-2.527.055 1.8 1.8 0 0 0-.048 2.527l2.657 2.555a.157.157 0 0 1 .041.18</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon" viewbox="0 0 19 17" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;path d="m18.781 8.056-6.723-6.662a1.792 1.792 0 0 0-2.527.055 1.8 1.8 0 0 0-.048 2.527l2.657 2.555a.157.157 0 0 1 .041.18</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon" viewbox="0 0 19 17" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;path d="m18.781 8.056-6.723-6.662a1.792 1.792 0 0 0-2.527.055 1.8 1.8 0 0 0-.048 2.527l2.657 2.555a.157.157 0 0 1 .041.18</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon" viewbox="0 0 19 17" xmlns="http://www.w3.org/2000/svg"&gt;
+&lt;path d="m18.781 8.056-6.723-6.662a1.792 1.792 0 0 0-2.527.055 1.8 1.8 0 0 0-.048 2.527l2.657 2.555a.157.157 0 0 1 .041.18</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (8 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a class="env-button env-button--slim env-button--brand env-button--icon env-button--icon-after" href="javascript:void(window.open('https://chilivr.no/ibestad/ibestadkommune/?&amp;media-name=Ibestad',</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a class="env-button env-button--slim env-button--brand env-button--icon env-button--icon-after" href="javascript:void(window.open('https://innsyn.ibestad.kommune.no/postjournal.593184.no.html','_blan</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a class="env-button env-button--slim env-button--brand env-button--icon env-button--icon-after" href="javascript:void(window.open('https://meldeportalen.ibestad.kommune.no/','_blank','toolbar=1,locat</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a class="env-button env-button--slim env-button--brand env-button--icon env-button--icon-after" href="javascript:void(window.open('https://kalender.ibestad.kommune.no/','_blank','toolbar=1,location=1</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Her finner dere aktivitetskalenderen!Lenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://kalender.ibestad.kommune.no/" rel="external"&gt;Her finner dere aktivitetskalenderen!&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#link-external-tab</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['script']</p>
+                <div class="element">&lt;ul class="env-list" data-cid="ae3bfce9-f841-743c-ec51-6ab03a48b117"&gt;&lt;li class="env-list__item" data-cid="b7318a50-39f4-879d-0d76-6d23b5c8e93c" style="margin-bottom: 16px"&gt;&lt;article class="env-p-around</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Helse og omsorgstjenester 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/helse-og-omsorgstjenester</div>
+            <div>Avvik: 6 | Bestått: 61</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Søknadsskjema for helse og omsorgstjenesterLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://www.ibestad.kommune.no/download/18.33a2660519545e0ea91213f5/1741250320362/S%C3%B8knadsskjema%20PLO%202023.pdf" rel="external"&gt;Søknadsskjema for helse og omsorgstjenester&lt;svg aria-hidd</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Kunngjøringer 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/kunngjoringer</div>
+            <div>Avvik: 6 | Bestått: 41</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (220 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860" href="/kunngjoringer/kunngjoringer/2026-01-23-horing-og-offentlig-ettersyn--kommuneplanens-samfunnsdel-2026-2037"&gt;&lt;div class="jxfCONwrqhXSEpMpe2L7"&gt;&lt;p class="u</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Drift og vedlikehold 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/drift-og-vedlikehold</div>
+            <div>Avvik: 6 | Bestått: 59</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Her kan du melde om feil på gatelys,bygg og vei.Lenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://meldeportalen.ibestad.kommune.no/" rel="external"&gt;Her kan du melde om feil på gatelys,bygg og vei.&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#l</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Møteinnkalling kontrollutvalg 12.02.2026 kl. 0900 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/protokoller-og-innkallinger/kontrollutvalg/arkiv-for-kontrollutvalg/2026-02-06-moteinnkalling-kontrollutvalg-12.02.2026-kl.-0900</div>
+            <div>Avvik: 5 | Bestått: 49</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Høring og offentlig ettersyn- kommuneplanens samfunnsdel 2026-2037 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/kunngjoringer/kunngjoringer/2026-01-23-horing-og-offentlig-ettersyn--kommuneplanens-samfunnsdel-2026-2037</div>
+            <div>Avvik: 5 | Bestått: 59</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Møteinnkalling Viltnemnda 16.02.2026 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/protokoller-og-innkallinger/viltnemda/arkiv-for-viltnemda/2026-02-06-moteinnkalling-viltnemnda-16.02.2026</div>
+            <div>Avvik: 5 | Bestått: 49</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Tjenester 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester</div>
+            <div>Avvik: 5 | Bestått: 57</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Politisk organisering 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/politisk-organisering</div>
+            <div>Avvik: 5 | Bestått: 45</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Tekniske tjenester 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/prisregulativ/tekniske-tjenester</div>
+            <div>Avvik: 5 | Bestått: 85</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Areal, byggesak og motorferdsel 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/areal-byggesak-og-motorferdsel</div>
+            <div>Avvik: 5 | Bestått: 58</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ledige stillinger 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/snarveier/ledige-stillinger</div>
+            <div>Avvik: 10 | Bestått: 52</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (8 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (141 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860 env-card__body" href="/snarveier/ledige-stillinger/ledige-stillinger/2026-02-02-sykepleiere"&gt;&lt;img alt="" class="E9iWNEL3bRnzZZSzL6KL" src="/images/200.3166a6719</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (147 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860 env-card__body" href="/snarveier/ledige-stillinger/ledige-stillinger/2026-02-02-laererstillinger"&gt;&lt;img alt="" class="E9iWNEL3bRnzZZSzL6KL" src="/images/200.53ba</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (254 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860 env-card__body" href="/snarveier/ledige-stillinger/ledige-stillinger/2026-01-23-ferievikarer-2026"&gt;&lt;img alt="" class="E9iWNEL3bRnzZZSzL6KL" src="/images/200.23e</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (194 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860 env-card__body" href="/snarveier/ledige-stillinger/ledige-stillinger/2025-12-16-sykepleier-i-turnus-med-langvakter"&gt;&lt;img alt="" class="E9iWNEL3bRnzZZSzL6KL" src</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (192 characters)</p>
+                <div class="element">&lt;a class="env-link luiti8JDRr294TRbE860 env-card__body" href="/snarveier/ledige-stillinger/ledige-stillinger/2025-12-09-kommuneveterinaer-vikariat-----salangen-kommune"&gt;&lt;img alt="" class="E9iWNEL3bRnz</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Skjema a-å 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/skjema-a-a</div>
+            <div>Avvik: 31 | Bestått: 111</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (16 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096013/1758800422403/Dispensasjon%20-%20Veileder%20og%20s%C3%B8knadsskjema.pdf','_blank','toolbar=1,location=1,status=1,menubar=1,sc</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('https://www.landbruksdirektoratet.no/nb/jakt-og-fangst/ordninger-for-jakt-og-fangst','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1'))</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('https://www.landbruksdirektoratet.no/nb/jordbruk/ordninger-for-jordbruk','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1'));"&gt;Diverse t</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.11e11bff19b5ac819321f942/1770127778959/LDIR-360_B_Egenerkl%C3%A6ring%20om%20konsesjonsfrihet%20ved%20erverv%20av%20fast%20eiendom%20mv_.pdf','_blank'</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096018/1758800453460/LDIR-115_B_Etters%C3%B8ksavtale%20om%20tilgang%20p%C3%A5%20godkjent%20etters%C3%B8kshund%20under%20jakt%20p%C3%</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.159bb9e519b5ac0d616b606/1768566399383/Krav-om-matrikulering-herunder-rekvisisjon-av-oppmalingsforretning.pdf','_blank','toolbar=1,location=1,status=1</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.159bb9e519b5ac0d616b58e/1768563404076/Krav%20om%20sammensl%C3%A5ing%20av%20tinglyste%20matrikkelenheter.pdf','_blank','toolbar=1,location=1,status=1,</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096015/1758800437672/Kvittering-for-nabovarsel.pdf','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1'));"&gt;</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096014/1758800432395/Nabovarsel.pdf','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1'));"&gt;Nabovarsel&lt;/a&gt;</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096016/1758800444354/Opplysninger-gitt-i-nabovarsel.pdf','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1'</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096017/1758800448398/rekvisisjon-soknplikt-bokm-2404.pdf','_blank','toolbar=1,location=1,status=1,menubar=1,scrollbars=1,resizable=1</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.11e11bff19b5ac819321f985/1770128387945/LDIR-359_B_S%C3%B8knad%20om%20konsesjon%20p%C3%A5%20erverv%20av%20fast%20eiendom.pdf','_blank','toolbar=1,loca</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link uses javascript: URL</p>
+                <div class="element">&lt;a href="javascript:void(window.open('/download/18.1223dd69199c8f9db8b3da7/1760707599764/S%C3%B8knadsskjema%20for%20kulturmidler%20i%20Ibestad%20kommune.pdf','_blank','toolbar=1,location=1,status=1,me</div>
+                <div class="fix">Use a button element for actions, or use href with progressive enhancement</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (13 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="/download/18.33a2660519545e0ea91214da/1741250877837/Avtale%20om%20leie%20av%20jord.pdf"&gt;Avtale om leie av jord&lt;/a&gt;
+&lt;/li&gt;
+&lt;h2 id="charB"&gt;B&lt;/h2</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="https://dibk.no/no/saksbehandling/byggsok/byggesaksblanketter/"&gt;Byggesaksblanketter - med og uten ansvarsrett, naabovarsel, ferdigattest&lt;/a&gt;
+</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096013/1758800422403/Dispensasjon%20-%20Veileder%20og%20s%C3%B8knadsskjema.pdf','_</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="javascript:void(window.open('/download/18.11e11bff19b5ac819321f942/1770127778959/LDIR-360_B_Egenerkl%C3%A6ring%20om%20konsesjonsfrihet%20ved%</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="/download/18.33a2660519545e0ea91214be/1741250938739/Gravemelding.pdf"&gt;Graving&lt;/a&gt;
+&lt;/li&gt;
+&lt;h2 id="charK"&gt;K&lt;/h2&gt;
+&lt;ul class="env-list"&gt;
+&lt;li class</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="javascript:void(window.open('/download/18.159bb9e519b5ac0d616b606/1768566399383/Krav-om-matrikulering-herunder-rekvisisjon-av-oppmalingsforre</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="/download/18.33a2660519545e0ea91214fc/1741250685887/Ibestad%20kommune%20Ibestad%20skole%20Utleie%20S%C3%B8knadsskjema%20leieavtale.pdf"&gt;Leie </div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="https://skjema.kf.no/FormsEngine/?wizardId=479&amp;externalId=5514&amp;languageCode=nb"&gt;Motorferdsel i utmark og vassdrag (KF-195)&lt;/a&gt;
+&lt;/li&gt;
+</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096014/1758800432395/Nabovarsel.pdf','_blank','toolbar=1,location=1,status=1,menub</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="https://skjema.kf.no/FormsEngine/?wizardId=233&amp;externalId=5514&amp;languageCode=nb"&gt;Omsetningsoppgave for alkohol (KF-134)&lt;/a&gt;
+&lt;/li&gt;
+&lt;li </div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="/download/18.33a2660519545e0ea912121f/1741251820398/P%C3%A5meldingsskjema%20for%20Ibestad%20kulturskole%202024%20-%202025.pdf"&gt;Påmelding til </div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="javascript:void(window.open('/download/18.39511ed9199371eba096017/1758800448398/rekvisisjon-soknplikt-bokm-2404.pdf','_blank','toolbar=1,loca</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>List contains non-li elements: ['h2', 'ul']</p>
+                <div class="element">&lt;ul class="env-list"&gt;
+&lt;li class="env-list__item"&gt;
+&lt;a href="/download/18.33a2660519545e0ea91214ce/1741250882417/Salgsbevilling%20for%20alkohol%20-%20s%C3%B8knadsskjema.pdf"&gt;Salgsbevilling - alkohol&lt;/a&gt;</div>
+                <div class="fix">List elements (ul, ol) should only contain li children</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ordfører 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/ordforer</div>
+            <div>Avvik: 5 | Bestått: 58</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Råd, utvalg og nemnder 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/rad-utvalg-og-nemnder</div>
+            <div>Avvik: 5 | Bestått: 59</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Skole og barnehage 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/skole-og-barnehage</div>
+            <div>Avvik: 6 | Bestått: 61</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Skole og barnehagerute 2025/2026Lenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://www.ibestad.kommune.no/tjenester/skole-og-barnehage/skole/skole--og-barnehagerute" rel="external"&gt;Skole og barnehagerute 2025/2026&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use hr</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Bedre tverrfaglig innsats (BTI) 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/bedre-tverrfaglig-innsats-bti</div>
+            <div>Avvik: 9 | Bestått: 49</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (7 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Bedre Tverrfaglig InnsatsLenke til et annet nettsted.'</p>
+                <div class="element">&lt;a href="https://ibestad.betreinnsats.no/"&gt;Bedre Tverrfaglig Innsats&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#link-external"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span class="env-assi</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'SamhandlingsmodellLenke til et annet nettsted.'</p>
+                <div class="element">&lt;a href="https://ibestad.samhandlingsmodell.no/"&gt;Samhandlingsmodell&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#link-external"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span class="env-assis</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'pmto.noLenke til et annet nettsted.'</p>
+                <div class="element">&lt;a href="https://www.pmto.no/"&gt;pmto.no&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#link-external"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;span class="env-assistive-text"&gt; Lenke til et anne</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Parent Management Training – Oregon (PMTO) - NUBULenke til et annet nettsted.'</p>
+                <div class="element">&lt;a href="https://www.nubu.no/PMTO/"&gt;Parent Management Training – Oregon (PMTO) - NUBU&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision/link-icons.svg#link-external"&gt;&lt;/use&gt;&lt;/svg&gt;&lt;spa</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Politikk 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk</div>
+            <div>Avvik: 5 | Bestått: 59</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Fullmakter og reglement 
+
+	- Ibestad kommune</h3>
+            <div class="page-url">https://www.ibestad.kommune.no/tjenester/politikk/fullmakter-og-reglement</div>
+            <div>Avvik: 5 | Bestått: 60</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.'</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="env-link env-d--inline-block" href="https://www.facebook.com/ibestad.kommune" rel="noopener noreferrer" target="_blank"&gt;&lt;picture class="env-d--block env-mw--100"&gt;&lt;source height="512" media="</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Recurring Issues in Article/News Pages (2 pages scanned)</h3>
+            <div class="page-url">[ARTICLE PAGES SUMMARY - 2 pages]</div>
+            <div>Avvik: 6 | Bestått: 0</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>SVG is missing accessible name (×2 across article pages)</p>
+                <div class="element">&lt;svg class="env-icon"&gt;
+&lt;use xlink:href="/sitevision/envision-icons.svg#icon-search"&gt;&lt;/use&gt;
+&lt;/svg&gt;</div>
+                <div class="fix">Add &lt;title&gt; element inside SVG, or aria-label attribute. Use role='presentation' if decorative</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication (×4 across article pages)</p>
+                <div class="element">&lt;a class="O3DqtrZMTYyNZCgSTalQ env-nav__link" href="/prisregulativ/tekniske-tjenester" rel="noopener noreferrer" target="_blank"&gt;Prisregulativ&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Påmelding og info ungdomscamp vinterfriluftsliv.Lenke til et annet nettsted, åpnes i nytt vindu.' (×1 across article pages)</p>
+                <div class="element">&lt;a href="https://www.letsreg.com/no/event/ungdomscamp_vinterfriluftsliv_27022026#init" rel="external"&gt;Påmelding og info ungdomscamp vinterfriluftsliv. &lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;us</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'TilgjengelighetserklæringLenke til et annet nettsted, åpnes i nytt vindu.' (×2 across article pages)</p>
+                <div class="element">&lt;a href="https://uustatus.no/nb/erklaringer/publisert/5800ffde-cbaa-464a-bbd9-ca9fa1bdf4e4" rel="external"&gt;Tilgjengelighetserklæring&lt;svg aria-hidden="true" class="env-link-icon"&gt;&lt;use href="/sitevision</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Meld deg på og få en gratisbillett herLenke til et annet nettsted, åpnes i nytt vindu.' (×1 across article pages)</p>
+                <div class="element">&lt;a href="https://ibestadkultur.hoopla.no/event/318794221?fbclid=IwY2xjawPlaylleHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEetXXuzk6TMJOAw6eWufPfU-7noTlR_0gLTB4GiZySQZ05WAl9nQc2hG0sWfM_aem_36</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='region' needs an accessible name (×2 across article pages)</p>
+                <div class="element">&lt;div class="sv-custom-module sv-marketplace-sitevision-nkm-linked-content-block sv-skip-spacer sv-template-portlet" id="svid12_33a2660519545e0ea911da3c" role="region"&gt;&lt;div id="NKMLenketinnhold"&gt;&lt;!-- N</div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://www.ibestad.kommune.no/</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="20" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://www.ibestad.kommune.no/ --max-pages 20 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

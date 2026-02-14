@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance Audit: https://www.rfd.no</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+  .container { max-width: 960px; margin: 0 auto; padding: 20px; }
+  h1 { font-size: 1.5rem; margin-bottom: 5px; color: #1a237e; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+  .score-card { background: white; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 24px; }
+  .score-circle { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; color: white; background: #f44336; flex-shrink: 0; }
+  .score-details { flex: 1; }
+  .score-details h2 { font-size: 1.1rem; margin-bottom: 4px; }
+  .score-bar { display: flex; gap: 8px; margin-top: 8px; }
+  .score-bar .passed { background: #e8f5e9; color: #2e7d32; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; }
+  .score-bar .failed { background: #ffebee; color: #c62828; padding: 4px 10px; border-radius: 12px; font-size: 0.85rem; }
+  .module { background: white; border-radius: 12px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+  .module-header { padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+  .module-header h3 { font-size: 1rem; color: #1a237e; }
+  .module-score { font-size: 0.85rem; padding: 3px 10px; border-radius: 10px; font-weight: 600; }
+  .module-score.good { background: #e8f5e9; color: #2e7d32; }
+  .module-score.warn { background: #fff3e0; color: #e65100; }
+  .module-score.bad { background: #ffebee; color: #c62828; }
+  .check { padding: 14px 20px; border-bottom: 1px solid #f0f0f0; }
+  .check:last-child { border-bottom: none; }
+  .check-header { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .check-icon { font-size: 1.1rem; }
+  .check-title { font-weight: 600; font-size: 0.95rem; }
+  .check-desc { font-size: 0.85rem; color: #666; margin-bottom: 4px; }
+  .check-details { font-size: 0.85rem; color: #444; background: #f8f9fa; padding: 6px 10px; border-radius: 6px; margin-top: 6px; }
+  .check-legal { font-size: 0.8rem; color: #888; margin-top: 4px; font-style: italic; }
+  .severity { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+  .severity.critical { background: #ffebee; color: #c62828; }
+  .severity.serious { background: #fff3e0; color: #e65100; }
+  .severity.moderate { background: #e3f2fd; color: #1565c0; }
+  .severity.info { background: #f3e5f5; color: #6a1b9a; }
+  .footer { text-align: center; color: #999; font-size: 0.8rem; margin-top: 24px; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Compliance Audit</h1>
+  <p class="subtitle">https://www.rfd.no &mdash; 2026-02-14 18:02</p>
+
+  <div class="score-card">
+    <div class="score-circle">27%</div>
+    <div class="score-details">
+      <h2>Samlet samsvarsscore</h2>
+      <p style="font-size:0.9rem;color:#666;">Totalt 11 sjekker gjennomført</p>
+      <div class="score-bar">
+        <span class="passed">Bestått: 3</span>
+        <span class="failed">Ikke bestått: 8</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-header">
+      <h3>Åpenhetsloven</h3>
+      <span class="module-score bad">0/3 bestått</span>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Redegjørelse tilgjengelig</span>
+        <span class="severity critical">critical</span>
+      </div>
+      <div class="check-desc">The 'Account of Due Diligence' (Redegjørelse for aktsomhetsvurderinger) must be easily found on the website.</div>
+      <div class="check-details">No transparency report or related keywords found</div>
+      <div class="check-legal">Åpenhetsloven §5 - Plikt til å redegjøre for aktsomhetsvurderinger</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Redegjørelse oppdatert</span>
+        <span class="severity serious">serious</span>
+      </div>
+      <div class="check-desc">The report should be dated for 2025 or 2026 (deadline June 30th annually).</div>
+      <div class="check-details">Could not verify report date (no report found)</div>
+      <div class="check-legal">Åpenhetsloven §5 - Årlig redegjørelse</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Kontaktpunkt for spørsmål</span>
+        <span class="severity serious">serious</span>
+      </div>
+      <div class="check-desc">There must be a clear way to ask questions about human rights due diligence (response required within 3 weeks).</div>
+      <div class="check-details">No specific contact point for transparency inquiries found</div>
+      <div class="check-legal">Åpenhetsloven §6 - Rett til informasjon</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-header">
+      <h3>Cookies / Ekomlov</h3>
+      <span class="module-score bad">2/5 bestått</span>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Avvis alle-knapp</span>
+        <span class="severity critical">critical</span>
+      </div>
+      <div class="check-desc">Cookie banner must have a clear 'Reject All' button on the first layer, equally prominent as 'Accept'.</div>
+      <div class="check-details">No cookie banner detected</div>
+      <div class="check-legal">Ny Ekomlov §3-5 (2025), GDPR Art. 7</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x2705;</span>
+        <span class="check-title">Ingen forhåndsavkryssede bokser</span>
+        <span class="severity critical">critical</span>
+      </div>
+      <div class="check-desc">No cookie category boxes should be pre-ticked except 'Necessary/Nødvendige'.</div>
+      <div class="check-details">No illegal pre-ticked boxes found (no cookie banner detected)</div>
+      <div class="check-legal">GDPR Art. 4(11), Art. 7 - Active consent required</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Detaljert cookievalg</span>
+        <span class="severity serious">serious</span>
+      </div>
+      <div class="check-desc">Users must be able to choose specific cookie categories (Marketing, Statistics) separately.</div>
+      <div class="check-details">No cookie banner detected</div>
+      <div class="check-legal">GDPR Art. 7, Ny Ekomlov §3-5</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x2705;</span>
+        <span class="check-title">Personvernerklæring på norsk</span>
+        <span class="severity serious">serious</span>
+      </div>
+      <div class="check-desc">Privacy policy must be available in Norwegian for sites targeting Norwegian users.</div>
+      <div class="check-details">Norwegian privacy link: 'Personvernerklæring og informasjonskapsler (cookies)'</div>
+      <div class="check-legal">GDPR Art. 12 - Transparent information in clear language</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Overføringsgrunnlag USA</span>
+        <span class="severity moderate">moderate</span>
+      </div>
+      <div class="check-desc">If using US tools, data transfer safeguards must be documented (Schrems II).</div>
+      <div class="check-details">US tools detected: Google Analytics. No mention of transfer safeguards found.</div>
+      <div class="check-legal">GDPR Chapter V, Schrems II (C-311/18)</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-header">
+      <h3>CSRD / Bærekraft</h3>
+      <span class="module-score bad">0/2 bestått</span>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Bærekraftsrapportering</span>
+        <span class="severity moderate">moderate</span>
+      </div>
+      <div class="check-desc">Sustainability data should be available, ideally integrated into the annual report.</div>
+      <div class="check-details">No sustainability/ESG content found</div>
+      <div class="check-legal">CSRD (EU 2022/2464) - Krav til bærekraftsrapportering</div>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x274C;</span>
+        <span class="check-title">Integrert i årsrapport</span>
+        <span class="severity moderate">moderate</span>
+      </div>
+      <div class="check-desc">CSRD requires sustainability data to be in the board of directors' report, not just a separate brochure.</div>
+      <div class="check-details">No sustainability or annual report content detected.</div>
+      <div class="check-legal">CSRD Art. 19a - Sustainability in management report</div>
+    </div>
+  </div>
+
+  <div class="module">
+    <div class="module-header">
+      <h3>EAA / Tilgjengelighet</h3>
+      <span class="module-score good">1/1 bestått</span>
+    </div>
+
+    <div class="check">
+      <div class="check-header">
+        <span class="check-icon">&#x2705;</span>
+        <span class="check-title">Tilbakemeldingsmekanisme for tilgjengelighet</span>
+        <span class="severity serious">serious</span>
+      </div>
+      <div class="check-desc">Users must be able to report accessibility barriers (required by EAA from June 2025).</div>
+      <div class="check-details">Link: 'Tilgjengelighetserklæring' -> https://uustatus.no/nb/erklaringer/publisert/2aed7982-75aa-406d-b364-f3284827e25d</div>
+      <div class="check-legal">European Accessibility Act (EU 2019/882) Art. 9</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Generert av ComplianceChecker &mdash; 2026-02-14 18:02</p>
+    <p>Moduler: Åpenhetsloven, Cookies/Ekomlov, CSRD, EAA</p>
+  </div>
+</div>
+</body>
+</html>

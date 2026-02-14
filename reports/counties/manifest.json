@@ -1,0 +1,1509 @@
+{
+  "timestamp": "counties",
+  "mode": "unknown",
+  "description": "Imported folder",
+  "total": 375,
+  "with_statement": 0,
+  "reports": [
+    {
+      "file": "wcag_Alstahaug_20260107_063144.html",
+      "municipality": "Alstahaug"
+    },
+    {
+      "file": "wcag_Alta_20260106_195407.html",
+      "municipality": "Alta"
+    },
+    {
+      "file": "wcag_Alta_20260107_073658.html",
+      "municipality": "Alta"
+    },
+    {
+      "file": "wcag_Alvdal_20260107_065626.html",
+      "municipality": "Alvdal"
+    },
+    {
+      "file": "wcag_Alver_20260107_071619.html",
+      "municipality": "Alver"
+    },
+    {
+      "file": "wcag_Andøy_20260107_063809.html",
+      "municipality": "Andøy"
+    },
+    {
+      "file": "wcag_Aremark_20260107_064038.html",
+      "municipality": "Aremark"
+    },
+    {
+      "file": "wcag_Arendal_20260107_070633.html",
+      "municipality": "Arendal"
+    },
+    {
+      "file": "wcag_Asker_20260107_064058.html",
+      "municipality": "Asker"
+    },
+    {
+      "file": "wcag_Askvoll_20260107_071813.html",
+      "municipality": "Askvoll"
+    },
+    {
+      "file": "wcag_Askøy_20260107_071538.html",
+      "municipality": "Askøy"
+    },
+    {
+      "file": "wcag_Aukra_20260107_062818.html",
+      "municipality": "Aukra"
+    },
+    {
+      "file": "wcag_Aure_20260107_062932.html",
+      "municipality": "Aure"
+    },
+    {
+      "file": "wcag_Aurland_20260107_071737.html",
+      "municipality": "Aurland"
+    },
+    {
+      "file": "wcag_Aurskog-Høland_20260107_064249.html",
+      "municipality": "Aurskog-Høland"
+    },
+    {
+      "file": "wcag_Austevoll_20260107_071524.html",
+      "municipality": "Austevoll"
+    },
+    {
+      "file": "wcag_Austrheim_20260107_071621.html",
+      "municipality": "Austrheim"
+    },
+    {
+      "file": "wcag_Averøy_20260107_062829.html",
+      "municipality": "Averøy"
+    },
+    {
+      "file": "wcag_Balsfjord_20260107_073337.html",
+      "municipality": "Balsfjord"
+    },
+    {
+      "file": "wcag_Bamble_20260107_070327.html",
+      "municipality": "Bamble"
+    },
+    {
+      "file": "wcag_Bardu_20260107_073043.html",
+      "municipality": "Bardu"
+    },
+    {
+      "file": "wcag_Beiarn_20260107_063442.html",
+      "municipality": "Beiarn"
+    },
+    {
+      "file": "wcag_Bergen_20260106_195245.html",
+      "municipality": "Bergen"
+    },
+    {
+      "file": "wcag_Bergen_20260107_071204.html",
+      "municipality": "Bergen"
+    },
+    {
+      "file": "wcag_Berlevåg_20260107_074103.html",
+      "municipality": "Berlevåg"
+    },
+    {
+      "file": "wcag_Bindal_20260107_063039.html",
+      "municipality": "Bindal"
+    },
+    {
+      "file": "wcag_Birkenes_20260107_070851.html",
+      "municipality": "Birkenes"
+    },
+    {
+      "file": "wcag_Bjerkreim_20260107_062149.html",
+      "municipality": "Bjerkreim"
+    },
+    {
+      "file": "wcag_Bjørnafjorden_20260107_071445.html",
+      "municipality": "Bjørnafjorden"
+    },
+    {
+      "file": "wcag_Bodø_20260106_195020.html",
+      "municipality": "Bodø"
+    },
+    {
+      "file": "wcag_Bodø_20260107_063024.html",
+      "municipality": "Bodø"
+    },
+    {
+      "file": "wcag_Bokn_20260107_062403.html",
+      "municipality": "Bokn"
+    },
+    {
+      "file": "wcag_Bremanger_20260107_071849.html",
+      "municipality": "Bremanger"
+    },
+    {
+      "file": "wcag_Brønnøy_20260107_063100.html",
+      "municipality": "Brønnøy"
+    },
+    {
+      "file": "wcag_Bygland_20260107_070944.html",
+      "municipality": "Bygland"
+    },
+    {
+      "file": "wcag_Bykle_20260107_071011.html",
+      "municipality": "Bykle"
+    },
+    {
+      "file": "wcag_Båtsfjord_20260107_074123.html",
+      "municipality": "Båtsfjord"
+    },
+    {
+      "file": "wcag_Bærum_20260106_195046.html",
+      "municipality": "Bærum"
+    },
+    {
+      "file": "wcag_Bærum_20260107_064048.html",
+      "municipality": "Bærum"
+    },
+    {
+      "file": "wcag_Bømlo_20260107_071256.html",
+      "municipality": "Bømlo"
+    },
+    {
+      "file": "wcag_Bø_20260107_063731.html",
+      "municipality": "Bø"
+    },
+    {
+      "file": "wcag_Dovre_20260107_065721.html",
+      "municipality": "Dovre"
+    },
+    {
+      "file": "wcag_Drammen_20260106_195057.html",
+      "municipality": "Drammen"
+    },
+    {
+      "file": "wcag_Drammen_20260107_064326.html",
+      "municipality": "Drammen"
+    },
+    {
+      "file": "wcag_Drangedal_20260107_070347.html",
+      "municipality": "Drangedal"
+    },
+    {
+      "file": "wcag_Dyrøy_20260107_073311.html",
+      "municipality": "Dyrøy"
+    },
+    {
+      "file": "wcag_Dønna_20260107_063244.html",
+      "municipality": "Dønna"
+    },
+    {
+      "file": "wcag_Eidfjord_20260107_071409.html",
+      "municipality": "Eidfjord"
+    },
+    {
+      "file": "wcag_Eidskog_20260107_065330.html",
+      "municipality": "Eidskog"
+    },
+    {
+      "file": "wcag_Eidsvoll_20260107_064324.html",
+      "municipality": "Eidsvoll"
+    },
+    {
+      "file": "wcag_Eigersund_20260106_194951.html",
+      "municipality": "Eigersund"
+    },
+    {
+      "file": "wcag_Eigersund_20260107_062019.html",
+      "municipality": "Eigersund"
+    },
+    {
+      "file": "wcag_Elverum_20260107_065440.html",
+      "municipality": "Elverum"
+    },
+    {
+      "file": "wcag_Enebakk_20260107_064228.html",
+      "municipality": "Enebakk"
+    },
+    {
+      "file": "wcag_Engerdal_20260107_065542.html",
+      "municipality": "Engerdal"
+    },
+    {
+      "file": "wcag_Etnedal_20260107_070052.html",
+      "municipality": "Etnedal"
+    },
+    {
+      "file": "wcag_Etne_20260107_071242.html",
+      "municipality": "Etne"
+    },
+    {
+      "file": "wcag_Evenes_20260107_063613.html",
+      "municipality": "Evenes"
+    },
+    {
+      "file": "wcag_Evje_og_Hornnes_20260107_070929.html",
+      "municipality": "Evje_og_Hornnes"
+    },
+    {
+      "file": "wcag_Farsund_20260107_070727.html",
+      "municipality": "Farsund"
+    },
+    {
+      "file": "wcag_Fauske_20260107_063509.html",
+      "municipality": "Fauske"
+    },
+    {
+      "file": "wcag_Fedje_20260107_071624.html",
+      "municipality": "Fedje"
+    },
+    {
+      "file": "wcag_Fitjar_20260107_071324.html",
+      "municipality": "Fitjar"
+    },
+    {
+      "file": "wcag_Fjaler_20260107_071826.html",
+      "municipality": "Fjaler"
+    },
+    {
+      "file": "wcag_Fjord_20260107_062954.html",
+      "municipality": "Fjord"
+    },
+    {
+      "file": "wcag_Flakstad_20260107_063631.html",
+      "municipality": "Flakstad"
+    },
+    {
+      "file": "wcag_Flatanger_20260107_072528.html",
+      "municipality": "Flatanger"
+    },
+    {
+      "file": "wcag_Flekkefjord_20260107_070741.html",
+      "municipality": "Flekkefjord"
+    },
+    {
+      "file": "wcag_Flesberg_20260107_064555.html",
+      "municipality": "Flesberg"
+    },
+    {
+      "file": "wcag_Flå_20260107_064449.html",
+      "municipality": "Flå"
+    },
+    {
+      "file": "wcag_Folldal_20260107_065637.html",
+      "municipality": "Folldal"
+    },
+    {
+      "file": "wcag_Fredrikstad_20260107_063909.html",
+      "municipality": "Fredrikstad"
+    },
+    {
+      "file": "wcag_Frogn_20260107_064152.html",
+      "municipality": "Frogn"
+    },
+    {
+      "file": "wcag_Froland_20260107_070824.html",
+      "municipality": "Froland"
+    },
+    {
+      "file": "wcag_Frosta_20260107_072324.html",
+      "municipality": "Frosta"
+    },
+    {
+      "file": "wcag_Frøya_20260107_072030.html",
+      "municipality": "Frøya"
+    },
+    {
+      "file": "wcag_Fyresdal_20260107_070520.html",
+      "municipality": "Fyresdal"
+    },
+    {
+      "file": "wcag_Færder_20260107_070254.html",
+      "municipality": "Færder"
+    },
+    {
+      "file": "wcag_Gamvik_20260107_074034.html",
+      "municipality": "Gamvik"
+    },
+    {
+      "file": "wcag_Gausdal_20260107_065919.html",
+      "municipality": "Gausdal"
+    },
+    {
+      "file": "wcag_Gildeskål_20260107_063424.html",
+      "municipality": "Gildeskål"
+    },
+    {
+      "file": "wcag_Giske_20260107_062742.html",
+      "municipality": "Giske"
+    },
+    {
+      "file": "wcag_Gjemnes_20260107_062839.html",
+      "municipality": "Gjemnes"
+    },
+    {
+      "file": "wcag_Gjerdrum_20260107_064250.html",
+      "municipality": "Gjerdrum"
+    },
+    {
+      "file": "wcag_Gjerstad_20260107_070754.html",
+      "municipality": "Gjerstad"
+    },
+    {
+      "file": "wcag_Gjesdal_20260107_062212.html",
+      "municipality": "Gjesdal"
+    },
+    {
+      "file": "wcag_Gjøvik_20260107_064936.html",
+      "municipality": "Gjøvik"
+    },
+    {
+      "file": "wcag_Gloppen_20260107_071920.html",
+      "municipality": "Gloppen"
+    },
+    {
+      "file": "wcag_Gol_20260107_064509.html",
+      "municipality": "Gol"
+    },
+    {
+      "file": "wcag_Grane_20260107_063224.html",
+      "municipality": "Grane"
+    },
+    {
+      "file": "wcag_Gran_20260107_065954.html",
+      "municipality": "Gran"
+    },
+    {
+      "file": "wcag_Gratangen_20260107_073008.html",
+      "municipality": "Gratangen"
+    },
+    {
+      "file": "wcag_Grimstad_20260107_070620.html",
+      "municipality": "Grimstad"
+    },
+    {
+      "file": "wcag_Grong_20260107_072450.html",
+      "municipality": "Grong"
+    },
+    {
+      "file": "wcag_Grue_20260107_065342.html",
+      "municipality": "Grue"
+    },
+    {
+      "file": "wcag_Gulen_20260107_071627.html",
+      "municipality": "Gulen"
+    },
+    {
+      "file": "wcag_Hadsel_20260107_063705.html",
+      "municipality": "Hadsel"
+    },
+    {
+      "file": "wcag_Halden_20260106_195032.html",
+      "municipality": "Halden"
+    },
+    {
+      "file": "wcag_Halden_20260107_063844.html",
+      "municipality": "Halden"
+    },
+    {
+      "file": "wcag_Hamar_20260107_064722.html",
+      "municipality": "Hamar"
+    },
+    {
+      "file": "wcag_Hamarøy_20260107_063830.html",
+      "municipality": "Hamarøy"
+    },
+    {
+      "file": "wcag_Hammerfest_20260107_073715.html",
+      "municipality": "Hammerfest"
+    },
+    {
+      "file": "wcag_Haram_20260107_063014.html",
+      "municipality": "Haram"
+    },
+    {
+      "file": "wcag_Hareid_20260107_062645.html",
+      "municipality": "Hareid"
+    },
+    {
+      "file": "wcag_Harstad_20260107_072824.html",
+      "municipality": "Harstad"
+    },
+    {
+      "file": "wcag_Hasvik_20260107_073833.html",
+      "municipality": "Hasvik"
+    },
+    {
+      "file": "wcag_Hattfjelldal_20260107_063236.html",
+      "municipality": "Hattfjelldal"
+    },
+    {
+      "file": "wcag_Haugesund_20260107_062046.html",
+      "municipality": "Haugesund"
+    },
+    {
+      "file": "wcag_Heim_20260107_072615.html",
+      "municipality": "Heim"
+    },
+    {
+      "file": "wcag_Hemnes_20260107_063312.html",
+      "municipality": "Hemnes"
+    },
+    {
+      "file": "wcag_Hemsedal_20260107_064521.html",
+      "municipality": "Hemsedal"
+    },
+    {
+      "file": "wcag_Herøy_20260107_062634.html",
+      "municipality": "Herøy"
+    },
+    {
+      "file": "wcag_Herøy_20260107_063129.html",
+      "municipality": "Herøy"
+    },
+    {
+      "file": "wcag_Hitra_20260107_072631.html",
+      "municipality": "Hitra"
+    },
+    {
+      "file": "wcag_Hjartdal_20260107_070439.html",
+      "municipality": "Hjartdal"
+    },
+    {
+      "file": "wcag_Hjelmeland_20260107_062259.html",
+      "municipality": "Hjelmeland"
+    },
+    {
+      "file": "wcag_Hole_20260107_064348.html",
+      "municipality": "Hole"
+    },
+    {
+      "file": "wcag_Holmestrand_20260107_070157.html",
+      "municipality": "Holmestrand"
+    },
+    {
+      "file": "wcag_Holtålen_20260107_072146.html",
+      "municipality": "Holtålen"
+    },
+    {
+      "file": "wcag_Hol_20260107_064542.html",
+      "municipality": "Hol"
+    },
+    {
+      "file": "wcag_Horten_20260106_195214.html",
+      "municipality": "Horten"
+    },
+    {
+      "file": "wcag_Horten_20260107_070148.html",
+      "municipality": "Horten"
+    },
+    {
+      "file": "wcag_Hurdal_20260107_064325.html",
+      "municipality": "Hurdal"
+    },
+    {
+      "file": "wcag_Hustadvika_20260107_063003.html",
+      "municipality": "Hustadvika"
+    },
+    {
+      "file": "wcag_Hvaler_20260107_063918.html",
+      "municipality": "Hvaler"
+    },
+    {
+      "file": "wcag_Hyllestad_20260107_071640.html",
+      "municipality": "Hyllestad"
+    },
+    {
+      "file": "wcag_Hå_20260107_062201.html",
+      "municipality": "Hå"
+    },
+    {
+      "file": "wcag_Hægebostad_20260107_071123.html",
+      "municipality": "Hægebostad"
+    },
+    {
+      "file": "wcag_Høyanger_20260107_071652.html",
+      "municipality": "Høyanger"
+    },
+    {
+      "file": "wcag_Høylandet_20260107_072501.html",
+      "municipality": "Høylandet"
+    },
+    {
+      "file": "wcag_Ibestad_20260107_072954.html",
+      "municipality": "Ibestad"
+    },
+    {
+      "file": "wcag_Inderøy_20260107_072553.html",
+      "municipality": "Inderøy"
+    },
+    {
+      "file": "wcag_Indre_Fosen_20260107_072602.html",
+      "municipality": "Indre_Fosen"
+    },
+    {
+      "file": "wcag_Indre_Østfold_20260107_063954.html",
+      "municipality": "Indre_Østfold"
+    },
+    {
+      "file": "wcag_Iveland_20260107_070918.html",
+      "municipality": "Iveland"
+    },
+    {
+      "file": "wcag_Jevnaker_20260107_064309.html",
+      "municipality": "Jevnaker"
+    },
+    {
+      "file": "wcag_Karasjok_20260107_073757.html",
+      "municipality": "Karasjok"
+    },
+    {
+      "file": "wcag_Karlsøy_20260107_073352.html",
+      "municipality": "Karlsøy"
+    },
+    {
+      "file": "wcag_Karmøy_20260107_062447.html",
+      "municipality": "Karmøy"
+    },
+    {
+      "file": "wcag_Kautokeino_20260107_073806.html",
+      "municipality": "Kautokeino"
+    },
+    {
+      "file": "wcag_Kinn_20260107_071227.html",
+      "municipality": "Kinn"
+    },
+    {
+      "file": "wcag_Klepp_20260107_062202.html",
+      "municipality": "Klepp"
+    },
+    {
+      "file": "wcag_Kongsberg_20260107_064335.html",
+      "municipality": "Kongsberg"
+    },
+    {
+      "file": "wcag_Kongsvinger_20260106_195106.html",
+      "municipality": "Kongsvinger"
+    },
+    {
+      "file": "wcag_Kongsvinger_20260107_064602.html",
+      "municipality": "Kongsvinger"
+    },
+    {
+      "file": "wcag_Kragerø_20260107_070339.html",
+      "municipality": "Kragerø"
+    },
+    {
+      "file": "wcag_Kristiansand_20260107_070644.html",
+      "municipality": "Kristiansand"
+    },
+    {
+      "file": "wcag_Kristiansund_20260106_195008.html",
+      "municipality": "Kristiansund"
+    },
+    {
+      "file": "wcag_Kristiansund_20260107_062534.html",
+      "municipality": "Kristiansund"
+    },
+    {
+      "file": "wcag_Krødsherad_20260107_064436.html",
+      "municipality": "Krødsherad"
+    },
+    {
+      "file": "wcag_Kvam_20260107_071443.html",
+      "municipality": "Kvam"
+    },
+    {
+      "file": "wcag_Kvinesdal_20260107_071138.html",
+      "municipality": "Kvinesdal"
+    },
+    {
+      "file": "wcag_Kvinnherad_20260107_071341.html",
+      "municipality": "Kvinnherad"
+    },
+    {
+      "file": "wcag_Kviteseid_20260107_070443.html",
+      "municipality": "Kviteseid"
+    },
+    {
+      "file": "wcag_Kvitsøy_20260107_062344.html",
+      "municipality": "Kvitsøy"
+    },
+    {
+      "file": "wcag_Kvæfjord_20260107_072842.html",
+      "municipality": "Kvæfjord"
+    },
+    {
+      "file": "wcag_Kvænangen_20260107_073626.html",
+      "municipality": "Kvænangen"
+    },
+    {
+      "file": "wcag_Kåfjord_20260107_073448.html",
+      "municipality": "Kåfjord"
+    },
+    {
+      "file": "wcag_Larvik_20260107_070243.html",
+      "municipality": "Larvik"
+    },
+    {
+      "file": "wcag_Lavangen_20260107_073021.html",
+      "municipality": "Lavangen"
+    },
+    {
+      "file": "wcag_Lebesby_20260107_074011.html",
+      "municipality": "Lebesby"
+    },
+    {
+      "file": "wcag_Leirfjord_20260107_063158.html",
+      "municipality": "Leirfjord"
+    },
+    {
+      "file": "wcag_Leka_20260107_072540.html",
+      "municipality": "Leka"
+    },
+    {
+      "file": "wcag_Lesja_20260107_065736.html",
+      "municipality": "Lesja"
+    },
+    {
+      "file": "wcag_Levanger_20260107_072334.html",
+      "municipality": "Levanger"
+    },
+    {
+      "file": "wcag_Lierne_20260107_072416.html",
+      "municipality": "Lierne"
+    },
+    {
+      "file": "wcag_Lier_20260107_064402.html",
+      "municipality": "Lier"
+    },
+    {
+      "file": "wcag_Lillehammer_20260107_064926.html",
+      "municipality": "Lillehammer"
+    },
+    {
+      "file": "wcag_Lillesand_20260107_070833.html",
+      "municipality": "Lillesand"
+    },
+    {
+      "file": "wcag_Lillestrøm_20260107_064107.html",
+      "municipality": "Lillestrøm"
+    },
+    {
+      "file": "wcag_Lindesnes_20260107_070714.html",
+      "municipality": "Lindesnes"
+    },
+    {
+      "file": "wcag_Lom_20260107_065759.html",
+      "municipality": "Lom"
+    },
+    {
+      "file": "wcag_Loppa_20260107_073821.html",
+      "municipality": "Loppa"
+    },
+    {
+      "file": "wcag_Lund_20260107_062125.html",
+      "municipality": "Lund"
+    },
+    {
+      "file": "wcag_Lunner_20260107_064253.html",
+      "municipality": "Lunner"
+    },
+    {
+      "file": "wcag_Lurøy_20260107_063348.html",
+      "municipality": "Lurøy"
+    },
+    {
+      "file": "wcag_Luster_20260107_071803.html",
+      "municipality": "Luster"
+    },
+    {
+      "file": "wcag_Lyngdal_20260107_071055.html",
+      "municipality": "Lyngdal"
+    },
+    {
+      "file": "wcag_Lyngen_20260107_073405.html",
+      "municipality": "Lyngen"
+    },
+    {
+      "file": "wcag_Lærdal_20260107_071738.html",
+      "municipality": "Lærdal"
+    },
+    {
+      "file": "wcag_Lødingen_20260107_063603.html",
+      "municipality": "Lødingen"
+    },
+    {
+      "file": "wcag_Lørenskog_20260107_064236.html",
+      "municipality": "Lørenskog"
+    },
+    {
+      "file": "wcag_Løten_20260107_065000.html",
+      "municipality": "Løten"
+    },
+    {
+      "file": "wcag_Malvik_20260107_072232.html",
+      "municipality": "Malvik"
+    },
+    {
+      "file": "wcag_Marker_20260107_064025.html",
+      "municipality": "Marker"
+    },
+    {
+      "file": "wcag_Masfjorden_20260107_071625.html",
+      "municipality": "Masfjorden"
+    },
+    {
+      "file": "wcag_Melhus_20260108_124638.html",
+      "municipality": "Melhus"
+    },
+    {
+      "file": "wcag_Meløy_20260107_063409.html",
+      "municipality": "Meløy"
+    },
+    {
+      "file": "wcag_Meløy_20260107_063409_enhanced.html",
+      "municipality": "Meløy_20260107"
+    },
+    {
+      "file": "wcag_Meråker_20260107_072258.html",
+      "municipality": "Meråker"
+    },
+    {
+      "file": "wcag_Midt-Telemark_20260107_070407.html",
+      "municipality": "Midt-Telemark"
+    },
+    {
+      "file": "wcag_Midtre_Gauldal_20260107_072208.html",
+      "municipality": "Midtre_Gauldal"
+    },
+    {
+      "file": "wcag_Modalen_20260107_071615.html",
+      "municipality": "Modalen"
+    },
+    {
+      "file": "wcag_Modum_20260107_064426.html",
+      "municipality": "Modum"
+    },
+    {
+      "file": "wcag_Molde_20260107_062547.html",
+      "municipality": "Molde"
+    },
+    {
+      "file": "wcag_Moskenes_20260107_063818.html",
+      "municipality": "Moskenes"
+    },
+    {
+      "file": "wcag_Moss_20260107_063854.html",
+      "municipality": "Moss"
+    },
+    {
+      "file": "wcag_Målselv_20260107_073224.html",
+      "municipality": "Målselv"
+    },
+    {
+      "file": "wcag_Måsøy_20260107_073847.html",
+      "municipality": "Måsøy"
+    },
+    {
+      "file": "wcag_Måsøy_20260107_073847_enhanced.html",
+      "municipality": "Måsøy_20260107"
+    },
+    {
+      "file": "wcag_Namsos_20260107_072016.html",
+      "municipality": "Namsos"
+    },
+    {
+      "file": "wcag_Namsskogan_20260107_072438.html",
+      "municipality": "Namsskogan"
+    },
+    {
+      "file": "wcag_Nannestad_20260107_064323.html",
+      "municipality": "Nannestad"
+    },
+    {
+      "file": "wcag_Narvik_20260107_063032.html",
+      "municipality": "Narvik"
+    },
+    {
+      "file": "wcag_Nesbyen_20260107_064459.html",
+      "municipality": "Nesbyen"
+    },
+    {
+      "file": "wcag_Nesna_20260107_063255.html",
+      "municipality": "Nesna"
+    },
+    {
+      "file": "wcag_Nesodden_20260107_064140.html",
+      "municipality": "Nesodden"
+    },
+    {
+      "file": "wcag_Nesseby_20260107_074214.html",
+      "municipality": "Nesseby"
+    },
+    {
+      "file": "wcag_Nes_20260107_064249.html",
+      "municipality": "Nes"
+    },
+    {
+      "file": "wcag_Nissedal_20260107_070500.html",
+      "municipality": "Nissedal"
+    },
+    {
+      "file": "wcag_Nittedal_20260107_064251.html",
+      "municipality": "Nittedal"
+    },
+    {
+      "file": "wcag_Nome_20260107_070355.html",
+      "municipality": "Nome"
+    },
+    {
+      "file": "wcag_Nord-Aurdal_20260107_070103.html",
+      "municipality": "Nord-Aurdal"
+    },
+    {
+      "file": "wcag_Nord-Fron_20260107_065822.html",
+      "municipality": "Nord-Fron"
+    },
+    {
+      "file": "wcag_Nord-Odal_20260107_065208.html",
+      "municipality": "Nord-Odal"
+    },
+    {
+      "file": "wcag_Nordkapp_20260107_073914.html",
+      "municipality": "Nordkapp"
+    },
+    {
+      "file": "wcag_Nordreisa_20260107_073541.html",
+      "municipality": "Nordreisa"
+    },
+    {
+      "file": "wcag_Nordre_Follo_20260107_064116.html",
+      "municipality": "Nordre_Follo"
+    },
+    {
+      "file": "wcag_Nordre_Land_20260107_070024.html",
+      "municipality": "Nordre_Land"
+    },
+    {
+      "file": "wcag_Nore_og_Uvdal_20260107_064559.html",
+      "municipality": "Nore_og_Uvdal"
+    },
+    {
+      "file": "wcag_Notodden_20260107_070320.html",
+      "municipality": "Notodden"
+    },
+    {
+      "file": "wcag_Nærøysund_20260107_072745.html",
+      "municipality": "Nærøysund"
+    },
+    {
+      "file": "wcag_Oppdal_20260107_072051.html",
+      "municipality": "Oppdal"
+    },
+    {
+      "file": "wcag_Orkland_20260107_072727.html",
+      "municipality": "Orkland"
+    },
+    {
+      "file": "wcag_Osen_20260107_072040.html",
+      "municipality": "Osen"
+    },
+    {
+      "file": "wcag_Oslo_20260106_194939.html",
+      "municipality": "Oslo"
+    },
+    {
+      "file": "wcag_Oslo_20260107_062006.html",
+      "municipality": "Oslo"
+    },
+    {
+      "file": "wcag_Osterøy_20260107_071617.html",
+      "municipality": "Osterøy"
+    },
+    {
+      "file": "wcag_Os_20260107_065648.html",
+      "municipality": "Os"
+    },
+    {
+      "file": "wcag_Overhalla_20260107_072514.html",
+      "municipality": "Overhalla"
+    },
+    {
+      "file": "wcag_Porsanger_20260107_073938.html",
+      "municipality": "Porsanger"
+    },
+    {
+      "file": "wcag_Porsgrunn_20260106_195223.html",
+      "municipality": "Porsgrunn"
+    },
+    {
+      "file": "wcag_Porsgrunn_20260107_070300.html",
+      "municipality": "Porsgrunn"
+    },
+    {
+      "file": "wcag_Rakkestad_20260107_064007.html",
+      "municipality": "Rakkestad"
+    },
+    {
+      "file": "wcag_Rana_20260107_063336.html",
+      "municipality": "Rana"
+    },
+    {
+      "file": "wcag_Randaberg_20260107_062231.html",
+      "municipality": "Randaberg"
+    },
+    {
+      "file": "wcag_Rauma_20260107_062801.html",
+      "municipality": "Rauma"
+    },
+    {
+      "file": "wcag_Rendalen_20260107_065530.html",
+      "municipality": "Rendalen"
+    },
+    {
+      "file": "wcag_Rennebu_20260107_072104.html",
+      "municipality": "Rennebu"
+    },
+    {
+      "file": "wcag_Rindal_20260107_072755.html",
+      "municipality": "Rindal"
+    },
+    {
+      "file": "wcag_Ringebu_20260107_065857.html",
+      "municipality": "Ringebu"
+    },
+    {
+      "file": "wcag_Ringerike_20260107_064337.html",
+      "municipality": "Ringerike"
+    },
+    {
+      "file": "wcag_Ringsaker_20260107_064945.html",
+      "municipality": "Ringsaker"
+    },
+    {
+      "file": "wcag_Risør_20260106_195234.html",
+      "municipality": "Risør"
+    },
+    {
+      "file": "wcag_Risør_20260107_070609.html",
+      "municipality": "Risør"
+    },
+    {
+      "file": "wcag_Rollag_20260107_064558.html",
+      "municipality": "Rollag"
+    },
+    {
+      "file": "wcag_Råde_20260107_063941.html",
+      "municipality": "Råde"
+    },
+    {
+      "file": "wcag_Rælingen_20260107_064248.html",
+      "municipality": "Rælingen"
+    },
+    {
+      "file": "wcag_Rødøy_20260107_063356.html",
+      "municipality": "Rødøy"
+    },
+    {
+      "file": "wcag_Røros_20260107_072105.html",
+      "municipality": "Røros"
+    },
+    {
+      "file": "wcag_Røst_20260107_063623.html",
+      "municipality": "Røst"
+    },
+    {
+      "file": "wcag_Røyrvik_20260107_072426.html",
+      "municipality": "Røyrvik"
+    },
+    {
+      "file": "wcag_Salangen_20260107_073211.html",
+      "municipality": "Salangen"
+    },
+    {
+      "file": "wcag_Saltdal_20260107_063452.html",
+      "municipality": "Saltdal"
+    },
+    {
+      "file": "wcag_Samnanger_20260107_071443.html",
+      "municipality": "Samnanger"
+    },
+    {
+      "file": "wcag_Sandefjord_20260107_070232.html",
+      "municipality": "Sandefjord"
+    },
+    {
+      "file": "wcag_Sande_20260107_062623.html",
+      "municipality": "Sande"
+    },
+    {
+      "file": "wcag_Sandnes_20260107_062057.html",
+      "municipality": "Sandnes"
+    },
+    {
+      "file": "wcag_Sarpsborg_20260107_063909.html",
+      "municipality": "Sarpsborg"
+    },
+    {
+      "file": "wcag_Sauda_20260107_062329.html",
+      "municipality": "Sauda"
+    },
+    {
+      "file": "wcag_Selbu_20260107_072234.html",
+      "municipality": "Selbu"
+    },
+    {
+      "file": "wcag_Seljord_20260107_070421.html",
+      "municipality": "Seljord"
+    },
+    {
+      "file": "wcag_Sel_20260107_065834.html",
+      "municipality": "Sel"
+    },
+    {
+      "file": "wcag_Senja_20260107_073323.html",
+      "municipality": "Senja"
+    },
+    {
+      "file": "wcag_Sigdal_20260107_064554.html",
+      "municipality": "Sigdal"
+    },
+    {
+      "file": "wcag_Siljan_20260107_070322.html",
+      "municipality": "Siljan"
+    },
+    {
+      "file": "wcag_Sirdal_20260107_071151.html",
+      "municipality": "Sirdal"
+    },
+    {
+      "file": "wcag_Skaun_20260107_072220.html",
+      "municipality": "Skaun"
+    },
+    {
+      "file": "wcag_Skien_20260107_070311.html",
+      "municipality": "Skien"
+    },
+    {
+      "file": "wcag_Skiptvet_20260107_063941.html",
+      "municipality": "Skiptvet"
+    },
+    {
+      "file": "wcag_Skjervøy_20260107_073521.html",
+      "municipality": "Skjervøy"
+    },
+    {
+      "file": "wcag_Skjåk_20260107_065758.html",
+      "municipality": "Skjåk"
+    },
+    {
+      "file": "wcag_Smøla_20260107_062921.html",
+      "municipality": "Smøla"
+    },
+    {
+      "file": "wcag_Snåsa_20260107_072356.html",
+      "municipality": "Snåsa"
+    },
+    {
+      "file": "wcag_Sogndal_20260107_071712.html",
+      "municipality": "Sogndal"
+    },
+    {
+      "file": "wcag_Sokndal_20260107_062116.html",
+      "municipality": "Sokndal"
+    },
+    {
+      "file": "wcag_Sola_20260107_062221.html",
+      "municipality": "Sola"
+    },
+    {
+      "file": "wcag_Solund_20260107_071629.html",
+      "municipality": "Solund"
+    },
+    {
+      "file": "wcag_Sortland_20260107_063754.html",
+      "municipality": "Sortland"
+    },
+    {
+      "file": "wcag_Stad_20260107_071903.html",
+      "municipality": "Stad"
+    },
+    {
+      "file": "wcag_Stange_20260107_065100.html",
+      "municipality": "Stange"
+    },
+    {
+      "file": "wcag_Stavanger_20260107_062034.html",
+      "municipality": "Stavanger"
+    },
+    {
+      "file": "wcag_Steigen_20260107_063537.html",
+      "municipality": "Steigen"
+    },
+    {
+      "file": "wcag_Steinkjer_20260107_072005.html",
+      "municipality": "Steinkjer"
+    },
+    {
+      "file": "wcag_Stjørdal_20260107_072310.html",
+      "municipality": "Stjørdal"
+    },
+    {
+      "file": "wcag_Stor-Elvdal_20260107_065518.html",
+      "municipality": "Stor-Elvdal"
+    },
+    {
+      "file": "wcag_Stord_20260107_071306.html",
+      "municipality": "Stord"
+    },
+    {
+      "file": "wcag_Storfjord_20260107_073422.html",
+      "municipality": "Storfjord"
+    },
+    {
+      "file": "wcag_Stranda_20260107_062710.html",
+      "municipality": "Stranda"
+    },
+    {
+      "file": "wcag_Strand_20260107_062247.html",
+      "municipality": "Strand"
+    },
+    {
+      "file": "wcag_Stryn_20260107_071930.html",
+      "municipality": "Stryn"
+    },
+    {
+      "file": "wcag_Sula_20260107_062728.html",
+      "municipality": "Sula"
+    },
+    {
+      "file": "wcag_Suldal_20260107_062314.html",
+      "municipality": "Suldal"
+    },
+    {
+      "file": "wcag_Sunndal_20260107_062858.html",
+      "municipality": "Sunndal"
+    },
+    {
+      "file": "wcag_Sunnfjord_20260107_071836.html",
+      "municipality": "Sunnfjord"
+    },
+    {
+      "file": "wcag_Surnadal_20260107_062909.html",
+      "municipality": "Surnadal"
+    },
+    {
+      "file": "wcag_Sveio_20260107_071254.html",
+      "municipality": "Sveio"
+    },
+    {
+      "file": "wcag_Sykkylven_20260107_062719.html",
+      "municipality": "Sykkylven"
+    },
+    {
+      "file": "wcag_Sømna_20260107_063050.html",
+      "municipality": "Sømna"
+    },
+    {
+      "file": "wcag_Søndre_Land_20260107_070012.html",
+      "municipality": "Søndre_Land"
+    },
+    {
+      "file": "wcag_Sør-Aurdal_20260107_070040.html",
+      "municipality": "Sør-Aurdal"
+    },
+    {
+      "file": "wcag_Sør-Fron_20260107_065847.html",
+      "municipality": "Sør-Fron"
+    },
+    {
+      "file": "wcag_Sør-Odal_20260107_065243.html",
+      "municipality": "Sør-Odal"
+    },
+    {
+      "file": "wcag_Sør-Varanger_20260107_073732.html",
+      "municipality": "Sør-Varanger"
+    },
+    {
+      "file": "wcag_Sørfold_20260107_063524.html",
+      "municipality": "Sørfold"
+    },
+    {
+      "file": "wcag_Sørreisa_20260107_073259.html",
+      "municipality": "Sørreisa"
+    },
+    {
+      "file": "wcag_Tana_20260107_074048.html",
+      "municipality": "Tana"
+    },
+    {
+      "file": "wcag_Time_20260107_062203.html",
+      "municipality": "Time"
+    },
+    {
+      "file": "wcag_Tingvoll_20260107_062848.html",
+      "municipality": "Tingvoll"
+    },
+    {
+      "file": "wcag_Tinn_20260107_070441.html",
+      "municipality": "Tinn"
+    },
+    {
+      "file": "wcag_Tjeldsund_20260107_072917.html",
+      "municipality": "Tjeldsund"
+    },
+    {
+      "file": "wcag_Tokke_20260107_070538.html",
+      "municipality": "Tokke"
+    },
+    {
+      "file": "wcag_Tolga_20260107_065555.html",
+      "municipality": "Tolga"
+    },
+    {
+      "file": "wcag_Tromsø_20260106_195329.html",
+      "municipality": "Tromsø"
+    },
+    {
+      "file": "wcag_Tromsø_20260107_072808.html",
+      "municipality": "Tromsø"
+    },
+    {
+      "file": "wcag_Trondheim_20260106_195313.html",
+      "municipality": "Trondheim"
+    },
+    {
+      "file": "wcag_Trondheim_20260107_071943.html",
+      "municipality": "Trondheim"
+    },
+    {
+      "file": "wcag_Trysil_20260107_065452.html",
+      "municipality": "Trysil"
+    },
+    {
+      "file": "wcag_Træna_20260107_063356.html",
+      "municipality": "Træna"
+    },
+    {
+      "file": "wcag_Tvedestrand_20260107_070814.html",
+      "municipality": "Tvedestrand"
+    },
+    {
+      "file": "wcag_Tydal_20260107_072246.html",
+      "municipality": "Tydal"
+    },
+    {
+      "file": "wcag_Tynset_20260107_065607.html",
+      "municipality": "Tynset"
+    },
+    {
+      "file": "wcag_Tysnes_20260107_071339.html",
+      "municipality": "Tysnes"
+    },
+    {
+      "file": "wcag_Tysvær_20260107_062434.html",
+      "municipality": "Tysvær"
+    },
+    {
+      "file": "wcag_Tønsberg_20260107_070217.html",
+      "municipality": "Tønsberg"
+    },
+    {
+      "file": "wcag_Ullensaker_20260107_064129.html",
+      "municipality": "Ullensaker"
+    },
+    {
+      "file": "wcag_Ullensvang_20260107_071357.html",
+      "municipality": "Ullensvang"
+    },
+    {
+      "file": "wcag_Ulstein_20260107_062634.html",
+      "municipality": "Ulstein"
+    },
+    {
+      "file": "wcag_Ulvik_20260107_071421.html",
+      "municipality": "Ulvik"
+    },
+    {
+      "file": "wcag_Utsira_20260107_062457.html",
+      "municipality": "Utsira"
+    },
+    {
+      "file": "wcag_Vadsø_20260107_073744.html",
+      "municipality": "Vadsø"
+    },
+    {
+      "file": "wcag_Vaksdal_20260107_071613.html",
+      "municipality": "Vaksdal"
+    },
+    {
+      "file": "wcag_Valle_20260107_070958.html",
+      "municipality": "Valle"
+    },
+    {
+      "file": "wcag_Vang_20260107_070136.html",
+      "municipality": "Vang"
+    },
+    {
+      "file": "wcag_Vanylven_20260107_062611.html",
+      "municipality": "Vanylven"
+    },
+    {
+      "file": "wcag_Vardø_20260107_074203.html",
+      "municipality": "Vardø"
+    },
+    {
+      "file": "wcag_Vefsn_20260107_063212.html",
+      "municipality": "Vefsn"
+    },
+    {
+      "file": "wcag_Vega_20260107_063100.html",
+      "municipality": "Vega"
+    },
+    {
+      "file": "wcag_Vegårshei_20260107_070803.html",
+      "municipality": "Vegårshei"
+    },
+    {
+      "file": "wcag_Vennesla_20260107_071024.html",
+      "municipality": "Vennesla"
+    },
+    {
+      "file": "wcag_Verdal_20260107_072343.html",
+      "municipality": "Verdal"
+    },
+    {
+      "file": "wcag_Vestby_20260107_064154.html",
+      "municipality": "Vestby"
+    },
+    {
+      "file": "wcag_Vestnes_20260107_062751.html",
+      "municipality": "Vestnes"
+    },
+    {
+      "file": "wcag_Vestre_Slidre_20260107_070114.html",
+      "municipality": "Vestre_Slidre"
+    },
+    {
+      "file": "wcag_Vestre_Toten_20260107_065941.html",
+      "municipality": "Vestre_Toten"
+    },
+    {
+      "file": "wcag_Vestvågøy_20260107_063641.html",
+      "municipality": "Vestvågøy"
+    },
+    {
+      "file": "wcag_Vevelstad_20260107_063119.html",
+      "municipality": "Vevelstad"
+    },
+    {
+      "file": "wcag_Vik_20260107_071702.html",
+      "municipality": "Vik"
+    },
+    {
+      "file": "wcag_Vindafjord_20260107_062521.html",
+      "municipality": "Vindafjord"
+    },
+    {
+      "file": "wcag_Vinje_20260107_070553.html",
+      "municipality": "Vinje"
+    },
+    {
+      "file": "wcag_Volda_20260107_062943.html",
+      "municipality": "Volda"
+    },
+    {
+      "file": "wcag_Voss_20260107_071431.html",
+      "municipality": "Voss"
+    },
+    {
+      "file": "wcag_Vågan_20260107_063653.html",
+      "municipality": "Vågan"
+    },
+    {
+      "file": "wcag_Vågå_20260107_065810.html",
+      "municipality": "Vågå"
+    },
+    {
+      "file": "wcag_Våler_20260107_063941.html",
+      "municipality": "Våler"
+    },
+    {
+      "file": "wcag_Våler_20260107_065429.html",
+      "municipality": "Våler"
+    },
+    {
+      "file": "wcag_Værøy_20260107_063631.html",
+      "municipality": "Værøy"
+    },
+    {
+      "file": "wcag_Åfjord_20260107_072716.html",
+      "municipality": "Åfjord"
+    },
+    {
+      "file": "wcag_Åfjord_20260107_072716_enhanced.html",
+      "municipality": "Åfjord_20260107"
+    },
+    {
+      "file": "wcag_Ålesund_20260107_062600.html",
+      "municipality": "Ålesund"
+    },
+    {
+      "file": "wcag_Ål_20260107_064529.html",
+      "municipality": "Ål"
+    },
+    {
+      "file": "wcag_Åmli_20260107_070907.html",
+      "municipality": "Åmli"
+    },
+    {
+      "file": "wcag_Åmot_20260107_065504.html",
+      "municipality": "Åmot"
+    },
+    {
+      "file": "wcag_Årdal_20260107_071751.html",
+      "municipality": "Årdal"
+    },
+    {
+      "file": "wcag_Åseral_20260107_071036.html",
+      "municipality": "Åseral"
+    },
+    {
+      "file": "wcag_Åsnes_20260107_065415.html",
+      "municipality": "Åsnes"
+    },
+    {
+      "file": "wcag_Ås_20260107_064211.html",
+      "municipality": "Ås"
+    },
+    {
+      "file": "wcag_Øksnes_20260107_063741.html",
+      "municipality": "Øksnes"
+    },
+    {
+      "file": "wcag_Ørland_20260107_072704.html",
+      "municipality": "Ørland"
+    },
+    {
+      "file": "wcag_Ørsta_20260107_062656.html",
+      "municipality": "Ørsta"
+    },
+    {
+      "file": "wcag_Østre_Toten_20260107_065930.html",
+      "municipality": "Østre_Toten"
+    },
+    {
+      "file": "wcag_Øvre_Eiker_20260107_064416.html",
+      "municipality": "Øvre_Eiker"
+    },
+    {
+      "file": "wcag_Øyer_20260107_065908.html",
+      "municipality": "Øyer"
+    },
+    {
+      "file": "wcag_Øygarden_20260107_071526.html",
+      "municipality": "Øygarden"
+    },
+    {
+      "file": "wcag_Øystre_Slidre_20260107_070123.html",
+      "municipality": "Øystre_Slidre"
+    }
+  ]
+}

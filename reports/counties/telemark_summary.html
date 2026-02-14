@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telemark WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Telemark WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Telemark</p>
+        <p><strong>Skannet:</strong> 2026-02-11 20:48</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">79</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">79</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">479</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">2334</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">8077</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">21434</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.grenlandfriluftsrad.no" target="_blank">Grenland Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:grenland@friluftsrad.no">grenland@friluftsrad.no</a><br>35 58 13 08</td>
+                <td>15</td>
+                <td><span class="badge critical">325</span></td>
+                <td>101</td>
+                <td>224</td>
+                <td>651</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\grenland_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Telemark fengsel</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>372</td>
+                <td>212</td>
+                <td>894</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/tunsberg" target="_blank">Tunsberg bispedømme</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge critical">231</span></td>
+                <td>448</td>
+                <td>1887</td>
+                <td>2599</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tunsberg_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bamble.kirken.no" target="_blank">Bamble Kirkelige Fellesråd</a></td>
+                <td>Bamble</td>
+                <td class="contact"><a href="mailto:bamble.kirkelige.fellesrad@bamble.kommune.no">bamble.kirkelige.fellesrad@bamble.kommune.no</a><br>35 96 52 81</td>
+                <td>16</td>
+                <td><span class="badge critical">150</span></td>
+                <td>27</td>
+                <td>131</td>
+                <td>310</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\bamble_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.skien.kirken.no/" target="_blank">Skien Kirkelige Fellesråd</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:kirkevergen@skien.kommune.no">kirkevergen@skien.kommune.no</a><br>35 58 11 80</td>
+                <td>15</td>
+                <td><span class="badge critical">143</span></td>
+                <td>9</td>
+                <td>98</td>
+                <td>252</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\skien_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.skienfritidspark.no" target="_blank">Skien Fritidspark KF</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:post@skienfritidspark.no">post@skienfritidspark.no</a><br>35 54 10 10</td>
+                <td>14</td>
+                <td><span class="badge critical">132</span></td>
+                <td>952</td>
+                <td>40</td>
+                <td>1336</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\skien_fritidspark_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.porsgrunn.kirken.no/" target="_blank">Porsgrunn Kirkelige Fellesråd</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:post.porsgrunn@kirken.no">post.porsgrunn@kirken.no</a><br>35 56 34 00</td>
+                <td>16</td>
+                <td><span class="badge critical">126</span></td>
+                <td>12</td>
+                <td>123</td>
+                <td>261</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\porsgrunn_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gbr.no" target="_blank">Grenland Brann og Redning IKS</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:post@gbr.no">post@gbr.no</a><br>35 54 70 00</td>
+                <td>16</td>
+                <td><span class="badge critical">106</span></td>
+                <td>17</td>
+                <td>303</td>
+                <td>426</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\grenland_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Telemark fylkeskommune</a></td>
+                <td>Telemark</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">84</span></td>
+                <td>142</td>
+                <td>340</td>
+                <td>700</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.teateribsen.no" target="_blank">Telemark og Vestfold Regionteater AS</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:firmapost@teateribsen.no">firmapost@teateribsen.no</a><br>35 90 50 50</td>
+                <td>16</td>
+                <td><span class="badge critical">84</span></td>
+                <td>25</td>
+                <td>244</td>
+                <td>405</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_og_vestfold_regionteater_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no/fylkesbibliotek" target="_blank">Telemark fylkesbibliotek</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">82</span></td>
+                <td>132</td>
+                <td>325</td>
+                <td>669</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no/tilskudd" target="_blank">Telemark fylkeskommune tilskudd</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">82</span></td>
+                <td>132</td>
+                <td>325</td>
+                <td>669</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://porsgrunn.vgs.no" target="_blank">Porsgrunn videregående skole</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">81</span></td>
+                <td>156</td>
+                <td>201</td>
+                <td>477</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\porsgrunn_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kragero.vgs.no" target="_blank">Kragerø videregående skole</a></td>
+                <td>Kragerø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">78</span></td>
+                <td>147</td>
+                <td>264</td>
+                <td>566</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\kragerø_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skien.vgs.no" target="_blank">Skien videregående skole</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge critical">68</span></td>
+                <td>126</td>
+                <td>157</td>
+                <td>423</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\skien_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.telemark.museum.no" target="_blank">Telemark Museum Sti</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:post@telemark.museum.no">post@telemark.museum.no</a><br>35 54 45 00</td>
+                <td>16</td>
+                <td><span class="badge critical">60</span></td>
+                <td>60</td>
+                <td>203</td>
+                <td>324</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_museum_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gassnova.no" target="_blank">Gassnova SF</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:postmottak@gassnova.no">postmottak@gassnova.no</a></td>
+                <td>14</td>
+                <td><span class="badge critical">57</span></td>
+                <td>749</td>
+                <td>1460</td>
+                <td>2317</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\gassnova_sf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://farte.no" target="_blank">Farte (Telemark fylkeskommune)</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">26</span></td>
+                <td>60</td>
+                <td>195</td>
+                <td>299</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\farte_(telemark_fylkeskommune).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grenland-havn.no" target="_blank">Grenland Havn IKS</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:ghv@grenland-havn.no">ghv@grenland-havn.no</a><br>35 93 10 00</td>
+                <td>16</td>
+                <td><span class="badge serious">22</span></td>
+                <td>614</td>
+                <td>48</td>
+                <td>684</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\grenland_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://grenlandhavn.no" target="_blank">Grenland Havn IKS</a></td>
+                <td>Bamble</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">22</span></td>
+                <td>575</td>
+                <td>41</td>
+                <td>638</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\grenland_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.porsgrunn.kommune.no/" target="_blank">Porsgrunn Kommune</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:postmottak@porsgrunn.kommune.no">postmottak@porsgrunn.kommune.no</a><br>35 54 70 00</td>
+                <td>16</td>
+                <td><span class="badge serious">18</span></td>
+                <td>34</td>
+                <td>357</td>
+                <td>416</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\porsgrunn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vtrevisjon.no" target="_blank">Vestfold og Telemark Revisjon IKS</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:post@vtrevisjon.no">post@vtrevisjon.no</a><br>33 07 13 00</td>
+                <td>17</td>
+                <td><span class="badge serious">17</span></td>
+                <td>68</td>
+                <td>132</td>
+                <td>217</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vestfold_og_telemark_revisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkmuseum.no/museum" target="_blank">Frøken Henriette Homanns Legat, Berg-kragerø Museum Sti</a></td>
+                <td>Kragerø</td>
+                <td class="contact">35 98 14 53</td>
+                <td>11</td>
+                <td><span class="badge serious">14</span></td>
+                <td>36</td>
+                <td>121</td>
+                <td>172</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\frøken_henriette_homanns_legat,_berg-kragerø_museu.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.notodden.kommune.no/" target="_blank">Notodden Kommune</a></td>
+                <td>Notodden</td>
+                <td class="contact"><a href="mailto:postmottak@notodden.kommune.no">postmottak@notodden.kommune.no</a><br>35 01 50 00</td>
+                <td>15</td>
+                <td><span class="badge moderate">10</span></td>
+                <td>33</td>
+                <td>169</td>
+                <td>380</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\notodden_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.siljan.kommune.no/" target="_blank">Siljan Kommune</a></td>
+                <td>Siljan</td>
+                <td class="contact"><a href="mailto:post@siljan.kommune.no">post@siljan.kommune.no</a><br>35 94 25 00</td>
+                <td>3</td>
+                <td><span class="badge moderate">9</span></td>
+                <td>5</td>
+                <td>42</td>
+                <td>62</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\siljan_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sthf.no" target="_blank">Sykehuset Telemark HF</a></td>
+                <td>Telemark</td>
+                <td class="contact"><a href="mailto:postmottak@sshf.no">postmottak@sshf.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1056</td>
+                <td>116</td>
+                <td>1262</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\sykehuset_telemark_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.novari.no" target="_blank">Novari IKS</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:post@novari.no">post@novari.no</a></td>
+                <td>13</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>192</td>
+                <td>327</td>
+                <td>521</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\novari_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sthf.no" target="_blank">Sykehuset Telemark HF</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:postmottak@sthf.no">postmottak@sthf.no</a><br>35 00 35 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1056</td>
+                <td>116</td>
+                <td>1262</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\sykehuset_telemark_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemark.no" target="_blank">Telemarkreiser AS</a></td>
+                <td>Telemark</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemarkreiser_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.geoparken.no" target="_blank">Gea Norvegica Geopark IKS</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:post@geanor.no">post@geanor.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\gea_norvegica_geopark_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://porsgrunhavn.no" target="_blank">Porsgrunn Havn</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\porsgrunn_havn.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kunsthallgrenland.no" target="_blank">Stiftelsen Kunsthall Grenland</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact"><a href="mailto:andreas@kunsthallgrenland.no">andreas@kunsthallgrenland.no</a><br>35 55 95 12</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\stiftelsen_kunsthall_grenland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkteknologiklynge.no" target="_blank">Telemark Teknologiklynge</a></td>
+                <td>Porsgrunn</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_teknologiklynge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://grenlandssamarbeidet.no" target="_blank">Grenlandssamarbeidet IPR</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>18</td>
+                <td>525</td>
+                <td>562</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\grenlandssamarbeidet_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hjalmarjohansen.vgs.no" target="_blank">Hjalmar Johansen videregående skole</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\hjalmar_johansen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rig.no" target="_blank">Renovasjon i Grenland IKS</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:post@rig.no">post@rig.no</a><br>35 10 10 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\renovasjon_i_grenland_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skien.kommune.no" target="_blank">Skien kommune</a></td>
+                <td>Skien</td>
+                <td class="contact"><a href="mailto:skien.postmottak@skien.kommune.no">skien.postmottak@skien.kommune.no</a><br>35 58 10 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>19</td>
+                <td>492</td>
+                <td>540</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\skien_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.telemark.no" target="_blank">Tannhelsetjenesten Telemark</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tannhelsetjenesten_telemark.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/telemark" target="_blank">Telemark tingrett</a></td>
+                <td>Skien</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemark_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.notodden.kirken.no" target="_blank">Notodden Kirkelig Fellesråd</a></td>
+                <td>Notodden</td>
+                <td class="contact"><a href="mailto:havard.russnes@notodden.kirken.no">havard.russnes@notodden.kirken.no</a><br>35 02 04 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\notodden_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://notodden-utvikling.no" target="_blank">Notodden Utvikling AS</a></td>
+                <td>Notodden</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\notodden_utvikling_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bamble.kommune.no/" target="_blank">Bamble Kommune</a></td>
+                <td>Bamble</td>
+                <td class="contact"><a href="mailto:postmottak@bamble.kommune.no">postmottak@bamble.kommune.no</a><br>35 96 50 00</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>324</td>
+                <td>202</td>
+                <td>526</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\bamble_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.friskbris.info" target="_blank">Frisk Bris Bamble KF</a></td>
+                <td>Bamble</td>
+                <td class="contact"><a href="mailto:henning.weider@bamble.kommune.no">henning.weider@bamble.kommune.no</a><br>35 96 50 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>380</td>
+                <td>230</td>
+                <td>611</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\frisk_bris_bamble_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://jomfrulandnasjonalpark.no/" target="_blank">Jomfruland Nasjonalpark</a></td>
+                <td>Kragerø</td>
+                <td class="contact"><a href="mailto:eirik.dobbedal@statsforvalteren.no">eirik.dobbedal@statsforvalteren.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\jomfruland_nasjonalpark.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kragerokirkene.no/" target="_blank">Kragerø Kirkelige Fellesråd</a></td>
+                <td>Kragerø</td>
+                <td class="contact"><a href="mailto:anne-mette.bamle@kragero.kommune.no">anne-mette.bamle@kragero.kommune.no</a><br>35 98 63 64</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\kragerø_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kragero.kommune.no/" target="_blank">Kragerø Kommune</a></td>
+                <td>Kragerø</td>
+                <td class="contact"><a href="mailto:post@kragero.kommune.no">post@kragero.kommune.no</a><br>35 98 62 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\kragerø_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://notodden.vgs.no" target="_blank">Notodden videregående skole</a></td>
+                <td>Notodden</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\notodden_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken@drangedal.kommune.no" target="_blank">Drangedal Kirkelige Fellesråd</a></td>
+                <td>Drangedal</td>
+                <td class="contact"><a href="mailto:bjorn.reiten@drangedal.kommune.no">bjorn.reiten@drangedal.kommune.no</a><br>35997010</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\drangedal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.drangedal.kommune.no/" target="_blank">Drangedal Kommune</a></td>
+                <td>Drangedal</td>
+                <td class="contact"><a href="mailto:postmottak@drangedal.kommune.no">postmottak@drangedal.kommune.no</a><br>35 99 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\drangedal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nome.kommune.no/" target="_blank">Nome Kommune</a></td>
+                <td>Nome</td>
+                <td class="contact"><a href="mailto:postmottak@nome.kommune.no">postmottak@nome.kommune.no</a><br>35 94 62 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\nome_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nome.kirken.no" target="_blank">Nome Kyrkjelege Fellesråd</a></td>
+                <td>Nome</td>
+                <td class="contact"><a href="mailto:mona@nome.kirken.no">mona@nome.kirken.no</a><br>35 94 62 62</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\nome_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.telemarkskanalen.no" target="_blank">Telemarkskanalen Fkf</a></td>
+                <td>Nome</td>
+                <td class="contact"><a href="mailto:fakturabehandling@vtfk.no">fakturabehandling@vtfk.no</a><br>35 91 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\telemarkskanalen_fkf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bokyrkje.no" target="_blank">Midt-telemark Kyrkjelege Fellesråd</a></td>
+                <td>Midt-Telemark</td>
+                <td class="contact"><a href="mailto:post@bokyrkje.no">post@bokyrkje.no</a><br>35 06 10 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\midt-telemark_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vetaks.no" target="_blank">Vestfold, Telemark og Agder Kontrollutvalgssekreteriat IKS</a></td>
+                <td>Midt-Telemark</td>
+                <td class="contact"><a href="mailto:postmottak@vetaks.no">postmottak@vetaks.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vestfold,_telemark_og_agder_kontrollutvalgssekrete.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.seljordkyrkje.no/" target="_blank">Seljord Kirkelige Fellesråd</a></td>
+                <td>Seljord</td>
+                <td class="contact"><a href="mailto:jon@seljordkyrkje.no">jon@seljordkyrkje.no</a><br>35 06 54 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\seljord_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.seljord.kommune.no" target="_blank">Seljord Kommune</a></td>
+                <td>Seljord</td>
+                <td class="contact"><a href="mailto:post@seljord.kommune.no">post@seljord.kommune.no</a><br>35 06 51 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\seljord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hjartdal.kommune.no/" target="_blank">Hjartdal Kommune</a></td>
+                <td>Hjartdal</td>
+                <td class="contact"><a href="mailto:postmottak@hjartdal.kommune.no">postmottak@hjartdal.kommune.no</a><br>35 02 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\hjartdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kviteseid.kommune.no" target="_blank">Kviteseid kommune</a></td>
+                <td>Kviteseid</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\kviteseid_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vtfr.no" target="_blank">Vest-Telemarkrådet</a></td>
+                <td>Kviteseid</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vest-telemarkrådet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fjellab.no" target="_blank">Fjellab Drift IKS</a></td>
+                <td>Tinn</td>
+                <td class="contact"><a href="mailto:firmapost@fjellab.no">firmapost@fjellab.no</a><br>35 08 28 30</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\fjellab_drift_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nissedal.kommune.no" target="_blank">Nissedal kommune</a></td>
+                <td>Nissedal</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\nissedal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.tinn.no" target="_blank">Tinn Kirkelige Fellesråd</a></td>
+                <td>Tinn</td>
+                <td class="contact"><a href="mailto:post@kirken.tinn.no">post@kirken.tinn.no</a><br>35 08 28 60</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tinn_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tinn.kommune.no" target="_blank">Tinn Kommune</a></td>
+                <td>Tinn</td>
+                <td class="contact"><a href="mailto:postmottak@tinn.kommune.no">postmottak@tinn.kommune.no</a><br>35 08 26 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tinn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rjukanbadet.no" target="_blank">Tinn Kommune Rjukanbadet KF</a></td>
+                <td>Tinn</td>
+                <td class="contact"><a href="mailto:post@rjukanbadet.no">post@rjukanbadet.no</a><br>90 36 55 34</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tinn_kommune_rjukanbadet_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fyresdal.kommune.no" target="_blank">Fyresdal kommune</a></td>
+                <td>Fyresdal</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\fyresdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kviteseid.kommune.no/" target="_blank">Kviteseid Kommune</a></td>
+                <td>Kviteseid</td>
+                <td class="contact"><a href="mailto:post@kviteseid.kommune.no">post@kviteseid.kommune.no</a><br>35 06 81 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\kviteseid_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.renovest.no" target="_blank">Renovest IKS</a></td>
+                <td>Kviteseid</td>
+                <td class="contact"><a href="mailto:post@renovest.no">post@renovest.no</a><br>35 06 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\renovest_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vt-radet.no" target="_blank">Vest-telemark Interkommunalt Politisk Råd</a></td>
+                <td>Kviteseid</td>
+                <td class="contact"><a href="mailto:aa@vest-telemark.no">aa@vest-telemark.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vest-telemark_interkommunalt_politisk_råd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.iata.no" target="_blank">Indre Agder og Telemark Avfallsselskap IKS</a></td>
+                <td>Nissedal</td>
+                <td class="contact"><a href="mailto:iata@iata.no">iata@iata.no</a><br>35 04 83 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\indre_agder_og_telemark_avfallsselskap_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nissedal.kommune.no/" target="_blank">Nissedal Kommune</a></td>
+                <td>Nissedal</td>
+                <td class="contact"><a href="mailto:info@nissedal.kommune.no">info@nissedal.kommune.no</a><br>35 04 84 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\nissedal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tokke.kommune.no" target="_blank">Tokke kommune</a></td>
+                <td>Tokke</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tokke_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fyresdal.kommune.no" target="_blank">Fyresdal Kommune</a></td>
+                <td>Fyresdal</td>
+                <td class="contact"><a href="mailto:postmottak@fyresdal.kommune.no">postmottak@fyresdal.kommune.no</a><br>35 06 71 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\fyresdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vinje.kommune.no" target="_blank">Vinje kommune</a></td>
+                <td>Vinje</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vinje_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tinn.kommune.no" target="_blank">Tinn kommune</a></td>
+                <td>Tinn</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tinn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tokke.kommune.no/" target="_blank">Tokke Kommune</a></td>
+                <td>Tokke</td>
+                <td class="contact"><a href="mailto:postmottak@tokke.kommune.no">postmottak@tokke.kommune.no</a><br>35 07 52 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tokke_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kyrkja.tokke.no" target="_blank">Tokke Kyrkjelege Fellesråd</a></td>
+                <td>Tokke</td>
+                <td class="contact"><a href="mailto:kyrkjekontoret@tokke.no">kyrkjekontoret@tokke.no</a><br>35 07 52 30</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\tokke_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hjartdal.kommune.no" target="_blank">Hjartdal kommune</a></td>
+                <td>Hjartdal</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\hjartdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vinje.kommune.no/" target="_blank">Vinje Kommune</a></td>
+                <td>Vinje</td>
+                <td class="contact"><a href="mailto:postmottak@vinje.kommune.no">postmottak@vinje.kommune.no</a><br>35 06 23 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vinje_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vinje.kyrkja.no" target="_blank">Vinje Kyrkjelege Fellesråd</a></td>
+                <td>Vinje</td>
+                <td class="contact"><a href="mailto:kyrkjeverja@vinje.kommune.no">kyrkjeverja@vinje.kommune.no</a><br>35 06 25 87</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="telemark\vinje_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

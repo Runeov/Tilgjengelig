@@ -1,0 +1,2076 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://nhri.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://nhri.no";
+        var TOTAL_ISSUES = 104;
+        var maxPages = 21;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://nhri.no</p>
+        <p><strong>Dato:</strong> 2026-02-13T15:22:53.259368</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item success">✅ <strong>Tilgjengelighetserklæring funnet</strong></div>
+            <div class="statement-item">🔗 <a href="https://uustatus.no/nb/erklaringer/publisert/97df5935-cd6c-4db3-a910-85ae930cb7ba" class="statement-link" target="_blank">Gå til erklæring</a></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">21</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">104</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">25</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">5</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">14</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">60</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">3299</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">104</strong> av 104 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Norges institusjon for menneskerettigheter | Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/</div>
+            <div>Avvik: 7 | Bestått: 174</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (5 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a aria-label="Forholdsmessighetsvurderinger og «menneskerettighetsspagaten» – Veileder for utredning av menneskerettslige problemstillinger – lansering av 2. utgave" href="https://www.nhri.no/kalende</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/kalender/forholdsmessighetsvurderinger-og-menneskerettighetsspagaten/"&gt;Forholdsmessighetsvurderinger og «menneskerettighetsspagaten» – Veileder for utredning av menneskere</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (145 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/"&gt;Innspill til GREVIO </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt;Representantforslag om innføring av ungdomskriminalitetsnemnd</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-representantforslag-om-a-innfore-en-ordning-med-rett-til-informasjon-for-a-beskytte-kvinner-mot-voldelige-partnere/"&gt;Innspill til representantforslag om </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Din e-post" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Forholdsmessighetsvurderinger og «menneskerettighetsspagaten» – Veileder for utredning av menneskerettslige problemstillinger – lansering av 2. utgave - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/kalender/forholdsmessighetsvurderinger-og-menneskerettighetsspagaten/</div>
+            <div>Avvik: 6 | Bestått: 121</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" sizes="(max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2025/12/Veilder_mr_200-270_v2-forside-400x540.png" sr</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>1.3.5 Identifiser inndataformål (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'first_name' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="input" id="first_name" name="first_name" type="text" value=""/&gt;</div>
+                <div class="fix">Add autocomplete='name' to help users fill in the form</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'last_name' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="input" id="last_name" name="last_name" type="text" value=""/&gt;</div>
+                <div class="fix">Add autocomplete='name' to help users fill in the form</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'user_email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="input" id="user_email" name="user_email" type="text" value=""/&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '152' appears 3 times</p>
+                <div class="element">id="152"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '51' appears 2 times</p>
+                <div class="element">id="51"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Hvordan NIM jobber - Norges institusjon for menneskerettigheter | Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/om/</div>
+            <div>Avvik: 0 | Bestått: 108</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Front page - NIM</h3>
+            <div class="page-url">https://www.nhri.no/en/</div>
+            <div>Avvik: 8 | Bestått: 111</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (7 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (105 characters)</p>
+                <div class="element">&lt;a aria-label="ECtHR finds no violation in climate case against Norway, but clarifies obligations for petroleum projects" href="https://www.nhri.no/en/2025/ecthr-finds-no-violation-in-climate-case-aga</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (105 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/en/2025/ecthr-finds-no-violation-in-climate-case-against-norway-but-clarifies-obligations-for-petroleum-projects/"&gt;ECtHR finds no violation in climate case against Norway,</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a aria-label="New EFTA Court judgment: Combustion emissions must be assessed and unlawful production licences must be remedied" href="https://www.nhri.no/en/2025/new-efta-court-judgment-combustion-em</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/en/2025/new-efta-court-judgment-combustion-emissions-must-be-assessed-and-unlawful-production-licences-must-be-remedied/"&gt;New EFTA Court judgment: Combustion emissions mus</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (119 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/en/2021/status-report-why-does-the-ecthr-find-human-rights-violations-in-cases-concerning-the-norwegian-child-welfare-services/"&gt; &lt;img alt="" class="report__image" decodin</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (116 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/en/2019/seminar-report-2019-natural-resource-development-business-and-the-rights-of-indigenous-peoples/"&gt; &lt;img alt="" class="report__image" decoding="async" height="540" l</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://mail.google.com/mail/?view=cm&amp;fs=1&amp;tf=1&amp;to=info@nhri.no" rel="noopener" target="_blank"&gt;info@nhri.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Publikasjoner - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/publikasjoner/?publikasjoner-taxonomy%5B%5D=horingsuttalelser&publikasjoner-taxonomy%5B%5D=skriftlige-innspill</div>
+            <div>Avvik: 10 | Bestått: 254</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (10 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Representantforslag om innføring av ungdomskriminalitetsnemnd og lukkede institusjoner for mindreårige" href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskr</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt; Representantforslag om innføring av ungdomskriminalitetsnemn</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (133 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til representantforslag om å innføre en ordning med rett til informasjon, for å beskytte kvinner mot voldelige partnere" href="https://www.nhri.no/2026/innspill-til-repres</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-representantforslag-om-a-innfore-en-ordning-med-rett-til-informasjon-for-a-beskytte-kvinner-mot-voldelige-partnere/"&gt; Innspill til representantforslag om</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (163 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Forslag til endringer i politiregisterloven og politiregisterforskriften – regulering av politiets bruk av KI til etterfølgende biometrisk fjernidentifikasjon" href="https://www.nh</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (158 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/forslag-til-endringer-i-politiregisterloven-og-politiregisterforskriften-regulering-av-politiets-bruk-av-ki-til-etterfolgende-biometrisk-fjernidentifikasjon/"&gt; Forsla</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (122 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Forslag til endringer i politiloven og våpeninstruksen – bevæpning av politiet i daglig tjeneste (generell bevæpning)" href="https://www.nhri.no/2026/forslag-til-endringer-i-politi</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/forslag-til-endringer-i-politiloven-og-vapeninstruksen-bevaepning-av-politiet-i-daglig-tjeneste-generell-bevaepning/"&gt; Forslag til endringer i politiloven og våpenins</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Om endringer i grenseloven og utlendingsloven med tilhørende forskrifter for å gjennomføre screeningforordningen" href="https://www.nhri.no/2025/om-endringer-i-grenseloven-og-utlen</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2025/om-endringer-i-grenseloven-og-utlendingsloven-med-tilhorende-forskrifter-for-a-gjennomfore-screeningforordningen/"&gt; Om endringer i grenseloven og utlendingsloven med </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ovdasiidu - NIM</h3>
+            <div class="page-url">https://www.nhri.no/smi/</div>
+            <div>Avvik: 6 | Bestått: 98</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (145 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/"&gt;Innspill til GREVIO </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt;Representantforslag om innføring av ungdomskriminalitetsnemnd</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-representantforslag-om-a-innfore-en-ordning-med-rett-til-informasjon-for-a-beskytte-kvinner-mot-voldelige-partnere/"&gt;Innspill til representantforslag om </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Du e-poastačujuhus" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details><details><summary>3.1.1 Språk på siden (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 3.1.1</span>
+                        <span class="criterion">(3.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Invalid language code: 'smi-SMI'</p>
+                <div class="element">&lt;html lang="smi-SMI"&gt;</div>
+                <div class="fix">Use a valid ISO 639-1 language code (e.g., 'nb', 'nn', 'en')</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Publikasjoner - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/publikasjoner/?publikasjoner-taxonomy%5B%5D=brev&publikasjoner-taxonomy%5B%5D=horingsuttalelser&publikasjoner-taxonomy%5B%5D=skriftlige-innspill</div>
+            <div>Avvik: 10 | Bestått: 254</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (10 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Representantforslag om innføring av ungdomskriminalitetsnemnd og lukkede institusjoner for mindreårige" href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskr</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt; Representantforslag om innføring av ungdomskriminalitetsnemn</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (133 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til representantforslag om å innføre en ordning med rett til informasjon, for å beskytte kvinner mot voldelige partnere" href="https://www.nhri.no/2026/innspill-til-repres</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-representantforslag-om-a-innfore-en-ordning-med-rett-til-informasjon-for-a-beskytte-kvinner-mot-voldelige-partnere/"&gt; Innspill til representantforslag om</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (163 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Forslag til endringer i politiregisterloven og politiregisterforskriften – regulering av politiets bruk av KI til etterfølgende biometrisk fjernidentifikasjon" href="https://www.nh</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (158 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/forslag-til-endringer-i-politiregisterloven-og-politiregisterforskriften-regulering-av-politiets-bruk-av-ki-til-etterfolgende-biometrisk-fjernidentifikasjon/"&gt; Forsla</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (126 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Tiltak som begrenser samvær etter barneloven ved risiko for vold og overgrep – utredning av menneskerettslig handlingsrom" href="https://www.nhri.no/2026/tiltak-som-begrenser-samva</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (121 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/tiltak-som-begrenser-samvaer-etter-barneloven-ved-risiko-for-vold-og-overgrep-utredning-av-menneskerettslig-handlingsrom/"&gt; Tiltak som begrenser samvær etter barnelov</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (122 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Forslag til endringer i politiloven og våpeninstruksen – bevæpning av politiet i daglig tjeneste (generell bevæpning)" href="https://www.nhri.no/2026/forslag-til-endringer-i-politi</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/forslag-til-endringer-i-politiloven-og-vapeninstruksen-bevaepning-av-politiet-i-daglig-tjeneste-generell-bevaepning/"&gt; Forslag til endringer i politiloven og våpenins</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Styret - Norges institusjon for menneskerettigheter | Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/om/styret/</div>
+            <div>Avvik: 0 | Bestått: 106</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Video - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/video/</div>
+            <div>Avvik: 0 | Bestått: 119</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Skriftlig innlegg til Høyesterett i sak om blinde personer skal kunne være meddommere - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/2026/skriftlig-innlegg-til-hoyesterett-i-sak-om-blinde-personer-skal-kunne-vaere-meddommere/</div>
+            <div>Avvik: 1 | Bestått: 108</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Din e-post" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Publikasjoner - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/publikasjoner/?publikasjoner-taxonomy%5B%5D=internasjonal-rapportering</div>
+            <div>Avvik: 10 | Bestått: 254</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (10 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til GREVIO i forbindelse med komiteens evaluering av Norges forpliktelser etter Istanbulkonvensjonen (første tematiske evalueringsrunde)" href="https://www.nhri.no/2026/in</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (145 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/"&gt; Innspill til GREVIO</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (152 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til FNs barnekomité angående utkastet til Generell Kommentar nr. 27 om barns rett til tilgang til rettferdighet og en effektiv rettsmiddel" href="https://www.nhri.no/2025/</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (147 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2025/innspill-til-fns-barnekomite-angaende-utkastet-til-generell-kommentar-nr-27-om-barns-rett-til-tilgang-til-rettferdighet-og-en-effektiv-rettsmiddel/"&gt; Innspill til FNs</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (113 characters)</p>
+                <div class="element">&lt;a aria-label="Les: NIMs rapport til FNs menneskerettighetsråd (HRC) i forkant av Norges 4. periodiske rapportering (UPR) i 2024" href="https://www.nhri.no/2024/nims-rapport-til-fns-menneskerettighets</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (108 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2024/nims-rapport-til-fns-menneskerettighetsrad-hrc-i-forkant-av-norges-4-periodiske-rapportering-upr-i-2024/"&gt; NIMs rapport til FNs menneskerettighetsråd (HRC) i forkant </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (120 characters)</p>
+                <div class="element">&lt;a aria-label="Les: NIMs supplerende rapport til Den europeiske sosialpakten i forbindelse med vurderingen av Norges 20. rapport i 2023" href="https://www.nhri.no/2023/nim-ir-2023-003/"&gt;&lt;div class="th</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (115 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2023/nim-ir-2023-003/"&gt; NIMs supplerende rapport til Den europeiske sosialpakten i forbindelse med vurderingen av Norges 20. rapport i 2023 &lt;/a&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (133 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til EU-kommisjonens forslag til direktiv for virksomheters aktsomhetsvurderinger om menneskerettigheter, klima og miljø" href="https://www.nhri.no/2022/feedback-on-proposa</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2022/feedback-on-proposal-for-a-directive-of-the-european-parliament-and-of-the-council-on-corporate-sustainability-due-diligence-and-amending-directive-eu-2019-1937/"&gt; In</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>NIMs historikk og grunnlag - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/om/historikk/</div>
+            <div>Avvik: 0 | Bestått: 113</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Barn og familie - Norges institusjon for menneskerettigheter | Norges nasjonale institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/temaer/barn-og-familie/</div>
+            <div>Avvik: 9 | Bestått: 171</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" src="https://www.nhri.no/wp-content/uploads/2023/02/NIM-U-2023-001-400x540.png" width="400"/&gt;</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2022/09/rus-og-mr-forside-400x54</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2020/12/Forside-barnevernsrappor</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (6 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Innspill til GREVIO i forbindelse med komiteens evaluering av Norges forpliktelser etter Istanbulkonvensjonen (første tematiske evalueringsrunde)" href="https://www.nhri.no/2026/in</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (145 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/"&gt; Innspill til GREVIO</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (107 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Representantforslag om innføring av ungdomskriminalitetsnemnd og lukkede institusjoner for mindreårige" href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskr</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt; Representantforslag om innføring av ungdomskriminalitetsnemn</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (126 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Tiltak som begrenser samvær etter barneloven ved risiko for vold og overgrep – utredning av menneskerettslig handlingsrom" href="https://www.nhri.no/2026/tiltak-som-begrenser-samva</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (121 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/tiltak-som-begrenser-samvaer-etter-barneloven-ved-risiko-for-vold-og-overgrep-utredning-av-menneskerettslig-handlingsrom/"&gt; Tiltak som begrenser samvær etter barnelov</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ytringsfrihet - Norges institusjon for menneskerettigheter | Norges nasjonale institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/temaer/ytringsfrihet/</div>
+            <div>Avvik: 8 | Bestått: 170</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (6 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2023/12/forside-ki-rapport-hq-1-</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2023/08/NIM-U-2023-002-400x540.p</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2023/06/skeiv-rett-rapport-forsi</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2022/12/meta-og-MR-forside-400x5</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-gallery-image-thumbnail size-gallery-image-thumbnail wp-post-image" decoding="async" height="300" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https:</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-gallery-image-thumbnail size-gallery-image-thumbnail wp-post-image" decoding="async" height="300" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https:</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (163 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Forslag til endringer i politiregisterloven og politiregisterforskriften – regulering av politiets bruk av KI til etterfølgende biometrisk fjernidentifikasjon" href="https://www.nh</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (158 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/forslag-til-endringer-i-politiregisterloven-og-politiregisterforskriften-regulering-av-politiets-bruk-av-ki-til-etterfolgende-biometrisk-fjernidentifikasjon/"&gt; Forsla</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Videre etter vold? - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/2024/videre-etter-vold/</div>
+            <div>Avvik: 1 | Bestått: 109</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Din e-post" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Møtereferater rådgivende utvalg - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/om/radgivende-utvalg/motereferater/</div>
+            <div>Avvik: 0 | Bestått: 143</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Nasjonale minoriteter - Norges institusjon for menneskerettigheter | Norges nasjonale institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/temaer/nasjonale-minoriteter/</div>
+            <div>Avvik: 13 | Bestått: 166</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (8 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-medium size-medium wp-post-image" decoding="async" height="199" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https://www.nhri.no/wp-content/uploads/2</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2022/08/HSN-forside-400x540.png"</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2020/06/UN_Recommendation_forsid</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" src="https://www.nhri.no/wp-content/uploads/2019/11/Forside_NorgesNasjonaleMinoriteter-400x540.jpg" width="400"/&gt;</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-medium size-medium wp-post-image" decoding="async" height="200" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https://www.nhri.no/wp-content/uploads/2</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-medium size-medium wp-post-image" decoding="async" height="199" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https://www.nhri.no/wp-content/uploads/2</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-medium size-medium wp-post-image" decoding="async" height="200" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https://www.nhri.no/wp-content/uploads/2</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2022/08/HSN-forside-400x540.png"</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (104 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Skriftlige innspill til Kunnskapsdepartementet om behovet for økt kunnskap om nasjonale minoriteter" href="https://www.nhri.no/2021/skriftlige-innspill-til-kunnskapsdepartementet-o</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (117 characters)</p>
+                <div class="element">&lt;a aria-label="Les: Sannhets- og forsoningskommisjonens rapport er et godt grunnlag for styrking av minoriteters menneskerettigheter" href="https://www.nhri.no/2023/sannhets-og-forsoningskommisjonens-</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2023/sannhets-og-forsoningskommisjonens-rapport-er-overlevert-stortinget/"&gt; Sannhets- og forsoningskommisjonens rapport er et godt grunnlag for styrking av minoriteters me</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'post-20047' appears 2 times</p>
+                <div class="element">id="post-20047"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'rapport-holdninger-til-samer-og-nasjonale-minoriteter-i-norge_20047' appears 2 times</p>
+                <div class="element">id="rapport-holdninger-til-samer-og-nasjonale-minoriteter-i-norge_20047"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Innspill til GREVIO i forbindelse med komiteens evaluering av Norges forpliktelser etter Istanbulkonvensjonen (første tematiske evalueringsrunde) - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/</div>
+            <div>Avvik: 1 | Bestått: 108</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Din e-post" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Publikasjoner - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/publikasjoner/?publikasjoner-taxonomy%5B%5D=arsmeldinger</div>
+            <div>Avvik: 7 | Bestått: 265</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (7 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2025/03/NIM_årsmelding_2024_UU_</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2024/03/NIM_Arsmelding_2023_fors</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2023/03/NIM_Årsmelding_forside-</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2021/03/NIM_Arsmelding_2020_fors</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2020/03/NIM_arsmelding_2019_fors</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="report_cover" decoding="async" height="540" loading="lazy" sizes="auto, (max-width: 400px) 100vw, 400px" src="https://www.nhri.no/wp-content/uploads/2017/03/DOK6-2016-2017-400x540.p</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="attachment-medium size-medium wp-post-image" decoding="async" height="179" loading="lazy" sizes="auto, (max-width: 300px) 100vw, 300px" src="https://www.nhri.no/wp-content/uploads/2</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Norges institusjon for menneskerettigheter | Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/</div>
+            <div>Avvik: 7 | Bestått: 174</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (5 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a aria-label="Forholdsmessighetsvurderinger og «menneskerettighetsspagaten» – Veileder for utredning av menneskerettslige problemstillinger – lansering av 2. utgave" href="https://www.nhri.no/kalende</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (150 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/kalender/forholdsmessighetsvurderinger-og-menneskerettighetsspagaten/"&gt;Forholdsmessighetsvurderinger og «menneskerettighetsspagaten» – Veileder for utredning av menneskere</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (145 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-grevio-i-forbindelse-med-komiteens-evaluering-av-norges-forpliktelser-etter-istanbulkonvensjonen-forste-tematiske-evalueringsrunde/"&gt;Innspill til GREVIO </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (102 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/representantforslag-om-innforing-av-ungdomskriminalitetsnemnd-og-lukkede-institusjoner-for-mindrearige/"&gt;Representantforslag om innføring av ungdomskriminalitetsnemnd</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (128 characters)</p>
+                <div class="element">&lt;a href="https://www.nhri.no/2026/innspill-til-representantforslag-om-a-innfore-en-ordning-med-rett-til-informasjon-for-a-beskytte-kvinner-mot-voldelige-partnere/"&gt;Innspill til representantforslag om </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+</details><details><summary>1.3.5 Identifiser inndataformål (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input class="" name="email" placeholder="Din e-post" required="" type="email"&gt; &lt;/input&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Styrereferater - Norges institusjon for menneskerettigheter</h3>
+            <div class="page-url">https://www.nhri.no/om/styret/styrereferat/</div>
+            <div>Avvik: 0 | Bestått: 173</div>
+        </div>
+        <div class="issues">
+<div class="no-issues">✅ Ingen avvik funnet på denne siden!</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://nhri.no</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="21" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://nhri.no --max-pages 21 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

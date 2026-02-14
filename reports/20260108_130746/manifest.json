@@ -1,0 +1,158 @@
+{
+  "timestamp": "20260108_130746",
+  "mode": "full",
+  "description": "County: Finnmark",
+  "total": 18,
+  "with_statement": 16,
+  "statement_current": 0,
+  "errors": 0,
+  "total_issues": 7763,
+  "critical_issues": 481,
+  "summary_file": "batch_summary_20260108_131134.html",
+  "reports": [
+    {
+      "municipality": "Alta",
+      "county": "Finnmark",
+      "file": "wcag_Alta_20260108_130746.html",
+      "issues": 345,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Hammerfest",
+      "county": "Finnmark",
+      "file": "wcag_Hammerfest_20260108_130800.html",
+      "issues": 237,
+      "critical": 42,
+      "has_statement": true
+    },
+    {
+      "municipality": "Sør-Varanger",
+      "county": "Finnmark",
+      "file": "wcag_Sør-Varanger_20260108_130814.html",
+      "issues": 853,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Vadsø",
+      "county": "Finnmark",
+      "file": "wcag_Vadsø_20260108_130824.html",
+      "issues": 159,
+      "critical": 2,
+      "has_statement": true
+    },
+    {
+      "municipality": "Karasjok",
+      "county": "Finnmark",
+      "file": "wcag_Karasjok_20260108_130834.html",
+      "issues": 280,
+      "critical": 4,
+      "has_statement": true
+    },
+    {
+      "municipality": "Kautokeino",
+      "county": "Finnmark",
+      "file": "wcag_Kautokeino_20260108_130842.html",
+      "issues": 566,
+      "critical": 0,
+      "has_statement": false
+    },
+    {
+      "municipality": "Loppa",
+      "county": "Finnmark",
+      "file": "wcag_Loppa_20260108_130852.html",
+      "issues": 288,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Hasvik",
+      "county": "Finnmark",
+      "file": "wcag_Hasvik_20260108_130859.html",
+      "issues": 356,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Måsøy",
+      "county": "Finnmark",
+      "file": "wcag_Måsøy_20260108_130914.html",
+      "issues": 976,
+      "critical": 233,
+      "has_statement": true
+    },
+    {
+      "municipality": "Nordkapp",
+      "county": "Finnmark",
+      "file": "wcag_Nordkapp_20260108_130926.html",
+      "issues": 316,
+      "critical": 41,
+      "has_statement": true
+    },
+    {
+      "municipality": "Porsanger",
+      "county": "Finnmark",
+      "file": "wcag_Porsanger_20260108_130946.html",
+      "issues": 875,
+      "critical": 37,
+      "has_statement": false
+    },
+    {
+      "municipality": "Lebesby",
+      "county": "Finnmark",
+      "file": "wcag_Lebesby_20260108_131007.html",
+      "issues": 505,
+      "critical": 41,
+      "has_statement": true
+    },
+    {
+      "municipality": "Gamvik",
+      "county": "Finnmark",
+      "file": "wcag_Gamvik_20260108_131023.html",
+      "issues": 139,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Tana",
+      "county": "Finnmark",
+      "file": "wcag_Tana_20260108_131032.html",
+      "issues": 201,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Berlevåg",
+      "county": "Finnmark",
+      "file": "wcag_Berlevåg_20260108_131045.html",
+      "issues": 0,
+      "critical": 0,
+      "has_statement": true
+    },
+    {
+      "municipality": "Båtsfjord",
+      "county": "Finnmark",
+      "file": "wcag_Båtsfjord_20260108_131046.html",
+      "issues": 978,
+      "critical": 43,
+      "has_statement": true
+    },
+    {
+      "municipality": "Vardø",
+      "county": "Finnmark",
+      "file": "wcag_Vardø_20260108_131103.html",
+      "issues": 318,
+      "critical": 1,
+      "has_statement": true
+    },
+    {
+      "municipality": "Nesseby",
+      "county": "Finnmark",
+      "file": "wcag_Nesseby_20260108_131114.html",
+      "issues": 371,
+      "critical": 37,
+      "has_statement": true
+    }
+  ]
+}

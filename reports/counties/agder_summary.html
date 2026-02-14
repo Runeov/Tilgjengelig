@@ -1,0 +1,1893 @@
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agder WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Agder WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Agder</p>
+        <p><strong>Skannet:</strong> 2026-02-11 12:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">138</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">138</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">1569</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">4956</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">28336</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">62012</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.midt-agderfriluft.no" target="_blank">Midt-agder Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@midt-agderfriluft.no">post@midt-agderfriluft.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">358</span></td>
+                <td>127</td>
+                <td>390</td>
+                <td>899</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\midt-agder_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Agder fengsel</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>481</td>
+                <td>155</td>
+                <td>943</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mandal.kirken.no" target="_blank">Lindesnes Kirkelige Fellesråd</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:or293@kirken.no">or293@kirken.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">294</span></td>
+                <td>687</td>
+                <td>2468</td>
+                <td>3450</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lindesnes_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/agder" target="_blank">Agder og Telemark bispedømme</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge critical">253</span></td>
+                <td>493</td>
+                <td>2150</td>
+                <td>2912</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_og_telemark_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.haegebostad.kirken.no" target="_blank">Hægebostad Kirkelige Fellesråd</a></td>
+                <td>Hægebostad</td>
+                <td class="contact"><a href="mailto:carl.magnus.salvesen@lyngdal.kirken.no">carl.magnus.salvesen@lyngdal.kirken.no</a><br>38 34 87 08</td>
+                <td>16</td>
+                <td><span class="badge critical">226</span></td>
+                <td>25</td>
+                <td>113</td>
+                <td>364</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\hægebostad_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.portofkristiansand.no" target="_blank">Kristiansand Havn IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@kristiansand-havn.no">post@kristiansand-havn.no</a><br>38 00 60 00</td>
+                <td>15</td>
+                <td><span class="badge critical">217</span></td>
+                <td>33</td>
+                <td>894</td>
+                <td>1149</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kristiansandhavn.no" target="_blank">Kristiansand Havn KF</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge critical">217</span></td>
+                <td>33</td>
+                <td>894</td>
+                <td>1149</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lyngdal.kirken.no/" target="_blank">Lyngdal Kirkelige Fellesråd</a></td>
+                <td>Lyngdal</td>
+                <td class="contact"><a href="mailto:carl.magnus.salvesen@lyngdal.kirken.no">carl.magnus.salvesen@lyngdal.kirken.no</a><br>47 97 30 01</td>
+                <td>16</td>
+                <td><span class="badge critical">207</span></td>
+                <td>16</td>
+                <td>130</td>
+                <td>356</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lyngdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grimstad.kirken.no" target="_blank">Grimstad Kirkelige Fellesråd</a></td>
+                <td>Grimstad</td>
+                <td class="contact"><a href="mailto:post@grimstad.kirken.no">post@grimstad.kirken.no</a><br>37 09 01 00</td>
+                <td>12</td>
+                <td><span class="badge critical">205</span></td>
+                <td>352</td>
+                <td>1736</td>
+                <td>2323</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\grimstad_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirkebakken.no" target="_blank">Vennesla Kirkelige Fellesråd</a></td>
+                <td>Vennesla</td>
+                <td class="contact"><a href="mailto:kirkvergen.vennesla@kirken.no">kirkvergen.vennesla@kirken.no</a><br>38 15 00 80</td>
+                <td>16</td>
+                <td><span class="badge critical">165</span></td>
+                <td>20</td>
+                <td>106</td>
+                <td>291</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vennesla_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flekkefjord.kirken.no/" target="_blank">Flekkefjord Kirkelige Fellesråd</a></td>
+                <td>Flekkefjord</td>
+                <td class="contact"><a href="mailto:kirkevergen@flekkefjord.kommune.no">kirkevergen@flekkefjord.kommune.no</a><br>38 32 88 20</td>
+                <td>16</td>
+                <td><span class="badge critical">153</span></td>
+                <td>17</td>
+                <td>151</td>
+                <td>321</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\flekkefjord_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lillesand.kirken.no" target="_blank">Lillesand Kirkelige Fellesråd</a></td>
+                <td>Lillesand</td>
+                <td class="contact"><a href="mailto:kirkekontoret.lillesand@lillesand.kommune.no">kirkekontoret.lillesand@lillesand.kommune.no</a><br>37 26 81 81</td>
+                <td>16</td>
+                <td><span class="badge critical">139</span></td>
+                <td>28</td>
+                <td>99</td>
+                <td>268</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lillesand_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kvinesdal.kirken.no" target="_blank">Kvinesdal Kirkelig Fellesråd</a></td>
+                <td>Kvinesdal</td>
+                <td class="contact"><a href="mailto:post.kvinesdal@kirken.no">post.kvinesdal@kirken.no</a><br>38 60 20 08</td>
+                <td>16</td>
+                <td><span class="badge critical">135</span></td>
+                <td>34</td>
+                <td>128</td>
+                <td>297</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kvinesdal_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.arendal.kirken.no" target="_blank">Arendal Kirkelige Fellesråd</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:post@agderkirken.no">post@agderkirken.no</a><br>37 01 35 80</td>
+                <td>16</td>
+                <td><span class="badge critical">134</span></td>
+                <td>16</td>
+                <td>156</td>
+                <td>308</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\arendal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderarbeidsmiljo.no" target="_blank">Agder Arbeidsmiljø IKS</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:agder.arbeidsmiljo@aa-miljo.no">agder.arbeidsmiljo@aa-miljo.no</a><br>37 00 67 80</td>
+                <td>16</td>
+                <td><span class="badge critical">123</span></td>
+                <td>49</td>
+                <td>200</td>
+                <td>379</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_arbeidsmiljø_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kristiansand.kirken.no" target="_blank">Kristiansand Kirkelig Fellesråd</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post.kirkelig.fellesraad@kristiansand.kommune.no">post.kirkelig.fellesraad@kristiansand.kommune.no</a><br>38 19 68 00</td>
+                <td>16</td>
+                <td><span class="badge critical">120</span></td>
+                <td>37</td>
+                <td>112</td>
+                <td>273</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.110agder.no" target="_blank">110 Agder IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@110agder.no">post@110agder.no</a><br>37 06 55 50</td>
+                <td>5</td>
+                <td><span class="badge critical">116</span></td>
+                <td>8</td>
+                <td>101</td>
+                <td>227</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\110_agder_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kilden.com" target="_blank">Kilden Teater og Konserthus IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@kilden.com">post@kilden.com</a></td>
+                <td>16</td>
+                <td><span class="badge critical">116</span></td>
+                <td>458</td>
+                <td>433</td>
+                <td>1238</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kilden_teater_og_konserthus_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ae.no" target="_blank">Agder Energi AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:firmapost@ae.no">firmapost@ae.no</a><br>38 60 70 00</td>
+                <td>16</td>
+                <td><span class="badge critical">114</span></td>
+                <td>447</td>
+                <td>243</td>
+                <td>812</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_energi_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.farsund.kirken.no/" target="_blank">Farsund Kirkelige Fellesråd</a></td>
+                <td>Farsund</td>
+                <td class="contact"><a href="mailto:post@farsund.kirken.no">post@farsund.kirken.no</a><br>38395530</td>
+                <td>16</td>
+                <td><span class="badge critical">112</span></td>
+                <td>8</td>
+                <td>104</td>
+                <td>226</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\farsund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestagdermuseet.no" target="_blank">Vest-agder-museet IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@vestagdermuseet.no">post@vestagdermuseet.no</a><br>38 12 03 50</td>
+                <td>16</td>
+                <td><span class="badge critical">104</span></td>
+                <td>199</td>
+                <td>293</td>
+                <td>607</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vest-agder-museet_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestagdermuseet.no" target="_blank">Vest-Agder-museet</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">104</span></td>
+                <td>199</td>
+                <td>293</td>
+                <td>607</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vest-agder-museet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.arkivsentersor.no" target="_blank">Arkivsenter Sør IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@arkivsentersor.no">post@arkivsentersor.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">96</span></td>
+                <td>276</td>
+                <td>135</td>
+                <td>555</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\arkivsenter_sør_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kbr.no" target="_blank">Kristiansandsregionen Brann og Redning IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:kbr@kbr.no">kbr@kbr.no</a><br>47 81 40 00</td>
+                <td>16</td>
+                <td><span class="badge critical">93</span></td>
+                <td>1</td>
+                <td>416</td>
+                <td>565</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansandsregionen_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kanonmuseet.no" target="_blank">Kristiansand kanonmuseum</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">93</span></td>
+                <td>185</td>
+                <td>294</td>
+                <td>576</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kanonmuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kunsthall.no/kristiansand" target="_blank">Kristiansand kunsthall</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">74</span></td>
+                <td>132</td>
+                <td>171</td>
+                <td>434</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kunsthall.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kunstsilo.no" target="_blank">Stiftelsen Kunstsilo</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@kunstsilo.no">post@kunstsilo.no</a><br>38 07 49 00</td>
+                <td>16</td>
+                <td><span class="badge critical">61</span></td>
+                <td>75</td>
+                <td>521</td>
+                <td>689</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\stiftelsen_kunstsilo.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lyngdal.kommune.no" target="_blank">Lyngdal kommune</a></td>
+                <td>Lyngdal</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge critical">61</span></td>
+                <td>94</td>
+                <td>128</td>
+                <td>746</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lyngdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.brannsor.no" target="_blank">Brannvesenet Sør IKS</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:post@brannsor.no">post@brannsor.no</a><br>38 27 01 10</td>
+                <td>15</td>
+                <td><span class="badge critical">60</span></td>
+                <td>1193</td>
+                <td>71</td>
+                <td>1326</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\brannvesenet_sør_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sb-iks.no" target="_blank">Setesdal Brannvesen IKS</a></td>
+                <td>Evje Og Hornnes</td>
+                <td class="contact"><a href="mailto:post@sb-iks.no">post@sb-iks.no</a><br>37 93 32 46</td>
+                <td>15</td>
+                <td><span class="badge critical">60</span></td>
+                <td>101</td>
+                <td>495</td>
+                <td>679</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\setesdal_brannvesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.smg-iks.no" target="_blank">Setesdal Miljø &amp; Gjenvinning IKS</a></td>
+                <td>Evje Og Hornnes</td>
+                <td class="contact"><a href="mailto:post@smg-iks.no">post@smg-iks.no</a><br>37 93 17 00</td>
+                <td>16</td>
+                <td><span class="badge serious">47</span></td>
+                <td>353</td>
+                <td>242</td>
+                <td>642</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\setesdal_miljø_&_gjenvinning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.setesdal.no" target="_blank">Setesdal Interkommunalt Politisk Råd</a></td>
+                <td>Valle</td>
+                <td class="contact"><a href="mailto:post@setesdal.no">post@setesdal.no</a><br>37 93 75 25</td>
+                <td>16</td>
+                <td><span class="badge serious">39</span></td>
+                <td>247</td>
+                <td>237</td>
+                <td>528</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\setesdal_interkommunalt_politisk_råd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://furoya.no" target="_blank">Furøya IKS</a></td>
+                <td>Tvedestrand</td>
+                <td class="contact"><a href="mailto:andreas.grimsland@tvedestrand.kommune.no">andreas.grimsland@tvedestrand.kommune.no</a><br>37 19 95 62</td>
+                <td>16</td>
+                <td><span class="badge serious">30</span></td>
+                <td>29</td>
+                <td>42</td>
+                <td>117</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\furøya_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.har-renovasjon.no" target="_blank">Hægebostad og Åseral Renovasjonsselskap-hår IKS</a></td>
+                <td>Åseral</td>
+                <td class="contact"><a href="mailto:postmaster@har-renovasjon.no">postmaster@har-renovasjon.no</a><br>38 28 32 50</td>
+                <td>15</td>
+                <td><span class="badge serious">29</span></td>
+                <td>111</td>
+                <td>122</td>
+                <td>277</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\hægebostad_og_åseral_renovasjonsselskap-hår_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Agder Energi Nett AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post.nett@glitrenett.no">post.nett@glitrenett.no</a><br>38 60 72 72</td>
+                <td>16</td>
+                <td><span class="badge serious">27</span></td>
+                <td>56</td>
+                <td>264</td>
+                <td>498</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_energi_nett_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.erikstemmen.no" target="_blank">Irs Miljø IKS</a></td>
+                <td>Flekkefjord</td>
+                <td class="contact"><a href="mailto:post@erikstemmen.no">post@erikstemmen.no</a><br>38 32 60 80</td>
+                <td>14</td>
+                <td><span class="badge serious">27</span></td>
+                <td>2079</td>
+                <td>120</td>
+                <td>2230</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\irs_miljø_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://listernyskaping.no" target="_blank">Lister Nyskaping AS</a></td>
+                <td>Flekkefjord</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">27</span></td>
+                <td>443</td>
+                <td>181</td>
+                <td>651</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lister_nyskaping_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.risobank.no" target="_blank">Risøbank Interkommunale Selskap</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:post@risobank.no">post@risobank.no</a></td>
+                <td>14</td>
+                <td><span class="badge serious">17</span></td>
+                <td>3</td>
+                <td>72</td>
+                <td>93</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\risøbank_interkommunale_selskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/kristiansand" target="_blank">Kristiansand Lufthavn Kjevik</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>100</td>
+                <td>121</td>
+                <td>237</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_lufthavn_kjevik.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tvedestrand.kommune.no/" target="_blank">Tvedestrand Kommune</a></td>
+                <td>Tvedestrand</td>
+                <td class="contact"><a href="mailto:post@tvedestrand.kommune.no">post@tvedestrand.kommune.no</a><br>37 19 95 00</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>543</td>
+                <td>383</td>
+                <td>1040</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tvedestrand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tvedestrand.kommune.no" target="_blank">Tvedestrand kommune</a></td>
+                <td>Tvedestrand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>552</td>
+                <td>383</td>
+                <td>1054</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tvedestrand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderrenovasjon.no" target="_blank">Agder Renovasjon IKS</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:kundesenter@agderrenovasjon.no">kundesenter@agderrenovasjon.no</a><br>37 05 88 00</td>
+                <td>16</td>
+                <td><span class="badge serious">15</span></td>
+                <td>21</td>
+                <td>166</td>
+                <td>218</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_renovasjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lrn.no" target="_blank">Lindesnesregionen Næringshage AS</a></td>
+                <td>Lindesnes</td>
+                <td class="contact">-</td>
+                <td>3</td>
+                <td><span class="badge serious">15</span></td>
+                <td>80</td>
+                <td>43</td>
+                <td>139</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lindesnesregionen_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flekkefjord.kommune.no/" target="_blank">Flekkefjord Kommune</a></td>
+                <td>Flekkefjord</td>
+                <td class="contact"><a href="mailto:post@flekkefjord.kommune.no">post@flekkefjord.kommune.no</a><br>38 32 80 00</td>
+                <td>14</td>
+                <td><span class="badge serious">14</span></td>
+                <td>387</td>
+                <td>95</td>
+                <td>511</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\flekkefjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tangen.vgs.no" target="_blank">Tangen videregående skole</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge serious">14</span></td>
+                <td>135</td>
+                <td>125</td>
+                <td>280</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tangen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://flekkefjord.kommune.no" target="_blank">Flekkefjord kommune</a></td>
+                <td>Flekkefjord</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge serious">14</span></td>
+                <td>387</td>
+                <td>95</td>
+                <td>511</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\flekkefjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ikt-agder.no" target="_blank">Ikt Agder IKS</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:postmottak@ikt-agder.no">postmottak@ikt-agder.no</a><br>37 05 52 20</td>
+                <td>13</td>
+                <td><span class="badge serious">13</span></td>
+                <td>13</td>
+                <td>146</td>
+                <td>172</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\ikt_agder_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kkg.vgs.no" target="_blank">Kristiansand katedralskole Gimle</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge serious">12</span></td>
+                <td>161</td>
+                <td>24</td>
+                <td>201</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_katedralskole_gimle.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://birkenes.kommune.no" target="_blank">Birkenes kommune</a></td>
+                <td>Birkenes</td>
+                <td class="contact">-</td>
+                <td>4</td>
+                <td><span class="badge moderate">10</span></td>
+                <td>5</td>
+                <td>28</td>
+                <td>44</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\birkenes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.birkenes.kommune.no/" target="_blank">Birkenes Kommune</a></td>
+                <td>Birkenes</td>
+                <td class="contact"><a href="mailto:postmottak@birkenes.kommune.no">postmottak@birkenes.kommune.no</a><br>37 28 15 00</td>
+                <td>3</td>
+                <td><span class="badge moderate">8</span></td>
+                <td>6</td>
+                <td>21</td>
+                <td>37</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\birkenes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://akt.no" target="_blank">Agder Kollektivtrafikk AS</a></td>
+                <td>Agder</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">6</span></td>
+                <td>229</td>
+                <td>69</td>
+                <td>312</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderkomrev.no" target="_blank">Agder Kommunerevisjon IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post.revisjonen@agderkomrev.no">post.revisjonen@agderkomrev.no</a><br>38 07 27 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>56</td>
+                <td>409</td>
+                <td>475</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_kommunerevisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vava.no" target="_blank">Vannassistansen i Vestre Agder Kommunalt Oppgavefelleskap (VAVA)</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:ola.skar.dahl@kristiansand.kommune.no">ola.skar.dahl@kristiansand.kommune.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>6</td>
+                <td>22</td>
+                <td>32</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vannassistansen_i_vestre_agder_kommunalt_oppgavefe.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.konsesjonskraft.no" target="_blank">Konsesjonskraft IKS</a></td>
+                <td>Valle</td>
+                <td class="contact"><a href="mailto:post@konsesjonskraft.no">post@konsesjonskraft.no</a><br>37 93 75 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>137</td>
+                <td>94</td>
+                <td>311</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\konsesjonskraft_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.drivagder.no" target="_blank">Etablerersenteret Agder IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@evasenter.no">post@evasenter.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>469</td>
+                <td>102</td>
+                <td>573</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\etablerersenteret_agder_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avfallsor.no" target="_blank">Avfall Sør Husholdning AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>227</td>
+                <td>18</td>
+                <td>251</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\avfall_sør_husholdning_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.libir.no" target="_blank">Lillesand og Birkenes Interkommunale Renovasjonsselskap Libir IKS</a></td>
+                <td>Lillesand</td>
+                <td class="contact"><a href="mailto:post@libir.no">post@libir.no</a><br>37 26 96 50</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>545</td>
+                <td>69</td>
+                <td>616</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lillesand_og_birkenes_interkommunale_renovasjonsse.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sirdal.kommune.no" target="_blank">Sirdal Kommune</a></td>
+                <td>Sirdal</td>
+                <td class="contact"><a href="mailto:post@sirdal.kommune.no">post@sirdal.kommune.no</a><br>38 37 90 00</td>
+                <td>15</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>21</td>
+                <td>49</td>
+                <td>191</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sirdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sirdal.kommune.no" target="_blank">Sirdal kommune</a></td>
+                <td>Sirdal</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>21</td>
+                <td>50</td>
+                <td>192</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sirdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sshf.no" target="_blank">Sørlandet sykehus HF</a></td>
+                <td>Agder</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1056</td>
+                <td>110</td>
+                <td>1259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sørlandet_sykehus_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grimstad.kommune.no/" target="_blank">Grimstad Kommune</a></td>
+                <td>Grimstad</td>
+                <td class="contact"><a href="mailto:postmottak@grimstad.kommune.no">postmottak@grimstad.kommune.no</a><br>37 25 03 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>329</td>
+                <td>89</td>
+                <td>520</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\grimstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://arendal.vgs.no" target="_blank">Arendal videregående skole</a></td>
+                <td>Arendal</td>
+                <td class="contact">-</td>
+                <td>11</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>93</td>
+                <td>22</td>
+                <td>120</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\arendal_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aama.no" target="_blank">Aust-agder Museum og Arkiv IKS</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:postmottak@aama.no">postmottak@aama.no</a><br>37 01 79 00</td>
+                <td>13</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>22</td>
+                <td>73</td>
+                <td>120</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\aust-agder_museum_og_arkiv_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sshf.no" target="_blank">Sørlandet Sykehus HF</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:postmottak@sshf.no">postmottak@sshf.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>1056</td>
+                <td>110</td>
+                <td>1259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sørlandet_sykehus_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nasjonalparkstyre.no/Oksoy-Ryvingen/" target="_blank">Verneområdestyret for Oksøy-ryvingen og Flekkefjord Landskapsvernområder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:fmavmso@fylkesmannen.no">fmavmso@fylkesmannen.no</a><br>38 17 62 20</td>
+                <td>17</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>182</td>
+                <td>115</td>
+                <td>304</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\verneområdestyret_for_oksøy-ryvingen_og_flekkefjor.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://grimstad.kommune.no" target="_blank">Grimstad kommune</a></td>
+                <td>Grimstad</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>325</td>
+                <td>88</td>
+                <td>521</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\grimstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://farsund.kommune.no" target="_blank">Farsund kommune</a></td>
+                <td>Farsund</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>344</td>
+                <td>120</td>
+                <td>480</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\farsund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/agder" target="_blank">Agder politidistrikt</a></td>
+                <td>Agder</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>16</td>
+                <td>89</td>
+                <td>143</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statsforvalteren.no/agder" target="_blank">Statsforvalteren i Agder</a></td>
+                <td>Agder</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>3</td>
+                <td>247</td>
+                <td>305</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\statsforvalteren_i_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://risor.kirken.no" target="_blank">Risør Kirkelige Fellesråd</a></td>
+                <td>Risør</td>
+                <td class="contact"><a href="mailto:postmottak@risor.kirken.no">postmottak@risor.kirken.no</a><br>37 15 03 21</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\risør_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.risor.kommune.no/" target="_blank">Risør Kommune</a></td>
+                <td>Risør</td>
+                <td class="contact"><a href="mailto:post@risor.kommune.no">post@risor.kommune.no</a><br>37 14 96 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>445</td>
+                <td>198</td>
+                <td>665</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\risør_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grimstadkulturhus.com" target="_blank">Grimstad Kulturhus KF</a></td>
+                <td>Grimstad</td>
+                <td class="contact"><a href="mailto:postmottak@grimstad.kommune.no">postmottak@grimstad.kommune.no</a><br>37 25 07 77</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\grimstad_kulturhus_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.arendal.kommune.no" target="_blank">Arendal Eiendom KF</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:postmottak@arendal.kommune.no">postmottak@arendal.kommune.no</a><br>37 01 30 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>402</td>
+                <td>122</td>
+                <td>539</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\arendal_eiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.arendalhavn.no" target="_blank">Arendal Havn KF</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:post@arendalhavn.no">post@arendalhavn.no</a><br>97 52 70 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>153</td>
+                <td>134</td>
+                <td>292</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\arendal_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://afrma.no" target="_blank">Aust-Agder museum og arkiv</a></td>
+                <td>Arendal</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\aust-agder_museum_og_arkiv.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/aust-agder" target="_blank">Aust-Agder tingrett</a></td>
+                <td>Arendal</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\aust-agder_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nasjonalparkstyre.no/raet" target="_blank">Raet Nasjonalparkstyre</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:fmavjmg@fylkesmannen.no">fmavjmg@fylkesmannen.no</a><br>37 01 78 45</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>142</td>
+                <td>115</td>
+                <td>265</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\raet_nasjonalparkstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sameyde.vgs.no" target="_blank">Sam Eyde videregående skole</a></td>
+                <td>Arendal</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>218</td>
+                <td>35</td>
+                <td>261</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sam_eyde_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ariks.no" target="_blank">Sørlandet Kommunerevisjon IKS</a></td>
+                <td>Arendal</td>
+                <td class="contact"><a href="mailto:post@aarevisjon.no">post@aarevisjon.no</a><br>37 01 33 90</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>4</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sørlandet_kommunerevisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kristiansand.kommune.no" target="_blank">Kristiansand Kommune</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:postmottak@kristiansand.kommune.no">postmottak@kristiansand.kommune.no</a><br>38 07 50 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>77</td>
+                <td>182</td>
+                <td>427</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ddv.no" target="_blank">Ddv IKS</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:post@ddv.no">post@ddv.no</a></td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>390</td>
+                <td>226</td>
+                <td>617</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\ddv_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mandalhavn.no" target="_blank">Lindesnes Havn KF</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:ove.nodeland@lindesnes.kommune.no">ove.nodeland@lindesnes.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lindesnes_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lindesnes.kommune.no" target="_blank">Lindesnes Kommune</a></td>
+                <td>Lindesnes</td>
+                <td class="contact"><a href="mailto:post@lindesnes.kommune.no">post@lindesnes.kommune.no</a><br>38 25 70 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>322</td>
+                <td>23</td>
+                <td>359</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lindesnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.farsund.kommune.no/" target="_blank">Farsund Kommune</a></td>
+                <td>Farsund</td>
+                <td class="contact"><a href="mailto:post@farsund.kommune.no">post@farsund.kommune.no</a><br>38 38 20 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>351</td>
+                <td>116</td>
+                <td>481</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\farsund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.listerfriluft.no" target="_blank">Lister Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Farsund</td>
+                <td class="contact"><a href="mailto:lister@friluftsrad.no">lister@friluftsrad.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lister_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://aktfrr.no" target="_blank">Agder Kollektivtrafikk AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderfylke.no/fylkesbibliotek" target="_blank">Agder fylkesbibliotek</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderfk.no/tilskudd" target="_blank">Agder fylkeskommune tilskudd</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>205</td>
+                <td>51</td>
+                <td>265</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://agderidrettskrets.no" target="_blank">Agder idrettskrets</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\agder_idrettskrets.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagskolen-agder.no" target="_blank">Fagskolen i Agder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\fagskolen_i_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ikfra-agder.no" target="_blank">IKA Agder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\ika_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innovasjonnorge.no/agder" target="_blank">Innovasjon Norge region Agder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>36</td>
+                <td>343</td>
+                <td>399</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\innovasjon_norge_region_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kilfrden.no" target="_blank">Kilden Teater og Konserthus</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kilden_teater_og_konserthus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kristiansandbibliotek.no" target="_blank">Kristiansand folkebibliotek</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_folkebibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kristiansandkirken.no" target="_blank">Kristiansand kirkelige fellesråd</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kristiansand.kommune.no/va" target="_blank">Kristiansand kommune Vann og avløp</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>4</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_kommune_vann_og_avløp.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/kristiansand" target="_blank">Kristiansand tingrett</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansand_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kfrsbr.no" target="_blank">Kristiansandsregionen brann og redning IKS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kristiansandsregionen_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kvadraturen.vgs.no" target="_blank">Kvadraturen skolesenter</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>11</td>
+                <td><span class="badge good">0</span></td>
+                <td>141</td>
+                <td>151</td>
+                <td>292</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kvadraturen_skolesenter.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/kristiansand" target="_blank">NAV Kristiansand</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\nav_kristiansand.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sia.no" target="_blank">Studentsamskipnaden i Agder (SiA)</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>2</td>
+                <td>3</td>
+                <td>5</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\studentsamskipnaden_i_agder_(sia).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skmu.no" target="_blank">Sørlandets Kunstmuseum (SKMU)</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sørlandets_kunstmuseum_(skmu).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sts-agder.no" target="_blank">Sørlandets Teknologisenter AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\sørlandets_teknologisenter_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.agderfk.no" target="_blank">Tannhelsetjenesten Agder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tannhelsetjenesten_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://uia.no" target="_blank">Universitetet i Agder</a></td>
+                <td>Kristiansand</td>
+                <td class="contact"><a href="mailto:post@uia.no">post@uia.no</a><br>38 14 10 00</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>9</td>
+                <td>23</td>
+                <td>243</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\universitetet_i_agder.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://visitfrorlandet.com" target="_blank">Visit Sørlandet AS</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\visit_sørlandet_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vagsbygd.vgs.no" target="_blank">Vågsbygd videregående skole</a></td>
+                <td>Kristiansand</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>140</td>
+                <td>43</td>
+                <td>188</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vågsbygd_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gjerstad.kommune.no/" target="_blank">Gjerstad Kommune</a></td>
+                <td>Gjerstad</td>
+                <td class="contact"><a href="mailto:postmottak@gjerstad.kommune.no">postmottak@gjerstad.kommune.no</a><br>37 11 97 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>306</td>
+                <td>85</td>
+                <td>461</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\gjerstad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vegarshei.kommune.no/" target="_blank">Vegårshei Kommune</a></td>
+                <td>Vegårshei</td>
+                <td class="contact"><a href="mailto:post@vegarshei.kommune.no">post@vegarshei.kommune.no</a><br>37 17 02 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>357</td>
+                <td>69</td>
+                <td>467</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vegårshei_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tvedestrand.kirken.no" target="_blank">Tvedestrand Kirkelige Fellesråd</a></td>
+                <td>Tvedestrand</td>
+                <td class="contact"><a href="mailto:post.tvedestrand@kirken.no">post.tvedestrand@kirken.no</a><br>37 19 96 94</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tvedestrand_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vegarshei.kommune.no" target="_blank">Vegårshei kommune</a></td>
+                <td>Vegårshei</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>357</td>
+                <td>69</td>
+                <td>467</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vegårshei_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://froland.kirken.no" target="_blank">Froland Kirkelige Fellesråd</a></td>
+                <td>Froland</td>
+                <td class="contact"><a href="mailto:karl.otto.braathen@agderkirken.no">karl.otto.braathen@agderkirken.no</a><br>37 23 55 20</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\froland_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.froland.kommune.no" target="_blank">Froland Kommune</a></td>
+                <td>Froland</td>
+                <td class="contact"><a href="mailto:post@froland.kommune.no">post@froland.kommune.no</a><br>37 23 55 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>343</td>
+                <td>65</td>
+                <td>511</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\froland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.frolandsverk.no" target="_blank">Frolands Verk Kultursenter KF</a></td>
+                <td>Froland</td>
+                <td class="contact"><a href="mailto:post@frolandsverk.no">post@frolandsverk.no</a><br>37 03 70 03</td>
+                <td>6</td>
+                <td><span class="badge good">0</span></td>
+                <td>196</td>
+                <td>29</td>
+                <td>225</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\frolands_verk_kultursenter_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lillesand.kommune.no/" target="_blank">Lillesand Kommune</a></td>
+                <td>Lillesand</td>
+                <td class="contact"><a href="mailto:postmottak@lillesand.kommune.no">postmottak@lillesand.kommune.no</a><br>37 26 15 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>23</td>
+                <td>115</td>
+                <td>284</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lillesand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.birkenes.kirken.no/" target="_blank">Birkenes Kirkelige Fellesråd</a></td>
+                <td>Birkenes</td>
+                <td class="contact"><a href="mailto:kirken@birkenes.kommune.no">kirken@birkenes.kommune.no</a><br>37 28 15 55</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\birkenes_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.amli.kommune.no/" target="_blank">Åmli Kommune</a></td>
+                <td>Åmli</td>
+                <td class="contact"><a href="mailto:post@amli.kommune.no">post@amli.kommune.no</a><br>37 18 52 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>364</td>
+                <td>128</td>
+                <td>494</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\åmli_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.iveland.kommune.no/" target="_blank">Iveland Kommune</a></td>
+                <td>Iveland</td>
+                <td class="contact"><a href="mailto:postmottak@iveland.kommune.no">postmottak@iveland.kommune.no</a><br>37 96 12 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>528</td>
+                <td>350</td>
+                <td>949</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\iveland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.e-h.kommune.no/" target="_blank">Evje og Hornnes Kommune</a></td>
+                <td>Evje Og Hornnes</td>
+                <td class="contact"><a href="mailto:post@e-h.kommune.no">post@e-h.kommune.no</a><br>37 93 23 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>389</td>
+                <td>365</td>
+                <td>856</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\evje_og_hornnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://froland.kommune.no" target="_blank">Froland kommune</a></td>
+                <td>Froland</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>348</td>
+                <td>65</td>
+                <td>516</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\froland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bygland.kommune.no/" target="_blank">Bygland Kommune</a></td>
+                <td>Bygland</td>
+                <td class="contact"><a href="mailto:post@bygland.kommune.no">post@bygland.kommune.no</a><br>37 93 49 60</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>259</td>
+                <td>256</td>
+                <td>585</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\bygland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.valle.kommune.no" target="_blank">Valle Kommune</a></td>
+                <td>Valle</td>
+                <td class="contact"><a href="mailto:post@valle.kommune.no">post@valle.kommune.no</a><br>37 93 75 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>376</td>
+                <td>300</td>
+                <td>706</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\valle_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bykle.kommune.no/" target="_blank">Bykle Kommune</a></td>
+                <td>Bykle</td>
+                <td class="contact"><a href="mailto:postmottak@bykle.kommune.no">postmottak@bykle.kommune.no</a><br>37 93 85 00</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>363</td>
+                <td>311</td>
+                <td>676</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\bykle_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vennesla.kommune.no/" target="_blank">Vennesla Kommune</a></td>
+                <td>Vennesla</td>
+                <td class="contact"><a href="mailto:epost@vennesla.kommune.no">epost@vennesla.kommune.no</a><br>38 13 72 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>501</td>
+                <td>52</td>
+                <td>574</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\vennesla_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aseral.kommune.no/" target="_blank">Åseral Kommune</a></td>
+                <td>Åseral</td>
+                <td class="contact"><a href="mailto:post@aseral.kommune.no">post@aseral.kommune.no</a><br>38 28 58 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>395</td>
+                <td>244</td>
+                <td>642</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\åseral_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.audnedal-kirken.no" target="_blank">Audnedal Kyrkjelege Fellesråd</a></td>
+                <td>Lyngdal</td>
+                <td class="contact"><a href="mailto:ingunn.birkeland@lyngdal.kirken.no">ingunn.birkeland@lyngdal.kirken.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\audnedal_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://iveland.kommune.no" target="_blank">Iveland kommune</a></td>
+                <td>Iveland</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>528</td>
+                <td>350</td>
+                <td>949</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\iveland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.haegebostad.kommune.no/" target="_blank">Hægebostad Kommune</a></td>
+                <td>Hægebostad</td>
+                <td class="contact"><a href="mailto:postmottak@haegebostad.kommune.no">postmottak@haegebostad.kommune.no</a><br>38 34 91 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>287</td>
+                <td>85</td>
+                <td>381</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\hægebostad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tingvatn.no" target="_blank">Tingvatn Fornminnepark og Besøkssenter IKS</a></td>
+                <td>Hægebostad</td>
+                <td class="contact"><a href="mailto:stale.olsen@haegebostad.kommune.no">stale.olsen@haegebostad.kommune.no</a><br>38 38 91 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\tingvatn_fornminnepark_og_besøkssenter_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://e-h.kommune.no" target="_blank">Evje og Hornnes kommune</a></td>
+                <td>Evje og Hornnes</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>378</td>
+                <td>364</td>
+                <td>844</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\evje_og_hornnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kvinesdal.kommune.no/" target="_blank">Kvinesdal Kommune</a></td>
+                <td>Kvinesdal</td>
+                <td class="contact"><a href="mailto:post@kvinesdal.kommune.no">post@kvinesdal.kommune.no</a><br>38357700</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>287</td>
+                <td>39</td>
+                <td>335</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kvinesdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bygland.kommune.no" target="_blank">Bygland kommune</a></td>
+                <td>Bygland</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>259</td>
+                <td>256</td>
+                <td>585</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\bygland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://valle.kommune.no" target="_blank">Valle kommune</a></td>
+                <td>Valle</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>388</td>
+                <td>300</td>
+                <td>718</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\valle_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bykle.kommune.no" target="_blank">Bykle kommune</a></td>
+                <td>Bykle</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>388</td>
+                <td>311</td>
+                <td>701</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\bykle_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lindesnes.kommune.no" target="_blank">Lindesnes kommune</a></td>
+                <td>Lindesnes</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>321</td>
+                <td>23</td>
+                <td>358</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\lindesnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kvinesdal.kommune.no" target="_blank">Kvinesdal kommune</a></td>
+                <td>Kvinesdal</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>294</td>
+                <td>39</td>
+                <td>342</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\kvinesdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hagebostad.kommune.no" target="_blank">Hægebostad kommune</a></td>
+                <td>Hægebostad</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\hægebostad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://aseral.kommune.no" target="_blank">Åseral kommune</a></td>
+                <td>Åseral</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>394</td>
+                <td>244</td>
+                <td>641</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="agder\åseral_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

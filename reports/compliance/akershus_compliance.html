@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance: Akershus</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  h1 { font-size: 1.5rem; color: #1a237e; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .stat .value { font-size: 1.8rem; font-weight: 700; }
+  .stat .label { font-size: 0.8rem; color: #888; }
+  .stat .value.green { color: #2e7d32; }
+  .stat .value.orange { color: #e65100; }
+  .stat .value.red { color: #c62828; }
+  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .mod-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .mod-card h3 { font-size: 0.9rem; color: #1a237e; margin-bottom: 8px; }
+  .mod-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .mod-bar-fill { height: 100%; border-radius: 4px; }
+  .mod-bar-fill.good { background: #4caf50; }
+  .mod-bar-fill.warn { background: #ff9800; }
+  .mod-bar-fill.bad { background: #f44336; }
+  .mod-stat { font-size: 0.8rem; color: #666; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  th { background: #1a237e; color: white; padding: 10px 12px; text-align: left; font-size: 0.85rem; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+  tr:hover { background: #f8f9ff; }
+  .score-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+  .score-badge.good { background: #e8f5e9; color: #2e7d32; }
+  .score-badge.warn { background: #fff3e0; color: #e65100; }
+  .score-badge.bad { background: #ffebee; color: #c62828; }
+  a { color: #1a237e; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: #999; font-size: 0.8rem; margin-top: 24px; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Compliance Audit: Akershus</h1>
+  <p class="subtitle">91 virksomheter skannet &mdash; 2026-02-14 17:55</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value" style="color:#f44336">33%</div>
+      <div class="label">Gjennomsnittlig score</div>
+    </div>
+    <div class="stat">
+      <div class="value">91</div>
+      <div class="label">Virksomheter</div>
+    </div>
+    <div class="stat">
+      <div class="value green">0</div>
+      <div class="label">Score &ge; 60%</div>
+    </div>
+    <div class="stat">
+      <div class="value red">22</div>
+      <div class="label">Score &lt; 30%</div>
+    </div>
+  </div>
+
+  <div class="modules">
+
+    <div class="mod-card">
+      <h3>CSRD / Bærekraft</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:11%"></div></div>
+      <div class="mod-stat">16/146 bestått (11%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Cookies / Ekomlov</h3>
+      <div class="mod-bar"><div class="mod-bar-fill warn" style="width:53%"></div></div>
+      <div class="mod-stat">173/325 bestått (53%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>EAA / Tilgjengelighet</h3>
+      <div class="mod-bar"><div class="mod-bar-fill good" style="width:81%"></div></div>
+      <div class="mod-stat">59/73 bestått (81%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Åpenhetsloven</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:1%"></div></div>
+      <div class="mod-stat">3/219 bestått (1%)</div>
+    </div>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Virksomhet</th>
+        <th>Kommune</th>
+        <th>Score</th>
+        <th>Åpenhetsloven</th>
+        <th>Cookies</th>
+        <th>CSRD</th>
+        <th>EAA</th>
+        <th>Rapport</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>1</td>
+        <td><a href="https://akershus.no" target="_blank">Akershus fylkeskommune</a></td>
+        <td>Akershus</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td><a href="https://eikeli.vgs.no" target="_blank">Eikeli videregående skole</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td><a href="https://nadderud.vgs.no" target="_blank">Nadderud videregående skole</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td><a href="https://rud.vgs.no" target="_blank">Rud videregående skole</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td><a href="https://sandvika.vgs.no" target="_blank">Sandvika videregående skole</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td><a href="https://stabekk.vgs.no" target="_blank">Stabekk videregående skole</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td><a href="https://tannhelse.afk.no" target="_blank">Tannhelsetjenesten Akershus</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td><a href="https://bleiker.vgs.no" target="_blank">Bleiker videregående skole</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td><a href="https://nesbru.vgs.no" target="_blank">Nesbru videregående skole</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td><a href="https://lillestrom.vgs.no" target="_blank">Lillestrøm videregående skole</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td><a href="https://www.mia.no" target="_blank">Mia - Museene i Akershus Sti</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td><a href="https://snfr.no" target="_blank">Samarbeidsrådet for Nedre Romerike IPR</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>13</td>
+        <td><a href="https://strommen.vgs.no" target="_blank">Strømmen videregående skole</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td><a href="https://nfrra.no" target="_blank">Nordre Follo Renseanlegg IKS</a></td>
+        <td>Nordre Follo</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td><a href="https://lorenskog.vgs.no" target="_blank">Lørenskog videregående skole</a></td>
+        <td>Lørenskog</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td><a href="https://www.nfra.no" target="_blank">Nordre Follo Renseanlegg IKS</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td><a href="https://www.kirken.no/kirkeneieidsvolloghurdal" target="_blank">Eidsvoll og Hurdal Kirkelige Fellesråd</a></td>
+        <td>Eidsvoll</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td><a href="https://hurdal.kommune.no" target="_blank">Hurdal kommune</a></td>
+        <td>Hurdal</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td><a href="https://www.abvann.no" target="_blank">Asker og Bærum Vannverk IKS</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_asker_og_bærum_vannverk_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td><a href="https://www.jessheimbadet.no" target="_blank">Ullensaker Svømmehall KF</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_ullensaker_svømmehall_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>21</td>
+        <td><a href="https://www.kirken.nannestad.no" target="_blank">Nannestad Kirkelige Fellesråd</a></td>
+        <td>Nannestad</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_nannestad_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>22</td>
+        <td><a href="https://simula.no" target="_blank">Simula Research Laboratory AS</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_simula_research_laboratory_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>23</td>
+        <td><a href="https://www.dgi.no" target="_blank">Digitale Gardermoen ko</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_digitale_gardermoen_ko.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>24</td>
+        <td><a href="https://www.folloren.no" target="_blank">Follo Ren IKS</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_follo_ren_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>25</td>
+        <td><a href="https://www.akutt-forurensning-region2.no" target="_blank">Kommunalt Oppgavefellesskap Mot Akutt Forurensning Region 2</a></td>
+        <td>Lørenskog</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_kommunalt_oppgavefellesskap_mot_akutt_forurensning.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>26</td>
+        <td><a href="https://matmerk.no" target="_blank">Matmerk - Stiftelsen for merking av norsk mat</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_matmerk_-_stiftelsen_for_merking_av_norsk_mat.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>27</td>
+        <td><a href="https://kjellerinnovasjon.no" target="_blank">Kjeller Innovasjon AS</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_kjeller_innovasjon_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td><a href="https://gardermoregionen.no" target="_blank">Gardermoregionen</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_gardermoregionen.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>29</td>
+        <td><a href="https://www.gardermoregionen.no" target="_blank">Gardermoregionen Interkommunalt Politisk Råd</a></td>
+        <td>Hurdal</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_gardermoregionen_interkommunalt_politisk_råd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>30</td>
+        <td><a href="https://baerum.kommune.no/vann-og-avlop" target="_blank">Bærum kommune Vann og avløp</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_bærum_kommune_vann_og_avløp.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>31</td>
+        <td><a href="https://baerum.kommune.no" target="_blank">Bærum kommune</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_bærum_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>32</td>
+        <td><a href="https://www.asker.kommune.no" target="_blank">Asker Kommune</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_asker_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>33</td>
+        <td><a href="https://www.romerike-krisesenter.no" target="_blank">Romerike Krisesenter IKS</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_romerike_krisesenter_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>34</td>
+        <td><a href="https://www.follobrannvesen.no" target="_blank">Follo Brannvesen IKS</a></td>
+        <td>Nordre Follo</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_follo_brannvesen_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>35</td>
+        <td><a href="https://nordrefollo.kommune.no" target="_blank">Nordre Follo kommune</a></td>
+        <td>Nordre Follo</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nordre_follo_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>36</td>
+        <td><a href="https://www.romerikerevisjon.no" target="_blank">Romerike Revisjon IKS</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_romerike_revisjon_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>37</td>
+        <td><a href="https://www.enebakk.kommune.no/" target="_blank">Enebakk Kommune</a></td>
+        <td>Enebakk</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_enebakk_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>38</td>
+        <td><a href="https://www.nrbr.no" target="_blank">Nedre Romerike Brann- og Redningsvesen IKS</a></td>
+        <td>Lørenskog</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nedre_romerike_brann-_og_redningsvesen_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>39</td>
+        <td><a href="https://www.ralingen.kommune.no/" target="_blank">Rælingen Kommune</a></td>
+        <td>Rælingen</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_rælingen_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>40</td>
+        <td><a href="https://www.nittedal.kommune.no/" target="_blank">Nittedal Kommune</a></td>
+        <td>Nittedal</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nittedal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>41</td>
+        <td><a href="https://nrva.no" target="_blank">Nedre Romerike Vann- og Avløpsselskap IKS</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nedre_romerike_vann-_og_avløpsselskap_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>42</td>
+        <td><a href="https://www.orbrann.no" target="_blank">Øvre Romerike Brann og Redning IKS</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_øvre_romerike_brann_og_redning_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>43</td>
+        <td><a href="https://www.nesodden.kommune.no/" target="_blank">Nesodden Kommune</a></td>
+        <td>Nesodden</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nesodden_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>44</td>
+        <td><a href="https://www.vestby.kommune.no/" target="_blank">Vestby Kommune</a></td>
+        <td>Vestby</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_vestby_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>45</td>
+        <td><a href="https://www.as.kommune.no/" target="_blank">Ås Kommune</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_ås_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>46</td>
+        <td><a href="https://www.ahk.no" target="_blank">Aurskog-høland Kommune</a></td>
+        <td>Aurskog-Høland</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_aurskog-høland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>47</td>
+        <td><a href="https://www.nes.kommune.no/" target="_blank">Nes Kommune</a></td>
+        <td>Nes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>48</td>
+        <td><a href="https://www.gjerdrum.kommune.no" target="_blank">Gjerdrum Kommune</a></td>
+        <td>Gjerdrum</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_gjerdrum_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>49</td>
+        <td><a href="https://www.lunner.kommune.no" target="_blank">Lunner Kommune</a></td>
+        <td>Lunner</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lunner_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>50</td>
+        <td><a href="https://www.jevnaker.kommune.no" target="_blank">Jevnaker Kommune</a></td>
+        <td>Jevnaker</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_jevnaker_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>51</td>
+        <td><a href="https://nannestad.kommune.no" target="_blank">Nannestad kommune</a></td>
+        <td>Nannestad</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nannestad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>52</td>
+        <td><a href="https://eidsvoll.kommune.no" target="_blank">Eidsvoll kommune</a></td>
+        <td>Eidsvoll</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_eidsvoll_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>53</td>
+        <td><a href="https://www.nannestad.kommune.no/" target="_blank">Nannestad Kommune</a></td>
+        <td>Nannestad</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nannestad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>54</td>
+        <td><a href="https://www.eidsvoll.kommune.no/" target="_blank">Eidsvoll Kommune</a></td>
+        <td>Eidsvoll</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_eidsvoll_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>55</td>
+        <td><a href="https://www.hurdal.kommune.no/" target="_blank">Hurdal Kommune</a></td>
+        <td>Hurdal</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_hurdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>56</td>
+        <td><a href="https://afk.no/fylkesbibliotek" target="_blank">Akershus fylkesbibliotek</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_akershus_fylkesbibliotek.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>57</td>
+        <td><a href="https://afk.no/tilskudd" target="_blank">Akershus fylkeskommune tilskudd</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_akershus_fylkeskommune_tilskudd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>58</td>
+        <td><a href="https://telemarkfylke.no" target="_blank">Bærum kirkelige fellesråd</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_bærum_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>59</td>
+        <td><a href="https://www.abbr.no" target="_blank">Asker og Bærum Brann og Redning IKS</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge good">2/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_asker_og_bærum_brann_og_redning_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>60</td>
+        <td><a href="https://www.oeras.no" target="_blank">Øvre Romerike Avfallsselskap (ØRAS) IKS</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_øvre_romerike_avfallsselskap_(øras)_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>61</td>
+        <td><a href="https://www.frogn.kommune.no/" target="_blank">Frogn Kommune</a></td>
+        <td>Frogn</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_frogn_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>62</td>
+        <td><a href="https://www.kisif.no" target="_blank">Krise- og Incestsenteret i Follo IKS</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_krise-_og_incestsenteret_i_follo_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>63</td>
+        <td><a href="https://www.vitenparken.no" target="_blank">Vitenparken Campus ås Sti</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_vitenparken_campus_ås_sti.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>64</td>
+        <td><a href="https://www.kirken.lunner.no" target="_blank">Lunner Kirkelige Fellesråd</a></td>
+        <td>Lunner</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lunner_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>65</td>
+        <td><a href="https://www.baerum.kirken.no" target="_blank">Kirkelig Fellesråd i Bærum</a></td>
+        <td>Bærum</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_kirkelig_fellesråd_i_bærum.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>66</td>
+        <td><a href="https://www.asker.kirken.no/" target="_blank">Asker Kirkelige Fellesråd</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_asker_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>67</td>
+        <td><a href="https://www.kirken-hurum.no" target="_blank">Hurum Kirkelige Fellesråd</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_hurum_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>68</td>
+        <td><a href="https://www.royken.kirken.no" target="_blank">Røyken Kirkelige Fellesråd</a></td>
+        <td>Asker</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_røyken_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>69</td>
+        <td><a href="https://kriminalomsorgen.no" target="_blank">Ullersmo fengsel</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_ullersmo_fengsel.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>70</td>
+        <td><a href="https://www.kirkerull.no" target="_blank">Ullensaker Kirkelige Fellesråd</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_ullensaker_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>71</td>
+        <td><a href="https://www.ullensaker.kommune.no/" target="_blank">Ullensaker Kommune</a></td>
+        <td>Ullensaker</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_ullensaker_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>72</td>
+        <td><a href="https://kirken.no/lorenskog" target="_blank">Lørenskog Kirkelige Fellesråd</a></td>
+        <td>Lørenskog</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lørenskog_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>73</td>
+        <td><a href="https://www.ralingen.kirken.no" target="_blank">Rælingen Kirkelige Fellesråd</a></td>
+        <td>Rælingen</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_rælingen_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>74</td>
+        <td><a href="https://ah.kirken.no/" target="_blank">Aurskog-høland Kirkelig Fellesråd</a></td>
+        <td>Aurskog-Høland</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_aurskog-høland_kirkelig_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>75</td>
+        <td><a href="https://www.esval.no" target="_blank">Esval Miljøpark Nes KF</a></td>
+        <td>Nes</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_esval_miljøpark_nes_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>76</td>
+        <td><a href="https://www.kirkenines.no" target="_blank">Nes Kirkelige Fellesråd</a></td>
+        <td>Nes</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nes_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>77</td>
+        <td><a href="https://www.nittedal.kirken.no/" target="_blank">Nittedal Kirkelige Fellesråd</a></td>
+        <td>Nittedal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nittedal_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>78</td>
+        <td><a href="https://kirken.no/lillestrom" target="_blank">Lillestrøm Kirkelige Fellesråd</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lillestrøm_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>79</td>
+        <td><a href="https://www.miraiks.no" target="_blank">Midtre Romerike Avløpsselskap IKS</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="akershus/compliance_midtre_romerike_avløpsselskap_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>80</td>
+        <td><a href="https://www.roaf.no" target="_blank">Romerike Avfallsforedling IKS</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_romerike_avfallsforedling_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>81</td>
+        <td><a href="https://roaf.no" target="_blank">Romerike Avfallsforedling IKS (ROAF)</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_romerike_avfallsforedling_iks_(roaf).html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>82</td>
+        <td><a href="https://www.skedsmo.kirken.no/" target="_blank">Skedsmo Kirkelige Fellesråd</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_skedsmo_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>83</td>
+        <td><a href="https://www.nesodden.kirken.no/" target="_blank">Nesodden Kirkelige Fellesråd</a></td>
+        <td>Nesodden</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nesodden_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>84</td>
+        <td><a href="https://nmbu.no" target="_blank">Norges miljø- og biovitenskapelige universitet</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_norges_miljø-_og_biovitenskapelige_universitet.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>85</td>
+        <td><a href="https://www.kirken.no/as" target="_blank">Ås Kirkelige Fellesråd</a></td>
+        <td>Ås</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_ås_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>86</td>
+        <td><a href="https://ahus.no" target="_blank">Akershus universitetssykehus HF</a></td>
+        <td>Akershus</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_akershus_universitetssykehus_hf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>87</td>
+        <td><a href="https://lillestrom.kommune.no" target="_blank">Lillestrøm kommune</a></td>
+        <td>Lillestrøm</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lillestrøm_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>88</td>
+        <td><a href="https://www.kirken.no/nordrefollo" target="_blank">Nordre Follo Kirkelige Fellesråd</a></td>
+        <td>Nordre Follo</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_nordre_follo_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>89</td>
+        <td><a href="https://www.sunnaas.no/" target="_blank">Sunnaas Sykehus HF</a></td>
+        <td>Nesodden</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_sunnaas_sykehus_hf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>90</td>
+        <td><a href="https://www.kirken.no/vestby" target="_blank">Vestby Kirkelige Fellesråd</a></td>
+        <td>Vestby</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_vestby_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>91</td>
+        <td><a href="https://www.lorenskog.kommune.no/" target="_blank">Lørenskog Kommune</a></td>
+        <td>Lørenskog</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="akershus/compliance_lørenskog_kommune.html">Vis</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Generert av Batch Compliance Scanner &mdash; 2026-02-14 17:55</p>
+  </div>
+</div>
+</body>
+</html>

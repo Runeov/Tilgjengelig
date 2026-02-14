@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Norge WCAG Skanningsresultater - Alle fylker</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Norge WCAG 2.1 Skanningsresultater</h1>
+        <p>Tilgjengelighetssjekk av offentlige virksomheter i alle fylker</p>
+        <p><strong>Generert:</strong> 2026-02-13 17:32</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">16</div>
+            <div class="stat-label">Fylker skannet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">2574</div>
+            <div class="stat-label">Nettsteder totalt</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">96777</div>
+            <div class="stat-label">Kritiske feil totalt</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">468764</div>
+            <div class="stat-label">Alvorlige feil totalt</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">993082</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per fylke</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fylke</th>
+                <th>Nettsteder</th>
+                <th>Vellykkede</th>
+                <th>Sider sjekket</th>
+                <th>Kritiske feil</th>
+                <th>Alvorlige feil</th>
+                <th>Totale avvik</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><strong>Agder</strong></td>
+                <td>138</td>
+                <td>138</td>
+                <td>1569</td>
+                <td><span class="badge critical">4956</span></td>
+                <td>28336</td>
+                <td>62012</td>
+                <td><a href="agder_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Akershus</strong></td>
+                <td>91</td>
+                <td>91</td>
+                <td>1053</td>
+                <td><span class="badge critical">6911</span></td>
+                <td>19809</td>
+                <td>67240</td>
+                <td><a href="akershus_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Buskerud</strong></td>
+                <td>78</td>
+                <td>78</td>
+                <td>802</td>
+                <td><span class="badge critical">4052</span></td>
+                <td>10810</td>
+                <td>34646</td>
+                <td><a href="buskerud_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Finnmark</strong></td>
+                <td>80</td>
+                <td>80</td>
+                <td>969</td>
+                <td><span class="badge critical">2509</span></td>
+                <td>39985</td>
+                <td>56391</td>
+                <td><a href="finnmark_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Innlandet</strong></td>
+                <td>202</td>
+                <td>202</td>
+                <td>1611</td>
+                <td><span class="badge critical">7622</span></td>
+                <td>31651</td>
+                <td>87094</td>
+                <td><a href="innlandet_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Møre og Romsdal</strong></td>
+                <td>109</td>
+                <td>109</td>
+                <td>723</td>
+                <td><span class="badge critical">2545</span></td>
+                <td>16328</td>
+                <td>34201</td>
+                <td><a href="møre_og_romsdal_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Nordland</strong></td>
+                <td>167</td>
+                <td>167</td>
+                <td>488</td>
+                <td><span class="badge critical">1166</span></td>
+                <td>11983</td>
+                <td>23210</td>
+                <td><a href="nordland_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Oslo</strong></td>
+                <td>799</td>
+                <td>799</td>
+                <td>10215</td>
+                <td><span class="badge critical">31485</span></td>
+                <td>191563</td>
+                <td>353687</td>
+                <td><a href="oslo_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Rogaland</strong></td>
+                <td>151</td>
+                <td>151</td>
+                <td>524</td>
+                <td><span class="badge critical">2953</span></td>
+                <td>9051</td>
+                <td>20426</td>
+                <td><a href="rogaland_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Svalbard</strong></td>
+                <td>5</td>
+                <td>5</td>
+                <td>78</td>
+                <td><span class="badge serious">279</span></td>
+                <td>2360</td>
+                <td>3642</td>
+                <td><a href="svalbard_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Telemark</strong></td>
+                <td>79</td>
+                <td>79</td>
+                <td>479</td>
+                <td><span class="badge critical">2334</span></td>
+                <td>8077</td>
+                <td>21434</td>
+                <td><a href="telemark_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Troms</strong></td>
+                <td>124</td>
+                <td>106</td>
+                <td>1153</td>
+                <td><span class="badge critical">2668</span></td>
+                <td>10273</td>
+                <td>28254</td>
+                <td><a href="troms_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Trøndelag</strong></td>
+                <td>208</td>
+                <td>206</td>
+                <td>2293</td>
+                <td><span class="badge critical">14652</span></td>
+                <td>30301</td>
+                <td>78636</td>
+                <td><a href="trøndelag_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Vestfold</strong></td>
+                <td>45</td>
+                <td>45</td>
+                <td>625</td>
+                <td><span class="badge critical">1901</span></td>
+                <td>6149</td>
+                <td>15229</td>
+                <td><a href="vestfold_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Vestland</strong></td>
+                <td>246</td>
+                <td>246</td>
+                <td>3164</td>
+                <td><span class="badge critical">9009</span></td>
+                <td>41762</td>
+                <td>86607</td>
+                <td><a href="vestland_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+            <tr>
+                <td><strong>Østfold</strong></td>
+                <td>52</td>
+                <td>52</td>
+                <td>712</td>
+                <td><span class="badge critical">1735</span></td>
+                <td>10326</td>
+                <td>20373</td>
+                <td><a href="østfold_summary.html" class="report-link">Se detaljer</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

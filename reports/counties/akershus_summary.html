@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akershus WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Akershus WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Akershus</p>
+        <p><strong>Skannet:</strong> 2026-02-11 12:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">91</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">91</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">1053</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">6911</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">19809</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">67240</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.kirken.lunner.no" target="_blank">Lunner Kirkelige Fellesråd</a></td>
+                <td>Lunner</td>
+                <td class="contact"><a href="mailto:post.lunner@kirken.no">post.lunner@kirken.no</a><br>61 32 48 00</td>
+                <td>16</td>
+                <td><span class="badge critical">338</span></td>
+                <td>47</td>
+                <td>149</td>
+                <td>536</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lunner_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesodden.kirken.no/" target="_blank">Nesodden Kirkelige Fellesråd</a></td>
+                <td>Nesodden</td>
+                <td class="contact"><a href="mailto:kirken@nesodden.kirken.no">kirken@nesodden.kirken.no</a><br>66 96 58 20</td>
+                <td>16</td>
+                <td><span class="badge critical">313</span></td>
+                <td>609</td>
+                <td>2552</td>
+                <td>3492</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nesodden_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Ullersmo fengsel</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>481</td>
+                <td>155</td>
+                <td>943</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ullersmo_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/lillestrom" target="_blank">Lillestrøm Kirkelige Fellesråd</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:post@lillestrom.kirken.no">post@lillestrom.kirken.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">289</span></td>
+                <td>591</td>
+                <td>2525</td>
+                <td>3415</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lillestrøm_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.skedsmo.kirken.no/" target="_blank">Skedsmo Kirkelige Fellesråd</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:post@skedsmo.kirken.no">post@skedsmo.kirken.no</a><br>66 93 89 50</td>
+                <td>16</td>
+                <td><span class="badge critical">289</span></td>
+                <td>591</td>
+                <td>2525</td>
+                <td>3415</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\skedsmo_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/vestby" target="_blank">Vestby Kirkelige Fellesråd</a></td>
+                <td>Vestby</td>
+                <td class="contact"><a href="mailto:post.vestby@kirken.no">post.vestby@kirken.no</a><br>64 98 00 70</td>
+                <td>16</td>
+                <td><span class="badge critical">279</span></td>
+                <td>561</td>
+                <td>2384</td>
+                <td>3250</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\vestby_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ralingen.kirken.no" target="_blank">Rælingen Kirkelige Fellesråd</a></td>
+                <td>Rælingen</td>
+                <td class="contact"><a href="mailto:post@ralingen.kirken.no">post@ralingen.kirken.no</a><br>64 80 41 60</td>
+                <td>16</td>
+                <td><span class="badge critical">277</span></td>
+                <td>31</td>
+                <td>136</td>
+                <td>444</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\rælingen_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/lorenskog" target="_blank">Lørenskog Kirkelige Fellesråd</a></td>
+                <td>Lørenskog</td>
+                <td class="contact"><a href="mailto:lorenskog@kirken.no">lorenskog@kirken.no</a><br>23 89 86 28</td>
+                <td>16</td>
+                <td><span class="badge critical">266</span></td>
+                <td>616</td>
+                <td>2229</td>
+                <td>3113</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lørenskog_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/nordrefollo" target="_blank">Nordre Follo Kirkelige Fellesråd</a></td>
+                <td>Nordre Follo</td>
+                <td class="contact"><a href="mailto:post.nordre.follo@kirken.no">post.nordre.follo@kirken.no</a><br>67 20 82 00</td>
+                <td>15</td>
+                <td><span class="badge critical">257</span></td>
+                <td>532</td>
+                <td>2178</td>
+                <td>2979</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nordre_follo_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirkerull.no" target="_blank">Ullensaker Kirkelige Fellesråd</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:post@ullensaker.kirkene.net">post@ullensaker.kirkene.net</a><br>66 10 81 45</td>
+                <td>14</td>
+                <td><span class="badge critical">254</span></td>
+                <td>512</td>
+                <td>2164</td>
+                <td>2944</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ullensaker_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/as" target="_blank">Ås Kirkelige Fellesråd</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:post.as@kirken.no">post.as@kirken.no</a><br>64 96 23 30</td>
+                <td>15</td>
+                <td><span class="badge critical">248</span></td>
+                <td>505</td>
+                <td>2223</td>
+                <td>3003</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ås_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/kirkeneieidsvolloghurdal" target="_blank">Eidsvoll og Hurdal Kirkelige Fellesråd</a></td>
+                <td>Eidsvoll</td>
+                <td class="contact"><a href="mailto:lk323@kirken.no">lk323@kirken.no</a><br>63 96 52 20</td>
+                <td>14</td>
+                <td><span class="badge critical">248</span></td>
+                <td>507</td>
+                <td>2013</td>
+                <td>2797</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\eidsvoll_og_hurdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.romerike-krisesenter.no" target="_blank">Romerike Krisesenter IKS</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:post@rkrise.no">post@rkrise.no</a><br>66 93 23 10</td>
+                <td>16</td>
+                <td><span class="badge critical">234</span></td>
+                <td>541</td>
+                <td>119</td>
+                <td>897</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\romerike_krisesenter_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.asker.kirken.no/" target="_blank">Asker Kirkelige Fellesråd</a></td>
+                <td>Asker</td>
+                <td class="contact"><a href="mailto:post.asker@kirken.no">post.asker@kirken.no</a><br>66754090</td>
+                <td>13</td>
+                <td><span class="badge critical">224</span></td>
+                <td>481</td>
+                <td>1931</td>
+                <td>2650</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\asker_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken-hurum.no" target="_blank">Hurum Kirkelige Fellesråd</a></td>
+                <td>Asker</td>
+                <td class="contact"><a href="mailto:kirkevergen @kirken-hurum.no">kirkevergen @kirken-hurum.no</a><br>32 27 84 02</td>
+                <td>13</td>
+                <td><span class="badge critical">224</span></td>
+                <td>481</td>
+                <td>1931</td>
+                <td>2650</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\hurum_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.royken.kirken.no" target="_blank">Røyken Kirkelige Fellesråd</a></td>
+                <td>Asker</td>
+                <td class="contact"><a href="mailto:post@royken.kirken.no">post@royken.kirken.no</a><br>31 29 28 00</td>
+                <td>13</td>
+                <td><span class="badge critical">224</span></td>
+                <td>481</td>
+                <td>1931</td>
+                <td>2650</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\røyken_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.baerum.kirken.no" target="_blank">Kirkelig Fellesråd i Bærum</a></td>
+                <td>Bærum</td>
+                <td class="contact"><a href="mailto:kari@baerum.kirken.no">kari@baerum.kirken.no</a><br>67 50 05 00</td>
+                <td>16</td>
+                <td><span class="badge critical">187</span></td>
+                <td>27</td>
+                <td>193</td>
+                <td>409</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\kirkelig_fellesråd_i_bærum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ah.kirken.no/" target="_blank">Aurskog-høland Kirkelig Fellesråd</a></td>
+                <td>Aurskog-Høland</td>
+                <td class="contact"><a href="mailto:post@ah.kirken.no">post@ah.kirken.no</a><br>47 87 84 22</td>
+                <td>16</td>
+                <td><span class="badge critical">178</span></td>
+                <td>20</td>
+                <td>112</td>
+                <td>312</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\aurskog-høland_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.oeras.no" target="_blank">Øvre Romerike Avfallsselskap (ØRAS) IKS</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:firmapost@oeras.no">firmapost@oeras.no</a><br>63 92 78 80</td>
+                <td>16</td>
+                <td><span class="badge critical">166</span></td>
+                <td>450</td>
+                <td>350</td>
+                <td>1006</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\øvre_romerike_avfallsselskap_(øras)_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nes.kommune.no/" target="_blank">Nes Kommune</a></td>
+                <td>Nes</td>
+                <td class="contact"><a href="mailto:postmottak@nes.kommune.no">postmottak@nes.kommune.no</a><br>66 10 40 00</td>
+                <td>16</td>
+                <td><span class="badge critical">132</span></td>
+                <td>497</td>
+                <td>170</td>
+                <td>1337</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gardermoregionen.no" target="_blank">Gardermoregionen Interkommunalt Politisk Råd</a></td>
+                <td>Hurdal</td>
+                <td class="contact"><a href="mailto:post@gardermoregionen.no">post@gardermoregionen.no</a><br>66 10 66 10</td>
+                <td>16</td>
+                <td><span class="badge critical">130</span></td>
+                <td>393</td>
+                <td>360</td>
+                <td>883</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\gardermoregionen_interkommunalt_politisk_råd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hurdal.kommune.no/" target="_blank">Hurdal Kommune</a></td>
+                <td>Hurdal</td>
+                <td class="contact"><a href="mailto:postmottak@hurdal.kommune.no">postmottak@hurdal.kommune.no</a><br>66 10 66 10</td>
+                <td>15</td>
+                <td><span class="badge critical">124</span></td>
+                <td>464</td>
+                <td>174</td>
+                <td>956</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\hurdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hurdal.kommune.no" target="_blank">Hurdal kommune</a></td>
+                <td>Hurdal</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge critical">123</span></td>
+                <td>439</td>
+                <td>171</td>
+                <td>1025</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\hurdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://eidsvoll.kommune.no" target="_blank">Eidsvoll kommune</a></td>
+                <td>Eidsvoll</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge critical">122</span></td>
+                <td>435</td>
+                <td>248</td>
+                <td>989</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\eidsvoll_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.eidsvoll.kommune.no/" target="_blank">Eidsvoll Kommune</a></td>
+                <td>Eidsvoll</td>
+                <td class="contact"><a href="mailto:postmottak@eidsvoll.kommune.no">postmottak@eidsvoll.kommune.no</a><br>66 10 70 00</td>
+                <td>15</td>
+                <td><span class="badge critical">122</span></td>
+                <td>435</td>
+                <td>248</td>
+                <td>989</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\eidsvoll_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirkenines.no" target="_blank">Nes Kirkelige Fellesråd</a></td>
+                <td>Nes</td>
+                <td class="contact"><a href="mailto:post.nes@kirken.no">post.nes@kirken.no</a><br>66 10 49 30</td>
+                <td>16</td>
+                <td><span class="badge critical">121</span></td>
+                <td>29</td>
+                <td>105</td>
+                <td>259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nes_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nittedal.kirken.no/" target="_blank">Nittedal Kirkelige Fellesråd</a></td>
+                <td>Nittedal</td>
+                <td class="contact"><a href="mailto:merete.strandberg@nittedal.kirken.no">merete.strandberg@nittedal.kirken.no</a><br>67 05 90 42</td>
+                <td>16</td>
+                <td><span class="badge critical">120</span></td>
+                <td>21</td>
+                <td>126</td>
+                <td>271</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nittedal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://gardermoregionen.no" target="_blank">Gardermoregionen</a></td>
+                <td>Ullensaker</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">119</span></td>
+                <td>382</td>
+                <td>349</td>
+                <td>850</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\gardermoregionen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.romerikerevisjon.no" target="_blank">Romerike Revisjon IKS</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:postmottak@romerikerevisjon.no">postmottak@romerikerevisjon.no</a><br>66 10 69 00</td>
+                <td>16</td>
+                <td><span class="badge critical">108</span></td>
+                <td>20</td>
+                <td>158</td>
+                <td>319</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\romerike_revisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nannestad.kommune.no/" target="_blank">Nannestad Kommune</a></td>
+                <td>Nannestad</td>
+                <td class="contact"><a href="mailto:postmottak@nannestad.kommune.no">postmottak@nannestad.kommune.no</a><br>66 10 50 00</td>
+                <td>14</td>
+                <td><span class="badge critical">103</span></td>
+                <td>398</td>
+                <td>159</td>
+                <td>987</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nannestad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nannestad.kommune.no" target="_blank">Nannestad kommune</a></td>
+                <td>Nannestad</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge critical">102</span></td>
+                <td>403</td>
+                <td>158</td>
+                <td>991</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nannestad_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordrefollo.kommune.no" target="_blank">Nordre Follo kommune</a></td>
+                <td>Nordre Follo</td>
+                <td class="contact"><a href="mailto:postmottak@nordrefollo.kommune.no">postmottak@nordrefollo.kommune.no</a><br>02178</td>
+                <td>15</td>
+                <td><span class="badge critical">86</span></td>
+                <td>118</td>
+                <td>105</td>
+                <td>417</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nordre_follo_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://matmerk.no" target="_blank">Matmerk - Stiftelsen for merking av norsk mat</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">84</span></td>
+                <td>48</td>
+                <td>284</td>
+                <td>446</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\matmerk_-_stiftelsen_for_merking_av_norsk_mat.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.abvann.no" target="_blank">Asker og Bærum Vannverk IKS</a></td>
+                <td>Bærum</td>
+                <td class="contact"><a href="mailto:firmapost@abvann.no">firmapost@abvann.no</a><br>67 55 46 00</td>
+                <td>10</td>
+                <td><span class="badge critical">57</span></td>
+                <td>21</td>
+                <td>72</td>
+                <td>153</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\asker_og_bærum_vannverk_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ahk.no" target="_blank">Aurskog-høland Kommune</a></td>
+                <td>Aurskog-Høland</td>
+                <td class="contact"><a href="mailto:postmottak@ahk.no">postmottak@ahk.no</a><br>63 85 25 00</td>
+                <td>10</td>
+                <td><span class="badge critical">55</span></td>
+                <td>91</td>
+                <td>160</td>
+                <td>588</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\aurskog-høland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ullensaker.kommune.no/" target="_blank">Ullensaker Kommune</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:postmottak@ullensaker.kommune.no">postmottak@ullensaker.kommune.no</a><br>66 10 80 00</td>
+                <td>16</td>
+                <td><span class="badge serious">50</span></td>
+                <td>20</td>
+                <td>265</td>
+                <td>355</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ullensaker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.follobrannvesen.no" target="_blank">Follo Brannvesen IKS</a></td>
+                <td>Nordre Follo</td>
+                <td class="contact"><a href="mailto:post@follobrannvesen.no">post@follobrannvesen.no</a><br>64 85 10 00</td>
+                <td>16</td>
+                <td><span class="badge serious">45</span></td>
+                <td>30</td>
+                <td>178</td>
+                <td>257</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\follo_brannvesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.abbr.no" target="_blank">Asker og Bærum Brann og Redning IKS</a></td>
+                <td>Asker</td>
+                <td class="contact"><a href="mailto:post@abbr.no">post@abbr.no</a><br>66 76 42 00</td>
+                <td>16</td>
+                <td><span class="badge serious">38</span></td>
+                <td>1357</td>
+                <td>370</td>
+                <td>1770</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\asker_og_bærum_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.orbrann.no" target="_blank">Øvre Romerike Brann og Redning IKS</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:postmottak@orbrann.no">postmottak@orbrann.no</a></td>
+                <td>14</td>
+                <td><span class="badge serious">37</span></td>
+                <td>149</td>
+                <td>338</td>
+                <td>691</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\øvre_romerike_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gjerdrum.kommune.no" target="_blank">Gjerdrum Kommune</a></td>
+                <td>Gjerdrum</td>
+                <td class="contact"><a href="mailto:postmottak@gjerdrum.kommune.no">postmottak@gjerdrum.kommune.no</a><br>66 10 60 00</td>
+                <td>15</td>
+                <td><span class="badge serious">36</span></td>
+                <td>260</td>
+                <td>174</td>
+                <td>659</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\gjerdrum_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.folloren.no" target="_blank">Follo Ren IKS</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:post@folloren.no">post@folloren.no</a><br>05660</td>
+                <td>16</td>
+                <td><span class="badge serious">32</span></td>
+                <td>314</td>
+                <td>351</td>
+                <td>735</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\follo_ren_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Bærum kirkelige fellesråd</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">27</span></td>
+                <td>57</td>
+                <td>258</td>
+                <td>489</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\bærum_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mia.no" target="_blank">Mia - Museene i Akershus Sti</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:post@mia.no">post@mia.no</a></td>
+                <td>16</td>
+                <td><span class="badge serious">24</span></td>
+                <td>104</td>
+                <td>117</td>
+                <td>275</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\mia_-_museene_i_akershus_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.roaf.no" target="_blank">Romerike Avfallsforedling IKS</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:firmapost@roaf.no">firmapost@roaf.no</a></td>
+                <td>16</td>
+                <td><span class="badge serious">20</span></td>
+                <td>97</td>
+                <td>337</td>
+                <td>459</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\romerike_avfallsforedling_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://roaf.no" target="_blank">Romerike Avfallsforedling IKS (ROAF)</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">20</span></td>
+                <td>97</td>
+                <td>337</td>
+                <td>459</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\romerike_avfallsforedling_iks_(roaf).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.asker.kommune.no" target="_blank">Asker Kommune</a></td>
+                <td>Asker</td>
+                <td class="contact"><a href="mailto:post@asker.kommune.no">post@asker.kommune.no</a><br>66 70 00 00</td>
+                <td>16</td>
+                <td><span class="badge serious">18</span></td>
+                <td>35</td>
+                <td>48</td>
+                <td>123</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\asker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.dgi.no" target="_blank">Digitale Gardermoen ko</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:post@dgi.no">post@dgi.no</a><br>64 00 90 01</td>
+                <td>11</td>
+                <td><span class="badge serious">13</span></td>
+                <td>85</td>
+                <td>59</td>
+                <td>209</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\digitale_gardermoen_ko.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.miraiks.no" target="_blank">Midtre Romerike Avløpsselskap IKS</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:firmapost@miraiks.no">firmapost@miraiks.no</a></td>
+                <td>16</td>
+                <td><span class="badge serious">12</span></td>
+                <td>8</td>
+                <td>94</td>
+                <td>114</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\midtre_romerike_avløpsselskap_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://simula.no" target="_blank">Simula Research Laboratory AS</a></td>
+                <td>Asker</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">10</span></td>
+                <td>346</td>
+                <td>156</td>
+                <td>527</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\simula_research_laboratory_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lunner.kommune.no" target="_blank">Lunner Kommune</a></td>
+                <td>Lunner</td>
+                <td class="contact"><a href="mailto:post@lunner.kommune.no">post@lunner.kommune.no</a><br>61 32 40 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">8</span></td>
+                <td>26</td>
+                <td>117</td>
+                <td>201</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lunner_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nfra.no" target="_blank">Nordre Follo Renseanlegg IKS</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:post@nfra.no">post@nfra.no</a><br>64 97 44 50</td>
+                <td>15</td>
+                <td><span class="badge moderate">6</span></td>
+                <td>13</td>
+                <td>172</td>
+                <td>228</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nordre_follo_renseanlegg_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nmbu.no" target="_blank">Norges miljø- og biovitenskapelige universitet</a></td>
+                <td>Ås</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>107</td>
+                <td>87</td>
+                <td>243</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\norges_miljø-_og_biovitenskapelige_universitet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.esval.no" target="_blank">Esval Miljøpark Nes KF</a></td>
+                <td>Nes</td>
+                <td class="contact"><a href="mailto:post@esval.no">post@esval.no</a><br>63 91 24 70</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>207</td>
+                <td>235</td>
+                <td>444</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\esval_miljøpark_nes_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ahus.no" target="_blank">Akershus universitetssykehus HF</a></td>
+                <td>Akershus</td>
+                <td class="contact"><a href="mailto:postmottak@ahus.no">postmottak@ahus.no</a><br>67 96 00 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>949</td>
+                <td>104</td>
+                <td>1141</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\akershus_universitetssykehus_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kjellerinnovasjon.no" target="_blank">Kjeller Innovasjon AS</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>40</td>
+                <td>91</td>
+                <td>154</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\kjeller_innovasjon_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.jessheimbadet.no" target="_blank">Ullensaker Svømmehall KF</a></td>
+                <td>Ullensaker</td>
+                <td class="contact"><a href="mailto:esben.f.fiane@ullensaker.kommune.no">esben.f.fiane@ullensaker.kommune.no</a></td>
+                <td>14</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>276</td>
+                <td>84</td>
+                <td>389</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ullensaker_svømmehall_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nrbr.no" target="_blank">Nedre Romerike Brann- og Redningsvesen IKS</a></td>
+                <td>Lørenskog</td>
+                <td class="contact"><a href="mailto:post@nrbr.no">post@nrbr.no</a><br>67 91 04 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>96</td>
+                <td>334</td>
+                <td>458</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nedre_romerike_brann-_og_redningsvesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://akershus.no" target="_blank">Akershus fylkeskommune</a></td>
+                <td>Akershus</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\akershus_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://afk.no/fylkesbibliotek" target="_blank">Akershus fylkesbibliotek</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>138</td>
+                <td>31</td>
+                <td>180</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\akershus_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://afk.no/tilskudd" target="_blank">Akershus fylkeskommune tilskudd</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>143</td>
+                <td>31</td>
+                <td>185</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\akershus_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://baerum.kommune.no/vann-og-avlop" target="_blank">Bærum kommune Vann og avløp</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\bærum_kommune_vann_og_avløp.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://eikeli.vgs.no" target="_blank">Eikeli videregående skole</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\eikeli_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nadderud.vgs.no" target="_blank">Nadderud videregående skole</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nadderud_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rud.vgs.no" target="_blank">Rud videregående skole</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\rud_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sandvika.vgs.no" target="_blank">Sandvika videregående skole</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\sandvika_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stabekk.vgs.no" target="_blank">Stabekk videregående skole</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\stabekk_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.afk.no" target="_blank">Tannhelsetjenesten Akershus</a></td>
+                <td>Bærum</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\tannhelsetjenesten_akershus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://baerum.kommune.no" target="_blank">Bærum kommune</a></td>
+                <td>Bærum</td>
+                <td class="contact"><a href="mailto:post@baerum.kommune.no">post@baerum.kommune.no</a><br>67 50 40 50</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>25</td>
+                <td>79</td>
+                <td>175</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\bærum_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bleiker.vgs.no" target="_blank">Bleiker videregående skole</a></td>
+                <td>Asker</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\bleiker_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nesbru.vgs.no" target="_blank">Nesbru videregående skole</a></td>
+                <td>Asker</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nesbru_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lillestrom.kommune.no" target="_blank">Lillestrøm kommune</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:postmottak@lillestrom.kommune.no">postmottak@lillestrom.kommune.no</a><br>66 93 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lillestrøm_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lillestrom.vgs.no" target="_blank">Lillestrøm videregående skole</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lillestrøm_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nrva.no" target="_blank">Nedre Romerike Vann- og Avløpsselskap IKS</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact"><a href="mailto:firmapost@nrva.no">firmapost@nrva.no</a><br>64 84 54 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>200</td>
+                <td>66</td>
+                <td>288</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nedre_romerike_vann-_og_avløpsselskap_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://snfr.no" target="_blank">Samarbeidsrådet for Nedre Romerike IPR</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\samarbeidsrådet_for_nedre_romerike_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://strommen.vgs.no" target="_blank">Strømmen videregående skole</a></td>
+                <td>Lillestrøm</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\strømmen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfrra.no" target="_blank">Nordre Follo Renseanlegg IKS</a></td>
+                <td>Nordre Follo</td>
+                <td class="contact"><a href="mailto:eldbjorg@stjerneglimt.no">eldbjorg@stjerneglimt.no</a><br>37 01 67 27</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nordre_follo_renseanlegg_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lorenskog.vgs.no" target="_blank">Lørenskog videregående skole</a></td>
+                <td>Lørenskog</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lørenskog_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesodden.kommune.no/" target="_blank">Nesodden Kommune</a></td>
+                <td>Nesodden</td>
+                <td class="contact"><a href="mailto:postmottak@nesodden.kommune.no">postmottak@nesodden.kommune.no</a><br>66 96 43 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>308</td>
+                <td>149</td>
+                <td>497</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nesodden_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sunnaas.no/" target="_blank">Sunnaas Sykehus HF</a></td>
+                <td>Nesodden</td>
+                <td class="contact"><a href="mailto:firmapost@sunnaas.no">firmapost@sunnaas.no</a><br>66 96 90 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>999</td>
+                <td>100</td>
+                <td>1147</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\sunnaas_sykehus_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.frogn.kommune.no/" target="_blank">Frogn Kommune</a></td>
+                <td>Frogn</td>
+                <td class="contact"><a href="mailto:postmottak@frogn.kommune.no">postmottak@frogn.kommune.no</a><br>64 90 60 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\frogn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestby.kommune.no/" target="_blank">Vestby Kommune</a></td>
+                <td>Vestby</td>
+                <td class="contact"><a href="mailto:post@vestby.kommune.no">post@vestby.kommune.no</a><br>64980100</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>162</td>
+                <td>147</td>
+                <td>430</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\vestby_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kisif.no" target="_blank">Krise- og Incestsenteret i Follo IKS</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:post@kisif.no">post@kisif.no</a><br>64 97 23 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>511</td>
+                <td>153</td>
+                <td>680</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\krise-_og_incestsenteret_i_follo_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vitenparken.no" target="_blank">Vitenparken Campus ås Sti</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:resepsjon@vitenparken.no">resepsjon@vitenparken.no</a><br>64 96 62 80</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\vitenparken_campus_ås_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.as.kommune.no/" target="_blank">Ås Kommune</a></td>
+                <td>Ås</td>
+                <td class="contact"><a href="mailto:post@as.kommune.no">post@as.kommune.no</a><br>64 96 20 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>28</td>
+                <td>74</td>
+                <td>161</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\ås_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.enebakk.kommune.no/" target="_blank">Enebakk Kommune</a></td>
+                <td>Enebakk</td>
+                <td class="contact"><a href="mailto:postmottak@enebakk.kommune.no">postmottak@enebakk.kommune.no</a><br>64 99 20 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>324</td>
+                <td>40</td>
+                <td>367</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\enebakk_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.akutt-forurensning-region2.no" target="_blank">Kommunalt Oppgavefellesskap Mot Akutt Forurensning Region 2</a></td>
+                <td>Lørenskog</td>
+                <td class="contact">67 91 04 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\kommunalt_oppgavefellesskap_mot_akutt_forurensning.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lorenskog.kommune.no/" target="_blank">Lørenskog Kommune</a></td>
+                <td>Lørenskog</td>
+                <td class="contact"><a href="mailto:postmottak@lorenskog.kommune.no">postmottak@lorenskog.kommune.no</a><br>67934000</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\lørenskog_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ralingen.kommune.no/" target="_blank">Rælingen Kommune</a></td>
+                <td>Rælingen</td>
+                <td class="contact"><a href="mailto:postmottak@ralingen.kommune.no">postmottak@ralingen.kommune.no</a><br>63 83 51 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>1</td>
+                <td>1</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\rælingen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nittedal.kommune.no/" target="_blank">Nittedal Kommune</a></td>
+                <td>Nittedal</td>
+                <td class="contact"><a href="mailto:postmottak@nittedal.kommune.no">postmottak@nittedal.kommune.no</a><br>67 05 90 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>19</td>
+                <td>71</td>
+                <td>125</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nittedal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.jevnaker.kommune.no" target="_blank">Jevnaker Kommune</a></td>
+                <td>Jevnaker</td>
+                <td class="contact"><a href="mailto:postmottak@jevnaker.kommune.no">postmottak@jevnaker.kommune.no</a><br>61 31 57 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>21</td>
+                <td>154</td>
+                <td>253</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\jevnaker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.nannestad.no" target="_blank">Nannestad Kirkelige Fellesråd</a></td>
+                <td>Nannestad</td>
+                <td class="contact"><a href="mailto:post.nannestad@kirken.no">post.nannestad@kirken.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="akershus\nannestad_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

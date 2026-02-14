@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliance: Agder</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+  h1 { font-size: 1.5rem; color: #1a237e; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .stat .value { font-size: 1.8rem; font-weight: 700; }
+  .stat .label { font-size: 0.8rem; color: #888; }
+  .stat .value.green { color: #2e7d32; }
+  .stat .value.orange { color: #e65100; }
+  .stat .value.red { color: #c62828; }
+  .modules { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .mod-card { background: white; border-radius: 10px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .mod-card h3 { font-size: 0.9rem; color: #1a237e; margin-bottom: 8px; }
+  .mod-bar { height: 8px; background: #eee; border-radius: 4px; overflow: hidden; }
+  .mod-bar-fill { height: 100%; border-radius: 4px; }
+  .mod-bar-fill.good { background: #4caf50; }
+  .mod-bar-fill.warn { background: #ff9800; }
+  .mod-bar-fill.bad { background: #f44336; }
+  .mod-stat { font-size: 0.8rem; color: #666; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  th { background: #1a237e; color: white; padding: 10px 12px; text-align: left; font-size: 0.85rem; font-weight: 600; }
+  td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; font-size: 0.85rem; }
+  tr:hover { background: #f8f9ff; }
+  .score-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
+  .score-badge.good { background: #e8f5e9; color: #2e7d32; }
+  .score-badge.warn { background: #fff3e0; color: #e65100; }
+  .score-badge.bad { background: #ffebee; color: #c62828; }
+  a { color: #1a237e; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: #999; font-size: 0.8rem; margin-top: 24px; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Compliance Audit: Agder</h1>
+  <p class="subtitle">138 virksomheter skannet &mdash; 2026-02-14 17:27</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value" style="color:#f44336">34%</div>
+      <div class="label">Gjennomsnittlig score</div>
+    </div>
+    <div class="stat">
+      <div class="value">138</div>
+      <div class="label">Virksomheter</div>
+    </div>
+    <div class="stat">
+      <div class="value green">2</div>
+      <div class="label">Score &ge; 60%</div>
+    </div>
+    <div class="stat">
+      <div class="value red">33</div>
+      <div class="label">Score &lt; 30%</div>
+    </div>
+  </div>
+
+  <div class="modules">
+
+    <div class="mod-card">
+      <h3>CSRD / Bærekraft</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:9%"></div></div>
+      <div class="mod-stat">22/232 bestått (9%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Cookies / Ekomlov</h3>
+      <div class="mod-bar"><div class="mod-bar-fill warn" style="width:54%"></div></div>
+      <div class="mod-stat">274/503 bestått (54%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>EAA / Tilgjengelighet</h3>
+      <div class="mod-bar"><div class="mod-bar-fill good" style="width:82%"></div></div>
+      <div class="mod-stat">95/116 bestått (82%)</div>
+    </div>
+
+    <div class="mod-card">
+      <h3>Åpenhetsloven</h3>
+      <div class="mod-bar"><div class="mod-bar-fill bad" style="width:4%"></div></div>
+      <div class="mod-stat">13/348 bestått (4%)</div>
+    </div>
+
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Virksomhet</th>
+        <th>Kommune</th>
+        <th>Score</th>
+        <th>Åpenhetsloven</th>
+        <th>Cookies</th>
+        <th>CSRD</th>
+        <th>EAA</th>
+        <th>Rapport</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td>1</td>
+        <td><a href="https://www.grimstadkulturhus.com" target="_blank">Grimstad Kulturhus KF</a></td>
+        <td>Grimstad</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>2</td>
+        <td><a href="https://afrma.no" target="_blank">Aust-Agder museum og arkiv</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>3</td>
+        <td><a href="https://www.mandalhavn.no" target="_blank">Lindesnes Havn KF</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>4</td>
+        <td><a href="https://www.listerfriluft.no" target="_blank">Lister Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+        <td>Farsund</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>5</td>
+        <td><a href="https://aktfrr.no" target="_blank">Agder Kollektivtrafikk AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>6</td>
+        <td><a href="https://agderfylke.no/fylkesbibliotek" target="_blank">Agder fylkesbibliotek</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>7</td>
+        <td><a href="https://agderidrettskrets.no" target="_blank">Agder idrettskrets</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>8</td>
+        <td><a href="https://fagskolen-agder.no" target="_blank">Fagskolen i Agder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>9</td>
+        <td><a href="https://ikfra-agder.no" target="_blank">IKA Agder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>10</td>
+        <td><a href="https://kilfrden.no" target="_blank">Kilden Teater og Konserthus</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>11</td>
+        <td><a href="https://kristiansandbibliotek.no" target="_blank">Kristiansand folkebibliotek</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>12</td>
+        <td><a href="https://kristiansandkirken.no" target="_blank">Kristiansand kirkelige fellesråd</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>13</td>
+        <td><a href="https://kfrsbr.no" target="_blank">Kristiansandsregionen brann og redning IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>14</td>
+        <td><a href="https://skmu.no" target="_blank">Sørlandets Kunstmuseum (SKMU)</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>15</td>
+        <td><a href="https://sts-agder.no" target="_blank">Sørlandets Teknologisenter AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>16</td>
+        <td><a href="https://tannhelse.agderfk.no" target="_blank">Tannhelsetjenesten Agder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>17</td>
+        <td><a href="https://visitfrorlandet.com" target="_blank">Visit Sørlandet AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>18</td>
+        <td><a href="https://froland.kirken.no" target="_blank">Froland Kirkelige Fellesråd</a></td>
+        <td>Froland</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>19</td>
+        <td><a href="https://www.audnedal-kirken.no" target="_blank">Audnedal Kyrkjelege Fellesråd</a></td>
+        <td>Lyngdal</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>20</td>
+        <td><a href="https://www.tingvatn.no" target="_blank">Tingvatn Fornminnepark og Besøkssenter IKS</a></td>
+        <td>Hægebostad</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>21</td>
+        <td><a href="https://lrn.no" target="_blank">Lindesnesregionen Næringshage AS</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>22</td>
+        <td><a href="https://hagebostad.kommune.no" target="_blank">Hægebostad kommune</a></td>
+        <td>Hægebostad</td>
+        <td><span class="score-badge bad">0%</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td><span style="color:#ccc">-</span></td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td>23</td>
+        <td><a href="https://www.kristiansand.kirken.no" target="_blank">Kristiansand Kirkelig Fellesråd</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_kristiansand_kirkelig_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>24</td>
+        <td><a href="https://www.risobank.no" target="_blank">Risøbank Interkommunale Selskap</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_risøbank_interkommunale_selskap.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>25</td>
+        <td><a href="https://sia.no" target="_blank">Studentsamskipnaden i Agder (SiA)</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">9%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_studentsamskipnaden_i_agder_(sia).html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>26</td>
+        <td><a href="https://politiet.no/agder" target="_blank">Agder politidistrikt</a></td>
+        <td>Agder</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_agder_politidistrikt.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>27</td>
+        <td><a href="https://domstol.no/aust-agder" target="_blank">Aust-Agder tingrett</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_aust-agder_tingrett.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>28</td>
+        <td><a href="https://www.ariks.no" target="_blank">Sørlandet Kommunerevisjon IKS</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_sørlandet_kommunerevisjon_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>29</td>
+        <td><a href="https://www.110agder.no" target="_blank">110 Agder IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_110_agder_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>30</td>
+        <td><a href="https://vava.no" target="_blank">Vannassistansen i Vestre Agder Kommunalt Oppgavefelleskap (VAVA)</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_vannassistansen_i_vestre_agder_kommunalt_oppgavefe.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>31</td>
+        <td><a href="https://kristiansand.kommune.no/va" target="_blank">Kristiansand kommune Vann og avløp</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_kristiansand_kommune_vann_og_avløp.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>32</td>
+        <td><a href="https://kunsthall.no/kristiansand" target="_blank">Kristiansand kunsthall</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_kristiansand_kunsthall.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>33</td>
+        <td><a href="https://domstol.no/kristiansand" target="_blank">Kristiansand tingrett</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_kristiansand_tingrett.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>34</td>
+        <td><a href="https://www.lyngdal.kirken.no/" target="_blank">Lyngdal Kirkelige Fellesråd</a></td>
+        <td>Lyngdal</td>
+        <td><span class="score-badge bad">10%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_lyngdal_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>35</td>
+        <td><a href="https://www.arendalhavn.no" target="_blank">Arendal Havn KF</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_arendal_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>36</td>
+        <td><a href="https://www.aama.no" target="_blank">Aust-agder Museum og Arkiv IKS</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_aust-agder_museum_og_arkiv_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>37</td>
+        <td><a href="https://www.midt-agderfriluft.no" target="_blank">Midt-agder Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_midt-agder_friluftsråd_kommunalt_oppgavefellesskap.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>38</td>
+        <td><a href="https://www.frolandsverk.no" target="_blank">Frolands Verk Kultursenter KF</a></td>
+        <td>Froland</td>
+        <td><span class="score-badge bad">18%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_frolands_verk_kultursenter_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>39</td>
+        <td><a href="https://risor.kirken.no" target="_blank">Risør Kirkelige Fellesråd</a></td>
+        <td>Risør</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_risør_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>40</td>
+        <td><a href="https://www.birkenes.kirken.no/" target="_blank">Birkenes Kirkelige Fellesråd</a></td>
+        <td>Birkenes</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_birkenes_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>41</td>
+        <td><a href="https://www.smg-iks.no" target="_blank">Setesdal Miljø & Gjenvinning IKS</a></td>
+        <td>Evje Og Hornnes</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_setesdal_miljø_&_gjenvinning_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>42</td>
+        <td><a href="https://www.kvinesdal.kirken.no" target="_blank">Kvinesdal Kirkelig Fellesråd</a></td>
+        <td>Kvinesdal</td>
+        <td><span class="score-badge bad">20%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge bad">1/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_kvinesdal_kirkelig_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>43</td>
+        <td><a href="https://statsforvalteren.no/agder" target="_blank">Statsforvalteren i Agder</a></td>
+        <td>Agder</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_statsforvalteren_i_agder.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>44</td>
+        <td><a href="https://www.nasjonalparkstyre.no/raet" target="_blank">Raet Nasjonalparkstyre</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_raet_nasjonalparkstyre.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>45</td>
+        <td><a href="https://kristiansand.kommune.no" target="_blank">Kristiansand Kommune</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>46</td>
+        <td><a href="https://www.nasjonalparkstyre.no/Oksoy-Ryvingen/" target="_blank">Verneområdestyret for Oksøy-ryvingen og Flekkefjord Landskapsvernområder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_verneområdestyret_for_oksøy-ryvingen_og_flekkefjor.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>47</td>
+        <td><a href="https://agderfk.no/tilskudd" target="_blank">Agder fylkeskommune tilskudd</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_fylkeskommune_tilskudd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>48</td>
+        <td><a href="https://avfallsor.no" target="_blank">Avfall Sør Husholdning AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_avfall_sør_husholdning_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>49</td>
+        <td><a href="https://furoya.no" target="_blank">Furøya IKS</a></td>
+        <td>Tvedestrand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_furøya_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>50</td>
+        <td><a href="https://www.libir.no" target="_blank">Lillesand og Birkenes Interkommunale Renovasjonsselskap Libir IKS</a></td>
+        <td>Lillesand</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_lillesand_og_birkenes_interkommunale_renovasjonsse.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>51</td>
+        <td><a href="https://www.bygland.kommune.no/" target="_blank">Bygland Kommune</a></td>
+        <td>Bygland</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_bygland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>52</td>
+        <td><a href="https://www.har-renovasjon.no" target="_blank">Hægebostad og Åseral Renovasjonsselskap-hår IKS</a></td>
+        <td>Åseral</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_hægebostad_og_åseral_renovasjonsselskap-hår_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>53</td>
+        <td><a href="https://www.sirdal.kommune.no" target="_blank">Sirdal Kommune</a></td>
+        <td>Sirdal</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_sirdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>54</td>
+        <td><a href="https://listernyskaping.no" target="_blank">Lister Nyskaping AS</a></td>
+        <td>Flekkefjord</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_lister_nyskaping_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>55</td>
+        <td><a href="https://sirdal.kommune.no" target="_blank">Sirdal kommune</a></td>
+        <td>Sirdal</td>
+        <td><span class="score-badge bad">27%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_sirdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>56</td>
+        <td><a href="https://www.risor.kommune.no/" target="_blank">Risør Kommune</a></td>
+        <td>Risør</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_risør_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>57</td>
+        <td><a href="https://www.grimstad.kommune.no/" target="_blank">Grimstad Kommune</a></td>
+        <td>Grimstad</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_grimstad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>58</td>
+        <td><a href="https://www.brannsor.no" target="_blank">Brannvesenet Sør IKS</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_brannvesenet_sør_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>59</td>
+        <td><a href="https://www.ddv.no" target="_blank">Ddv IKS</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_ddv_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>60</td>
+        <td><a href="https://grimstad.kommune.no" target="_blank">Grimstad kommune</a></td>
+        <td>Grimstad</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_grimstad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>61</td>
+        <td><a href="https://www.erikstemmen.no" target="_blank">Irs Miljø IKS</a></td>
+        <td>Flekkefjord</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_irs_miljø_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>62</td>
+        <td><a href="https://nav.no/kristiansand" target="_blank">NAV Kristiansand</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_nav_kristiansand.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>63</td>
+        <td><a href="https://uia.no" target="_blank">Universitetet i Agder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_universitetet_i_agder.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>64</td>
+        <td><a href="https://vagsbygd.vgs.no" target="_blank">Vågsbygd videregående skole</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vågsbygd_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>65</td>
+        <td><a href="https://www.gjerstad.kommune.no/" target="_blank">Gjerstad Kommune</a></td>
+        <td>Gjerstad</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_gjerstad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>66</td>
+        <td><a href="https://vegarshei.kommune.no" target="_blank">Vegårshei kommune</a></td>
+        <td>Vegårshei</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vegårshei_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>67</td>
+        <td><a href="https://www.froland.kommune.no" target="_blank">Froland Kommune</a></td>
+        <td>Froland</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_froland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>68</td>
+        <td><a href="https://www.lillesand.kommune.no/" target="_blank">Lillesand Kommune</a></td>
+        <td>Lillesand</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lillesand_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>69</td>
+        <td><a href="https://www.birkenes.kommune.no/" target="_blank">Birkenes Kommune</a></td>
+        <td>Birkenes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_birkenes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>70</td>
+        <td><a href="https://www.amli.kommune.no/" target="_blank">Åmli Kommune</a></td>
+        <td>Åmli</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_åmli_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>71</td>
+        <td><a href="https://www.iveland.kommune.no/" target="_blank">Iveland Kommune</a></td>
+        <td>Iveland</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_iveland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>72</td>
+        <td><a href="https://www.e-h.kommune.no/" target="_blank">Evje og Hornnes Kommune</a></td>
+        <td>Evje Og Hornnes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_evje_og_hornnes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>73</td>
+        <td><a href="https://sb-iks.no" target="_blank">Setesdal Brannvesen IKS</a></td>
+        <td>Evje Og Hornnes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_setesdal_brannvesen_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>74</td>
+        <td><a href="https://birkenes.kommune.no" target="_blank">Birkenes kommune</a></td>
+        <td>Birkenes</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_birkenes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>75</td>
+        <td><a href="https://www.setesdal.no" target="_blank">Setesdal Interkommunalt Politisk Råd</a></td>
+        <td>Valle</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_setesdal_interkommunalt_politisk_råd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>76</td>
+        <td><a href="https://www.valle.kommune.no" target="_blank">Valle Kommune</a></td>
+        <td>Valle</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_valle_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>77</td>
+        <td><a href="https://www.bykle.kommune.no/" target="_blank">Bykle Kommune</a></td>
+        <td>Bykle</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_bykle_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>78</td>
+        <td><a href="https://www.aseral.kommune.no/" target="_blank">Åseral Kommune</a></td>
+        <td>Åseral</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_åseral_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>79</td>
+        <td><a href="https://iveland.kommune.no" target="_blank">Iveland kommune</a></td>
+        <td>Iveland</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_iveland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>80</td>
+        <td><a href="https://bygland.kommune.no" target="_blank">Bygland kommune</a></td>
+        <td>Bygland</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_bygland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>81</td>
+        <td><a href="https://valle.kommune.no" target="_blank">Valle kommune</a></td>
+        <td>Valle</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_valle_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>82</td>
+        <td><a href="https://bykle.kommune.no" target="_blank">Bykle kommune</a></td>
+        <td>Bykle</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_bykle_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>83</td>
+        <td><a href="https://lyngdal.kommune.no" target="_blank">Lyngdal kommune</a></td>
+        <td>Lyngdal</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lyngdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>84</td>
+        <td><a href="https://aseral.kommune.no" target="_blank">Åseral kommune</a></td>
+        <td>Åseral</td>
+        <td><span class="score-badge bad">30%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_åseral_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>85</td>
+        <td><a href="https://agderarbeidsmiljo.no" target="_blank">Agder Arbeidsmiljø IKS</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_arbeidsmiljø_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>86</td>
+        <td><a href="https://www.arkivsentersor.no" target="_blank">Arkivsenter Sør IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_arkivsenter_sør_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>87</td>
+        <td><a href="https://www.mandal.kirken.no" target="_blank">Lindesnes Kirkelige Fellesråd</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lindesnes_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>88</td>
+        <td><a href="https://telemarkfylke.no" target="_blank">Agder Energi Nett AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_energi_nett_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>89</td>
+        <td><a href="https://innovasjonnorge.no/agder" target="_blank">Innovasjon Norge region Agder</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">36%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_innovasjon_norge_region_agder.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>90</td>
+        <td><a href="https://www.arendal.kommune.no" target="_blank">Arendal Eiendom KF</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_arendal_eiendom_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>91</td>
+        <td><a href="https://www.arendal.kirken.no" target="_blank">Arendal Kirkelige Fellesråd</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_arendal_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>92</td>
+        <td><a href="https://arendal.vgs.no" target="_blank">Arendal videregående skole</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_arendal_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>93</td>
+        <td><a href="https://www.ikt-agder.no" target="_blank">Ikt Agder IKS</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_ikt_agder_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>94</td>
+        <td><a href="https://sameyde.vgs.no" target="_blank">Sam Eyde videregående skole</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_sam_eyde_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>95</td>
+        <td><a href="https://agderkomrev.no" target="_blank">Agder Kommunerevisjon IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_kommunerevisjon_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>96</td>
+        <td><a href="https://www.lindesnes.kommune.no" target="_blank">Lindesnes Kommune</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lindesnes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>97</td>
+        <td><a href="https://www.farsund.kirken.no/" target="_blank">Farsund Kirkelige Fellesråd</a></td>
+        <td>Farsund</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_farsund_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>98</td>
+        <td><a href="https://www.farsund.kommune.no/" target="_blank">Farsund Kommune</a></td>
+        <td>Farsund</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_farsund_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>99</td>
+        <td><a href="https://kriminalomsorgen.no" target="_blank">Agder fengsel</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_fengsel.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>100</td>
+        <td><a href="https://www.flekkefjord.kirken.no/" target="_blank">Flekkefjord Kirkelige Fellesråd</a></td>
+        <td>Flekkefjord</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_flekkefjord_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>101</td>
+        <td><a href="https://www.flekkefjord.kommune.no/" target="_blank">Flekkefjord Kommune</a></td>
+        <td>Flekkefjord</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_flekkefjord_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>102</td>
+        <td><a href="https://www.vegarshei.kommune.no/" target="_blank">Vegårshei Kommune</a></td>
+        <td>Vegårshei</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vegårshei_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>103</td>
+        <td><a href="https://www.tvedestrand.kommune.no/" target="_blank">Tvedestrand Kommune</a></td>
+        <td>Tvedestrand</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_tvedestrand_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>104</td>
+        <td><a href="https://www.lillesand.kirken.no" target="_blank">Lillesand Kirkelige Fellesråd</a></td>
+        <td>Lillesand</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lillesand_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>105</td>
+        <td><a href="https://tvedestrand.kommune.no" target="_blank">Tvedestrand kommune</a></td>
+        <td>Tvedestrand</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_tvedestrand_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>106</td>
+        <td><a href="https://froland.kommune.no" target="_blank">Froland kommune</a></td>
+        <td>Froland</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_froland_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>107</td>
+        <td><a href="https://www.kirkebakken.no" target="_blank">Vennesla Kirkelige Fellesråd</a></td>
+        <td>Vennesla</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vennesla_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>108</td>
+        <td><a href="https://www.vennesla.kommune.no/" target="_blank">Vennesla Kommune</a></td>
+        <td>Vennesla</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vennesla_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>109</td>
+        <td><a href="https://www.haegebostad.kirken.no" target="_blank">Hægebostad Kirkelige Fellesråd</a></td>
+        <td>Hægebostad</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_hægebostad_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>110</td>
+        <td><a href="https://www.haegebostad.kommune.no/" target="_blank">Hægebostad Kommune</a></td>
+        <td>Hægebostad</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_hægebostad_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>111</td>
+        <td><a href="https://e-h.kommune.no" target="_blank">Evje og Hornnes kommune</a></td>
+        <td>Evje og Hornnes</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_evje_og_hornnes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>112</td>
+        <td><a href="https://lindesnes.kommune.no" target="_blank">Lindesnes kommune</a></td>
+        <td>Lindesnes</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_lindesnes_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>113</td>
+        <td><a href="https://farsund.kommune.no" target="_blank">Farsund kommune</a></td>
+        <td>Farsund</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_farsund_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>114</td>
+        <td><a href="https://flekkefjord.kommune.no" target="_blank">Flekkefjord kommune</a></td>
+        <td>Flekkefjord</td>
+        <td><span class="score-badge warn">40%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_flekkefjord_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>115</td>
+        <td><a href="https://www.drivagder.no" target="_blank">Etablerersenteret Agder IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_etablerersenteret_agder_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>116</td>
+        <td><a href="https://www.kbr.no" target="_blank">Kristiansandsregionen Brann og Redning IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge good">2/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansandsregionen_brann_og_redning_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>117</td>
+        <td><a href="https://www.kunstsilo.no" target="_blank">Stiftelsen Kunstsilo</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_stiftelsen_kunstsilo.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>118</td>
+        <td><a href="https://ae.no" target="_blank">Agder Energi AS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge good">2/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge bad">0/1</span></td>
+        <td><a href="agder/compliance_agder_energi_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>119</td>
+        <td><a href="https://avinor.no/flyplass/kristiansand" target="_blank">Kristiansand Lufthavn Kjevik</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_lufthavn_kjevik.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>120</td>
+        <td><a href="https://www.konsesjonskraft.no" target="_blank">Konsesjonskraft IKS</a></td>
+        <td>Valle</td>
+        <td><span class="score-badge warn">45%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_konsesjonskraft_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>121</td>
+        <td><a href="https://sshf.no" target="_blank">Sørlandet sykehus HF</a></td>
+        <td>Agder</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_sørlandet_sykehus_hf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>122</td>
+        <td><a href="https://www.grimstad.kirken.no" target="_blank">Grimstad Kirkelige Fellesråd</a></td>
+        <td>Grimstad</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_grimstad_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>123</td>
+        <td><a href="https://www.sshf.no" target="_blank">Sørlandet Sykehus HF</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_sørlandet_sykehus_hf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>124</td>
+        <td><a href="https://kirken.no/agder" target="_blank">Agder og Telemark bispedømme</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_og_telemark_bispedømme.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>125</td>
+        <td><a href="https://kkg.vgs.no" target="_blank">Kristiansand katedralskole Gimle</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_katedralskole_gimle.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>126</td>
+        <td><a href="https://kvadraturen.vgs.no" target="_blank">Kvadraturen skolesenter</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kvadraturen_skolesenter.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>127</td>
+        <td><a href="https://www.tvedestrand.kirken.no" target="_blank">Tvedestrand Kirkelige Fellesråd</a></td>
+        <td>Tvedestrand</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_tvedestrand_kirkelige_fellesråd.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>128</td>
+        <td><a href="https://www.kvinesdal.kommune.no/" target="_blank">Kvinesdal Kommune</a></td>
+        <td>Kvinesdal</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kvinesdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>129</td>
+        <td><a href="https://kvinesdal.kommune.no" target="_blank">Kvinesdal kommune</a></td>
+        <td>Kvinesdal</td>
+        <td><span class="score-badge warn">50%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">3/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kvinesdal_kommune.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>130</td>
+        <td><a href="https://akt.no" target="_blank">Agder Kollektivtrafikk AS</a></td>
+        <td>Agder</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge good">2/3</span></td>
+        <td><span class="score-badge good">3/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_kollektivtrafikk_as.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>131</td>
+        <td><a href="https://www.kilden.com" target="_blank">Kilden Teater og Konserthus IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kilden_teater_og_konserthus_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>132</td>
+        <td><a href="https://www.portofkristiansand.no" target="_blank">Kristiansand Havn IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_havn_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>133</td>
+        <td><a href="https://www.vestagdermuseet.no" target="_blank">Vest-agder-museet IKS</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vest-agder-museet_iks.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>134</td>
+        <td><a href="https://kristiansandhavn.no" target="_blank">Kristiansand Havn KF</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_havn_kf.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>135</td>
+        <td><a href="https://kanonmuseet.no" target="_blank">Kristiansand kanonmuseum</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_kristiansand_kanonmuseum.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>136</td>
+        <td><a href="https://vestagdermuseet.no" target="_blank">Vest-Agder-museet</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge warn">55%</span></td>
+        <td><span class="score-badge bad">1/3</span></td>
+        <td><span class="score-badge good">4/5</span></td>
+        <td><span class="score-badge bad">0/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_vest-agder-museet.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>137</td>
+        <td><a href="https://tangen.vgs.no" target="_blank">Tangen videregående skole</a></td>
+        <td>Kristiansand</td>
+        <td><span class="score-badge good">60%</span></td>
+        <td><span class="score-badge bad">0/3</span></td>
+        <td><span class="score-badge good">4/4</span></td>
+        <td><span class="score-badge warn">1/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_tangen_videregående_skole.html">Vis</a></td>
+      </tr>
+
+      <tr>
+        <td>138</td>
+        <td><a href="https://agderrenovasjon.no" target="_blank">Agder Renovasjon IKS</a></td>
+        <td>Arendal</td>
+        <td><span class="score-badge good">64%</span></td>
+        <td><span class="score-badge good">2/3</span></td>
+        <td><span class="score-badge warn">2/5</span></td>
+        <td><span class="score-badge good">2/2</span></td>
+        <td><span class="score-badge good">1/1</span></td>
+        <td><a href="agder/compliance_agder_renovasjon_iks.html">Vis</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Generert av Batch Compliance Scanner &mdash; 2026-02-14 17:27</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+{
+  "timestamp": "20260122_090049",
+  "mode": "full",
+  "description": "One per county (sample)",
+  "total": 15,
+  "with_statement": 14,
+  "statement_current": 0,
+  "errors": 0,
+  "total_issues": 5870,
+  "critical_issues": 84,
+  "summary_file": "batch_summary_20260122_090744.html",
+  "reports": [
+    {
+      "municipality": "Oslo",
+      "county": "Oslo",
+      "file": "wcag_Oslo_20260122_090051.html",
+      "issues": 82,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Eigersund",
+      "county": "Rogaland",
+      "file": "wcag_Eigersund_20260122_090141.html",
+      "issues": 0,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Kristiansund",
+      "county": "Møre og Romsdal",
+      "file": "wcag_Kristiansund_20260122_090151.html",
+      "issues": 552,
+      "critical": 1,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Bodø",
+      "county": "Nordland",
+      "file": "wcag_Bodø_20260122_090218.html",
+      "issues": 280,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Halden",
+      "county": "Østfold",
+      "file": "wcag_Halden_20260122_090233.html",
+      "issues": 338,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Bærum",
+      "county": "Akershus",
+      "file": "wcag_Bærum_20260122_090255.html",
+      "issues": 217,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Drammen",
+      "county": "Buskerud",
+      "file": "wcag_Drammen_20260122_090307.html",
+      "issues": 124,
+      "critical": 40,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Kongsvinger",
+      "county": "Innlandet",
+      "file": "wcag_Kongsvinger_20260122_090323.html",
+      "issues": 0,
+      "critical": 0,
+      "has_statement": false,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Horten",
+      "county": "Vestfold",
+      "file": "wcag_Horten_20260122_090500.html",
+      "issues": 515,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Porsgrunn",
+      "county": "Telemark",
+      "file": "wcag_Porsgrunn_20260122_090519.html",
+      "issues": 959,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Risør",
+      "county": "Agder",
+      "file": "wcag_Risør_20260122_090548.html",
+      "issues": 828,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Bergen",
+      "county": "Vestland",
+      "file": "wcag_Bergen_20260122_090605.html",
+      "issues": 164,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Trondheim",
+      "county": "Trøndelag",
+      "file": "wcag_Trondheim_20260122_090631.html",
+      "issues": 259,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Tromsø",
+      "county": "Troms",
+      "file": "wcag_Tromsø_20260122_090655.html",
+      "issues": 1223,
+      "critical": 43,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    },
+    {
+      "municipality": "Alta",
+      "county": "Finnmark",
+      "file": "wcag_Alta_20260122_090713.html",
+      "issues": 329,
+      "critical": 0,
+      "has_statement": true,
+      "statement_current": false,
+      "statement_date": null
+    }
+  ]
+}

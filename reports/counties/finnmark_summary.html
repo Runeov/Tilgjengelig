@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finnmark WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Finnmark WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Finnmark</p>
+        <p><strong>Skannet:</strong> 2026-02-11 12:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">80</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">80</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">969</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">2509</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">39985</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">56391</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Vadsø fengsel</a></td>
+                <td>Vadsø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">304</span></td>
+                <td>481</td>
+                <td>155</td>
+                <td>943</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vadsø_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/alta" target="_blank">Alta Kirkelige Fellesråd</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:kirkeverge@alta.kirken.no">kirkeverge@alta.kirken.no</a><br>78 44 42 70</td>
+                <td>16</td>
+                <td><span class="badge critical">286</span></td>
+                <td>740</td>
+                <td>2478</td>
+                <td>3504</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.masoy.kommune.no/" target="_blank">Måsøy Kommune</a></td>
+                <td>Måsøy</td>
+                <td class="contact"><a href="mailto:postmottak@masoy.kommune.no">postmottak@masoy.kommune.no</a><br>78 42 40 00</td>
+                <td>15</td>
+                <td><span class="badge critical">182</span></td>
+                <td>514</td>
+                <td>132</td>
+                <td>840</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\måsøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.hammerfest.no" target="_blank">Hammerfest Kirkelige Fellesråd</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:ar744@kirken.no">ar744@kirken.no</a><br>78 40 29 27</td>
+                <td>16</td>
+                <td><span class="badge critical">176</span></td>
+                <td>27</td>
+                <td>114</td>
+                <td>320</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hammerfest_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://probarents.no" target="_blank">Pro Barents AS</a></td>
+                <td>Hammerfest</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">103</span></td>
+                <td>55</td>
+                <td>107</td>
+                <td>265</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\pro_barents_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://varangermuseum.no" target="_blank">Varanger Museum IKS</a></td>
+                <td>Vadsø</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">95</span></td>
+                <td>756</td>
+                <td>388</td>
+                <td>1245</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\varanger_museum_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.varangermuseum.no" target="_blank">Varanger Museum IKS</a></td>
+                <td>Vardø</td>
+                <td class="contact"><a href="mailto:post@varangermuseum.no">post@varangermuseum.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">95</span></td>
+                <td>755</td>
+                <td>388</td>
+                <td>1244</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\varanger_museum_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://finnmarkkraft.no" target="_blank">Finnmark Kraft AS</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge critical">89</span></td>
+                <td>100</td>
+                <td>63</td>
+                <td>259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmark_kraft_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://orinor.no" target="_blank">Orinor AS</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge critical">88</span></td>
+                <td>92</td>
+                <td>263</td>
+                <td>449</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\orinor_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirkeneshavn.no" target="_blank">Kirkenes Havn Sør-varanger Kommunalt Foretak</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact"><a href="mailto:postmottak@svk.no">postmottak@svk.no</a><br>78 97 74 44</td>
+                <td>14</td>
+                <td><span class="badge critical">82</span></td>
+                <td>213</td>
+                <td>144</td>
+                <td>476</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\kirkenes_havn_sør-varanger_kommunalt_foretak.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirkeneshavn.no" target="_blank">Kirkenes Havnevesen</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge critical">82</span></td>
+                <td>213</td>
+                <td>144</td>
+                <td>476</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\kirkenes_havnevesen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://museumnord.no/gjenreisningsmuseet" target="_blank">Gjenreisningsmuseet for Finnmark</a></td>
+                <td>Hammerfest</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">79</span></td>
+                <td>693</td>
+                <td>201</td>
+                <td>989</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\gjenreisningsmuseet_for_finnmark.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vadsohavn.no" target="_blank">Vadsø Havn KF</a></td>
+                <td>Vadsø</td>
+                <td class="contact"><a href="mailto:havnevesenet@vadso.kommune.no">havnevesenet@vadso.kommune.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">78</span></td>
+                <td>191</td>
+                <td>28</td>
+                <td>307</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vadsø_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nordkynhavn.no" target="_blank">Gamvik-nordkyn Havn KF</a></td>
+                <td>Gamvik</td>
+                <td class="contact"><a href="mailto:post@nordkynhavn.no">post@nordkynhavn.no</a><br>90 86 98 21</td>
+                <td>15</td>
+                <td><span class="badge critical">70</span></td>
+                <td>4</td>
+                <td>106</td>
+                <td>181</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\gamvik-nordkyn_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.berlevag.kommune.no/" target="_blank">Berlevåg Kommune</a></td>
+                <td>Berlevåg</td>
+                <td class="contact"><a href="mailto:postmottak@berlevag.kommune.no">postmottak@berlevag.kommune.no</a><br>78 78 20 00</td>
+                <td>16</td>
+                <td><span class="badge critical">60</span></td>
+                <td>92</td>
+                <td>208</td>
+                <td>361</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\berlevåg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vadso.kommune.no/" target="_blank">Vadsø Kommune</a></td>
+                <td>Vadsø</td>
+                <td class="contact"><a href="mailto:postmottak@vadso.kommune.no">postmottak@vadso.kommune.no</a><br>78 94 23 00</td>
+                <td>12</td>
+                <td><span class="badge critical">57</span></td>
+                <td>143</td>
+                <td>29</td>
+                <td>237</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vadsø_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vadso.kommune.no" target="_blank">Vadsø Vann og Avløp KF</a></td>
+                <td>Vadsø</td>
+                <td class="contact"><a href="mailto:johan.rolstad@vadso.kommune.no">johan.rolstad@vadso.kommune.no</a><br>78 94 24 55</td>
+                <td>12</td>
+                <td><span class="badge critical">57</span></td>
+                <td>143</td>
+                <td>29</td>
+                <td>237</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vadsø_vann_og_avløp_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vefas.no" target="_blank">Vest-finnmark Avfallsselskap, Oarje-finnmarkku Rihpafitnodat Vefas IKS</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:firmapost@vefas.no">firmapost@vefas.no</a><br>78 44 47 50</td>
+                <td>17</td>
+                <td><span class="badge critical">53</span></td>
+                <td>216</td>
+                <td>174</td>
+                <td>443</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vest-finnmark_avfallsselskap,_oarje-finnmarkku_rih.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.batsfjord.kommune.no" target="_blank">Båtsfjord Kommune</a></td>
+                <td>Båtsfjord</td>
+                <td class="contact"><a href="mailto:postmottak@batsfjord.kommune.no">postmottak@batsfjord.kommune.no</a><br>78 98 53 00</td>
+                <td>16</td>
+                <td><span class="badge serious">50</span></td>
+                <td>6362</td>
+                <td>774</td>
+                <td>7186</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\båtsfjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nordkapp.kommune.no" target="_blank">Nordkapp Havn KF</a></td>
+                <td>Nordkapp</td>
+                <td class="contact"><a href="mailto:havna@nordkapp.kommune.no">havna@nordkapp.kommune.no</a><br>78 47 64 50</td>
+                <td>16</td>
+                <td><span class="badge serious">49</span></td>
+                <td>4297</td>
+                <td>214</td>
+                <td>4561</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\nordkapp_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nesseby.kommune.no" target="_blank">Nesseby kommune</a></td>
+                <td>Nesseby</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">45</span></td>
+                <td>3055</td>
+                <td>259</td>
+                <td>3360</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\nesseby_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesseby.kommune.no/" target="_blank">Unjargga Gielda / Nesseby Kommune</a></td>
+                <td>Nesseby</td>
+                <td class="contact"><a href="mailto:postmottak@nesseby.kommune.no">postmottak@nesseby.kommune.no</a><br>40 44 05 00</td>
+                <td>16</td>
+                <td><span class="badge serious">45</span></td>
+                <td>3528</td>
+                <td>257</td>
+                <td>3831</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\unjargga_gielda_nesseby_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hammerfestparkering.no" target="_blank">Hammerfest Parkering KF</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:parkeringskontoret@hammerfest.kommune.no">parkeringskontoret@hammerfest.kommune.no</a><br>78 40 26 40</td>
+                <td>16</td>
+                <td><span class="badge serious">44</span></td>
+                <td>292</td>
+                <td>60</td>
+                <td>396</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hammerfest_parkering_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ikaf.no" target="_blank">Ika Finnmark IKS</a></td>
+                <td>Porsanger</td>
+                <td class="contact"><a href="mailto:post@ikaf.no">post@ikaf.no</a><br>78 46 46 60</td>
+                <td>16</td>
+                <td><span class="badge serious">38</span></td>
+                <td>1260</td>
+                <td>155</td>
+                <td>1470</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\ika_finnmark_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.porsanger.kommune.no/" target="_blank">Porsanger Kommune</a></td>
+                <td>Porsanger</td>
+                <td class="contact"><a href="mailto:postmottak@porsanger.kommune.no">postmottak@porsanger.kommune.no</a><br>78 46 00 00</td>
+                <td>16</td>
+                <td><span class="badge serious">35</span></td>
+                <td>3869</td>
+                <td>642</td>
+                <td>4548</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\porsanger_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://barents.no" target="_blank">Barentssekretariatet</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">29</span></td>
+                <td>75</td>
+                <td>61</td>
+                <td>172</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\barentssekretariatet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rdm.no" target="_blank">Riddoduottarmuseat Sti</a></td>
+                <td>Karasjok</td>
+                <td class="contact"><a href="mailto:post@rdm.no">post@rdm.no</a><br>78 46 99 50</td>
+                <td>15</td>
+                <td><span class="badge serious">27</span></td>
+                <td>338</td>
+                <td>304</td>
+                <td>682</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\riddoduottarmuseat_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lebesby.kommune.no/" target="_blank">Lebesby Kommune</a></td>
+                <td>Lebesby</td>
+                <td class="contact"><a href="mailto:postmottak@lebesby.kommune.no">postmottak@lebesby.kommune.no</a></td>
+                <td>13</td>
+                <td><span class="badge serious">27</span></td>
+                <td>2871</td>
+                <td>230</td>
+                <td>3128</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\lebesby_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kusek.no" target="_blank">Kontrollutvalgssekretariatet i Vest-finnmark IKS/ Oarje-finnmarku Sgo Darkkistanlavdegottecallingoddi</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:kate.m.larsen@kusek.no">kate.m.larsen@kusek.no</a><br>78 40 29 09</td>
+                <td>11</td>
+                <td><span class="badge serious">24</span></td>
+                <td>358</td>
+                <td>74</td>
+                <td>479</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\kontrollutvalgssekretariatet_i_vest-finnmark_iks_o.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.altahavn.no" target="_blank">Alta Havn KF</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:postmottak.havn@alta.kommune.no">postmottak.havn@alta.kommune.no</a><br>78 44 69 10</td>
+                <td>16</td>
+                <td><span class="badge serious">20</span></td>
+                <td>358</td>
+                <td>190</td>
+                <td>578</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/alta" target="_blank">Alta Lufthavn</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>80</td>
+                <td>104</td>
+                <td>200</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_lufthavn.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://norasenteret.no" target="_blank">Norasenteret Senter Mot Vold og Seksuelle Overgrep i Øst-finnmark IKS</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact"><a href="mailto:info@norasenteret.no">info@norasenteret.no</a><br>78 99 60 60</td>
+                <td>10</td>
+                <td><span class="badge moderate">8</span></td>
+                <td>235</td>
+                <td>30</td>
+                <td>273</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\norasenteret_senter_mot_vold_og_seksuelle_overgrep.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kystmuseene.no" target="_blank">Museene for Kystkultur og Gjenreising i Finnmark IKS</a></td>
+                <td>Nordkapp</td>
+                <td class="contact"><a href="mailto:post@kystmuseene.no">post@kystmuseene.no</a><br>78 47 72 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>69</td>
+                <td>58</td>
+                <td>159</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\museene_for_kystkultur_og_gjenreising_i_finnmark_i.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hammerfest.kommune.no" target="_blank">Hammerfest kommune</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:postmottak@hammerfest.kommune.no">postmottak@hammerfest.kommune.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>126</td>
+                <td>40</td>
+                <td>180</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hammerfest_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://karasjok.kommune.no" target="_blank">Karasjok kommune</a></td>
+                <td>Karasjok</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>58</td>
+                <td>136</td>
+                <td>202</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\karasjok_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.karasjok.kommune.no/" target="_blank">Karasjoga Gielda / Karasjok Kommune</a></td>
+                <td>Karasjok</td>
+                <td class="contact"><a href="mailto:postmottak@karasjok.kommune.no">postmottak@karasjok.kommune.no</a><br>78 46 80 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>57</td>
+                <td>132</td>
+                <td>195</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\karasjoga_gielda_karasjok_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.alta.kommune.no" target="_blank">Alta Kommune</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:postmottak@alta.kommune.no">postmottak@alta.kommune.no</a><br>78 45 50 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>29</td>
+                <td>77</td>
+                <td>150</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.samediggi.no" target="_blank">Samediggi / Sametinget</a></td>
+                <td>Karasjok</td>
+                <td class="contact"><a href="mailto:samediggi@samediggi.no">samediggi@samediggi.no</a><br>78 47 40 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>130</td>
+                <td>201</td>
+                <td>333</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\samediggi_sametinget.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vardo.kommune.no/" target="_blank">Vardø Kommune</a></td>
+                <td>Vardø</td>
+                <td class="contact"><a href="mailto:postmottak@vardo.kommune.no">postmottak@vardo.kommune.no</a><br>78 94 33 00</td>
+                <td>15</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>23</td>
+                <td>94</td>
+                <td>245</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vardø_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ffk.no" target="_blank">Finnmark fylkeskommune</a></td>
+                <td>Finnmark</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>263</td>
+                <td>187</td>
+                <td>456</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmark_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/finnmark" target="_blank">Finnmark politidistrikt</a></td>
+                <td>Finnmark</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>16</td>
+                <td>86</td>
+                <td>134</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmark_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://snelandia.no" target="_blank">Snelandia AS</a></td>
+                <td>Finnmark</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>242</td>
+                <td>201</td>
+                <td>453</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\snelandia_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://finnmarkssykehuset.no/hammerfest" target="_blank">Finnmarkssykehuset HF - Hammerfest sykehus</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:postmottak@nordlandssykehuset.no">postmottak@nordlandssykehuset.no</a><br>75 53 40 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>922</td>
+                <td>100</td>
+                <td>1028</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmarkssykehuset_hf_-_hammerfest_sykehus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hammerfest.vgs.no" target="_blank">Hammerfest videregående skole</a></td>
+                <td>Hammerfest</td>
+                <td class="contact">-</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>241</td>
+                <td>101</td>
+                <td>344</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hammerfest_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://alta.vgs.no" target="_blank">Alta videregående skole</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>272</td>
+                <td>153</td>
+                <td>430</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ffk.no/fylkesbibliotek" target="_blank">Finnmark fylkesbibliotek</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>274</td>
+                <td>210</td>
+                <td>489</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmark_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ffk.no/tilskudd" target="_blank">Finnmark fylkeskommune tilskudd</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>274</td>
+                <td>210</td>
+                <td>489</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmark_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.ffk.no" target="_blank">Tannhelsetjenesten Finnmark</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\tannhelsetjenesten_finnmark.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestfinnmark.no" target="_blank">Vest-Finnmark regionråd</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vest-finnmark_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://visitfrlta.com" target="_blank">Visit Alta</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\visit_alta.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://finnmarkssykehuset.no/kirkenes" target="_blank">Finnmarkssykehuset HF - Kirkenes sykehus</a></td>
+                <td>Kirkenes</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>922</td>
+                <td>100</td>
+                <td>1028</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmarkssykehuset_hf_-_kirkenes_sykehus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirkenes.vgs.no" target="_blank">Kirkenes videregående skole</a></td>
+                <td>Kirkenes</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>196</td>
+                <td>71</td>
+                <td>296</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\kirkenes_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ostfinnmark.no" target="_blank">Øst-Finnmark regionråd</a></td>
+                <td>Vardø</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\øst-finnmark_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vadso.vgs.no" target="_blank">Vadsø videregående skole</a></td>
+                <td>Vadsø</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>288</td>
+                <td>177</td>
+                <td>471</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vadsø_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://altamuseum.no" target="_blank">Alta Museum</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>111</td>
+                <td>144</td>
+                <td>261</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\alta_museum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nasjonalparkstyre.no/seiland" target="_blank">Seiland Nasjonalparkstyre</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:fmfipostmottak@fylkesmanne.no">fmfipostmottak@fylkesmanne.no</a></td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>208</td>
+                <td>120</td>
+                <td>362</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\seiland_nasjonalparkstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.alta.museum.no" target="_blank">Verdensarvsenter for Bergkunst- Alta Museum IKS</a></td>
+                <td>Alta</td>
+                <td class="contact"><a href="mailto:post@altamuseum.no">post@altamuseum.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\verdensarvsenter_for_bergkunst-_alta_museum_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/vestre-finnmark" target="_blank">Vestre Finnmark tingrett</a></td>
+                <td>Alta</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\vestre_finnmark_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.finnmarkssyskehuset.no" target="_blank">Finnmarkssykehuset HF</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:postmottak@finnmarkssykehuset.no">postmottak@finnmarkssykehuset.no</a><br>78 96 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\finnmarkssykehuset_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hammerfest.havn" target="_blank">Hammerfest Havn KF</a></td>
+                <td>Hammerfest</td>
+                <td class="contact"><a href="mailto:post@hammerfest.havn.no">post@hammerfest.havn.no</a><br>78 40 74 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hammerfest_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://husbanken.no" target="_blank">Husbanken Nord</a></td>
+                <td>Hammerfest</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>247</td>
+                <td>171</td>
+                <td>419</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\husbanken_nord.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.barentshallene.no" target="_blank">Barentshallene Sør-varanger KF</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact"><a href="mailto:aan@svk.no">aan@svk.no</a><br>78 99 77 11</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>361</td>
+                <td>107</td>
+                <td>577</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\barentshallene_sør-varanger_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/indre-og-ostre-finnmark" target="_blank">Indre og Østre Finnmark tingrett</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\indre_og_østre_finnmark_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://samefrtinget.no" target="_blank">Sametingets administrasjon</a></td>
+                <td>Karasjok</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\sametingets_administrasjon.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sor-varanger.kommune.no/" target="_blank">Sør-varanger Kommune</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact"><a href="mailto:postmottak@sor-varanger.kommune.no">postmottak@sor-varanger.kommune.no</a><br>78 97 74 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>345</td>
+                <td>102</td>
+                <td>571</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\sør-varanger_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nasjonalparkstyre.no" target="_blank">Øvre Pasvik Nasjonalparkstyre/ Báhcaveaji Álbmotmeahcci</a></td>
+                <td>Sør-Varanger</td>
+                <td class="contact"><a href="mailto:sftfpost@statsforvalteren.no">sftfpost@statsforvalteren.no</a></td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>200</td>
+                <td>116</td>
+                <td>349</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\øvre_pasvik_nasjonalparkstyre_báhcaveaji_álbmotmea.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sykehusinnkjop.no" target="_blank">Sykehusinnkjøp HF</a></td>
+                <td>Vadsø</td>
+                <td class="contact"><a href="mailto:post@sykehusinnkjop.no">post@sykehusinnkjop.no</a><br>78 95 07 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>868</td>
+                <td>187</td>
+                <td>1090</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\sykehusinnkjøp_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kautokeino.kommune.no/" target="_blank">Guovdageainnu Suohkan / Kautokeino Kommune</a></td>
+                <td>Kautokeino</td>
+                <td class="contact"><a href="mailto:e-post@kautokeino.kommune.no">e-post@kautokeino.kommune.no</a><br>78 48 71 00</td>
+                <td>9</td>
+                <td><span class="badge good">0</span></td>
+                <td>129</td>
+                <td>125</td>
+                <td>255</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\guovdageainnu_suohkan_kautokeino_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kautokeino.kommune.no" target="_blank">Kautokeino kommune</a></td>
+                <td>Kautokeino</td>
+                <td class="contact">-</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>205</td>
+                <td>198</td>
+                <td>404</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\kautokeino_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://loppa.kommune.no" target="_blank">Loppa kommune</a></td>
+                <td>Loppa</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>92</td>
+                <td>208</td>
+                <td>306</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\loppa_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hasvik.kommune.no/" target="_blank">Hasvik Kommune</a></td>
+                <td>Hasvik</td>
+                <td class="contact"><a href="mailto:post@hasvik.kommune.no">post@hasvik.kommune.no</a><br>78 45 27 00</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>21</td>
+                <td>78</td>
+                <td>167</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\hasvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.havoysundhavnevesen.no" target="_blank">Måsøy Næring og Havn KF</a></td>
+                <td>Måsøy</td>
+                <td class="contact"><a href="mailto:postmottak@masoy.kommune.no">postmottak@masoy.kommune.no</a><br>46 92 87 54</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\måsøy_næring_og_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nasjonalparkstyre.no/Stabbursdalen" target="_blank">Stabbursdalen Nasjonalparkstyre</a></td>
+                <td>Porsanger</td>
+                <td class="contact"><a href="mailto:karoline.salmila@statsforvalteren.no">karoline.salmila@statsforvalteren.no</a><br>78 95 03 77</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>150</td>
+                <td>106</td>
+                <td>299</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\stabbursdalen_nasjonalparkstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gamvik.kommune.no/" target="_blank">Gamvik Kommune</a></td>
+                <td>Gamvik</td>
+                <td class="contact"><a href="mailto:postmottak@gamvik.kommune.no">postmottak@gamvik.kommune.no</a><br>78 49 63 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>23</td>
+                <td>93</td>
+                <td>121</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\gamvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tana.kommune.no/" target="_blank">Deanu Gielda / Tana Kommune</a></td>
+                <td>Tana</td>
+                <td class="contact"><a href="mailto:postmottak@tana.kommune.no">postmottak@tana.kommune.no</a><br>46 40 02 00</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>108</td>
+                <td>67</td>
+                <td>239</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\deanu_gielda_tana_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sapmi.no" target="_blank">Sápmi Næringshage AS</a></td>
+                <td>Tana</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\sápmi_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tana.kommune.no" target="_blank">Tana kommune</a></td>
+                <td>Tana</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>108</td>
+                <td>67</td>
+                <td>239</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\tana_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.berlevag-havn.no" target="_blank">Berlevåg Havn KF</a></td>
+                <td>Berlevåg</td>
+                <td class="contact"><a href="mailto:post@berlevag.havn.no">post@berlevag.havn.no</a></td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>4</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\berlevåg_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.batsfjord.havn.no" target="_blank">Båtsfjord Havn KF</a></td>
+                <td>Båtsfjord</td>
+                <td class="contact"><a href="mailto:havnesjef@batsfjord.havn.no">havnesjef@batsfjord.havn.no</a><br>78 98 55 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\båtsfjord_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.dvmv.no" target="_blank">Stiftelsen Deanu ja Vàrjjat Museasiida/ Tana og Varanger Museumssiida</a></td>
+                <td>Nesseby</td>
+                <td class="contact"><a href="mailto:post@dvmv.no">post@dvmv.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="finnmark\stiftelsen_deanu_ja_vàrjjat_museasiida_tana_og_var.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,2472 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.kinn.kommune.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background: #f5f5f5; 
+        }
+        h1, h2, h3 { color: #1a1a2e; }
+        
+        /* Header */
+        .header { 
+            background: linear-gradient(135deg, #003366 0%, #004080 100%); 
+            color: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+        }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        
+        /* Control Bar */
+        .control-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+        .control-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-label {
+            font-weight: 600;
+            color: #333;
+            margin-right: 5px;
+        }
+        
+        /* Filter Buttons */
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .filter-btn:hover { background: #f5f5f5; }
+        .filter-btn.active { border-color: #003366; background: #e3f2fd; }
+        .filter-btn.critical { border-color: #c00; }
+        .filter-btn.critical.active { background: #fee; border-color: #c00; }
+        .filter-btn.serious { border-color: #e65100; }
+        .filter-btn.serious.active { background: #fff3e0; border-color: #e65100; }
+        .filter-btn.moderate { border-color: #f9a825; }
+        .filter-btn.moderate.active { background: #fff8e1; border-color: #f9a825; }
+        .filter-btn.minor { border-color: #2e7d32; }
+        .filter-btn.minor.active { background: #e8f5e9; border-color: #2e7d32; }
+        
+        .filter-count {
+            background: #666;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .filter-btn.critical .filter-count { background: #c00; }
+        .filter-btn.serious .filter-count { background: #e65100; }
+        .filter-btn.moderate .filter-count { background: #f9a825; color: #333; }
+        .filter-btn.minor .filter-count { background: #2e7d32; }
+        
+        /* Action Buttons */
+        .action-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .action-btn.primary {
+            background: #003366;
+            color: white;
+        }
+        .action-btn.primary:hover { background: #004080; }
+        .action-btn.secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 1px solid #ddd;
+        }
+        .action-btn.secondary:hover { background: #eee; }
+        .action-btn.rescan {
+            background: #2e7d32;
+            color: white;
+        }
+        .action-btn.rescan:hover { background: #1b5e20; }
+        
+        /* Statement Section */
+        .statement-section { 
+            background: white; 
+            border-radius: 8px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Summary Grid */
+        .summary { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0; 
+        }
+        .stat { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            text-align: center; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; }
+        
+        /* Page Navigation */
+        .page-nav {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .page-nav h3 { margin: 0 0 10px 0; font-size: 14px; color: #666; }
+        .page-nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .page-nav-item {
+            padding: 6px 12px;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .page-nav-item:hover { background: #e0e0e0; }
+        .page-nav-item .issue-count {
+            background: #c00;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 11px;
+            margin-left: 6px;
+        }
+        
+        /* Page Results */
+        .page { 
+            background: white; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            overflow: hidden; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .page.hidden { display: none; }
+        .page-header { 
+            background: #f8f9fa; 
+            padding: 15px 20px; 
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .page-header-left { flex: 1; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .page-stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .page-stat {
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .page-stat.critical { background: #fee; color: #c00; }
+        .page-stat.serious { background: #fff3e0; color: #e65100; }
+        .page-stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .page-stat.minor { background: #e8f5e9; color: #2e7d32; }
+        
+        .issues { padding: 20px; }
+        .issue { 
+            background: #fff; 
+            border-left: 4px solid #ccc; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 0 4px 4px 0; 
+        }
+        .issue.hidden { display: none; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 10px; 
+            flex-wrap: wrap; 
+            gap: 10px; 
+        }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { 
+            background: #f5f5f5; 
+            padding: 10px; 
+            font-family: monospace; 
+            font-size: 0.9em; 
+            overflow-x: auto; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+        }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        
+        /* Details/Summary */
+        details { margin: 10px 0; }
+        details.hidden { display: none; }
+        summary { 
+            cursor: pointer; 
+            padding: 12px 15px; 
+            background: #f5f5f5; 
+            border-radius: 4px; 
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary:hover { background: #eee; }
+        summary::marker { content: ''; }
+        summary::before { 
+            content: '▶'; 
+            margin-right: 10px; 
+            transition: transform 0.2s;
+            display: inline-block;
+        }
+        details[open] summary::before { transform: rotate(90deg); }
+        .summary-badges {
+            display: flex;
+            gap: 6px;
+        }
+        .summary-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        .summary-badge.critical { background: #c00; color: white; }
+        .summary-badge.serious { background: #e65100; color: white; }
+        .summary-badge.moderate { background: #f9a825; color: #333; }
+        .summary-badge.minor { background: #2e7d32; color: white; }
+        
+        /* Legend */
+        .legend { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+        }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        
+        /* Footer */
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Visible count */
+        .visible-count {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #666;
+        }
+        .visible-count strong { color: #333; }
+        
+        /* Rescan Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .modal h3 { margin-top: 0; }
+        .modal-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        .modal-input:focus { border-color: #003366; outline: none; }
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.kinn.kommune.no</p>
+        <p><strong>Dato:</strong> 2026-01-07T07:12:30.627324</p>
+    </div>
+    
+    <!-- Control Bar -->
+    <div class="control-bar">
+        <div class="control-group">
+            <span class="control-label">Filter:</span>
+            <button class="filter-btn critical active" data-filter="critical" onclick="toggleFilter('critical')">
+                Kritisk <span class="filter-count">0</span>
+            </button>
+            <button class="filter-btn serious active" data-filter="serious" onclick="toggleFilter('serious')">
+                Alvorlig <span class="filter-count">22</span>
+            </button>
+            <button class="filter-btn moderate active" data-filter="moderate" onclick="toggleFilter('moderate')">
+                Moderat <span class="filter-count">40</span>
+            </button>
+            <button class="filter-btn minor active" data-filter="minor" onclick="toggleFilter('minor')">
+                Mindre <span class="filter-count">48</span>
+            </button>
+        </div>
+        
+        <div class="control-group">
+            <button class="action-btn secondary" onclick="expandAll()">📂 Vis alle</button>
+            <button class="action-btn secondary" onclick="collapseAll()">📁 Skjul alle</button>
+        </div>
+        
+        <div class="control-group" style="margin-left: auto;">
+            <button class="action-btn rescan" onclick="showRescanModal()">🔄 Ny skanning</button>
+        </div>
+    </div>
+    
+    <!-- Visible Count -->
+    <div class="visible-count" id="visibleCount">
+        Viser <strong>110</strong> av 110 avvik
+    </div>
+
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+
+            <div class="statement-item error">
+                ❌ <strong>Tilgjengelighetserklæring mangler</strong>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat" onclick="scrollToPage(0)">
+            <div class="stat-value">21</div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">110</div>
+            <div class="stat-label">Totalt avvik</div>
+        </div>
+        <div class="stat critical" onclick="filterOnly('critical')">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious" onclick="filterOnly('serious')">
+            <div class="stat-value">22</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate" onclick="filterOnly('moderate')">
+            <div class="stat-value">40</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor" onclick="filterOnly('minor')">
+            <div class="stat-value">48</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">0</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+    </div>
+
+    <div class="page-nav">
+        <h3>HURTIGNAVIGASJON TIL SIDER</h3>
+        <div class="page-nav-list">
+
+            <a class="page-nav-item" onclick="scrollToPage(0)">
+                Kinn kommune
+                <span class="issue-count">6</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(1)">
+                Våre tenester - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(2)">
+                Møteplan - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(3)">
+                Sjølvbetening - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(4)">
+                Høyring og kunngjeringar - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(5)">
+                Kart - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(6)">
+                Møteplan - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(7)">
+                For tilsette - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(8)">
+                Møteplan - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(9)">
+                Finn tilsett - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(10)">
+                Kinn kommune
+                <span class="issue-count">6</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(11)">
+                Webcruiter - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(12)">
+                Kommuneplanen sin arealdel - Kinn kommun...
+                <span class="issue-count">12</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(13)">
+                Kalender - Kinn kommune
+                <span class="issue-count">2</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(14)">
+                Velkomen til Kinn! - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(15)">
+                Søk etter sak - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(16)">
+                Økonomi og planlegging - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(17)">
+                Søknadssenter (skjema) - Kinn kommune
+                <span class="issue-count">7</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(18)">
+                Politikk - Kinn kommune
+                <span class="issue-count">5</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(19)">
+                Møteplan - Kinn kommune
+                <span class="issue-count">4</span>
+            </a>
+
+            <a class="page-nav-item" onclick="scrollToPage(20)">
+                Kontakt oss - Kinn kommune
+                <span class="issue-count">9</span>
+            </a>
+
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page" id="page-0">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">3 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (3 avvik)</span><span class="summary-badges"><span class="summary-badge minor">3 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_MidtSone_ctl00_WebpartId_57_WebpartId_57_txtSearch" name="ctl00$ctl00$ctl00$innhold$MidtSone$ctl00$WebpartId_57$WebpartId_57$txtSearch" placeholder="For eksempel skulerute eller barnehage" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-1">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Våre tenester - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/vare-tenester/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-2">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Møteplan - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/politikk/moteplan/#/details/m-e1a6ab11__6b4d__4733__bbeb__849aa26734de-1193!jQtTVZ</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-3">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Sjølvbetening - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/sjolvbetening/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-4">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Høyring og kunngjeringar - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/sok-etter-sak/hoyring-og-kunngjeringar/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-5">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kart - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/vare-tenester/plan-byggesak-og-landbruk/kart/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-serious" open><summary><span>2.4.6 Headings and Labels (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h2 class="il-heading il-heading--h2"&gt; &lt;/h2&gt;</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details><details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-6">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Møteplan - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/politikk/moteplan/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-7">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>For tilsette - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/velkomen-til-kinn/for-tilsette/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-8">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Møteplan - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/politikk/moteplan/#/details/m-e1a6ab11__6b4d__4733__bbeb__849aa26734de-1233!5GTqFR</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-9">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Finn tilsett - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/vare-tenester/finn-tilsett/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-10">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">3 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (3 avvik)</span><span class="summary-badges"><span class="summary-badge minor">3 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_innhold_MidtSone_ctl00_WebpartId_57_WebpartId_57_txtSearch" name="ctl00$ctl00$ctl00$innhold$MidtSone$ctl00$WebpartId_57$WebpartId_57$txtSearch" placeholder="For eksempel skulerute eller barnehage" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-11">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Webcruiter - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/jobb/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-12">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kommuneplanen sin arealdel - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/okonomi-og-planlegging/kommuneplan/kommuneplanen-sin-arealdel/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">7 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">3 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (3 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span><span class="summary-badge minor">1 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (110 characters)</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="15373" href="https://kinn.kommune.no/aktuelt/vi-har-gjennomfort-gode-samarbeidsokter-med-representantar-for-naringslivet.14164.aspx"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>4.1.2 Name, Role, Value (7 avvik)</span><span class="summary-badges"><span class="summary-badge serious">7 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_0"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_1"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_2"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_3"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_4"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_5"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_1cf691d1-822f-4d33-8f73-63f245a95d58_svar_7"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-13">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kalender - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/Kalender/CalendarEvents.aspx?lang=11&kategori=1&dir=ComingEvents&MId1=7</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-14">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Velkomen til Kinn! - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/velkomen-til-kinn/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-15">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Søk etter sak - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/sok-etter-sak/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-16">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Økonomi og planlegging - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/okonomi-og-planlegging/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-17">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Søknadssenter (skjema) - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/sjolvbetening/soknadssenter-skjema/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">5 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate has-minor" open><summary><span>2.4.4 Link Purpose (In Context) (4 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til side 2'</p>
+                <div class="element">&lt;a aria-label="Gå til side 2" class="ac-content-pagination-item ac-content-pagination-item--link" href="/sjolvbetening/soknadssenter-skjema/?pageNumber=2"&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til neste side, Vald side 2'</p>
+                <div class="element">&lt;a aria-label="Gå til neste side, Vald side 2" class="ac-content-pagination-item ac-content-pagination-item--link" href="/sjolvbetening/soknadssenter-skjema/?pageNumber=2" rel="next"&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (3 avvik)</span><span class="summary-badges"><span class="summary-badge minor">3 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input class="ac-content-form-textbox ac-content-form-textbox--text js-trigger-search" id="content-form-textbox-bb5a5f2d-e8ba-4492-958f-13f441e68321" name="soketekst" placeholder="Søk etter skjema" value=""/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-18">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Politikk - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/politikk/</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">1 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>2.4.1 Bypass Blocks (1 avvik)</span><span class="summary-badges"><span class="summary-badge serious">1 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.1</span>
+                        <span class="criterion">(2.4.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>No skip link or main landmark found</p>
+                <div class="element">&lt;body lang="nn"&gt;</div>
+                <div class="fix">Add skip link at start of page, or useelement for main content</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-19">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Møteplan - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/politikk/moteplan/#/details/m-e1a6ab11__6b4d__4733__bbeb__849aa26734de-1206!oaRO4G</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page" id="page-20">
+        <div class="page-header">
+            <div class="page-header-left">
+                <h3>Kontakt oss - Kinn kommune</h3>
+                <div class="page-url">https://kinn.kommune.no/toppmeny/kontakt-oss.2209.aspx</div>
+            </div>
+            <div class="page-stats">
+<span class="page-stat serious">5 alvorlige</span><span class="page-stat moderate">2 moderate</span><span class="page-stat minor">2 mindre</span>
+            </div>
+        </div>
+        <div class="issues">
+<details class="has-moderate" open><summary><span>2.4.4 Link Purpose (In Context) (2 avvik)</span><span class="summary-badges"><span class="summary-badge moderate">2 moderat</span></span></summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12416" href="https://www.facebook.com/kinn.kommune.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Facebook&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="12421" href="https://www.instagram.com/kinn.kommune/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Instagram&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details class="has-minor" open><summary><span>1.3.5 Identify Input Purpose (2 avvik)</span><span class="summary-badges"><span class="summary-badge minor">2 mindre</span></span></summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ctl04_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ctl04$txtSearch" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Input appears to be for 'search' but lacks autocomplete</p>
+                <div class="element">&lt;input aria-label="Søketekst" class="js-liten-trigger-search" id="ctl00_ctl00_ctl00_ctl00_innhold_ucSokLiten_txtSearch" name="ctl00$ctl00$ctl00$ctl00$innhold$ucSokLiten$txtSearch" placeholder="Kva leitar du etter?" type="text"/&gt;</div>
+                <div class="fix">Add appropriate autocomplete attribute for search fields</div>
+            </div>
+</details><details class="has-serious" open><summary><span>4.1.2 Name, Role, Value (5 avvik)</span><span class="summary-badges"><span class="summary-badge serious">5 alvorlig</span></span></summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_43830b4a-9051-4a38-ae7b-fe8a0709c770_svar_3"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_43830b4a-9051-4a38-ae7b-fe8a0709c770_svar_4"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_43830b4a-9051-4a38-ae7b-fe8a0709c770_svar_5"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_43830b4a-9051-4a38-ae7b-fe8a0709c770_svar_6"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>aria-hidden='true' contains focusable elements</p>
+                <div class="element">&lt;div aria-hidden="true" class="divFaqSvar" id="faq_43830b4a-9051-4a38-ae7b-fe8a0709c770_svar_7"&gt;</div>
+                <div class="fix">Add tabindex='-1' to focusable elements, or don't hide the container</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+    
+    <!-- Rescan Modal -->
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <p>Skriv inn URL-en du vil skanne:</p>
+            <input type="text" class="modal-input" id="rescanUrl" value="https://www.kinn.kommune.no" placeholder="https://example.com">
+            <p style="font-size: 13px; color: #666;">
+                Kopier og kjør denne kommandoen i terminalen:
+            </p>
+            <div class="element" id="rescanCommand" style="font-size: 12px;">
+                python checker.py https://www.kinn.kommune.no --max-pages 20 --format html
+            </div>
+            <div class="modal-actions">
+                <button class="action-btn secondary" onclick="closeRescanModal()">Avbryt</button>
+                <button class="action-btn primary" onclick="copyCommand()">📋 Kopier kommando</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Filter state
+        const activeFilters = {
+            critical: true,
+            serious: true,
+            moderate: true,
+            minor: true
+        };
+        
+        // Toggle individual filter
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            
+            // Update button state
+            const btn = document.querySelector(`[data-filter="${severity}"]`);
+            btn.classList.toggle('active', activeFilters[severity]);
+            
+            applyFilters();
+        }
+        
+        // Filter to show only one severity
+        function filterOnly(severity) {
+            // Turn off all filters
+            Object.keys(activeFilters).forEach(key => {
+                activeFilters[key] = false;
+                document.querySelector(`[data-filter="${key}"]`).classList.remove('active');
+            });
+            
+            // Turn on selected filter
+            activeFilters[severity] = true;
+            document.querySelector(`[data-filter="${severity}"]`).classList.add('active');
+            
+            applyFilters();
+        }
+        
+        // Apply current filters to all issues
+        function applyFilters() {
+            let visibleCount = 0;
+            const totalCount = 110;
+            
+            // Filter individual issues
+            document.querySelectorAll('.issue[data-severity]').forEach(issue => {
+                const severity = issue.dataset.severity;
+                const visible = activeFilters[severity];
+                issue.classList.toggle('hidden', !visible);
+                if (visible) visibleCount++;
+            });
+            
+            // Update details visibility based on whether they have visible issues
+            document.querySelectorAll('details').forEach(detail => {
+                const hasVisible = Array.from(detail.querySelectorAll('.issue[data-severity]'))
+                    .some(issue => !issue.classList.contains('hidden'));
+                detail.classList.toggle('hidden', !hasVisible);
+            });
+            
+            // Update visible count display
+            document.getElementById('visibleCount').innerHTML = 
+                `Viser <strong>${visibleCount}</strong> av ${totalCount} avvik`;
+        }
+        
+        // Expand all details
+        function expandAll() {
+            document.querySelectorAll('details:not(.hidden)').forEach(d => d.open = true);
+        }
+        
+        // Collapse all details
+        function collapseAll() {
+            document.querySelectorAll('details').forEach(d => d.open = false);
+        }
+        
+        // Scroll to page
+        function scrollToPage(index) {
+            const page = document.getElementById(`page-${index}`);
+            if (page) {
+                page.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        // Rescan modal
+        function showRescanModal() {
+            document.getElementById('rescanModal').classList.add('active');
+            updateRescanCommand();
+        }
+        
+        function closeRescanModal() {
+            document.getElementById('rescanModal').classList.remove('active');
+        }
+        
+        function updateRescanCommand() {
+            const url = document.getElementById('rescanUrl').value;
+            document.getElementById('rescanCommand').textContent = 
+                `python checker.py ${url} --max-pages 20 --format html`;
+        }
+        
+        document.getElementById('rescanUrl').addEventListener('input', updateRescanCommand);
+        
+        function copyCommand() {
+            const command = document.getElementById('rescanCommand').textContent;
+            navigator.clipboard.writeText(command).then(() => {
+                alert('Kommando kopiert til utklippstavlen!');
+            });
+        }
+        
+        // Close modal on overlay click
+        document.getElementById('rescanModal').addEventListener('click', function(e) {
+            if (e.target === this) closeRescanModal();
+        });
+        
+        // Keyboard shortcut (Escape to close modal)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+    </script>
+</body>
+</html>

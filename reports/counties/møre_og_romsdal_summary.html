@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Møre og Romsdal WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Møre og Romsdal WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Møre og Romsdal</p>
+        <p><strong>Skannet:</strong> 2026-02-11 12:50</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">109</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">109</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">723</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">2545</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">16328</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">34201</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://vitimusea.no" target="_blank">Stiftinga Viti</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:post@vitimusea.no">post@vitimusea.no</a><br>70 23 90 00</td>
+                <td>16</td>
+                <td><span class="badge critical">346</span></td>
+                <td>348</td>
+                <td>205</td>
+                <td>956</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\stiftinga_viti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/Kristiansund" target="_blank">Kristiansund Kirkelige Fellesråd</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:kirkevergen@kristiansund.kirken.no">kirkevergen@kristiansund.kirken.no</a><br>71 57 51 90</td>
+                <td>16</td>
+                <td><span class="badge critical">301</span></td>
+                <td>552</td>
+                <td>2490</td>
+                <td>3351</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kristiansund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kyrkja.no/vanylven" target="_blank">Vanylven Kirkelige Fellesråd</a></td>
+                <td>Vanylven</td>
+                <td class="contact"><a href="mailto:rb238@kyrkja.no">rb238@kyrkja.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">301</span></td>
+                <td>606</td>
+                <td>2472</td>
+                <td>3388</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\vanylven_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Hustad fengsel</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">286</span></td>
+                <td>357</td>
+                <td>211</td>
+                <td>858</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\hustad_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/more" target="_blank">Møre bispedømme</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>10</td>
+                <td><span class="badge critical">172</span></td>
+                <td>265</td>
+                <td>1433</td>
+                <td>1918</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.romsdalsmuseet.no" target="_blank">Romsdalsmuseet Sti</a></td>
+                <td>Molde</td>
+                <td class="contact">71 20 24 60</td>
+                <td>16</td>
+                <td><span class="badge critical">130</span></td>
+                <td>3992</td>
+                <td>158</td>
+                <td>4493</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\romsdalsmuseet_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.molde.kirken.no" target="_blank">Molde Kirkelige Fellesråd</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:kirkevergen@molde.kirken.no">kirkevergen@molde.kirken.no</a><br>71 11 14 70</td>
+                <td>16</td>
+                <td><span class="badge critical">121</span></td>
+                <td>70</td>
+                <td>244</td>
+                <td>486</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\molde_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hivolda.no" target="_blank">Høgskolen i Volda</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:postmottak@hivolda.no">postmottak@hivolda.no</a><br>70 07 50 00</td>
+                <td>16</td>
+                <td><span class="badge critical">118</span></td>
+                <td>20</td>
+                <td>323</td>
+                <td>597</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\høgskolen_i_volda.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kyrkja.alesund.no/" target="_blank">Ålesund Kyrkjelege Fellesråd</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">110</span></td>
+                <td>4</td>
+                <td>115</td>
+                <td>229</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Ålesund kirkelige fellesråd</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">90</span></td>
+                <td>144</td>
+                <td>355</td>
+                <td>727</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.krisesenteretmolde.no" target="_blank">Krisesenteret for Molde og Omegn IKS</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:post@krisesenteretmolde.no">post@krisesenteretmolde.no</a><br>71 25 66 66</td>
+                <td>15</td>
+                <td><span class="badge critical">76</span></td>
+                <td>125</td>
+                <td>164</td>
+                <td>417</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\krisesenteret_for_molde_og_omegn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://akp.no" target="_blank">ÅKP Blue Innovation Arena</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge critical">70</span></td>
+                <td>21</td>
+                <td>66</td>
+                <td>160</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\åkp_blue_innovation_arena.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.norbr.no" target="_blank">Nordmøre og Romsdal Brann og Redning IKS</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:postmottak@norbr.no">postmottak@norbr.no</a><br>71 19 18 00</td>
+                <td>13</td>
+                <td><span class="badge critical">61</span></td>
+                <td>155</td>
+                <td>163</td>
+                <td>387</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\nordmøre_og_romsdal_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sunnmoreregionrad.no" target="_blank">Sunnmøre Regionråd IKS</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:sverre.ovrelid.steen@sunnmoreregionråd.no">sverre.ovrelid.steen@sunnmoreregionråd.no</a><br>70 16 20 00</td>
+                <td>16</td>
+                <td><span class="badge serious">45</span></td>
+                <td>485</td>
+                <td>289</td>
+                <td>821</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunnmøre_regionråd_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.friluftsraadet.no" target="_blank">Sunnmøre Friluftsråd Kommunalt Oppgåvefellesskap</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:anne.emblem@friluftsraadet.no">anne.emblem@friluftsraadet.no</a></td>
+                <td>8</td>
+                <td><span class="badge serious">43</span></td>
+                <td>60</td>
+                <td>143</td>
+                <td>274</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunnmøre_friluftsråd_kommunalt_oppgåvefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.knhavn.no" target="_blank">Kristiansund og Nordmøre Havn IKS</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:info@knhavn.no">info@knhavn.no</a></td>
+                <td>13</td>
+                <td><span class="badge serious">36</span></td>
+                <td>93</td>
+                <td>286</td>
+                <td>416</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kristiansund_og_nordmøre_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://romsdal.no" target="_blank">Romsdal regionråd</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge serious">35</span></td>
+                <td>4</td>
+                <td>68</td>
+                <td>118</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\romsdal_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rir.no" target="_blank">Romsdalshalvøya Interkommunale Renovasjonsselskap IKS</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:rir@rir.no">rir@rir.no</a><br>71 21 34 50</td>
+                <td>14</td>
+                <td><span class="badge serious">32</span></td>
+                <td>200</td>
+                <td>61</td>
+                <td>319</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\romsdalshalvøya_interkommunale_renovasjonsselskap_.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kontrollutvalgromsdal.no/" target="_blank">Kontrollutvalgssekretariatet for Romsdal ko</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:postmottak@kontrollutvalgromsdal.no">postmottak@kontrollutvalgromsdal.no</a></td>
+                <td>14</td>
+                <td><span class="badge serious">29</span></td>
+                <td>41</td>
+                <td>319</td>
+                <td>389</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kontrollutvalgssekretariatet_for_romsdal_ko.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.110-sentralen.no" target="_blank">Møre og Romsdal 110-sentral Ålesund KF</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:110-sentralen@alesund.kommune.no">110-sentralen@alesund.kommune.no</a><br>70 11 99 99</td>
+                <td>16</td>
+                <td><span class="badge serious">24</span></td>
+                <td>1194</td>
+                <td>201</td>
+                <td>1424</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_110-sentral_ålesund_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kontrollutval.no" target="_blank">Sunnmøre Kontrollutvalsekretariat IKS</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:post@sksiks.no">post@sksiks.no</a><br>70 17 21 50</td>
+                <td>14</td>
+                <td><span class="badge serious">20</span></td>
+                <td>3</td>
+                <td>153</td>
+                <td>177</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunnmøre_kontrollutvalsekretariat_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statsforvalteren.no/more-og-romsdal" target="_blank">Statsforvalteren i Møre og Romsdal</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:sfmrpost@statsforvalteren.no">sfmrpost@statsforvalteren.no</a><br>71258400</td>
+                <td>16</td>
+                <td><span class="badge serious">19</span></td>
+                <td>5</td>
+                <td>309</td>
+                <td>400</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\statsforvalteren_i_møre_og_romsdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/alesund" target="_blank">Ålesund Lufthavn Vigra</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>116</td>
+                <td>131</td>
+                <td>263</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_lufthavn_vigra.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://arim.no" target="_blank">ÅRIM IKS</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">12</span></td>
+                <td>1138</td>
+                <td>210</td>
+                <td>1370</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\årim_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.teatretvart.no" target="_blank">AS Regionteatret i Møre og Romsdal</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:post@teatretvart.no">post@teatretvart.no</a><br>71 24 02 80</td>
+                <td>16</td>
+                <td><span class="badge serious">11</span></td>
+                <td>405</td>
+                <td>319</td>
+                <td>737</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\as_regionteatret_i_møre_og_romsdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://alesund.kommune.no" target="_blank">Ålesund kommune</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:postmottak@alesund.kommune.no">postmottak@alesund.kommune.no</a><br>70 16 20 00</td>
+                <td>9</td>
+                <td><span class="badge moderate">9</span></td>
+                <td>196</td>
+                <td>36</td>
+                <td>257</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nordmore.museum.no" target="_blank">Stiftelsen Kristiansund Museum</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:post@nordmore.museum.no">post@nordmore.museum.no</a><br>71 58 70 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">8</span></td>
+                <td>156</td>
+                <td>81</td>
+                <td>346</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\stiftelsen_kristiansund_museum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kristiansund.kommune.no" target="_blank">Kristiansund Kommune</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:postmottak@kristiansund.kommune.no">postmottak@kristiansund.kommune.no</a><br>71 57 40 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>274</td>
+                <td>207</td>
+                <td>513</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kristiansund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.molde.kommune.no" target="_blank">Molde Eiendom KF</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:postmottak@molde.kommune.no">postmottak@molde.kommune.no</a><br>71 11 10 00</td>
+                <td>14</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>48</td>
+                <td>119</td>
+                <td>191</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\molde_eiendom_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fjord1.no" target="_blank">Fjord1 region Møre og Romsdal</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge moderate">5</span></td>
+                <td>75</td>
+                <td>38</td>
+                <td>124</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fjord1_region_møre_og_romsdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ikamr.no" target="_blank">Interkommunalt Arkiv for Møre og Romsdal IKS</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:postmottak@ikamr.no">postmottak@ikamr.no</a><br>40 61 86 00</td>
+                <td>15</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>0</td>
+                <td>164</td>
+                <td>215</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\interkommunalt_arkiv_for_møre_og_romsdal_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestkontroll.no" target="_blank">Vest Kontroll Kommunalt Oppgåvefellesskap</a></td>
+                <td>Vanylven</td>
+                <td class="contact"><a href="mailto:post@vestkontroll.no">post@vestkontroll.no</a></td>
+                <td>16</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>118</td>
+                <td>634</td>
+                <td>755</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\vest_kontroll_kommunalt_oppgåvefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-mr.no" target="_blank">Helse Møre og Romsdal HF</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact"><a href="mailto:postmottak@helse-mr.no">postmottak@helse-mr.no</a><br>70 10 50 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>959</td>
+                <td>109</td>
+                <td>1118</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\helse_møre_og_romsdal_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kystverket.no/midt" target="_blank">Kystverket Midt-Norge</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>47</td>
+                <td>231</td>
+                <td>279</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kystverket_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://frframmr.no" target="_blank">FRAM (Møre og Romsdal Kollektivtrafikk)</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fram_(møre_og_romsdal_kollektivtrafikk).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/frostating" target="_blank">Frostating lagmannsrett</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\frostating_lagmannsrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-midt.no" target="_blank">Helse Midt-Norge RHF</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>979</td>
+                <td>118</td>
+                <td>1147</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\helse_midt-norge_rhf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://mrfylke.no" target="_blank">Møre og Romsdal fylkeskommune</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact"><a href="mailto:post@mrfylke.no">post@mrfylke.no</a><br>71 28 00 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>439</td>
+                <td>81</td>
+                <td>529</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/more-og-romsdal" target="_blank">Møre og Romsdal politidistrikt</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact">-</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>13</td>
+                <td>17</td>
+                <td>107</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/more-og-romsdal" target="_blank">Møre og Romsdal tingrett</a></td>
+                <td>Møre og Romsdal</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>3</td>
+                <td>3</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://volda.vgs.no" target="_blank">Volda videregående skule</a></td>
+                <td>Volda</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>270</td>
+                <td>48</td>
+                <td>321</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\volda_videregående_skule.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://atlanten.vgs.no" target="_blank">Atlanten videregående skole</a></td>
+                <td>Kristiansund</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>214</td>
+                <td>36</td>
+                <td>251</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\atlanten_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sundbaten.no" target="_blank">Kristiansund Kommunale Sundbåtvesen KF</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:post@sundbaten.no">post@sundbaten.no</a></td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>17</td>
+                <td>368</td>
+                <td>455</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\kristiansund_kommunale_sundbåtvesen_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mrrevisjon.no" target="_blank">Møre og Romsdal Revisjon SA</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:post@mrrevisjon.no">post@mrrevisjon.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_revisjon_sa.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nordmore.no" target="_blank">Nordmøre IPR</a></td>
+                <td>Kristiansund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\nordmøre_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nordmorekrisesenter.no" target="_blank">Nordmøre Krisesenter IKS</a></td>
+                <td>Kristiansund</td>
+                <td class="contact"><a href="mailto:merete.egge.nerland@nordmorekrisesenter.no">merete.egge.nerland@nordmorekrisesenter.no</a><br>93 05 58 28</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>394</td>
+                <td>111</td>
+                <td>505</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\nordmøre_krisesenter_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.molde-romsdalshavn.no" target="_blank">Molde Havnevesen KF</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:office@molde-romsdalshavn.no">office@molde-romsdalshavn.no</a><br>71 19 16 20</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\molde_havnevesen_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.moldehavn.no" target="_blank">Molde og Romsdal Havn IKS</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:office@moldehavn.no">office@moldehavn.no</a><br>71 19 16 20</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\molde_og_romsdal_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://molde.vgs.no" target="_blank">Molde videregående skole</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>228</td>
+                <td>60</td>
+                <td>289</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\molde_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://mrfylke.no/tilskudd" target="_blank">Møre og Romsdal fylkeskommune tilskudd</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>473</td>
+                <td>87</td>
+                <td>573</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nesset.kirken.no" target="_blank">Nesset Kirkelige Fellesråd</a></td>
+                <td>Molde</td>
+                <td class="contact"><a href="mailto:kirkeverge@nesset.kirken.no">kirkeverge@nesset.kirken.no</a><br>71 23 14 55</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\nesset_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://romsdal.vgs.no" target="_blank">Romsdal videregående skole</a></td>
+                <td>Molde</td>
+                <td class="contact">-</td>
+                <td>11</td>
+                <td><span class="badge good">0</span></td>
+                <td>205</td>
+                <td>41</td>
+                <td>251</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\romsdal_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://frfram.no" target="_blank">FRAM (Møre og Romsdal)</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fram_(møre_og_romsdal).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagerlia.vgs.no" target="_blank">Fagerlia videregående skole</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fagerlia_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagskolen-mr.no" target="_blank">Fagskolen i Møre og Romsdal</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fagskolen_i_møre_og_romsdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://mrfylke.no/fylkesbibliotek" target="_blank">Møre og Romsdal fylkesbibliotek</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>477</td>
+                <td>85</td>
+                <td>572</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\møre_og_romsdal_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sunnmore.no" target="_blank">Sunnmøre regionråd</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunnmøre_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tafjord.no" target="_blank">Tafjord Kraft AS</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\tafjord_kraft_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.mrfylke.no" target="_blank">Tannhelsetjenesten Møre og Romsdal</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\tannhelsetjenesten_møre_og_romsdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://torghatten-trafikk.no" target="_blank">Torghatten Trafikkselskap AS</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\torghatten_trafikkselskap_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://alesundhavn.no" target="_blank">Ålesund Havn KF</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://alesund.vgs.no" target="_blank">Ålesund videregående skole</a></td>
+                <td>Ålesund</td>
+                <td class="contact">-</td>
+                <td>12</td>
+                <td><span class="badge good">0</span></td>
+                <td>242</td>
+                <td>73</td>
+                <td>316</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesund_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://alesund.havn.no" target="_blank">Ålesundregionens Havnevesen IKS</a></td>
+                <td>Ålesund</td>
+                <td class="contact"><a href="mailto:post@alesund.havn.no">post@alesund.havn.no</a><br>70 16 34 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>20</td>
+                <td>46</td>
+                <td>66</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ålesundregionens_havnevesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vanylven.kommune.no/" target="_blank">Vanylven Kommune</a></td>
+                <td>Vanylven</td>
+                <td class="contact"><a href="mailto:postmottak@vanylven.kommune.no">postmottak@vanylven.kommune.no</a><br>70 03 00 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>39</td>
+                <td>135</td>
+                <td>174</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\vanylven_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sande.kommune.no" target="_blank">Sande Kommune</a></td>
+                <td>Sande</td>
+                <td class="contact"><a href="mailto:post@sande.kommune.no">post@sande.kommune.no</a><br>70 02 67 00</td>
+                <td>13</td>
+                <td><span class="badge good">0</span></td>
+                <td>42</td>
+                <td>119</td>
+                <td>166</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sande_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.heroy.kommune.no/" target="_blank">Herøy Kommune</a></td>
+                <td>Herøy</td>
+                <td class="contact"><a href="mailto:postmottak@heroy.kommune.no">postmottak@heroy.kommune.no</a><br>70 08 13 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\herøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kyrkja.no/herøy" target="_blank">Herøy Kyrkjelege Fellesråd</a></td>
+                <td>Herøy</td>
+                <td class="contact"><a href="mailto:kyrkjeverja@heroy-kyrkje.no">kyrkjeverja@heroy-kyrkje.no</a><br>70 08 02 60</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\herøy_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ssikt.no" target="_blank">Søre Sunnmøre Ikt Kommunalt Oppgåvefellesskap</a></td>
+                <td>Herøy</td>
+                <td class="contact"><a href="mailto:post@ssikt.no">post@ssikt.no</a><br>70 09 59 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\søre_sunnmøre_ikt_kommunalt_oppgåvefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.reinhaldsverket.no" target="_blank">Søre Sunnmøre Reinhaldsverk IKS</a></td>
+                <td>Ulstein</td>
+                <td class="contact"><a href="mailto:firmapost@reinhaldsverket.no">firmapost@reinhaldsverket.no</a><br>70 00 70 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\søre_sunnmøre_reinhaldsverk_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ulstein.kommune.no/" target="_blank">Ulstein Kommune</a></td>
+                <td>Ulstein</td>
+                <td class="contact"><a href="mailto:postmottak@ulstein.kommune.no">postmottak@ulstein.kommune.no</a><br>70 01 75 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ulstein_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hareid.kommune.no/" target="_blank">Hareid Kommune</a></td>
+                <td>Hareid</td>
+                <td class="contact"><a href="mailto:postmottak@hareid.kommune.no">postmottak@hareid.kommune.no</a><br>70 09 50 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\hareid_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nynorsk.no" target="_blank">Nynorsk Kultursentrum, Musea for Skriftkultur Sti</a></td>
+                <td>Ørsta</td>
+                <td class="contact"><a href="mailto:post@nynorsk.no">post@nynorsk.no</a><br>70 04 75 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\nynorsk_kultursentrum,_musea_for_skriftkultur_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.orsta.kommune.no/" target="_blank">Ørsta Kommune</a></td>
+                <td>Ørsta</td>
+                <td class="contact"><a href="mailto:postmottak@orsta.kommune.no">postmottak@orsta.kommune.no</a><br>70 04 97 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ørsta_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kyrkja.no/ørsta" target="_blank">Ørsta Kyrkjelege Fellesråd</a></td>
+                <td>Ørsta</td>
+                <td class="contact">70 04 86 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ørsta_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kyrkja.no/storfjorden" target="_blank">Storfjorden Kyrkjelege Fellesråd</a></td>
+                <td>Stranda</td>
+                <td class="contact"><a href="mailto:post@storfjorden.kyrkja.no">post@storfjorden.kyrkja.no</a><br>70 27 27 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\storfjorden_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stranda-hamnevesen.no" target="_blank">Stranda Hamnevesen KF</a></td>
+                <td>Stranda</td>
+                <td class="contact"><a href="mailto:hamnevesenet@stranda.kommune.no">hamnevesenet@stranda.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\stranda_hamnevesen_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stranda.kommune.no/" target="_blank">Stranda Kommune</a></td>
+                <td>Stranda</td>
+                <td class="contact"><a href="mailto:post@stranda.kommune.no">post@stranda.kommune.no</a><br>70 26 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\stranda_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sykkylven.kommune.no/" target="_blank">Sykkylven Kommune</a></td>
+                <td>Sykkylven</td>
+                <td class="contact"><a href="mailto:postmottak@sykkylven.kommune.no">postmottak@sykkylven.kommune.no</a><br>70 24 65 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sykkylven_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sykkylven.kyrkja.no/" target="_blank">Sykkylven Kyrkjelege Fellesråd</a></td>
+                <td>Sykkylven</td>
+                <td class="contact"><a href="mailto:arild@sykkylven.kyrkja.no">arild@sykkylven.kyrkja.no</a><br>70 24 69 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sykkylven_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sula.kommune.no/" target="_blank">Sula Kommune</a></td>
+                <td>Sula</td>
+                <td class="contact"><a href="mailto:postmottak@sula.kommune.no">postmottak@sula.kommune.no</a><br>70 19 91 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sula_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.giske.kommune.no/" target="_blank">Giske Kommune</a></td>
+                <td>Giske</td>
+                <td class="contact"><a href="mailto:post@giske.kommune.no">post@giske.kommune.no</a><br>70 18 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\giske_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.giske.kyrkja.no" target="_blank">Giske Kyrkjelege Fellesråd</a></td>
+                <td>Giske</td>
+                <td class="contact"><a href="mailto:katrine.ruth.overa@giske.kommune.no">katrine.ruth.overa@giske.kommune.no</a><br>90 55 80 72</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\giske_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestnes.kommune.no" target="_blank">Vestnes Kommune</a></td>
+                <td>Vestnes</td>
+                <td class="contact"><a href="mailto:postmottak@vestnes.kommune.no">postmottak@vestnes.kommune.no</a><br>71 18 40 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\vestnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vestnes.kyrkja.no" target="_blank">Vestnes Kyrkjelege Fellesråd</a></td>
+                <td>Vestnes</td>
+                <td class="contact"><a href="mailto:hege.haugen@vestnes.kommune.no">hege.haugen@vestnes.kommune.no</a><br>71 18 42 35</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\vestnes_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rauma.kommune.no" target="_blank">Rauma Kommune</a></td>
+                <td>Rauma</td>
+                <td class="contact"><a href="mailto:post@rauma.kommune.no">post@rauma.kommune.no</a><br>71 16 66 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\rauma_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.aukra.kommune.no" target="_blank">Aukra Kommune</a></td>
+                <td>Aukra</td>
+                <td class="contact"><a href="mailto:post@aukra.kommune.no">post@aukra.kommune.no</a><br>71 17 15 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\aukra_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gassror.no" target="_blank">Gassror IKS</a></td>
+                <td>Aukra</td>
+                <td class="contact"><a href="mailto:post@gassror.no">post@gassror.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\gassror_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/averoy" target="_blank">Averøy Kirkelige Fellesråd</a></td>
+                <td>Averøy</td>
+                <td class="contact">71 51 33 88</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\averøy_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.averoy.kommune.no" target="_blank">Averøy Kommune</a></td>
+                <td>Averøy</td>
+                <td class="contact"><a href="mailto:post@averoy.kommune.no">post@averoy.kommune.no</a><br>71 51 35 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\averøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gjemnes.kommune.no/" target="_blank">Gjemnes Kommune</a></td>
+                <td>Gjemnes</td>
+                <td class="contact"><a href="mailto:post@gjemnes.kommune.no">post@gjemnes.kommune.no</a><br>71 29 11 11</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\gjemnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tingvoll.kommune.no/" target="_blank">Tingvoll Kommune</a></td>
+                <td>Tingvoll</td>
+                <td class="contact"><a href="mailto:postmottak@tingvoll.kommune.no">postmottak@tingvoll.kommune.no</a><br>71 53 24 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\tingvoll_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/nb-NO/fellesrad/tingvoll/" target="_blank">Tingvoll Kyrkjelege Fellesråd</a></td>
+                <td>Tingvoll</td>
+                <td class="contact"><a href="mailto:ml474@kirken.no">ml474@kirken.no</a><br>71 53 01 23</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\tingvoll_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sunndal.kommune.no/" target="_blank">Sunndal Kommune</a></td>
+                <td>Sunndal</td>
+                <td class="contact"><a href="mailto:post@sunndal.kommune.no">post@sunndal.kommune.no</a><br>71 69 90 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunndal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.surnadal.kommune.no/" target="_blank">Surnadal Kommune</a></td>
+                <td>Surnadal</td>
+                <td class="contact"><a href="mailto:post@surnadal.kommune.no">post@surnadal.kommune.no</a><br>71 65 58 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\surnadal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.surnadal.kyrkja.no" target="_blank">Surnadal Kyrkjelege Fellesråd</a></td>
+                <td>Surnadal</td>
+                <td class="contact"><a href="mailto:post@surnadal.kyrkja.no">post@surnadal.kyrkja.no</a><br>71 65 70 60</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\surnadal_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://smola-kirken.no" target="_blank">Smøla Kirkelige Fellesråd</a></td>
+                <td>Smøla</td>
+                <td class="contact"><a href="mailto:kirkevergen@smola.kommune.no">kirkevergen@smola.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\smøla_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.smola.kommune.no/" target="_blank">Smøla Kommune</a></td>
+                <td>Smøla</td>
+                <td class="contact"><a href="mailto:postmottak@smola.kommune.no">postmottak@smola.kommune.no</a><br>71 54 46 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\smøla_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.smolakommune.no" target="_blank">Smøla Nærings- og Kultursenter KF</a></td>
+                <td>Smøla</td>
+                <td class="contact"><a href="mailto:postmottak@smola.kommune.no">postmottak@smola.kommune.no</a><br>71 54 46 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\smøla_nærings-_og_kultursenter_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://aure.kommune.no" target="_blank">Aure kommune</a></td>
+                <td>Aure</td>
+                <td class="contact"><a href="mailto:postmottak@aure.kommune.no">postmottak@aure.kommune.no</a><br>71 64 74 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\aure_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nyskapingssenteret.no" target="_blank">Sunnmøre Næringshage AS</a></td>
+                <td>Volda</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\sunnmøre_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.volda.kommune.no/" target="_blank">Volda Kommune</a></td>
+                <td>Volda</td>
+                <td class="contact"><a href="mailto:postmottak@volda.kommune.no">postmottak@volda.kommune.no</a><br>70 05 87 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\volda_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.volda.kyrkja.no" target="_blank">Volda Kyrkjelege Fellesråd</a></td>
+                <td>Volda</td>
+                <td class="contact"><a href="mailto:kyrkjeverja@volda.kyrkja.no">kyrkjeverja@volda.kyrkja.no</a><br>70 07 40 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\volda_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fjord.kommune.no" target="_blank">Fjord kommune</a></td>
+                <td>Fjord</td>
+                <td class="contact"><a href="mailto:kommunepost@drammen.kommune.no">kommunepost@drammen.kommune.no</a><br>32040000</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\fjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.norddal-fjellstyre.no" target="_blank">Norddal Fjellstyre</a></td>
+                <td>Fjord</td>
+                <td class="contact"><a href="mailto:norddal@fjellstyrene.no">norddal@fjellstyrene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\norddal_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirkaihustadvika.no" target="_blank">Hustadvika Kirkelige Fellesråd</a></td>
+                <td>Hustadvika</td>
+                <td class="contact"><a href="mailto:kyrkjekontoret@hustadvikamenighet.no">kyrkjekontoret@hustadvikamenighet.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\hustadvika_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hustadvika.kommune.no" target="_blank">Hustadvika kommune</a></td>
+                <td>Hustadvika</td>
+                <td class="contact"><a href="mailto:postmottak@hustadvika.kommune.no">postmottak@hustadvika.kommune.no</a><br>71 26 81 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\hustadvika_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://haram.kommune.no" target="_blank">Haram Kommune</a></td>
+                <td>Haram</td>
+                <td class="contact"><a href="mailto:postmottak@haram.kommune.no">postmottak@haram.kommune.no</a><br>70 20 75 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\haram_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.haram.kyrkje.no" target="_blank">Haram Kyrkjelege Fellesråd</a></td>
+                <td>Haram</td>
+                <td class="contact"><a href="mailto:post@kyrkja.haram.no">post@kyrkja.haram.no</a><br>70 20 93 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\haram_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.idhuset.no" target="_blank">Ingebrigt Davik-huset Haram KF</a></td>
+                <td>Haram</td>
+                <td class="contact"><a href="mailto:post@idhuset.no">post@idhuset.no</a><br>70 20 73 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="møre_og_romsdal\ingebrigt_davik-huset_haram_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

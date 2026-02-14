@@ -1,0 +1,2802 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trøndelag WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Trøndelag WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Trøndelag</p>
+        <p><strong>Skannet:</strong> 2026-02-12 22:38</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">208</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">206</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">2293</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">14652</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">30301</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">78636</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.konsek.no" target="_blank">Konsek Trøndelag IKS</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:post@konsek.no">post@konsek.no</a><br>46 85 19 50</td>
+                <td>21</td>
+                <td><span class="badge critical">10194</span></td>
+                <td>4</td>
+                <td>10189</td>
+                <td>20770</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\konsek_trøndelag_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fbrt.no" target="_blank">Fosen Brann og Redningstjeneste IKS</a></td>
+                <td>Ørland</td>
+                <td class="contact"><a href="mailto:postmottak@fbrt.no">postmottak@fbrt.no</a><br>72 52 15 00</td>
+                <td>21</td>
+                <td><span class="badge critical">427</span></td>
+                <td>16</td>
+                <td>202</td>
+                <td>645</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fosen_brann_og_redningstjeneste_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fosenrenovasjon.no" target="_blank">Fosen Renovasjon IKS</a></td>
+                <td>Indre Fosen</td>
+                <td class="contact"><a href="mailto:post@fosenrenovasjon.no">post@fosenrenovasjon.no</a><br>73 85 85 90</td>
+                <td>21</td>
+                <td><span class="badge critical">361</span></td>
+                <td>146</td>
+                <td>182</td>
+                <td>697</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fosen_renovasjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://dokkhuset.no" target="_blank">Dokkhuset Scene</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">276</span></td>
+                <td>87</td>
+                <td>175</td>
+                <td>538</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\dokkhuset_scene.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nrk.no/trondelag" target="_blank">NRK Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">254</span></td>
+                <td>693</td>
+                <td>87</td>
+                <td>1115</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nrk_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.namdal.no" target="_blank">Midtre Namdal Kirkelige Fellesråd</a></td>
+                <td>Namsos</td>
+                <td class="contact"><a href="mailto:post@kirken.namdal.no">post@kirken.namdal.no</a><br>74 21 64 40</td>
+                <td>21</td>
+                <td><span class="badge critical">242</span></td>
+                <td>15</td>
+                <td>153</td>
+                <td>410</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\midtre_namdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://Inderoy.kirken.no" target="_blank">Inderøy Kirkelige Fellesråd</a></td>
+                <td>Inderøy</td>
+                <td class="contact"><a href="mailto:inderoy@kirken.no">inderoy@kirken.no</a><br>74 15 60 20</td>
+                <td>21</td>
+                <td><span class="badge critical">210</span></td>
+                <td>46</td>
+                <td>74</td>
+                <td>330</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\inderøy_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ika-trondelag.no" target="_blank">Interkommunalt Arkiv Trøndelag IKS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:postmottak@ika-trondelag.no">postmottak@ika-trondelag.no</a><br>73 88 45 00</td>
+                <td>20</td>
+                <td><span class="badge critical">186</span></td>
+                <td>373</td>
+                <td>278</td>
+                <td>838</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\interkommunalt_arkiv_trøndelag_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://naroysund.menigheter.no" target="_blank">Nærøysund Kirkelige Fellesråd</a></td>
+                <td>Nærøysund</td>
+                <td class="contact"><a href="mailto:post.naroysund@kirken.no">post.naroysund@kirken.no</a><br>74 39 54 00</td>
+                <td>22</td>
+                <td><span class="badge critical">181</span></td>
+                <td>15</td>
+                <td>107</td>
+                <td>303</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nærøysund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sparebank1.no/smn" target="_blank">SpareBank 1 SMN</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:smn@smn.no">smn@smn.no</a><br>91 50 73 00</td>
+                <td>21</td>
+                <td><span class="badge critical">172</span></td>
+                <td>2483</td>
+                <td>82</td>
+                <td>2755</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\sparebank_1_smn.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://olavshallen.no" target="_blank">Olavshallen</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:skotfoss@derdubor.org">skotfoss@derdubor.org</a></td>
+                <td>21</td>
+                <td><span class="badge critical">161</span></td>
+                <td>473</td>
+                <td>277</td>
+                <td>926</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\olavshallen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://norinnova.no" target="_blank">Norinnova AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">157</span></td>
+                <td>702</td>
+                <td>473</td>
+                <td>1354</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\norinnova_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.remidt.no" target="_blank">Remidt IKS</a></td>
+                <td>Orkland</td>
+                <td class="contact"><a href="mailto:firmapost@remidt.no">firmapost@remidt.no</a><br>72 48 37 00</td>
+                <td>21</td>
+                <td><span class="badge critical">148</span></td>
+                <td>75</td>
+                <td>155</td>
+                <td>378</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\remidt_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tkmidt.no" target="_blank">Kompetansesenteret Tannhelse Midt Trøndelag Fkf</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@tkmidt.no">post@tkmidt.no</a></td>
+                <td>22</td>
+                <td><span class="badge critical">144</span></td>
+                <td>263</td>
+                <td>335</td>
+                <td>813</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\kompetansesenteret_tannhelse_midt_trøndelag_fkf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.steinkjerbygg.no" target="_blank">Steinkjerbygg KF</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:post@steinkjerbygg.no">post@steinkjerbygg.no</a><br>74 91 40 00</td>
+                <td>20</td>
+                <td><span class="badge critical">83</span></td>
+                <td>305</td>
+                <td>300</td>
+                <td>704</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\steinkjerbygg_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ungarena.no" target="_blank">Ung Arena Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>18</td>
+                <td><span class="badge critical">81</span></td>
+                <td>176</td>
+                <td>44</td>
+                <td>318</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ung_arena_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://mn110.no" target="_blank">Midt-norge 110-sentral IKS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">73 95 64 50</td>
+                <td>10</td>
+                <td><span class="badge critical">78</span></td>
+                <td>25</td>
+                <td>146</td>
+                <td>250</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\midt-norge_110-sentral_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://turneteatret.no" target="_blank">Turnéteatret i Trøndelag AS</a></td>
+                <td>Verdal</td>
+                <td class="contact"><a href="mailto:post@turneteatret.no">post@turneteatret.no</a></td>
+                <td>20</td>
+                <td><span class="badge critical">76</span></td>
+                <td>47</td>
+                <td>106</td>
+                <td>259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\turnéteatret_i_trøndelag_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.roros.kommune.no/" target="_blank">Røros Kommune</a></td>
+                <td>Røros</td>
+                <td class="contact"><a href="mailto:postmottak@roros.kommune.no">postmottak@roros.kommune.no</a><br>72 41 94 00</td>
+                <td>18</td>
+                <td><span class="badge critical">67</span></td>
+                <td>63</td>
+                <td>288</td>
+                <td>423</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\røros_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://naras.no" target="_blank">NARAS Næringshage AS</a></td>
+                <td>Namsos</td>
+                <td class="contact">-</td>
+                <td>20</td>
+                <td><span class="badge critical">66</span></td>
+                <td>33</td>
+                <td>194</td>
+                <td>293</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\naras_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://orklandbadet.no" target="_blank">Orklandbadet KF</a></td>
+                <td>Orkland</td>
+                <td class="contact"><a href="mailto:post@orklandbadet.no">post@orklandbadet.no</a><br>72 42 02 00</td>
+                <td>21</td>
+                <td><span class="badge critical">65</span></td>
+                <td>2426</td>
+                <td>228</td>
+                <td>2719</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\orklandbadet_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nasjonalparken.no" target="_blank">Nasjonalparken Næringshage AS</a></td>
+                <td>Oppdal</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">61</span></td>
+                <td>235</td>
+                <td>237</td>
+                <td>604</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nasjonalparken_næringshage_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nasjonalparken.no" target="_blank">Lierne Nasjonalparksenter IKS</a></td>
+                <td>Lierne</td>
+                <td class="contact"><a href="mailto:post@naturporten.no">post@naturporten.no</a><br>90 27 02 55</td>
+                <td>21</td>
+                <td><span class="badge critical">61</span></td>
+                <td>235</td>
+                <td>237</td>
+                <td>604</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\lierne_nasjonalparksenter_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.holtalen.kommune.no/" target="_blank">Holtålen Kommune</a></td>
+                <td>Holtålen</td>
+                <td class="contact"><a href="mailto:epost@holtalen.kommune.no">epost@holtalen.kommune.no</a><br>72 41 76 00</td>
+                <td>21</td>
+                <td><span class="badge serious">48</span></td>
+                <td>24</td>
+                <td>333</td>
+                <td>407</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\holtålen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.falstadsenteret.no" target="_blank">Stiftelsen Falstadsenteret</a></td>
+                <td>Levanger</td>
+                <td class="contact"><a href="mailto:post@falstadsenteret.no">post@falstadsenteret.no</a><br>74 02 80 40</td>
+                <td>21</td>
+                <td><span class="badge serious">42</span></td>
+                <td>40</td>
+                <td>220</td>
+                <td>331</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftelsen_falstadsenteret.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/skaun" target="_blank">Skaun Kirkelige Fellesråd</a></td>
+                <td>Skaun</td>
+                <td class="contact"><a href="mailto:post.skaun@kirken.no">post.skaun@kirken.no</a><br>72 86 31 51</td>
+                <td>21</td>
+                <td><span class="badge serious">40</span></td>
+                <td>677</td>
+                <td>148</td>
+                <td>894</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\skaun_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/meldal" target="_blank">Meldal Kirkelige Fellesråd</a></td>
+                <td>Orkland</td>
+                <td class="contact"><a href="mailto:post.meldal@kirken.no">post.meldal@kirken.no</a><br>72 49 51 65</td>
+                <td>21</td>
+                <td><span class="badge serious">39</span></td>
+                <td>710</td>
+                <td>92</td>
+                <td>870</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\meldal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hitra.kommune.no" target="_blank">Hitra kommune</a></td>
+                <td>Hitra</td>
+                <td class="contact"><a href="mailto:postmottak@hitra.kommune.no">postmottak@hitra.kommune.no</a><br>72 44 17 00</td>
+                <td>17</td>
+                <td><span class="badge serious">38</span></td>
+                <td>273</td>
+                <td>415</td>
+                <td>778</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\hitra_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/orkdal" target="_blank">Orkdal Kirkelige Fellesråd</a></td>
+                <td>Orkland</td>
+                <td class="contact"><a href="mailto:post.orkdal@kirken.no">post.orkdal@kirken.no</a><br>72479750</td>
+                <td>20</td>
+                <td><span class="badge serious">38</span></td>
+                <td>673</td>
+                <td>88</td>
+                <td>828</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\orkdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://atb.no" target="_blank">AtB AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:atb@atb.no">atb@atb.no</a><br>02820</td>
+                <td>19</td>
+                <td><span class="badge serious">37</span></td>
+                <td>125</td>
+                <td>199</td>
+                <td>428</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\atb_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/melhus" target="_blank">Melhus Kirkelige Fellesråd</a></td>
+                <td>Melhus</td>
+                <td class="contact"><a href="mailto:kirkekontoret@melhus.kommune.no">kirkekontoret@melhus.kommune.no</a></td>
+                <td>21</td>
+                <td><span class="badge serious">37</span></td>
+                <td>671</td>
+                <td>145</td>
+                <td>889</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\melhus_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nhn.no" target="_blank">Norsk Helsenett SF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@nhn.no">post@nhn.no</a><br>02017</td>
+                <td>21</td>
+                <td><span class="badge serious">34</span></td>
+                <td>694</td>
+                <td>202</td>
+                <td>981</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\norsk_helsenett_sf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/trondheim" target="_blank">Kirkelig Fellesråd i Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post.trondheim@kirken.no">post.trondheim@kirken.no</a></td>
+                <td>19</td>
+                <td><span class="badge serious">33</span></td>
+                <td>604</td>
+                <td>285</td>
+                <td>970</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\kirkelig_fellesråd_i_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ringve.no" target="_blank">Ringve Musikkmuseum</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">31</span></td>
+                <td>90</td>
+                <td>140</td>
+                <td>316</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ringve_musikkmuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.museetmidt.no" target="_blank">Museet Midt IKS</a></td>
+                <td>Nærøysund</td>
+                <td class="contact"><a href="mailto:post@museetmidt.no">post@museetmidt.no</a><br>74 36 07 70</td>
+                <td>21</td>
+                <td><span class="badge serious">30</span></td>
+                <td>680</td>
+                <td>268</td>
+                <td>997</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\museet_midt_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/stjordal" target="_blank">Stjørdal Kirkelige Fellesråd</a></td>
+                <td>Stjørdal</td>
+                <td class="contact"><a href="mailto:kirkelig.fellesrad@stjordal.kommune.no">kirkelig.fellesrad@stjordal.kommune.no</a><br>74 83 42 20</td>
+                <td>21</td>
+                <td><span class="badge serious">29</span></td>
+                <td>706</td>
+                <td>174</td>
+                <td>930</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stjørdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innherred.no" target="_blank">Innherred regionråd IPR</a></td>
+                <td>Levanger</td>
+                <td class="contact">-</td>
+                <td>18</td>
+                <td><span class="badge serious">29</span></td>
+                <td>168</td>
+                <td>121</td>
+                <td>399</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\innherred_regionråd_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://samforsk.no" target="_blank">NTNU Samfunnsforskning AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge serious">25</span></td>
+                <td>39</td>
+                <td>54</td>
+                <td>239</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ntnu_samfunnsforskning_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kystensarv.no" target="_blank">Museet Kystens Arv Sti</a></td>
+                <td>Indre Fosen</td>
+                <td class="contact">73 85 55 60</td>
+                <td>21</td>
+                <td><span class="badge serious">24</span></td>
+                <td>91</td>
+                <td>148</td>
+                <td>286</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\museet_kystens_arv_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://proneo.no" target="_blank">Proneo AS</a></td>
+                <td>Steinkjer</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">23</span></td>
+                <td>182</td>
+                <td>219</td>
+                <td>485</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\proneo_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.levangerarena.no" target="_blank">Levanger Arena KF</a></td>
+                <td>Levanger</td>
+                <td class="contact"><a href="mailto:post@levangerarena.no">post@levangerarena.no</a><br>47 45 68 42</td>
+                <td>21</td>
+                <td><span class="badge serious">23</span></td>
+                <td>183</td>
+                <td>323</td>
+                <td>531</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\levanger_arena_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/malvik" target="_blank">Malvik Kirkelige Fellesråd</a></td>
+                <td>Malvik</td>
+                <td class="contact"><a href="mailto:post.malvik@kirken.no">post.malvik@kirken.no</a><br>73 98 05 00</td>
+                <td>19</td>
+                <td><span class="badge serious">21</span></td>
+                <td>638</td>
+                <td>108</td>
+                <td>778</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\malvik_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://namdalrehab.no" target="_blank">Namdal Rehabilitering IKS</a></td>
+                <td>Høylandet</td>
+                <td class="contact"><a href="mailto:post@namdalrehab.no">post@namdalrehab.no</a><br>74 32 21 00</td>
+                <td>21</td>
+                <td><span class="badge serious">21</span></td>
+                <td>50</td>
+                <td>397</td>
+                <td>468</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namdal_rehabilitering_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/nidaros" target="_blank">Nidaros bispedømme</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>19</td>
+                <td><span class="badge serious">20</span></td>
+                <td>708</td>
+                <td>221</td>
+                <td>1032</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nidaros_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rockheim.no" target="_blank">Rockheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">20</span></td>
+                <td>110</td>
+                <td>137</td>
+                <td>315</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rockheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://roroskirke.no" target="_blank">Røros Kirkelige Fellesråd</a></td>
+                <td>Røros</td>
+                <td class="contact"><a href="mailto:post@roroskirke.no">post@roroskirke.no</a></td>
+                <td>21</td>
+                <td><span class="badge serious">20</span></td>
+                <td>703</td>
+                <td>120</td>
+                <td>852</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\røros_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/rennebu" target="_blank">Rennebu Kirkelige Fellesråd</a></td>
+                <td>Rennebu</td>
+                <td class="contact"><a href="mailto:post@rennebu.kirken.no">post@rennebu.kirken.no</a><br>72 40 23 50</td>
+                <td>21</td>
+                <td><span class="badge serious">19</span></td>
+                <td>716</td>
+                <td>72</td>
+                <td>816</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rennebu_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.mgk.no" target="_blank">Midtre Gauldal Kommune</a></td>
+                <td>Midtre Gauldal</td>
+                <td class="contact"><a href="mailto:postmottak@midtre-gauldal.kommune.no">postmottak@midtre-gauldal.kommune.no</a><br>72 40 30 00</td>
+                <td>18</td>
+                <td><span class="badge serious">19</span></td>
+                <td>342</td>
+                <td>103</td>
+                <td>464</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\midtre_gauldal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/heim" target="_blank">Heim Kirkelige Fellesråd</a></td>
+                <td>Heim</td>
+                <td class="contact"><a href="mailto:post.heim@kirken.no">post.heim@kirken.no</a><br>72 45 00 80</td>
+                <td>17</td>
+                <td><span class="badge serious">18</span></td>
+                <td>536</td>
+                <td>185</td>
+                <td>749</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\heim_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tydal.kommune.no/" target="_blank">Tydal Kommune</a></td>
+                <td>Tydal</td>
+                <td class="contact"><a href="mailto:postmottak@tydal.kommune.no">postmottak@tydal.kommune.no</a><br>73 81 59 00</td>
+                <td>16</td>
+                <td><span class="badge serious">17</span></td>
+                <td>145</td>
+                <td>70</td>
+                <td>241</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tydal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://steinkjer.vgs.no" target="_blank">Steinkjer videregående skole</a></td>
+                <td>Steinkjer</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">15</span></td>
+                <td>23</td>
+                <td>244</td>
+                <td>312</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\steinkjer_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ramsasen.no" target="_blank">Ramsås Statsallmenning</a></td>
+                <td>Verdal</td>
+                <td class="contact"><a href="mailto:ingeborg.osteras@mattilsynet.no">ingeborg.osteras@mattilsynet.no</a></td>
+                <td>13</td>
+                <td><span class="badge serious">13</span></td>
+                <td>51</td>
+                <td>79</td>
+                <td>143</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ramsås_statsallmenning.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.saemiensijte.no" target="_blank">Stiftelsen Saemien Sijte</a></td>
+                <td>Snåsa</td>
+                <td class="contact"><a href="mailto:post@saemiensijte.no">post@saemiensijte.no</a><br>74 13 80 00</td>
+                <td>21</td>
+                <td><span class="badge serious">13</span></td>
+                <td>298</td>
+                <td>374</td>
+                <td>791</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftelsen_saemien_sijte.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ronningen.fhs.no" target="_blank">Rønningen folkehøgskole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">12</span></td>
+                <td>409</td>
+                <td>90</td>
+                <td>543</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rønningen_folkehøgskole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://konfliktraadet.no/trondelag" target="_blank">Konfliktrådet Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">11</span></td>
+                <td>157</td>
+                <td>177</td>
+                <td>420</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\konfliktrådet_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kystmuseet.no" target="_blank">Kystmuseet i Sør-trøndelag Sti</a></td>
+                <td>Hitra</td>
+                <td class="contact"><a href="mailto:post@mist.no">post@mist.no</a><br>72 44 40 10</td>
+                <td>21</td>
+                <td><span class="badge moderate">9</span></td>
+                <td>93</td>
+                <td>77</td>
+                <td>201</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\kystmuseet_i_sør-trøndelag_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nthr.no" target="_blank">Nord-trøndelag Havn Rørvik IKS</a></td>
+                <td>Nærøysund</td>
+                <td class="contact"><a href="mailto:post@nthr.no">post@nthr.no</a><br>74 39 00 81</td>
+                <td>8</td>
+                <td><span class="badge moderate">8</span></td>
+                <td>67</td>
+                <td>44</td>
+                <td>119</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nord-trøndelag_havn_rørvik_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nidarosdomen.no" target="_blank">Nidarosdomen</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>18</td>
+                <td><span class="badge moderate">7</span></td>
+                <td>47</td>
+                <td>189</td>
+                <td>268</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nidarosdomen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innherredrenovasjon.no" target="_blank">Innherred Renovasjon IKS</a></td>
+                <td>Levanger</td>
+                <td class="contact"><a href="mailto:post@ir.nt.no">post@ir.nt.no</a><br>74 02 88 40</td>
+                <td>21</td>
+                <td><span class="badge moderate">7</span></td>
+                <td>364</td>
+                <td>463</td>
+                <td>883</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\innherred_renovasjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://husbanken.no" target="_blank">Husbanken region midt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge moderate">6</span></td>
+                <td>277</td>
+                <td>96</td>
+                <td>381</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\husbanken_region_midt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.oi.no" target="_blank">Stiftelsen Orkla Industrimuseum</a></td>
+                <td>Orkland</td>
+                <td class="contact">72 49 91 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>83</td>
+                <td>212</td>
+                <td>322</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftelsen_orkla_industrimuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stolav.no/nidaros-dps" target="_blank">Nidaros DPS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>19</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>4</td>
+                <td>26</td>
+                <td>52</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nidaros_dps.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stolav.no/orkdal" target="_blank">Orkdal sykehus - St. Olav</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>23</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>4</td>
+                <td>25</td>
+                <td>55</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\orkdal_sykehus_-_st._olav.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.statskog.no" target="_blank">Statskog SF</a></td>
+                <td>Namsos</td>
+                <td class="contact"><a href="mailto:post@statskog.no">post@statskog.no</a><br>74 21 30 00</td>
+                <td>19</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>613</td>
+                <td>113</td>
+                <td>744</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\statskog_sf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.selbu.kommune.no" target="_blank">Selbu Kommune</a></td>
+                <td>Selbu</td>
+                <td class="contact"><a href="mailto:postmottak@selbu.kommune.no">postmottak@selbu.kommune.no</a><br>73 81 67 00</td>
+                <td>18</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>173</td>
+                <td>85</td>
+                <td>268</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\selbu_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fosen-helse.no" target="_blank">Fosen Helse IKS</a></td>
+                <td>Ørland</td>
+                <td class="contact"><a href="mailto:postmottak@fosen-helse.no">postmottak@fosen-helse.no</a></td>
+                <td>20</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>147</td>
+                <td>214</td>
+                <td>384</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fosen_helse_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.enova.no" target="_blank">ENOVA SF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@enova.no">post@enova.no</a><br>24 24 08 95</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>115</td>
+                <td>194</td>
+                <td>339</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\enova_sf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://heimdal.vgs.no" target="_blank">Heimdal videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>27</td>
+                <td>183</td>
+                <td>222</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\heimdal_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://malvik.vgs.no" target="_blank">Malvik videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post.sunnmore@politiet.no">post.sunnmore@politiet.no</a><br>70118700</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>28</td>
+                <td>189</td>
+                <td>223</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\malvik_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.siva.no/" target="_blank">SIVA - Selskapet for Industrivekst SF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:firmapost@siva.no">firmapost@siva.no</a></td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>602</td>
+                <td>437</td>
+                <td>1084</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\siva_-_selskapet_for_industrivekst_sf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ukm.no" target="_blank">Ukm Norge Trøndelag Fkf</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:ukm@ukm.no">ukm@ukm.no</a><br>46 41 55 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>451</td>
+                <td>142</td>
+                <td>620</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ukm_norge_trøndelag_fkf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.froya.kommune.no/" target="_blank">Frøya Kommune</a></td>
+                <td>Frøya</td>
+                <td class="contact"><a href="mailto:postmottak@froya.kommune.no">postmottak@froya.kommune.no</a><br>72 46 32 00</td>
+                <td>17</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>36</td>
+                <td>69</td>
+                <td>117</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\frøya_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.melhus.kommune.no/" target="_blank">Melhus Kommune</a></td>
+                <td>Melhus</td>
+                <td class="contact"><a href="mailto:postmottak@melhus.kommune.no">postmottak@melhus.kommune.no</a><br>72 85 80 00</td>
+                <td>19</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>51</td>
+                <td>110</td>
+                <td>247</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\melhus_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.skaun.kommune.no/" target="_blank">Skaun Kommune</a></td>
+                <td>Skaun</td>
+                <td class="contact"><a href="mailto:postmottak@skaun.kommune.no">postmottak@skaun.kommune.no</a><br>72 86 72 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>29</td>
+                <td>116</td>
+                <td>421</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\skaun_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.meraker.kommune.no/" target="_blank">Meråker Kommune</a></td>
+                <td>Meråker</td>
+                <td class="contact"><a href="mailto:postmottak@meraker.kommune.no">postmottak@meraker.kommune.no</a><br>74813200</td>
+                <td>20</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>181</td>
+                <td>44</td>
+                <td>231</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\meråker_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stjordal.kommune.no/" target="_blank">Stjørdal Kommune</a></td>
+                <td>Stjørdal</td>
+                <td class="contact"><a href="mailto:postmottak@stjordal.kommune.no">postmottak@stjordal.kommune.no</a><br>74 83 35 00</td>
+                <td>21</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>193</td>
+                <td>107</td>
+                <td>345</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stjørdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.grong.kommune.no/" target="_blank">Grong Kommune</a></td>
+                <td>Grong</td>
+                <td class="contact"><a href="mailto:postmottak@grong.kommune.no">postmottak@grong.kommune.no</a><br>74 31 21 00</td>
+                <td>20</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>51</td>
+                <td>52</td>
+                <td>111</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\grong_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.leka.kommune.no/" target="_blank">Leka Kommune</a></td>
+                <td>Leka</td>
+                <td class="contact"><a href="mailto:post@leka.kommune.no">post@leka.kommune.no</a><br>74 38 70 00</td>
+                <td>20</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>359</td>
+                <td>266</td>
+                <td>634</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\leka_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hnt.no" target="_blank">Helse Nord-Trøndelag HF</a></td>
+                <td>Trøndelag</td>
+                <td class="contact"><a href="mailto:post@hnt.no">post@hnt.no</a><br>74 09 80 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>11</td>
+                <td>37</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\helse_nord-trøndelag_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondelagfylke.no" target="_blank">Trøndelag fylkeskommune</a></td>
+                <td>Trøndelag</td>
+                <td class="contact"><a href="mailto:postmottak@trondelagfylke.no">postmottak@trondelagfylke.no</a><br>74 17 40 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>27</td>
+                <td>181</td>
+                <td>229</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://politiet.no/trondelag" target="_blank">Trøndelag politidistrikt</a></td>
+                <td>Trøndelag</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>20</td>
+                <td>125</td>
+                <td>170</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_politidistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helsefrmt.no/ambulanse" target="_blank">Ambulanse Midt-Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ambulanse_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Bakklandet menighet</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>66</td>
+                <td>431</td>
+                <td>785</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\bakklandet_menighet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://brundalen.vgs.no" target="_blank">Brundalen videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\brundalen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://charlottenlund.vgs.no" target="_blank">Charlottenlund videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>28</td>
+                <td>226</td>
+                <td>259</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\charlottenlund_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.domstol.no" target="_blank">Domstolene i Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:postmottak@domstoladministrasjonen.no">postmottak@domstoladministrasjonen.no</a><br>73 56 70 00</td>
+                <td>3</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>5</td>
+                <td>6</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\domstolene_i_norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfrdr.no/erkebispegarden" target="_blank">Erkebispegården</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\erkebispegården.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagskolen-trondelag.no" target="_blank">Fagskolen i Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fagskolen_i_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fiskeridir.no/midt" target="_blank">Fiskeridirektoratet region Midt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fiskeridirektoratet_region_midt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://forskningsradet.no" target="_blank">Forskningsrådet kontor Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>499</td>
+                <td>117</td>
+                <td>657</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\forskningsrådet_kontor_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ffrosen-namsos.no" target="_blank">FosenNamsos Sjø AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fosennamsos_sjø_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no/friomsorg-trondelag" target="_blank">Friomsorgen Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\friomsorgen_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://granfrnasen.no" target="_blank">Granåsen nasjonalanlegg</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\granåsen_nasjonalanlegg.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/gravplass" target="_blank">Gravplassforvaltningen Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\gravplassforvaltningen_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hemit.no" target="_blank">Hemit HF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:postmottak@hemit.no">postmottak@hemit.no</a><br>02531</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>4</td>
+                <td>11</td>
+                <td>34</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\hemit_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ikat.no" target="_blank">IKA Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ika_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://imdi.no/midt" target="_blank">IMDi region Midt-Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\imdi_region_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innovasjonnorge.no/trondelag" target="_blank">Innovasjon Norge region Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>55</td>
+                <td>534</td>
+                <td>731</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\innovasjon_norge_region_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kfrystefrspressen.no" target="_blank">Kystekspressen</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\kystekspressen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kystverket.no/midt" target="_blank">Kystverket Midt-Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\kystverket_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lerkendal.no" target="_blank">Lerkendal stadion</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\lerkendal_stadion.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://metrobussen.no" target="_blank">Metrobuss Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\metrobuss_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/hjelpemidler/trondelag" target="_blank">NAV Hjelpemiddelsentral Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nav_hjelpemiddelsentral_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/trondheim" target="_blank">NAV Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nav_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ntnuttfr.no" target="_blank">NTNU Technology Transfer</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ntnu_technology_transfer.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfrdr.no" target="_blank">Nidaros domkirkes restaureringsarbeider (NDR)</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nidaros_domkirkes_restaureringsarbeider_(ndr).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/ppt" target="_blank">PPT Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>81</td>
+                <td>100</td>
+                <td>218</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ppt_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ntnu.no/ringve" target="_blank">Ringve Botaniske Hage</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ringve_botaniske_hage.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfrtr.no/rustkammeret" target="_blank">Rustkammeret</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rustkammeret.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sintef.no" target="_blank">SINTEF AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>597</td>
+                <td>344</td>
+                <td>973</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\sintef_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skatteetaten.no/midt" target="_blank">Skatteetaten - Skatt Midt-Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\skatteetaten_-_skatt_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stolav.no" target="_blank">St. Olavs hospital HF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@stolav.no">post@stolav.no</a><br>06800</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\st._olavs_hospital_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statens.barnefrhus.no/trondheim" target="_blank">Statens barnehus Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\statens_barnehus_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vegvesen.no/midt" target="_blank">Statens vegvesen region midt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\statens_vegvesen_region_midt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavne.no" target="_blank">Stavne Arbeid Trondheim KF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:stavne.postmottak@trondheim.kommune.no">stavne.postmottak@trondheim.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stavne_arbeid_trondheim_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stavne.no" target="_blank">Stavne Inkludering Trondheim KF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:stavne.postmottak@trondheim.kommune.no">stavne.postmottak@trondheim.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stavne_inkludering_trondheim_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.justismuseet.no" target="_blank">Stiftelsen Justismuseet Nasjonalt Museum for Politi, Rettsvesen og Kriminalomsorg</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@justismuseet.no">post@justismuseet.no</a><br>73 50 03 05</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftelsen_justismuseet_nasjonalt_museum_for_polit.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nkim.museum.no" target="_blank">Stiftelsen Nordenfjeldske Kunstindustrimuseum</a></td>
+                <td>Trondheim</td>
+                <td class="contact">73 80 89 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftelsen_nordenfjeldske_kunstindustrimuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kongehuset.no/stiftsgarden" target="_blank">Stiftsgården Trondheim</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\stiftsgården_trondheim.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://strinda.vgs.no" target="_blank">Strinda videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\strinda_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sit.no" target="_blank">Studentsamskipnaden i Trondheim (Sit)</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\studentsamskipnaden_i_trondheim_(sit).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sverresborg.no" target="_blank">Sverresborg Trøndelag Folkemuseum</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\sverresborg_trøndelag_folkemuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sykehusbygg.no" target="_blank">Sykehusbygg HF</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@sykehusbygg.no">post@sykehusbygg.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\sykehusbygg_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.trondelagfylke.no" target="_blank">Tannhelsetjenesten Trøndelag</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tannhelsetjenesten_trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tensio.no" target="_blank">Tensio TS AS (TrønderEnergi Nett)</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tensio_ts_as_(trønderenergi_nett).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://thorastorm.vgs.no" target="_blank">Thora Storm videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\thora_storm_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stolav.no/tiller-dps" target="_blank">Tiller DPS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tiller_dps.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tiller.vgs.no" target="_blank">Tiller videregående skole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tiller_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://toll.no/midt" target="_blank">Tolletaten region Midt-Norge</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\tolletaten_region_midt-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfrondheimbysykkel.no" target="_blank">Trondheim Bysykkel</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_bysykkel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.trondheim.havn.no" target="_blank">Trondheim Havn IKS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:firmapost@trondheimhavn.no">firmapost@trondheimhavn.no</a><br>73 99 17 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/naering" target="_blank">Trondheim Kommune Næring</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommune_næring.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/trondheim" target="_blank">Trondheim Lufthavn Værnes</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_lufthavn_værnes.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfrv.no" target="_blank">Trondheim Renholdsverk AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_renholdsverk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheimspektrum.no" target="_blank">Trondheim Spektrum</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_spektrum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tso.no" target="_blank">Trondheim Symfoniorkester</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_symfoniorkester.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tso.no" target="_blank">Trondheim Symfoniorkester &amp; Opera Sti</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:post@tso.no">post@tso.no</a><br>73 53 98 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_symfoniorkester_&_opera_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bomstasjon.no" target="_blank">Trondheim bomstasjon AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_bomstasjon_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/byarkiv" target="_blank">Trondheim byarkiv</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_byarkiv.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/eiendom" target="_blank">Trondheim eiendom</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_eiendom.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Trondheim fengsel</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheimbibliotek.no/heimdal" target="_blank">Trondheim folkebibliotek Heimdal</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_folkebibliotek_heimdal.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfrondheimbibliotek.no/moholt" target="_blank">Trondheim folkebibliotek Moholt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_folkebibliotek_moholt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheimbibliotek.no/risvollan" target="_blank">Trondheim folkebibliotek Risvollan</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_folkebibliotek_risvollan.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim-katedralskole.no" target="_blank">Trondheim katedralskole</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_katedralskole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken-trondheim.no" target="_blank">Trondheim kirkelige fellesråd</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tkpfr.no" target="_blank">Trondheim kommunale pensjonskasse</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommunale_pensjonskasse.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no" target="_blank">Trondheim kommune</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:postmottak@trondheim.kommune.no">postmottak@trondheim.kommune.no</a><br>72 54 00 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/eierskap" target="_blank">Trondheim kommune Eierskapsenheten</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommune_eierskapsenheten.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/helse" target="_blank">Trondheim kommune Helse og velferd</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommune_helse_og_velferd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheim.kommune.no/va" target="_blank">Trondheim kommune VA</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kommune_va.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondfrkrisesenter.no" target="_blank">Trondheim krisesenter</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_krisesenter.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfrondheimkunstmuseum.no" target="_blank">Trondheim kunstmuseum</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_kunstmuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondheimlfr.no" target="_blank">Trondheim legevakt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheim_legevakt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tfrrondheimsregionen.no" target="_blank">Trondheimsregionen</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trondheimsregionen.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfronderbomfrg.no" target="_blank">Trøndelag Bomveiselskap AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">35 56 59 62</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_bomveiselskap_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tbrt.no" target="_blank">Trøndelag Brann- og Redningstjeneste IKS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:postmottak@tbrt.no">postmottak@tbrt.no</a><br>72 54 76 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_brann-_og_redningstjeneste_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tfrrondelag-teater.no" target="_blank">Trøndelag Teater</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_teater.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tfrfk.no/fylkesbibliotek" target="_blank">Trøndelag fylkesbibliotek</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondelagfylke.no/tilskudd" target="_blank">Trøndelag fylkeskommune tilskudd</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondelagidrettskrets.no" target="_blank">Trøndelag idrettskrets</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_idrettskrets.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sivilforsvaret.no/trondelag" target="_blank">Trøndelag sivilforsvarsdistrikt</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_sivilforsvarsdistrikt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/trondelag" target="_blank">Trøndelag tingrett</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndelag_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfronderenergi.no" target="_blank">TrønderEnergi AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:firmapost@tronderenergi.no">firmapost@tronderenergi.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trønderenergi_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trfronderbilene.no" target="_blank">Trønderbilene AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trønderbilene_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://trondertaxi.no" target="_blank">Trøndertaxi AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:anns-sv@online.no">anns-sv@online.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\trøndertaxi_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vegamot.no" target="_blank">Vegamot AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact"><a href="mailto:firmapost@vegamot.no">firmapost@vegamot.no</a><br>73 82 48 80</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>172</td>
+                <td>288</td>
+                <td>495</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\vegamot_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://visitfrtondheim.no" target="_blank">Visit Trondheim AS</a></td>
+                <td>Trondheim</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\visit_trondheim_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.brannmidt.no" target="_blank">Brannvesenet Midt IKS</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:post@brannmidt.no">post@brannmidt.no</a><br>46 44 60 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>166</td>
+                <td>111</td>
+                <td>319</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\brannvesenet_midt_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.steinkjer-fjellstyre.no/" target="_blank">Steinkjer Fjellstyre</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:steinkjer@fjellstyrene.no">steinkjer@fjellstyrene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge error">Feil</span></td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.steinkjer.kommune.no/" target="_blank">Steinkjer Kommune</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:postmottak@steinkjer.kommune.no">postmottak@steinkjer.kommune.no</a><br>74 16 90 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>26</td>
+                <td>43</td>
+                <td>72</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\steinkjer_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://steinkjer-kommuneskoger.no" target="_blank">Steinkjer Kommuneskoger- Ogndalsbruket KF</a></td>
+                <td>Steinkjer</td>
+                <td class="contact"><a href="mailto:per.odd.rygg@steinkjer.kommune.no">per.odd.rygg@steinkjer.kommune.no</a></td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>34</td>
+                <td>40</td>
+                <td>75</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\steinkjer_kommuneskoger-_ogndalsbruket_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://namdal.no" target="_blank">Namdal regionråd</a></td>
+                <td>Namsos</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namdal_regionråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.namsos.kommune.no/" target="_blank">Namsos Kommune</a></td>
+                <td>Namsos</td>
+                <td class="contact"><a href="mailto:postmottak@namsos.kommune.no">postmottak@namsos.kommune.no</a><br>74 21 71 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>270</td>
+                <td>193</td>
+                <td>491</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namsos_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-nordtrondelag.no/namsos" target="_blank">Namsos sykehus - Helse Nord-Trøndelag</a></td>
+                <td>Namsos</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namsos_sykehus_-_helse_nord-trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://olavduun.vgs.no" target="_blank">Olav Duun videregående skole</a></td>
+                <td>Namsos</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\olav_duun_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.osenfjellstyre.no" target="_blank">Osen Fjellstyre</a></td>
+                <td>Osen</td>
+                <td class="contact"><a href="mailto:osen@fjellstyrene.no">osen@fjellstyrene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\osen_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.osen.kommune.no" target="_blank">Osen Kommune</a></td>
+                <td>Osen</td>
+                <td class="contact"><a href="mailto:postmottak@osen.kommune.no">postmottak@osen.kommune.no</a><br>72 57 82 00</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>395</td>
+                <td>61</td>
+                <td>465</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\osen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.oppdal.kommune.no" target="_blank">Oppdal Kommune</a></td>
+                <td>Oppdal</td>
+                <td class="contact"><a href="mailto:post@oppdal.kommune.no">post@oppdal.kommune.no</a><br>72 40 10 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>528</td>
+                <td>53</td>
+                <td>584</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\oppdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rennebu.kommune.no" target="_blank">Rennebu Kommune</a></td>
+                <td>Rennebu</td>
+                <td class="contact"><a href="mailto:postmottak@rennebu.kommune.no">postmottak@rennebu.kommune.no</a><br>72428100</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rennebu_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.malvik.kommune.no/" target="_blank">Malvik Kommune</a></td>
+                <td>Malvik</td>
+                <td class="contact"><a href="mailto:postmottak@malvik.kommune.no">postmottak@malvik.kommune.no</a><br>73 97 20 00</td>
+                <td>1</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>2</td>
+                <td>2</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\malvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fjellstyreneistjordal.no" target="_blank">Fjellstyrene i Stjørdal og Meråker</a></td>
+                <td>Stjørdal</td>
+                <td class="contact"><a href="mailto:fjellstyrene.stjordal@fjellstyrene.no">fjellstyrene.stjordal@fjellstyrene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\fjellstyrene_i_stjørdal_og_meråker.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.helse-midt.no/" target="_blank">Helse Midt-norge RHF</a></td>
+                <td>Stjørdal</td>
+                <td class="contact"><a href="mailto:HMN.Postmottak@helse-midt.no">HMN.Postmottak@helse-midt.no</a><br>74 83 99 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>2</td>
+                <td>15</td>
+                <td>55</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\helse_midt-norge_rhf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.frosta.kommune.no/" target="_blank">Frosta Kommune</a></td>
+                <td>Frosta</td>
+                <td class="contact"><a href="mailto:postmottak@frosta.kommune.no">postmottak@frosta.kommune.no</a><br>74 80 88 00</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>162</td>
+                <td>128</td>
+                <td>302</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\frosta_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.levanger.kommune.no/" target="_blank">Levanger Kommune</a></td>
+                <td>Levanger</td>
+                <td class="contact"><a href="mailto:postmottak@levanger.kommune.no">postmottak@levanger.kommune.no</a><br>74052500</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>71</td>
+                <td>265</td>
+                <td>341</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\levanger_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-nordtrondelag.no/levanger" target="_blank">Levanger sykehus - Helse Nord-Trøndelag</a></td>
+                <td>Levanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\levanger_sykehus_-_helse_nord-trøndelag.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://levanger.vgs.no" target="_blank">Levanger videregående skole</a></td>
+                <td>Levanger</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>24</td>
+                <td>183</td>
+                <td>216</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\levanger_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.Museenearven.no" target="_blank">Museene Arven AS</a></td>
+                <td>Verdal</td>
+                <td class="contact">74 04 42 00</td>
+                <td>9</td>
+                <td><span class="badge good">0</span></td>
+                <td>46</td>
+                <td>99</td>
+                <td>145</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\museene_arven_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.verdal.kommune.no/" target="_blank">Verdal Kommune</a></td>
+                <td>Verdal</td>
+                <td class="contact"><a href="mailto:postmottak@verdal.kommune.no">postmottak@verdal.kommune.no</a><br>74 04 82 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>39</td>
+                <td>151</td>
+                <td>190</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\verdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.snasafjellstyre.no" target="_blank">Snåsa Fjellstyre</a></td>
+                <td>Snåsa</td>
+                <td class="contact"><a href="mailto:snasa@fjellstyrene.no">snasa@fjellstyrene.no</a><br>74 12 74 48</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>265</td>
+                <td>297</td>
+                <td>562</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\snåsa_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.snasa.kommune.no/" target="_blank">Snåsa Kommune</a></td>
+                <td>Snåsa</td>
+                <td class="contact"><a href="mailto:postmottak@snasa.kommune.no">postmottak@snasa.kommune.no</a><br>74 13 82 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>25</td>
+                <td>43</td>
+                <td>68</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\snåsa_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lierne.kommune.no/" target="_blank">Lierne Kommune</a></td>
+                <td>Lierne</td>
+                <td class="contact"><a href="mailto:postmottak@lierne.kommune.no">postmottak@lierne.kommune.no</a><br>74 34 34 00</td>
+                <td>17</td>
+                <td><span class="badge good">0</span></td>
+                <td>12</td>
+                <td>35</td>
+                <td>50</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\lierne_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.royrvik.kommune.no/" target="_blank">Røyrvik Kommune</a></td>
+                <td>Røyrvik</td>
+                <td class="contact"><a href="mailto:oystein.sende@royrvik.kommune.no">oystein.sende@royrvik.kommune.no</a><br>74 33 63 00</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>10</td>
+                <td>80</td>
+                <td>97</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\røyrvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.fjellstyrene.no/namsskogan" target="_blank">Namsskogan Fjellstyre</a></td>
+                <td>Namsskogan</td>
+                <td class="contact"><a href="mailto:namsskogan@fjellstyrene.no">namsskogan@fjellstyrene.no</a><br>74 33 34 01</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namsskogan_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.namsskogan.kommune.no/" target="_blank">Namsskogan Kommune</a></td>
+                <td>Namsskogan</td>
+                <td class="contact"><a href="mailto:postmottak@namsskogan.kommune.no">postmottak@namsskogan.kommune.no</a><br>74 33 32 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>24</td>
+                <td>127</td>
+                <td>153</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\namsskogan_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hoylandet.kommune.no/" target="_blank">Høylandet Kommune</a></td>
+                <td>Høylandet</td>
+                <td class="contact"><a href="mailto:postmottak@hoylandet.kommune.no">postmottak@hoylandet.kommune.no</a><br>74 32 48 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>7</td>
+                <td>174</td>
+                <td>182</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\høylandet_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.overhalla.kommune.no/" target="_blank">Overhalla Kommune</a></td>
+                <td>Overhalla</td>
+                <td class="contact"><a href="mailto:post@overhalla.kommune.no">post@overhalla.kommune.no</a><br>74 28 00 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>30</td>
+                <td>85</td>
+                <td>215</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\overhalla_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.flatanger.kommune.no/" target="_blank">Flatanger Kommune</a></td>
+                <td>Flatanger</td>
+                <td class="contact"><a href="mailto:postmottak@flatanger.kommune.no">postmottak@flatanger.kommune.no</a><br>47 63 65 05</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>24</td>
+                <td>79</td>
+                <td>233</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\flatanger_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.inderoy.kommune.no" target="_blank">Inderøy Kommune</a></td>
+                <td>Inderøy</td>
+                <td class="contact"><a href="mailto:postmottak@inderoy.kommune.no">postmottak@inderoy.kommune.no</a><br>74 12 42 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>27</td>
+                <td>88</td>
+                <td>115</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\inderøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.indrefosen.kommune.no" target="_blank">Indre Fosen Kommune</a></td>
+                <td>Indre Fosen</td>
+                <td class="contact"><a href="mailto:postmottak@indrefosen.kommune.no">postmottak@indrefosen.kommune.no</a><br>73 85 27 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>610</td>
+                <td>65</td>
+                <td>688</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\indre_fosen_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://heim.kommune.no" target="_blank">Heim Kommune</a></td>
+                <td>Heim</td>
+                <td class="contact"><a href="mailto:post@heim.kommune.no">post@heim.kommune.no</a><br>72 46 00 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>35</td>
+                <td>148</td>
+                <td>408</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\heim_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://roretorland.no" target="_blank">Roret Ørland Kulturforetak KF</a></td>
+                <td>Ørland</td>
+                <td class="contact"><a href="mailto:hanne.falstad@orland.kommune.no">hanne.falstad@orland.kommune.no</a><br>72 51 55 10</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\roret_ørland_kulturforetak_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://orland.kommune.no" target="_blank">Ørland kommune</a></td>
+                <td>Ørland</td>
+                <td class="contact"><a href="mailto:postmottak@orland.kommune.no">postmottak@orland.kommune.no</a></td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>582</td>
+                <td>80</td>
+                <td>675</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\ørland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.inatur.no/aafjord" target="_blank">Åfjord Fjellstyre</a></td>
+                <td>Åfjord</td>
+                <td class="contact"><a href="mailto:afjord@fjellstyrene.no">afjord@fjellstyrene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\åfjord_fjellstyre.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://afjord.kommune.no" target="_blank">Åfjord kommune</a></td>
+                <td>Åfjord</td>
+                <td class="contact"><a href="mailto:postmottak@afjord.kommune.no">postmottak@afjord.kommune.no</a></td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>476</td>
+                <td>114</td>
+                <td>614</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\åfjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://orkland.kommune.no" target="_blank">Orkland Kommune</a></td>
+                <td>Orkland</td>
+                <td class="contact"><a href="mailto:postmottak@orkland.kommune.no">postmottak@orkland.kommune.no</a><br>72 46 73 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge error">Feil</span></td>
+                <td>-</td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.naroysund.kommune.no" target="_blank">Nærøysund Kommune</a></td>
+                <td>Nærøysund</td>
+                <td class="contact"><a href="mailto:post@naroysund.kommune.no">post@naroysund.kommune.no</a><br>74 39 33 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>60</td>
+                <td>129</td>
+                <td>196</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\nærøysund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rindal.kommune.no/" target="_blank">Rindal Kommune</a></td>
+                <td>Rindal</td>
+                <td class="contact"><a href="mailto:post@rindal.kommune.no">post@rindal.kommune.no</a><br>71 66 47 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>353</td>
+                <td>359</td>
+                <td>727</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="trøndelag\rindal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

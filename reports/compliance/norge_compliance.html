@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Norge Compliance Audit</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; }
+  .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+  h1 { font-size: 1.6rem; color: #1a237e; margin-bottom: 4px; }
+  .subtitle { color: #666; font-size: 0.9rem; margin-bottom: 20px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .stat { background: white; border-radius: 10px; padding: 16px; text-align: center; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  .stat .value { font-size: 2rem; font-weight: 700; }
+  .stat .label { font-size: 0.8rem; color: #888; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+  th { background: #1a237e; color: white; padding: 10px 14px; text-align: left; font-size: 0.85rem; }
+  td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; font-size: 0.9rem; }
+  tr:hover { background: #f8f9ff; }
+  .score-badge { display: inline-block; padding: 3px 10px; border-radius: 10px; font-weight: 600; font-size: 0.85rem; }
+  .score-badge.good { background: #e8f5e9; color: #2e7d32; }
+  .score-badge.warn { background: #fff3e0; color: #e65100; }
+  .score-badge.bad { background: #ffebee; color: #c62828; }
+  a { color: #1a237e; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: #999; font-size: 0.8rem; margin-top: 24px; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Norge: Compliance Audit</h1>
+  <p class="subtitle">Åpenhetsloven, Cookies/Ekomlov, CSRD, EAA &mdash; 2026-02-14 13:38</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="value" style="color:#f44336">32%</div>
+      <div class="label">Gjennomsnittlig score</div>
+    </div>
+    <div class="stat">
+      <div class="value">1</div>
+      <div class="label">Fylker skannet</div>
+    </div>
+    <div class="stat">
+      <div class="value">80</div>
+      <div class="label">Virksomheter</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Fylke</th>
+        <th>Virksomheter</th>
+        <th>Gj.snitt score</th>
+        <th>Score &ge; 60%</th>
+        <th>Score &lt; 30%</th>
+        <th>Rapport</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Finnmark</strong></td>
+        <td>80</td>
+        <td><span class="score-badge bad">32%</span></td>
+        <td>1</td>
+        <td>23</td>
+        <td><a href="finnmark_compliance.html">Se rapport</a></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <p>Generert av Batch Compliance Scanner &mdash; 2026-02-14 13:38</p>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rogaland WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Rogaland WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Rogaland</p>
+        <p><strong>Skannet:</strong> 2026-02-11 17:47</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">151</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">151</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">524</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">2953</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">9051</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">20426</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.kontrollutvalgene.no" target="_blank">Haugaland Kontrollutvalgssekretariat IKS</a></td>
+                <td>Tysvær</td>
+                <td class="contact"><a href="mailto:post@kontrollutvalgene.no">post@kontrollutvalgene.no</a><br>52 75 73 50</td>
+                <td>16</td>
+                <td><span class="badge critical">409</span></td>
+                <td>3</td>
+                <td>129</td>
+                <td>543</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugaland_kontrollutvalgssekretariat_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://timekyrkjene.no" target="_blank">Time Kyrkjelege Fellesråd</a></td>
+                <td>Time</td>
+                <td class="contact"><a href="mailto:kyrkjeverje.time@kirken.no">kyrkjeverje.time@kirken.no</a><br>51 77 03 77</td>
+                <td>16</td>
+                <td><span class="badge critical">295</span></td>
+                <td>701</td>
+                <td>2550</td>
+                <td>3560</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\time_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hakyrkja.no" target="_blank">Hå Kyrkjelege Fellesråd</a></td>
+                <td>Hå</td>
+                <td class="contact"><a href="mailto:post@hakyrkja.no">post@hakyrkja.no</a><br>51 43 62 10</td>
+                <td>14</td>
+                <td><span class="badge critical">288</span></td>
+                <td>6</td>
+                <td>92</td>
+                <td>389</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hå_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tysvaerkirken.no/" target="_blank">Tysvær Kyrkjelege Fellesråd</a></td>
+                <td>Tysvær</td>
+                <td class="contact"><a href="mailto:post.tysver@kirken.no">post.tysver@kirken.no</a><br>47 64 18 68</td>
+                <td>16</td>
+                <td><span class="badge critical">231</span></td>
+                <td>5</td>
+                <td>116</td>
+                <td>352</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\tysvær_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.karmoykirken.no" target="_blank">Karmøy Kirkelig Fellesråd</a></td>
+                <td>Karmøy</td>
+                <td class="contact"><a href="mailto:kirkevergen@karmoykirken.no">kirkevergen@karmoykirken.no</a><br>52 81 00 01</td>
+                <td>16</td>
+                <td><span class="badge critical">187</span></td>
+                <td>25</td>
+                <td>125</td>
+                <td>341</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\karmøy_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://strand.kyrkja.no" target="_blank">Strand Kyrkjelege Fellesråd</a></td>
+                <td>Strand</td>
+                <td class="contact"><a href="mailto:kirken@strand.kommune.no">kirken@strand.kommune.no</a><br>51 74 11 30</td>
+                <td>16</td>
+                <td><span class="badge critical">186</span></td>
+                <td>7</td>
+                <td>213</td>
+                <td>408</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\strand_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lund.kirken.no" target="_blank">Lund Kirkelige Fellesråd</a></td>
+                <td>Lund</td>
+                <td class="contact"><a href="mailto:kirkevergen@lund.kommune.no">kirkevergen@lund.kommune.no</a><br>51 40 90 50</td>
+                <td>16</td>
+                <td><span class="badge critical">178</span></td>
+                <td>21</td>
+                <td>101</td>
+                <td>302</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\lund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.jaermuseet.no" target="_blank">Stiftinga Jærmuseet</a></td>
+                <td>Hå</td>
+                <td class="contact"><a href="mailto:post@jaermuseet.no">post@jaermuseet.no</a><br>47 77 60 20</td>
+                <td>16</td>
+                <td><span class="badge critical">133</span></td>
+                <td>189</td>
+                <td>293</td>
+                <td>628</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stiftinga_jærmuseet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.randabergkirkene.no" target="_blank">Randaberg Kirkelige Fellesråd</a></td>
+                <td>Randaberg</td>
+                <td class="contact"><a href="mailto:kirkevergen.randabergkirkene@kirken.no">kirkevergen.randabergkirkene@kirken.no</a><br>51 41 31 30</td>
+                <td>16</td>
+                <td><span class="badge critical">127</span></td>
+                <td>24</td>
+                <td>100</td>
+                <td>251</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\randaberg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sola.kirken.no/" target="_blank">Sola Kirkelige Fellesråd</a></td>
+                <td>Sola</td>
+                <td class="contact"><a href="mailto:post@solakirkene.no">post@solakirkene.no</a><br>51 75 53 70</td>
+                <td>16</td>
+                <td><span class="badge critical">126</span></td>
+                <td>14</td>
+                <td>195</td>
+                <td>335</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sola_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.klepp.kirken.no" target="_blank">Klepp Kyrkjelege Fellesråd</a></td>
+                <td>Klepp</td>
+                <td class="contact"><a href="mailto:kirkeverge@klepp-kirken.no">kirkeverge@klepp-kirken.no</a><br>51 78 95 55</td>
+                <td>15</td>
+                <td><span class="badge critical">105</span></td>
+                <td>14</td>
+                <td>98</td>
+                <td>217</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\klepp_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sandnes.kommune.no" target="_blank">Sandnes kommune</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:postmottak@sandnes.kommune.no">postmottak@sandnes.kommune.no</a><br>51 33 50 00</td>
+                <td>14</td>
+                <td><span class="badge critical">101</span></td>
+                <td>163</td>
+                <td>162</td>
+                <td>456</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sandnes_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ryfylkemuseet.no" target="_blank">Ryfylkemuseet Sti</a></td>
+                <td>Suldal</td>
+                <td class="contact"><a href="mailto:post@ryfylkemuseet.no">post@ryfylkemuseet.no</a><br>52 79 29 50</td>
+                <td>16</td>
+                <td><span class="badge critical">101</span></td>
+                <td>46</td>
+                <td>74</td>
+                <td>222</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ryfylkemuseet_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.randaberg.kommune.no/" target="_blank">Randaberg Kommune</a></td>
+                <td>Randaberg</td>
+                <td class="contact"><a href="mailto:post@randaberg.kommune.no">post@randaberg.kommune.no</a><br>51 41 41 00</td>
+                <td>13</td>
+                <td><span class="badge critical">85</span></td>
+                <td>94</td>
+                <td>168</td>
+                <td>424</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\randaberg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.utsira.kommune.no" target="_blank">Utsira Kommune</a></td>
+                <td>Utsira</td>
+                <td class="contact"><a href="mailto:post@utsira.kommune.no">post@utsira.kommune.no</a><br>52 75 01 00</td>
+                <td>16</td>
+                <td><span class="badge critical">73</span></td>
+                <td>53</td>
+                <td>249</td>
+                <td>375</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\utsira_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ryfylkeiks.no" target="_blank">Ryfylke IKS</a></td>
+                <td>Hjelmeland</td>
+                <td class="contact"><a href="mailto:inge@ryfylkeiks.no">inge@ryfylkeiks.no</a></td>
+                <td>16</td>
+                <td><span class="badge critical">64</span></td>
+                <td>326</td>
+                <td>245</td>
+                <td>635</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ryfylke_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://WWW.BOKN.KOMMUNE.NO" target="_blank">Bokn Kommune</a></td>
+                <td>Bokn</td>
+                <td class="contact"><a href="mailto:post@bokn.kommune.no">post@bokn.kommune.no</a><br>52 75 25 00</td>
+                <td>16</td>
+                <td><span class="badge critical">57</span></td>
+                <td>289</td>
+                <td>1022</td>
+                <td>1375</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\bokn_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.lund.kommune.no/" target="_blank">Lund Kommune</a></td>
+                <td>Lund</td>
+                <td class="contact"><a href="mailto:postmottak@lund.kommune.no">postmottak@lund.kommune.no</a><br>51 40 47 00</td>
+                <td>16</td>
+                <td><span class="badge serious">50</span></td>
+                <td>3577</td>
+                <td>348</td>
+                <td>3976</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\lund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kvitsoy.kommune.no/" target="_blank">Kvitsøy Kommune</a></td>
+                <td>Kvitsøy</td>
+                <td class="contact"><a href="mailto:post@kvitsoy.kommune.no">post@kvitsoy.kommune.no</a><br>51 73 63 00</td>
+                <td>5</td>
+                <td><span class="badge serious">36</span></td>
+                <td>78</td>
+                <td>112</td>
+                <td>227</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\kvitsøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sandneshavn.no" target="_blank">Sandnes Havn KF</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:post@sandneshavn.no">post@sandneshavn.no</a><br>51 60 89 90</td>
+                <td>16</td>
+                <td><span class="badge serious">27</span></td>
+                <td>23</td>
+                <td>251</td>
+                <td>301</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sandnes_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sokndal.kommune.no/" target="_blank">Sokndal Kommune</a></td>
+                <td>Sokndal</td>
+                <td class="contact"><a href="mailto:postmottak@sokndal.kommune.no">postmottak@sokndal.kommune.no</a><br>51 47 06 00</td>
+                <td>12</td>
+                <td><span class="badge serious">26</span></td>
+                <td>17</td>
+                <td>48</td>
+                <td>101</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sokndal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://gjesdal.kommune.no" target="_blank">Gjesdal kommune</a></td>
+                <td>Gjesdal</td>
+                <td class="contact">-</td>
+                <td>15</td>
+                <td><span class="badge serious">17</span></td>
+                <td>92</td>
+                <td>121</td>
+                <td>247</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\gjesdal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hjelmeland.kommune.no/" target="_blank">Hjelmeland Kommune</a></td>
+                <td>Hjelmeland</td>
+                <td class="contact"><a href="mailto:postmottak@hjelmeland.kommune.no">postmottak@hjelmeland.kommune.no</a><br>51 75 70 00</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>539</td>
+                <td>69</td>
+                <td>630</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hjelmeland_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sauda.kommune.no/" target="_blank">Sauda Kommune</a></td>
+                <td>Sauda</td>
+                <td class="contact"><a href="mailto:post@sauda.kommune.no">post@sauda.kommune.no</a><br>52 78 62 00</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>545</td>
+                <td>91</td>
+                <td>655</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sauda_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.tysver.kommune.no/" target="_blank">Tysvær Kommune</a></td>
+                <td>Tysvær</td>
+                <td class="contact"><a href="mailto:post@tysver.kommune.no">post@tysver.kommune.no</a><br>52 75 70 00</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>149</td>
+                <td>161</td>
+                <td>339</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\tysvær_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.karmoy.kommune.no/" target="_blank">Karmøy Kommune</a></td>
+                <td>Karmøy</td>
+                <td class="contact"><a href="mailto:postmottak@karmoy.kommune.no">postmottak@karmoy.kommune.no</a><br>52 85 75 00</td>
+                <td>16</td>
+                <td><span class="badge moderate">2</span></td>
+                <td>605</td>
+                <td>87</td>
+                <td>700</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\karmøy_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sola.kommune.no" target="_blank">Sola kommune</a></td>
+                <td>Sola</td>
+                <td class="contact"><a href="mailto:post@vegarshei.kommune.no">post@vegarshei.kommune.no</a><br>37 17 02 00</td>
+                <td>15</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>123</td>
+                <td>107</td>
+                <td>276</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sola_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/gulating" target="_blank">Gulating lagmannsrett</a></td>
+                <td>Rogaland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\gulating_lagmannsrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-fonna.no" target="_blank">Helse Fonna HF</a></td>
+                <td>Rogaland</td>
+                <td class="contact"><a href="mailto:post@helse-fonna.no">post@helse-fonna.no</a><br>52 73 20 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_fonna_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-stavanger.no" target="_blank">Helse Stavanger HF</a></td>
+                <td>Rogaland</td>
+                <td class="contact"><a href="mailto:post@helse-forde.no">post@helse-forde.no</a><br>57 83 90 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_stavanger_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-vest.no" target="_blank">Helse Vest RHF</a></td>
+                <td>Rogaland</td>
+                <td class="contact"><a href="mailto:HMN.Postmottak@helse-midt.no">HMN.Postmottak@helse-midt.no</a><br>74 83 99 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_vest_rhf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ivar.no" target="_blank">IVAR IKS</a></td>
+                <td>Rogaland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ivar_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kolumbus.no" target="_blank">Kolumbus AS</a></td>
+                <td>Rogaland</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\kolumbus_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogaland-revisjon.no" target="_blank">Rogaland Revisjon IKS</a></td>
+                <td>Rogaland</td>
+                <td class="contact"><a href="mailto:postmottak@frogn.kommune.no">postmottak@frogn.kommune.no</a><br>64 90 60 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_revisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.friluftsrad.no/dalane" target="_blank">Dalane Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Eigersund</td>
+                <td class="contact"><a href="mailto:post@friluftsrad-dalane.no">post@friluftsrad-dalane.no</a><br>51 46 10 38</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\dalane_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://eigersund.kirken.no" target="_blank">Eigersund Kirkelig Fellesråd</a></td>
+                <td>Eigersund</td>
+                <td class="contact"><a href="mailto:kirkevergen@ekf.no">kirkevergen@ekf.no</a><br>51 46 33 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\eigersund_kirkelig_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://enhkf.no" target="_blank">Eigersund Næring og Havn KF</a></td>
+                <td>Eigersund</td>
+                <td class="contact"><a href="mailto:post@egersund.havn.no">post@egersund.havn.no</a><br>51 46 32 80</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\eigersund_næring_og_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.eigpark.no" target="_blank">Eigersund Parkering KF</a></td>
+                <td>Eigersund</td>
+                <td class="contact"><a href="mailto:post@eigpark.no">post@eigpark.no</a><br>51 46 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\eigersund_parkering_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://eigersund.kommune.no" target="_blank">Eigersund kommune</a></td>
+                <td>Eigersund</td>
+                <td class="contact"><a href="mailto:postmottak@gjesdal.kommune.no">postmottak@gjesdal.kommune.no</a><br>51 61 11 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\eigersund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://dalane.no" target="_blank">Regionråd Dalane IPR</a></td>
+                <td>Eigersund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\regionråd_dalane_ipr.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sus.no/ambulanse" target="_blank">Ambulansetjenesten SUS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ambulansetjenesten_sus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://am.uis.no" target="_blank">Arkeologisk museum UiS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">72 54 00 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\arkeologisk_museum_uis.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://telemarkfylke.no" target="_blank">Barneverntjenesten Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\barneverntjenesten_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bergeland.vgs.no" target="_blank">Bergeland videregående skole</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\bergeland_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://bofrreal.no" target="_blank">Boreal Buss AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\boreal_buss_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://boreal.no" target="_blank">Boreal Norge AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\boreal_norge_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.domkirkenogpetri.no" target="_blank">Domkirken Musikk AS Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:oh596@kirken.no">oh596@kirken.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\domkirken_musikk_as_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fagskolen-rogaland.no" target="_blank">Fagskolen Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\fagskolen_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ferde.no" target="_blank">Ferde AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ferde_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://fjord1.no" target="_blank">Fjord1 ASA</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\fjord1_asa.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.folkehallene.no" target="_blank">Folkehallene IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@folkehallene.no">post@folkehallene.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\folkehallene_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no/friomsorg-rogaland" target="_blank">Friomsorgen Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\friomsorgen_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://godalen.vgs.no" target="_blank">Godalen videregående skole</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\godalen_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://greatfrerstavanger.com" target="_blank">Greater Stavanger AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\greater_stavanger_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sus.no" target="_blank">Helse Stavanger HF</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@sus.no">post@sus.no</a><br>51 51 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_stavanger_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.helse-vest.no/" target="_blank">Helse Vest RHF</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:helse@helse-vest.no">helse@helse-vest.no</a><br>51 96 38 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_vest_rhf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hetland.vgs.no" target="_blank">Hetland videregående skole</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hetland_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://hovedredningssentralen.no/sor" target="_blank">Hovedredningssentralen Sør-Norge</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hovedredningssentralen_sør-norge.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ikarogaland.no" target="_blank">IKA Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ika_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innovasjonnorge.no/rogaland" target="_blank">Innovasjon Norge region Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\innovasjon_norge_region_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ikarogaland.no" target="_blank">Interkommunalt Arkiv i Rogaland IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:epost@ikarogaland.no">epost@ikarogaland.no</a><br>51 87 00 55</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\interkommunalt_arkiv_i_rogaland_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://museumstavanger.no/jernaldergarden" target="_blank">Jernaldergården</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\jernaldergården.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://krisesenfrrogaland.no" target="_blank">Krisesenter i Rogaland IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\krisesenter_i_rogaland_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kystverket.no/sor" target="_blank">Kystverket region Sør</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\kystverket_region_sør.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lyse.no" target="_blank">Lyse AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:firmapost@lyse.no">firmapost@lyse.no</a><br>51 90 80 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\lyse_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://lnett.no" target="_blank">Lyse Elnett AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\lyse_elnett_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/hjelpemidler/rogaland" target="_blank">NAV Hjelpemiddelsentral Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\nav_hjelpemiddelsentral_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nav.no/stavanger" target="_blank">NAV Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\nav_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://nfrom.no" target="_blank">Norsk Oljemuseum</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\norsk_oljemuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://museumstavanger.no/hermetikk" target="_blank">Norsk hermetikkmuseum</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\norsk_hermetikkmuseum.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger.kommune.no/ppt" target="_blank">PPT Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ppt_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ptil.no" target="_blank">Petroleumstilsynet Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:postboks@havtil.no">postboks@havtil.no</a><br>51 87 60 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\petroleumstilsynet_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://regionfravanger.com" target="_blank">Region Stavanger AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\region_stavanger_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.renovasjonen.no" target="_blank">Renovasjonen IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@renovasjonen.no">post@renovasjonen.no</a><br>51 80 08 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\renovasjonen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogbom.no" target="_blank">Rogaland Bomselskap AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_bomselskap_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rogfk.no" target="_blank">Rogaland Fylkeskommune</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:firmapost@rogfk.no">firmapost@rogfk.no</a><br>51 51 66 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kolombus.no" target="_blank">Rogaland Kollektivtrafikk Fkf</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@kolumbus.no">post@kolumbus.no</a><br>51 51 65 30</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_kollektivtrafikk_fkf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.museumstavanger.no" target="_blank">Rogaland Kunstmuseum Sti</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@museumstavanger.no">post@museumstavanger.no</a><br>51 53 09 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_kunstmuseum_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rogaland-revisjon.no" target="_blank">Rogaland Revisjon IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@rogaland-revisjon.no">post@rogaland-revisjon.no</a><br>40 00 52 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_revisjon_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rogaland-teater.no" target="_blank">Rogaland Teater AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@rogaland-teater.no">post@rogaland-teater.no</a><br>51 91 90 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_teater_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogbr.no" target="_blank">Rogaland brann og redning IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogfk.no/fylkesbibliotek" target="_blank">Rogaland fylkesbibliotek</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogfk.no/tilskudd" target="_blank">Rogaland fylkeskommune tilskudd</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogalandidrettskrets.no" target="_blank">Rogaland idrettskrets</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:nzf@zoologi.no">nzf@zoologi.no</a><br>22 38 35 20</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_idrettskrets.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://rogfralandkunstsenter.no" target="_blank">Rogaland kunstsenter</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_kunstsenter.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ryfri.no" target="_blank">Ryfylke Friluftsråd Kommunalt Oppgavefelleskap</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:firmapost@ryfri.no">firmapost@ryfri.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\ryfylke_friluftsråd_kommunalt_oppgavefelleskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stsvithun.vgs.no" target="_blank">St. Svithun videregående skole</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\st._svithun_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statsforvalteren.no/rogaland" target="_blank">Statsforvalteren i Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\statsforvalteren_i_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger.kommune.no/bolig" target="_blank">Stavanger Bolig KF</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_bolig_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sbbl.no" target="_blank">Stavanger Boligbyggelag (SBBL)</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_boligbyggelag_(sbbl).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sus.no/stavanger-dps" target="_blank">Stavanger DPS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_dps.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavangerhavn.no" target="_blank">Stavanger Havn KF</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.stavanger.no/" target="_blank">Stavanger Kirkelige Fellesråd</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post.stavanger@kirken.no">post.stavanger@kirken.no</a><br>51 84 04 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stavanger-konserthus.no" target="_blank">Stavanger Konserthus IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@stavanger-konserthus.no">post@stavanger-konserthus.no</a><br>51 53 70 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_konserthus_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://avinor.no/flyplass/stavanger" target="_blank">Stavanger Lufthavn Sola</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_lufthavn_sola.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stavanger-parkering.no" target="_blank">Stavanger Parkeringsselskap KF</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@stavanger-parkering.no">post@stavanger-parkering.no</a><br>51 50 76 72</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_parkeringsselskap_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sso.no" target="_blank">Stavanger Symfoniorkester</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@helgelandbbl.no">post@helgelandbbl.no</a><br>75 13 70 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_symfoniorkester.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sso.no" target="_blank">Stavanger Symfoniorkester Stiftelse</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@sso.no">post@sso.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_symfoniorkester_stiftelse.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavangertaxi.no" target="_blank">Stavanger Taxi AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_taxi_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger-utvikling.no" target="_blank">Stavanger Utvikling KF</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:stavangerutvikling@stavanger.kommune.no">stavangerutvikling@stavanger.kommune.no</a><br>51 50 70 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_utvikling_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavangerbibliotek.no" target="_blank">Stavanger bibliotek</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_bibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/stavanger" target="_blank">Stavanger bispedømme</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Stavanger fengsel</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger-katedralskole.no" target="_blank">Stavanger katedralskole</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_katedralskole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirkenistavanger.no/gravplass" target="_blank">Stavanger kirkelige fellesråd - gravplasser</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kirkelige_fellesråd_-_gravplasser.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://skpfr.no" target="_blank">Stavanger kommunale pensjonskasse</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:pensjonskassen@akpensjon.no">pensjonskassen@akpensjon.no</a><br>37 01 31 59</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kommunale_pensjonskasse.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger.kommune.no" target="_blank">Stavanger kommune</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:postmottak@stavanger.kommune.no">postmottak@stavanger.kommune.no</a><br>51 50 70 90</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger.kommune.no/helse" target="_blank">Stavanger kommune Helse og velferd</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kommune_helse_og_velferd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavanger.kommune.no/va" target="_blank">Stavanger kommune Vann og avløp</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_kommune_vann_og_avløp.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavangerkonserthus.no" target="_blank">Stavanger konserthus</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_konserthus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://stavangerlfr.no" target="_blank">Stavanger legevakt</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavanger_legevakt.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.stavanger.havn.no" target="_blank">Stavangerregionen Havn IKS</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@stavanger.havn.no">post@stavanger.havn.no</a><br>51 50 12 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\stavangerregionen_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sis.no" target="_blank">Studentsamskipnaden i Stavanger (SiS)</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\studentsamskipnaden_i_stavanger_(sis).html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/sor-rogaland" target="_blank">Sør-Rogaland tingrett</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sør-rogaland_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tannhelse.rogfk.no" target="_blank">Tannhelsetjenesten Rogaland</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\tannhelsetjenesten_rogaland.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tfrousentre.no" target="_blank">Tou Scene</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\tou_scene.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://uis.no" target="_blank">Universitetet i Stavanger</a></td>
+                <td>Stavanger</td>
+                <td class="contact"><a href="mailto:post@uis.no">post@uis.no</a><br>51 83 10 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\universitetet_i_stavanger.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://valide.no" target="_blank">Validé AS</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\validé_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://viking-fk.no/stadion" target="_blank">Viking Stadion</a></td>
+                <td>Stavanger</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\viking_stadion.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.h-vekst.no" target="_blank">Haugaland Vekst IKS</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:post@h-vekst.no">post@h-vekst.no</a><br>52 01 08 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugaland_vekst_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/haugaland" target="_blank">Haugaland og Sunnhordland tingrett</a></td>
+                <td>Haugesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugaland_og_sunnhordland_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://haugaland.no" target="_blank">Haugalandsrådet</a></td>
+                <td>Haugesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugalandsrådet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.haugesund.kommune.no" target="_blank">Haugesund Kino og Konserthus KF</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:kultur.festivalutvikling@haugesund.kommune.no">kultur.festivalutvikling@haugesund.kommune.no</a><br>52 74 33 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugesund_kino_og_konserthus_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/haugesund" target="_blank">Haugesund Kirkelige Fellesråd</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:post.haugesund@kirken.no">post.haugesund@kirken.no</a><br>52809500</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugesund_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://haugesund.kommune.no" target="_blank">Haugesund kommune</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:postmottak@haugesund.kommune.no">postmottak@haugesund.kommune.no</a><br>52 74 30 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugesund_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://haugesund.vgs.no" target="_blank">Haugesund videregående skole</a></td>
+                <td>Haugesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugesund_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://helse-fonna.no/haugesund" target="_blank">Helse Fonna HF - Haugesund sjukehus</a></td>
+                <td>Haugesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\helse_fonna_hf_-_haugesund_sjukehus.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.karmsundhavn.no" target="_blank">Karmsund Havn IKS</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:postmottak@karmsund-havn.no">postmottak@karmsund-havn.no</a><br>52 70 37 50</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\karmsund_havn_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://karmsund.vgs.no" target="_blank">Karmsund videregående skole</a></td>
+                <td>Haugesund</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\karmsund_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://krisesentervest.no" target="_blank">Krisesenter Vest IKS</a></td>
+                <td>Haugesund</td>
+                <td class="contact">52 72 98 84</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\krisesenter_vest_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.munor.no" target="_blank">Musikkselskapet Nordvegen AS</a></td>
+                <td>Haugesund</td>
+                <td class="contact"><a href="mailto:munorpost@munor.no">munorpost@munor.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\musikkselskapet_nordvegen_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.filmkraft.no" target="_blank">Filmkraft Rogaland AS</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:post@filmkraft.no">post@filmkraft.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\filmkraft_rogaland_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://gand.vgs.no" target="_blank">Gand videregående skole</a></td>
+                <td>Sandnes</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\gand_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.jarenfri.no" target="_blank">Jæren Friluftsråd Kommunalt Oppgavefellesskap</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:post@jarenfri.no">post@jarenfri.no</a><br>51 66 71 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\jæren_friluftsråd_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://jaerradet.no" target="_blank">Jærrådet</a></td>
+                <td>Sandnes</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\jærrådet.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.brannsr.no" target="_blank">Rogaland Brann og Redning IKS</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:postmottak@rogbr.no">postmottak@rogbr.no</a><br>51 50 22 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_brann_og_redning_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kontrollutv.no" target="_blank">Rogaland Kontrollutvalgssekretariat IKS</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:postmottak.rks@sandnes.kommune.no">postmottak.rks@sandnes.kommune.no</a></td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\rogaland_kontrollutvalgssekretariat_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sekf.no" target="_blank">Sandnes Eiendomsselskap KF</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:tine.aasland@sandnes.kommune.no">tine.aasland@sandnes.kommune.no</a><br>33 50 55 39</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sandnes_eiendomsselskap_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/dnksandnes" target="_blank">Sandnes Kirkelige Fellesråd</a></td>
+                <td>Sandnes</td>
+                <td class="contact"><a href="mailto:ae772@kirken.no">ae772@kirken.no</a><br>51 97 47 70</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sandnes_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sandnes.vgs.no" target="_blank">Sandnes videregående skole</a></td>
+                <td>Sandnes</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>147</td>
+                <td>142</td>
+                <td>294</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\sandnes_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.bjerkreim.kommune.no/" target="_blank">Bjerkreim Kommune</a></td>
+                <td>Bjerkreim</td>
+                <td class="contact"><a href="mailto:postmottak@bjerkreim.kommune.no">postmottak@bjerkreim.kommune.no</a><br>51 20 11 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>44</td>
+                <td>65</td>
+                <td>114</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\bjerkreim_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ha.kommune.no/" target="_blank">Hå Kommune</a></td>
+                <td>Hå</td>
+                <td class="contact"><a href="mailto:skule@ha.kommune.no">skule@ha.kommune.no</a><br>51 79 30 00</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>380</td>
+                <td>127</td>
+                <td>519</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hå_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.klepp.kommune.no/" target="_blank">Klepp Kommune</a></td>
+                <td>Klepp</td>
+                <td class="contact"><a href="mailto:postmottak@klepp.kommune.no">postmottak@klepp.kommune.no</a><br>51 42 98 00</td>
+                <td>9</td>
+                <td><span class="badge good">0</span></td>
+                <td>22</td>
+                <td>52</td>
+                <td>136</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\klepp_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.time.kommune.no/" target="_blank">Time Kommune</a></td>
+                <td>Time</td>
+                <td class="contact"><a href="mailto:post@time.kommune.no">post@time.kommune.no</a><br>51 77 60 00</td>
+                <td>15</td>
+                <td><span class="badge good">0</span></td>
+                <td>59</td>
+                <td>99</td>
+                <td>165</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\time_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.gjesdal.menigheter.no" target="_blank">Gjesdal Kirkelige Fellesråd</a></td>
+                <td>Gjesdal</td>
+                <td class="contact"><a href="mailto:kirken@gjesdal.kommune.no">kirken@gjesdal.kommune.no</a><br>51 61 49 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\gjesdal_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.strand.kommune.no/" target="_blank">Strand Kommune</a></td>
+                <td>Strand</td>
+                <td class="contact"><a href="mailto:postmottak@strand.kommune.no">postmottak@strand.kommune.no</a><br>51 74 30 00</td>
+                <td>14</td>
+                <td><span class="badge good">0</span></td>
+                <td>400</td>
+                <td>74</td>
+                <td>479</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\strand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.hjelmeland.kyrkja.no" target="_blank">Hjelmeland Kyrkjelege Fellesråd</a></td>
+                <td>Hjelmeland</td>
+                <td class="contact"><a href="mailto:post@hjelmeland.kyrkja.no">post@hjelmeland.kyrkja.no</a><br>40 43 92 40</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\hjelmeland_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://suldal.kommune.no" target="_blank">Suldal Kommune</a></td>
+                <td>Suldal</td>
+                <td class="contact"><a href="mailto:postmottak@suldal.kommune.no">postmottak@suldal.kommune.no</a><br>52 79 22 00</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\suldal_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.suldal.kyrkja.no" target="_blank">Suldal Kyrkjelege Fellesråd</a></td>
+                <td>Suldal</td>
+                <td class="contact"><a href="mailto:post@suldal-kyrkje.no">post@suldal-kyrkje.no</a><br>52 79 02 01</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\suldal_kyrkjelege_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.him.as" target="_blank">Haugaland Interkommunale Miljøverk</a></td>
+                <td>Vindafjord</td>
+                <td class="contact"><a href="mailto:post@him.as">post@him.as</a><br>52 76 50 50</td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>96</td>
+                <td>94</td>
+                <td>191</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\haugaland_interkommunale_miljøverk.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vindafjord.kommune.no" target="_blank">Vindafjord kommune</a></td>
+                <td>Vindafjord</td>
+                <td class="contact"><a href="mailto:postmottak@vindafjord.kommune.no">postmottak@vindafjord.kommune.no</a></td>
+                <td>16</td>
+                <td><span class="badge good">0</span></td>
+                <td>175</td>
+                <td>83</td>
+                <td>263</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="rogaland\vindafjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>

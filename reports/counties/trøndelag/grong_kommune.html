@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://www.grong.kommune.no/</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://www.grong.kommune.no/";
+        var TOTAL_ISSUES = 111;
+        var maxPages = 20;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://www.grong.kommune.no/</p>
+        <p><strong>Dato:</strong> 2026-02-12T22:24:26.710846</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item success">✅ <strong>Tilgjengelighetserklæring funnet</strong></div>
+            <div class="statement-item">🔗 <a href="https://www.grong.kommune.no/tilgjengelighetserklaring/" class="statement-link" target="_blank">Gå til erklæring</a></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">20</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">111</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">51</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">52</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">7</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">1229</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">111</strong> av 111 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/</div>
+            <div>Avvik: 19 | Bestått: 89</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="" data-id="19023" href="https://grong.bedreinnsats.no/" target="_blank"&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Urolig for et barn, en ungdom eller en familie?&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (103 characters)</p>
+                <div class="element">&lt;a class="" data-id="11055" href="https://www.grong.kommune.no/tjenester/helse-omsorg-og-folkehelse/"&gt;&lt;span&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Helse og omsorg&lt;/span&gt;&lt;span class="description"&gt;</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (111 characters)</p>
+                <div class="element">&lt;a class="" data-id="11060" href="https://www.grong.kommune.no/tjenester/om-kommunen/"&gt;&lt;span&gt;&lt;span class="img"&gt;&lt;/span&gt;&lt;span class="text"&gt;Om kommunen&lt;/span&gt;&lt;span class="description"&gt;Informasjon til ans</div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til minsak.no'</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage il-custom-button" data-id="12125" href="http://www.minsak.no"&gt;&lt;span&gt;Gå til minsak.no&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_innhold_ctl0</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (12 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11053' appears 2 times</p>
+                <div class="element">id="11053"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11055' appears 2 times</p>
+                <div class="element">id="11055"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11056' appears 2 times</p>
+                <div class="element">id="11056"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11061' appears 2 times</p>
+                <div class="element">id="11061"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11059' appears 2 times</p>
+                <div class="element">id="11059"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11054' appears 2 times</p>
+                <div class="element">id="11054"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '14757' appears 2 times</p>
+                <div class="element">id="14757"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11057' appears 2 times</p>
+                <div class="element">id="11057"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11058' appears 2 times</p>
+                <div class="element">id="11058"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '11060' appears 2 times</p>
+                <div class="element">id="11060"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '13137' appears 2 times</p>
+                <div class="element">id="13137"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '18396' appears 2 times</p>
+                <div class="element">id="18396"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe allowfullscreen="" scrolling="no" src="https://www.visbrosjyre.no/video/816D36233?ap=false"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Skjemabank - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/skjemabank/</div>
+            <div>Avvik: 1 | Bestått: 55</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Melde feil - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/melde-feil/</div>
+            <div>Avvik: 1 | Bestått: 50</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Personvernerklæring (GDPR) - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/politikk-og-administrasjon/personvern-gdpr/</div>
+            <div>Avvik: 45 | Bestått: 135</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3 class="il-heading il-heading--h3"&gt;De nye reglene innebærer blant annet:&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (9 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12434" href="mailto:postmottak@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;postmottak@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a data-id="2071" href="http://www.datatilsynet.no/" onclick="window.open(this.href); return false;"&gt;www.datatilsynet.no&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="16370" href="mailto:camilla.formo@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;camilla.formo@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-telephone" data-id="16369" href="tel:90409493" onclick="window.open(this.href); return false;" target="_blank"&gt;904 09 493&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12437" href="mailto:anders.heia@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anders Heia&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12438" href="mailto:anita.faroy@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anita Færøy&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="12439" href="https://www.facebook.com/grong.kommune" onclick="window.open(this.href); return false;" target="_blank"&gt;kommunens Facebookside&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12440" href="mailto:mailto:anders.heia@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anders Heia&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12441" href="mailto:postmottak@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;postmottak@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (34 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="16367" href="http://camilla.formo@grong.kommune.no"&gt;camilla.formo@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-telephone" data-id="16366" href="tel:90409493"&gt;904 09 493&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2052" href="https://www.europalov.no/rettsakt/personvernforordningen/id-5275" onclick="window.open(this.href); return false;"&gt;Europeisk personvernforordning&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2050" href="https://lovdata.no/dokument/NL/lov/2018-06-15-38?q=personopplysning" onclick="window.open(this.href); return false;"&gt;Ny personopplysningslov&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2051" href="https://lovdata.no/dokument/NL/lov/2006-05-19-16" onclick="window.open(this.href); return false;"&gt;Offentleglova  &lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2053" href="https://lovdata.no/dokument/NL/lov/1967-02-10?q=forvaltningsloven" onclick="window.open(this.href); return false;"&gt;Forvaltningsloven &lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2054" href="https://lovdata.no/dokument/NL/lov/1992-12-04-126?q=arkivloven" onclick="window.open(this.href); return false;"&gt;Arkivloven &lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2055" href="https://lovdata.no/dokument/NL/lov/1998-07-17-61?q=oppl%C3%A6ringsloven" onclick="window.open(this.href); return false;"&gt;Opplæringsloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2056" href="https://lovdata.no/dokument/NL/lov/2014-06-20-43?q=helseregisterloven" onclick="window.open(this.href); return false;"&gt;Helseregisterloven &lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2058" href="https://lovdata.no/dokument/NL/lov/1992-09-25-107?q=kommuneloven" onclick="window.open(this.href); return false;"&gt;Kommuneloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2057" href="https://lovdata.no/dokument/NL/lov/2005-06-17-62?q=arbeidsmilj%C3%B8loven" onclick="window.open(this.href); return false;"&gt;Arbeidsmiljøloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="12433" href="https://www.grong.kommune.no/gammel-grong/arkiv/tjenester-plan-bygg-og-eiendom-bolig-kommuale-boliger/troahaugvegen-22.3750.aspx"&gt;Barneve</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2060" href="https://lovdata.no/dokument/NL/lov/2009-12-18-131" onclick="window.open(this.href); return false;"&gt;Sosialtjenesteloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2061" href="https://lovdata.no/dokument/NL/lov/2011-06-24-30?q=helse-%20og%20omsorg" onclick="window.open(this.href); return false;"&gt;Helse- og omsorgstjenesteloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2065" href="https://lovdata.no/dokument/NL/lov/1999-07-02-64?q=helsepersonell" onclick="window.open(this.href); return false;"&gt;Helsepersonelloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2062" href="https://lovdata.no/dokument/NL/lov/2014-06-20-43?q=helseregister" onclick="window.open(this.href); return false;"&gt;Helseregisterloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2064" href="https://lovdata.no/dokument/NL/lov/1997-02-28-19?q=folketrygd" onclick="window.open(this.href); return false;"&gt;Folketrygdloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2063" href="https://lovdata.no/dokument/NL/lov/2006-06-16-20?q=nav" onclick="window.open(this.href); return false;"&gt;Nav-loven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2066" href="https://lovdata.no/dokument/NL/lov/1998-07-17-56?q=regnskap" onclick="window.open(this.href); return false;"&gt;Regnskapsloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2067" href="https://lovdata.no/dokument/NL/lov/2003-07-04-83?q=e-kom" onclick="window.open(this.href); return false;"&gt;E-kom loven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2068" href="https://www.datatilsynet.no/om-personvern/personopplysninger/" onclick="window.open(this.href); return false;"&gt;Datatilsynet sine sider om hva som regnes som personopplysninger&lt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2069" href="https://lovdata.no/dokument/NL/lov/2018-06-15-38" onclick="window.open(this.href); return false;"&gt; jfr. lov om behandling av personopplysninger §2 og §3&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12434" href="mailto:postmottak@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;postmottak@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2071" href="http://www.datatilsynet.no/" onclick="window.open(this.href); return false;"&gt;www.datatilsynet.no&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="16370" href="mailto:camilla.formo@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;camilla.formo@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-telephone" data-id="16369" href="tel:90409493" onclick="window.open(this.href); return false;" target="_blank"&gt;904 09 493&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2079" href="http://www.lovdata.no/all/nl-20060519-016.html" onclick="window.open(this.href); return false;"&gt;Offentlighetsloven&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2075" href="http://www.regjeringen.no/nb/dep/jd/dok/lover_regler/retningslinjer/2008/rettleiar-til-offentleglova.html?id=537812" onclick="window.open(this.href); return false;"&gt;Se også vei</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a data-id="2076" href="http://www.google.com/analytics/learn/privacy.html" onclick="window.open(this.href); return false;"&gt;Google Analytics` sider: prinsipper for sikkerhet og personvern&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12437" href="mailto:anders.heia@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anders Heia&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12438" href="mailto:anita.faroy@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anita Færøy&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="12439" href="https://www.facebook.com/grong.kommune" onclick="window.open(this.href); return false;" target="_blank"&gt;kommunens Facebookside&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12440" href="mailto:mailto:anders.heia@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;Anders Heia&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="12441" href="mailto:postmottak@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;postmottak@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Kommunestyremøter - Opptak og direktesendinger - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/livestreaming/kommunestyremoter/</div>
+            <div>Avvik: 1 | Bestått: 51</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Vakttelefoner - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/om-kommunen/kontakt-oss/vakttelefoner/</div>
+            <div>Avvik: 2 | Bestått: 79</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-telephone" data-id="16432" href="tel:489 55 599" onclick="window.open(this.href); return false;" target="_blank"&gt;489 55 599&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>For ansatte i Grong kommune - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/om-kommunen/for-ansatte-i-grong-kommune/</div>
+            <div>Avvik: 4 | Bestått: 64</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="15835" href="https://mega.eadm.no/#/forgotpassword/NO940010853" onclick="window.open(this.href); return false;" target="_blank"&gt;https://mega.eadm.no/#</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="15835" href="https://mega.eadm.no/#/forgotpassword/NO940010853" onclick="window.open(this.href); return false;" target="_blank"&gt;https://mega.eadm.no/#</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til Office365'</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage il-custom-button" data-id="14850" href="http://www.office.com"&gt;&lt;span&gt;Gå til Office365&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Send sikker digital post til oss (eDialog) - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/om-kommunen/kontakt-oss/send-sikker-digital-post-til-oss/</div>
+            <div>Avvik: 4 | Bestått: 68</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14756" href="https://svarut.ks.no/edialog/mottaker/940010853" onclick="window.open(this.href); return false;" target="_blank"&gt;&lt;strong&gt;Grong kommune&lt;/s</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="16844" href="https://min.kommune.no/s/zntt" onclick="window.open(this.href); return false;" target="_blank"&gt;Indre Namdal barnevern&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14753" href="https://svarut.ks.no/edialog/mottaker/940010853" onclick="window.open(this.href); return false;" target="_blank"&gt;Sende til Grong kommune&lt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Næring og utvikling - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/naring-og-utvikling/</div>
+            <div>Avvik: 2 | Bestått: 58</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Innsyn i postliste og møtekalender/dokumenter - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/politikk-og-administrasjon/postliste-og-motekalender/</div>
+            <div>Avvik: 5 | Bestått: 70</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til nettside for postliste'</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14364" href="https://innsyn.grong.kommune.no"&gt;Gå til nettside for postliste&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til nettside for møtekalender og møtedokumenter'</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14456" href="https://prod01.elementscloud.no/publikum/940010853/Dmb"&gt;Gå til nettside for møtekalender og møtedokumenter&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14803" href="https://lovdata.no/dokument/NL/lov/2006-05-19-16" onclick="window.open(this.href); return false;" target="_blank"&gt;Offentleglova&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="17180" href="https://prod01.elementscloud.no/publikum/939896600/" onclick="window.open(this.href); return false;" target="_blank"&gt;link til postlista t</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ansattsøk - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/ansattsok/</div>
+            <div>Avvik: 2 | Bestått: 39</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no headings</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add heading structure to organize page content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!--from cache--&gt;
+&lt;ul class="vListe"&gt;
+&lt;li&gt;&lt;a data-id="11046" href="https://www.grong.kommune.no:443/"&gt;Hjem&lt;/a&gt;&lt;ul&gt;&lt;li&gt;&lt;a data-id="13499" href="h</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Vei, renovasjon, feiing, vann og avløp - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/vei-renovasjon-feiing-vann-og-avlop/</div>
+            <div>Avvik: 2 | Bestått: 54</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Friskus - Vår innbyggerapp - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/om-kommunen/friskus-innbyggerapp/</div>
+            <div>Avvik: 1 | Bestått: 63</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Helse, omsorg og folkehelse - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/helse-omsorg-og-folkehelse/</div>
+            <div>Avvik: 1 | Bestått: 69</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Slik søker du - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/ledige-stillinger/</div>
+            <div>Avvik: 9 | Bestått: 62</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.6 Overskrifter og ledetekster (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h3 class="il-heading il-heading--h3"&gt; &lt;/h3&gt;</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text has redundant phrase: 'Gå til elektronisk søknadsskjema'</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage il-custom-button" data-id="12860" href="https://skjema.grong.kommune.no/skjema/GKO017/"&gt;&lt;span&gt;Gå til elektronisk søknadsskjema&lt;/span&gt;&lt;/a&gt;</div>
+                <div class="fix">Remove 'link to' or similar - screen readers already announce it as a link</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="18950" href="https://www.grong.kommune.no/skjemabank/skjemabank.12213.aspx" onclick="window.open(this.href); return false;" target="_blank"&gt;Link til i</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://www.grong.kommune.no/handlers/bv.ashx/i7335f7eb-0fe4-46c9-a9f2-8ca81774dfc3/w1200/q389/k2b8c8a92f0d1/acoscmsbruksommal.png"&gt; &lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link text is a URL</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14113" href="https://lovdata.no/lov/2006-05-19-16/§25"&gt;https://lovdata.no/lov/2006-05-19-16/§25&lt;/a&gt;</div>
+                <div class="fix">Replace URL with descriptive text that explains the link destination</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (3 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="18950" href="https://www.grong.kommune.no/skjemabank/skjemabank.12213.aspx" onclick="window.open(this.href); return false;" target="_blank"&gt;Link til i</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a href="https://www.grong.kommune.no/handlers/bv.ashx/i7335f7eb-0fe4-46c9-a9f2-8ca81774dfc3/w1200/q389/k2b8c8a92f0d1/acoscmsbruksommal.png"&gt; &lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Focusable element is inside aria-hidden container</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="14113" href="https://lovdata.no/lov/2006-05-19-16/§25"&gt;https://lovdata.no/lov/2006-05-19-16/§25&lt;/a&gt;</div>
+                <div class="fix">Remove from tab order with tabindex='-1' or remove aria-hidden</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Tilgjengelighetserklæring - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tilgjengelighetserklaring/</div>
+            <div>Avvik: 4 | Bestått: 64</div>
+        </div>
+        <div class="issues">
+<details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-webpage" data-id="16038" href="https://www.uutilsynet.no/regelverk/regelverk/266" onclick="window.open(this.href); return false;" target="_blank"&gt;Oversikt over gjeldend</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="16036" href="mailto:postmottak@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;postmottak@grong.kommune.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-telephone" data-id="16037" href="tel:74312100" onclick="window.open(this.href); return false;" target="_blank"&gt;74 31 21 00&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Barnehage og skole - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/barnehage-og-skole/</div>
+            <div>Avvik: 2 | Bestått: 55</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Velferd og sosialtjenester - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/velferd-og-sosialtjenester/</div>
+            <div>Avvik: 2 | Bestått: 51</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Økonomi og skatt - Grong kommune</h3>
+            <div class="page-url">https://www.grong.kommune.no/tjenester/okonomi-og-skatt/</div>
+            <div>Avvik: 2 | Bestått: 53</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Page has no main landmark</p>
+                <div class="element">&lt;body&gt;</div>
+                <div class="fix">Add &lt;main&gt; element or role='main' to wrap primary content</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Recurring Issues in Article/News Pages (2 pages scanned)</h3>
+            <div class="page-url">[ARTICLE PAGES SUMMARY - 2 pages]</div>
+            <div>Avvik: 2 | Bestått: 0</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label (×2 across article pages)</p>
+                <div class="element">&lt;nav class="main-menu"&gt;
+&lt;div class="main-menu-content"&gt;
+&lt;!-- Start sone --&gt;
+&lt;div class="zone Zone webPartZoneVertical" id="Sone100000"&gt;
+&lt;div class="webPart nav-menu" id="ctl00_ctl00_ctl00_ctl00_innhol</div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication (×1 across article pages)</p>
+                <div class="element">&lt;a class="InnholdLinkTekst link-email" data-id="19132" href="mailto:christine.nielsen@grong.kommune.no" onclick="window.open(this.href); return false;" target="_blank"&gt;christine.nielsen@grong.kommune.</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://www.grong.kommune.no/</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="20" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://www.grong.kommune.no/ --max-pages 20 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

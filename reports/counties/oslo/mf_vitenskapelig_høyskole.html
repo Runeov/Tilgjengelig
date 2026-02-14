@@ -1,0 +1,2895 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG 2.1 Tilgjengelighetsrapport - https://mf.no</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+               line-height: 1.6; max-width: 1200px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2, h3 { color: #1a1a2e; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .header p { margin: 10px 0 0 0; opacity: 0.9; }
+        .statement-section { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .statement-section h2 { margin-top: 0; color: #003366; }
+        .statement-status { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
+        .statement-item { display: flex; align-items: center; gap: 8px; padding: 10px 15px; border-radius: 6px; }
+        .statement-item.success { background: #e8f5e9; color: #2e7d32; }
+        .statement-item.warning { background: #fff3e0; color: #e65100; }
+        .statement-item.error { background: #fee; color: #c00; }
+        .statement-link { color: #003366; text-decoration: none; }
+        .statement-link:hover { text-decoration: underline; }
+        .statement-details { margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 6px; }
+        .statement-details p { margin: 5px 0; }
+        
+        /* Enhanced Summary Stats */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: white;
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+            position: relative;
+        }
+        .stat-value { font-size: 1.8em; font-weight: bold; }
+        .stat-label { color: #666; font-size: 0.85em; }
+        
+        .stat.filterable {
+            cursor: pointer;
+            border: 3px solid transparent;
+            user-select: none;
+        }
+        .stat.filterable:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .stat.filterable.active { border-color: currentColor; }
+        .stat.filterable::before {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .stat.filterable.active::before { opacity: 1; }
+        .stat.filterable:not(.active) { opacity: 0.4; filter: grayscale(50%); }
+        .stat.filterable:not(.active):hover { opacity: 0.7; }
+        
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.critical.active { border-color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.serious.active { border-color: #e65100; }
+        .stat.moderate { background: #fff8e1; color: #9e6b00; }
+        .stat.moderate.active { border-color: #f9a825; }
+        .stat.minor { background: #e8f5e9; color: #2e7d32; }
+        .stat.minor.active { border-color: #2e7d32; }
+        .stat.passed { background: #e8f5e9; color: #2e7d32; }
+        
+        .stat.pages-control {
+            background: linear-gradient(135deg, #003366 0%, #004080 100%);
+            color: white;
+            cursor: pointer;
+        }
+        .stat.pages-control:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,51,102,0.3);
+        }
+        .stat.pages-control .stat-value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .pages-adjust { display: flex; flex-direction: column; gap: 1px; }
+        .pages-adjust button {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 22px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 9px;
+            line-height: 1;
+            transition: background 0.2s;
+        }
+        .pages-adjust button:hover { background: rgba(255,255,255,0.4); }
+        .stat.pages-control .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .stat.rescan-btn { background: #2e7d32; color: white; cursor: pointer; }
+        .stat.rescan-btn:hover {
+            background: #1b5e20;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46,125,50,0.3);
+        }
+        .stat.rescan-btn .stat-value { font-size: 1.5em; }
+        .stat.rescan-btn .stat-label { color: rgba(255,255,255,0.9); }
+        
+        .filter-status {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .filter-status-text { font-size: 14px; color: #666; }
+        .filter-status-text strong { color: #333; font-size: 1.1em; }
+        .filter-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .filter-action-btn {
+            padding: 6px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+        .filter-action-btn:hover { background: #e9e9e9; border-color: #999; }
+        
+        .issue.hidden { display: none !important; }
+        details.hidden { display: none !important; }
+        
+        .page { background: white; border-radius: 8px; margin: 20px 0; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .page-header { background: #f8f9fa; padding: 15px 20px; border-bottom: 1px solid #ddd; }
+        .page-header h3 { margin: 0; }
+        .page-url { color: #666; font-size: 0.9em; word-break: break-all; }
+        .issues { padding: 20px; }
+        .issue { background: #fff; border-left: 4px solid #ccc; padding: 15px; margin: 10px 0; border-radius: 0 4px 4px 0; }
+        .issue.critical { border-color: #c00; background: #fff5f5; }
+        .issue.serious { border-color: #e65100; background: #fff8f0; }
+        .issue.moderate { border-color: #f9a825; background: #fffdf0; }
+        .issue.minor { border-color: #2e7d32; background: #f5fff5; }
+        .issue-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 10px; }
+        .rule-id { font-weight: bold; font-size: 1.1em; color: #003366; }
+        .criterion { color: #666; font-size: 0.9em; }
+        .impact { padding: 4px 12px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .impact.critical { background: #c00; color: white; }
+        .impact.serious { background: #e65100; color: white; }
+        .impact.moderate { background: #f9a825; color: #333; }
+        .impact.minor { background: #2e7d32; color: white; }
+        .element { background: #f5f5f5; padding: 10px; font-family: monospace; 
+                   font-size: 0.9em; overflow-x: auto; margin: 10px 0; border-radius: 4px; }
+        .fix { background: #e3f2fd; padding: 12px; border-radius: 4px; margin-top: 10px; }
+        .fix::before { content: "💡 Løsning: "; font-weight: bold; }
+        .no-issues { color: #2e7d32; padding: 20px; text-align: center; font-size: 1.1em; }
+        details { margin: 10px 0; }
+        summary { cursor: pointer; padding: 12px 15px; background: #f5f5f5; border-radius: 4px; font-weight: 500; }
+        summary:hover { background: #eee; }
+        .legend { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .legend h3 { margin-top: 0; }
+        .legend-items { display: flex; gap: 20px; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; }
+        .legend-color { width: 16px; height: 16px; border-radius: 3px; }
+        .footer { text-align: center; padding: 20px; color: #666; font-size: 0.9em; }
+        .footer a { color: #003366; }
+        
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(2px);
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 520px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal h3 { margin: 0 0 20px 0; color: #003366; font-size: 1.4em; }
+        .modal-url {
+            background: #f5f5f5;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            word-break: break-all;
+            border-left: 4px solid #003366;
+        }
+        .modal-pages {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .modal-pages label { font-weight: 600; color: #333; }
+        .modal-pages input {
+            width: 80px;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .modal-pages input:focus { border-color: #003366; outline: none; }
+        .modal-pages-hint { font-size: 12px; color: #888; }
+        .modal-command {
+            background: #1a1a2e;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 13px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 25px; }
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .modal-btn.secondary { background: #f5f5f5; color: #333; }
+        .modal-btn.secondary:hover { background: #e0e0e0; }
+        .modal-btn.primary { background: #003366; color: white; }
+        .modal-btn.primary:hover { background: #004488; }
+        </style>
+    <script>
+        var BASE_URL = "https://mf.no";
+        var TOTAL_ISSUES = 166;
+        var maxPages = 20;
+        var activeFilters = { critical: true, serious: true, moderate: true, minor: true };
+        
+        function toggleFilter(severity) {
+            activeFilters[severity] = !activeFilters[severity];
+            var stat = document.querySelector('.stat[data-severity="' + severity + '"]');
+            if (stat) {
+                if (activeFilters[severity]) { stat.classList.add('active'); }
+                else { stat.classList.remove('active'); }
+            }
+            applyFilters();
+        }
+        
+        function selectAll() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = true;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.add('active');
+            }
+            applyFilters();
+        }
+        
+        function selectNone() {
+            var keys = ['critical', 'serious', 'moderate', 'minor'];
+            for (var i = 0; i < keys.length; i++) {
+                activeFilters[keys[i]] = false;
+                var stat = document.querySelector('.stat[data-severity="' + keys[i] + '"]');
+                if (stat) stat.classList.remove('active');
+            }
+            applyFilters();
+        }
+        
+        function applyFilters() {
+            var visibleCount = 0;
+            var issues = document.querySelectorAll('.issue[data-severity]');
+            for (var i = 0; i < issues.length; i++) {
+                var issue = issues[i];
+                var severity = issue.getAttribute('data-severity');
+                if (activeFilters[severity]) {
+                    issue.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    issue.classList.add('hidden');
+                }
+            }
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) {
+                var detail = details[i];
+                var childIssues = detail.querySelectorAll('.issue[data-severity]');
+                var hasVisible = false;
+                for (var j = 0; j < childIssues.length; j++) {
+                    if (!childIssues[j].classList.contains('hidden')) { hasVisible = true; break; }
+                }
+                if (hasVisible) { detail.classList.remove('hidden'); }
+                else { detail.classList.add('hidden'); }
+            }
+            var countEl = document.getElementById('visibleCount');
+            var totalEl = document.getElementById('visibleTotal');
+            if (countEl) countEl.textContent = visibleCount;
+            if (totalEl) totalEl.textContent = visibleCount;
+        }
+        
+        function expandAll() {
+            var details = document.querySelectorAll('details:not(.hidden)');
+            for (var i = 0; i < details.length; i++) { details[i].open = true; }
+        }
+        
+        function collapseAll() {
+            var details = document.querySelectorAll('details');
+            for (var i = 0; i < details.length; i++) { details[i].open = false; }
+        }
+        
+        function adjustPages(delta) {
+            maxPages = Math.max(1, Math.min(500, maxPages + delta));
+            var pagesEl = document.getElementById('pagesValue');
+            var inputEl = document.getElementById('maxPages');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function showRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            var inputEl = document.getElementById('maxPages');
+            if (modal) modal.classList.add('active');
+            if (inputEl) inputEl.value = maxPages;
+            updateCommand();
+        }
+        
+        function closeRescanModal() {
+            var modal = document.getElementById('rescanModal');
+            if (modal) modal.classList.remove('active');
+        }
+        
+        function updateCommand() {
+            var inputEl = document.getElementById('maxPages');
+            if (inputEl) {
+                maxPages = Math.max(1, Math.min(500, parseInt(inputEl.value) || 10));
+                inputEl.value = maxPages;
+            }
+            var pagesEl = document.getElementById('pagesValue');
+            var cmdEl = document.getElementById('rescanCommand');
+            if (pagesEl) pagesEl.textContent = maxPages;
+            if (cmdEl) cmdEl.textContent = 'python checker.py ' + BASE_URL + ' --max-pages ' + maxPages + ' --format html';
+        }
+        
+        function copyCommand() {
+            var cmdEl = document.getElementById('rescanCommand');
+            if (cmdEl && navigator.clipboard) {
+                navigator.clipboard.writeText(cmdEl.textContent).then(function() { alert('Kommando kopiert!'); });
+            }
+        }
+        
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.id === 'rescanModal') closeRescanModal();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeRescanModal();
+        });
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            applyFilters();
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>WCAG 2.1 Tilgjengelighetsrapport</h1>
+        <p>Basert på testregler fra Tilsynet for universell utforming av IKT</p>
+        <p><strong>Nettsted:</strong> https://mf.no</p>
+        <p><strong>Dato:</strong> 2026-02-13T14:54:28.418887</p>
+    </div>
+    
+    
+    <div class="statement-section">
+        <h2>📋 Tilgjengelighetserklæring Status</h2>
+        <div class="statement-status">
+            <div class="statement-item error">❌ <strong>Ingen tilgjengelighetserklæring funnet</strong></div>
+        </div>
+    </div>
+
+    
+    <div class="legend">
+        <h3>Alvorlighetsgrad</h3>
+        <div class="legend-items">
+            <div class="legend-item"><div class="legend-color" style="background:#c00"></div> Kritisk - Blokkerer tilgang</div>
+            <div class="legend-item"><div class="legend-color" style="background:#e65100"></div> Alvorlig - Store barrierer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#f9a825"></div> Moderat - Betydelige problemer</div>
+            <div class="legend-item"><div class="legend-color" style="background:#2e7d32"></div> Mindre - Bør forbedres</div>
+        </div>
+    </div>
+    
+    <h2>Sammendrag</h2>
+    <div class="summary">
+        <div class="stat pages-control" onclick="showRescanModal()" title="Klikk for ny skanning">
+            <div class="stat-value">
+                <span id="pagesValue">20</span>
+                <div class="pages-adjust">
+                    <button onclick="event.stopPropagation(); adjustPages(5)" title="+5">▲</button>
+                    <button onclick="event.stopPropagation(); adjustPages(-5)" title="-5">▼</button>
+                </div>
+            </div>
+            <div class="stat-label">Sider testet</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value" id="visibleTotal">166</div>
+            <div class="stat-label">Synlige avvik</div>
+        </div>
+        <div class="stat critical filterable active" data-severity="critical" onclick="toggleFilter('critical')">
+            <div class="stat-value">38</div>
+            <div class="stat-label">Kritiske</div>
+        </div>
+        <div class="stat serious filterable active" data-severity="serious" onclick="toggleFilter('serious')">
+            <div class="stat-value">24</div>
+            <div class="stat-label">Alvorlige</div>
+        </div>
+        <div class="stat moderate filterable active" data-severity="moderate" onclick="toggleFilter('moderate')">
+            <div class="stat-value">103</div>
+            <div class="stat-label">Moderate</div>
+        </div>
+        <div class="stat minor filterable active" data-severity="minor" onclick="toggleFilter('minor')">
+            <div class="stat-value">1</div>
+            <div class="stat-label">Mindre</div>
+        </div>
+        <div class="stat passed">
+            <div class="stat-value">2435</div>
+            <div class="stat-label">Bestått</div>
+        </div>
+        <div class="stat rescan-btn" onclick="showRescanModal()">
+            <div class="stat-value">🔄</div>
+            <div class="stat-label">Skann på nytt</div>
+        </div>
+    </div>
+    
+    <div class="filter-status">
+        <div class="filter-status-text">
+            Viser <strong id="visibleCount">166</strong> av 166 avvik
+        </div>
+        <div class="filter-actions">
+            <button class="filter-action-btn" onclick="selectAll()">✓ Alle på</button>
+            <button class="filter-action-btn" onclick="selectNone()">✗ Alle av</button>
+            <button class="filter-action-btn" onclick="expandAll()">📂 Utvid</button>
+            <button class="filter-action-btn" onclick="collapseAll()">📁 Lukk</button>
+        </div>
+    </div>
+    
+    <h2>Resultater per side</h2>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/</div>
+            <div>Avvik: 10 | Bestått: 151</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (7 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Sturla_gudstjeneste_jan26.jpg?itok=FQEmn4jI" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/DSC02758_nett.jpg?itok=L_wjzV5M" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/to%20kompiser%20studiestart.jpg?itok=qQFj0lqZ" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Bok_Atle%20og%20Asle.jpg?itok=7lu9_loB" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/DSC01756-nett.jpg?itok=29aFg3kR" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Merethe_liggende_nett.jpg?itok=-s4MrjIp" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Hilde-Marie%20Movafagh%20smil.jpg?itok=1Yde4-y4" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>MF KOM | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/kom</div>
+            <div>Avvik: 8 | Bestått: 136</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1b</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Linked image has empty alt and link has no other text</p>
+                <div class="element">&lt;img alt="" class="wp-image-3126" data-entity-type="file" data-entity-uuid="137adbaf-a64a-42d8-9d6e-832134057dfc" data-image-style="original" src="/sites/default/files/styles/large/public/2023-02/MF-J</div>
+                <div class="fix">Add descriptive alt text to the image</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/2026-02/vy-le-nTKuPRgEinM-unsplash.jpg?itok=BXr-gBiu" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/fred-russo-3Q83dROp3Fk-unsplash.jpg?itok=5u7Crnlq" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="/node/3188"&gt;&lt;img alt="" class="wp-image-3126" data-entity-type="file" data-entity-uuid="137adbaf-a64a-42d8-9d6e-832134057dfc" data-image-style="original" src="/sites/default/files/styles/larg</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link wp-element-button" href="https://journals.mf.no/tpt" rel="noreferrer noopener" target="_blank"&gt;Tidsskrift for praktisk teologi&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/en</div>
+            <div>Avvik: 9 | Bestått: 143</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (5 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Merethe_liggende_nett.jpg?itok=-s4MrjIp" width="950"&gt;
+&lt;div class="wp-blo</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/images/18268-Mina%20Monier.jpg?itok=xDI5I2YW" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Tatjana%20Schnell_lite_2.jpg?itok=BLZG-NFC" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Sturla_st%C3%A5lsett_cropped.jpg?itok=uBs36F7M" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/announcement%20Dan%20batovici.jpg?itok=FTMwv_Qp" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenutoppart-menu"&gt;Hovedlenker topp (engelsk)&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Link text is not descriptive: 'Read more'</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="https://mf.no/en/articles?tid%5B5%5D=5"&gt;Read more&lt;/a&gt;</div>
+                <div class="fix">Use descriptive text that indicates where the link goes (e.g., 'Read more about products' instead of 'Read more')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Privacy settings&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Akkurat passe feminin – kvinner som ledere og pastorer i norske frikirker</h3>
+            <div class="page-url">https://mf.no/forskning/akkurat-passe-feminin-kvinner-som-ledere-og-pastorer-i-norske-frikirker</div>
+            <div>Avvik: 9 | Bestått: 121</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Hilde-Marie%20Movafagh%20smil.jpg?itok=1Yde4-y4" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Bok_Atle%20og%20Asle.jpg?itok=7lu9_loB" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/DSC01756-nett.jpg?itok=29aFg3kR" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://fb.me/e/3uieK772D" rel="noreferrer noopener" target="_blank"&gt;Lenken vil bli publisert i dette Facebook-eventet.&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-label="Share to Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://mf.no/forskning/akkurat-passe-feminin-kvinner-som-ledere-og-pastorer-i-norske-frikirker&amp;title=Akkurat p</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-label="Share to LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://mf.no/forskning/akkurat-passe-feminin-kvinner-som-ledere-og-pastorer-i-norske-frikirker" rel="noopen</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Praktisk støtte for undervisere ved MF | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/undervisere</div>
+            <div>Avvik: 3 | Bestått: 126</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Vil finne nye løsninger for barn og unge som står utenfor skolen</h3>
+            <div class="page-url">https://mf.no/forskning/vil-finne-nye-losninger-barn-og-unge-som-star-utenfor-skolen</div>
+            <div>Avvik: 9 | Bestått: 128</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (3 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/DSC01756-nett.jpg?itok=29aFg3kR" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Bok_Atle%20og%20Asle.jpg?itok=7lu9_loB" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Merethe_liggende_nett.jpg?itok=-s4MrjIp" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3 class="wp-block-mf-preview__title"&gt;Sandsmark,     Astrid
+&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (3 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-label="Share to Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://mf.no/forskning/vil-finne-nye-losninger-barn-og-unge-som-star-utenfor-skolen&amp;title=Vil finne nye løsnin</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a aria-label="Share to LinkedIn" href="https://www.linkedin.com/sharing/share-offsite/?url=https://mf.no/forskning/vil-finne-nye-losninger-barn-og-unge-som-star-utenfor-skolen" rel="noopener" target=</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Artikler | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/artikler</div>
+            <div>Avvik: 14 | Bestått: 151</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (6 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/2026-02/vy-le-nTKuPRgEinM-unsplash.jpg?itok=BXr-gBiu" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Sturla_gudstjeneste_jan26.jpg?itok=FQEmn4jI" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/DSC02758_nett.jpg?itok=L_wjzV5M" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/eliott-reyna-kcT-7cirBEw-unsplash%20%281%29.jpg?itok=6yV4niBp" width="95</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/to%20kompiser%20studiestart.jpg?itok=qQFj0lqZ" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/35766642_2554659141339515_2615242549022949376_n_1.jpg?itok=mLkMDo6c" wid</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (4 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3 class="wp-block-mf-preview__title"&gt;
+&lt;span&gt;MF KOM-lunsjer våren 2026&lt;/span&gt;
+&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination" role="navigation"&gt;
+&lt;ul&gt;
+&lt;li class="pagination__page active"&gt;
+&lt;a aria-current="page" href="?page=0" title="Nåværende side"&gt;
+&lt;span class="visually-hidden"&gt;
+                      </div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Multiple nav elements exist but this one has no label</p>
+                <div class="element">&lt;nav class="pagination" role="navigation"&gt;
+&lt;ul&gt;
+&lt;li class="pagination__page active"&gt;
+&lt;a aria-current="page" href="?page=0" title="Nåværende side"&gt;
+&lt;span class="visually-hidden"&gt;
+                      </div>
+                <div class="fix">Add aria-label to distinguish between navigation regions (e.g., 'Main navigation', 'Footer navigation')</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>3.3.2 Ledetekster eller instruksjoner (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 3.3.2</span>
+                        <span class="criterion">(3.3.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Form input only has placeholder, no proper label</p>
+                <div class="element">&lt;input class="form-text" data-drupal-selector="edit-title" id="edit-title" maxlength="128" name="title" placeholder="Søk" size="30" type="text" value=""/&gt;</div>
+                <div class="fix">Add a &lt;label&gt; element with for attribute, or aria-label. Placeholder disappears when typing.</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Element with role='navigation' needs an accessible name</p>
+                <div class="element">&lt;nav class="pagination" role="navigation"&gt;
+&lt;ul&gt;
+&lt;li class="pagination__page active"&gt;
+&lt;a aria-current="page" href="?page=0" title="Nåværende side"&gt;
+&lt;span class="visually-hidden"&gt;
+                      </div>
+                <div class="fix">Add aria-label or aria-labelledby attribute</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Studieveiledning | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/studenter/studieveiledning</div>
+            <div>Avvik: 5 | Bestått: 135</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;Finn din rådgiver&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://outlook.office.com/book/MFStudieveileder@menfak.onmicrosoft.com/?ismsaljsauthenabled" rel="noreferrer noopener" target="_blank"&gt;Book time med en studierå</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Studentlivet på MF | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/studenter/studentlivet-pa-mf</div>
+            <div>Avvik: 7 | Bestått: 136</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Linde%20ute.jpg?itok=XMUbPgvf" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.tiktok.com/@mfvitenskapelighoyskole?refer=creator_embed" target="_blank"&gt;@mfvitenskapelighoyskole&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.1 Parsing (2 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: '2ab1b0d5-e4c6-420b-a6d2-a69258ec212e' appears 2 times</p>
+                <div class="element">id="2ab1b0d5-e4c6-420b-a6d2-a69258ec212e"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.1</span>
+                        <span class="criterion">(4.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Duplicate ID found: 'e6c55c96-42c8-442b-8edd-8e8eaa720290' appears 2 times</p>
+                <div class="element">id="e6c55c96-42c8-442b-8edd-8e8eaa720290"</div>
+                <div class="fix">Each ID must be unique on the page</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Tidsskrift for Praktisk Teologi | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/tidsskrift-praktisk-teologi</div>
+            <div>Avvik: 3 | Bestått: 96</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Ledelsen | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/om-mf/ledelsen</div>
+            <div>Avvik: 3 | Bestått: 109</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Personvernerklæringer | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/om-mf/personvern/personvernerklaeringer</div>
+            <div>Avvik: 42 | Bestått: 216</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h2 to h4</p>
+                <div class="element">&lt;h4&gt;Hvor lenge lagrer MF opplysninger om deg?&lt;/h4&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h3 instead of h4</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (39 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.datatilsynet.no/om-datatilsynet/kontakt-oss/klage-til-datatilsynet/" rel="noreferrer noopener" target="_blank"&gt;kontakte Datatilsynet på deres nettside&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://help.silktide.com/en/articles/8016591-does-silktide-analytics-anonymize-ip-addresses" rel="noreferrer noopener" target="_blank"&gt;Silktide anonymiserer IP-adressene som de mottar&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://nettvett.no/slik-administrer-du-informasjonskapsler/" rel="noreferrer noopener" target="_blank"&gt;For mer informasjon om informasjonskapsler og blokkering av disse, se guiden til nettve</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a data-id="https://mf.no/sites/default/files/documents/2024/personvernerklaering-fs-Unit.pdf" data-type="URL" href="https://mf.no/sites/default/files/documents/2024/personvernerklaering-fs-Unit.pdf" </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-studentweb.pdf" rel="noreferrer noopener" target="_blank"&gt;Studentweb&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-soknadsweb.pdf" rel="noreferrer noopener" target="_blank"&gt;Søknadsweb&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-epn.pdf" rel="noreferrer noopener" target="_blank"&gt;EpN - emneplanlegging på nett&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-evuweb-for-sokere.pdf" rel="noreferrer noopener" target="_blank"&gt;EVUweb - søkere&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-nomination.pdf" rel="noreferrer noopener" target="_blank"&gt;Nomination&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www2.mf.no/dokumenter/Personvern/personvernerklaering-studentbevis-appen.pdf" rel="noreferrer noopener" target="_blank"&gt;Studentbevis-appen&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.fellesstudentsystem.no/applikasjoner/gaus/personvern/personvernerklering_bokmal.html" rel="noreferrer noopener" target="_blank"&gt;GAUS - Godkjenning av utenlandske studier&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.fellesstudentsystem.no/FS-produkt/rust/personvernerklering-rust-sikt.html" rel="noreferrer noopener" target="_blank"&gt;RUST - Register for utestengte studenter&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.vitnemalsportalen.no/personvern/personvernerklering_bokmal.html" rel="noreferrer noopener" target="_blank"&gt;Vitnemålsportalen&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue minor" data-severity="minor">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact minor">MINOR</span>
+                </div>
+                <p>Link text is very long (112 characters)</p>
+                <div class="element">&lt;a href="https://europe.wiseflow.net/login/license/218" rel="noreferrer noopener" target="_blank"&gt;Wiseflow sin personvernerklæring finner du ved å klikke på Copyright-lenken nederst til venstre etter </div>
+                <div class="fix">Shorten link text to be concise while remaining descriptive</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://europe.wiseflow.net/login/license/218" rel="noreferrer noopener" target="_blank"&gt;Wiseflow sin personvernerklæring finner du ved å klikke på Copyright-lenken nederst til venstre etter </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://uniwise.eu/privacy" rel="noreferrer noopener" target="_blank"&gt;Uniwise&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://ouriginal.com/privacy-and-personal-data-protection-policy/" rel="noreferrer noopener" target="_blank"&gt;Ouriginal&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.instructure.com/policies/product-privacy-policy" rel="noreferrer noopener" target="_blank"&gt;Canvas&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://www.arkivportalen.no/page/5e16ef65bfb4f5427d27cc0f"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.unit.no/oria-personvernerklaering" rel="noreferrer noopener" target="_blank"&gt;Oria&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://www.arkivportalen.no/page/5e16ef65bfb4f5427d27cc0f"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Link has no accessible name (empty link)</p>
+                <div class="element">&lt;a href="https://www.make.as/personvern/"&gt;&lt;/a&gt;</div>
+                <div class="fix">Add text content, aria-label, or image with alt text</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.unit.no/tjenester/alma-biblioteksystem" rel="noreferrer noopener" target="_blank"&gt;Alma&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://sikt.no/tjenester/leganto-pensumlistesystem/personvernerklaering-pensumlistetjenesten-leganto" rel="noreferrer noopener" target="_blank"&gt;Leganto&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.arkivportalen.no/page/674d6026cc4e55164bbb42d8" rel="noreferrer noopener" target="_blank"&gt;Asta/Arkivportalen&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://sikt.no/personvernerklaering" rel="noreferrer noopener" target="_blank"&gt;Sikt&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.cristin.no/om-cristin/personvern/" rel="noreferrer noopener" target="_blank"&gt;Cristin&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.ebsco.com/company/privacy-policy" rel="noreferrer noopener" target="_blank"&gt;EBSCO&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.nb.no/personvernerklaering/" rel="noreferrer noopener" target="_blank"&gt;Nasjonalbiblioteket&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.gyldendal.no/om-gyldendal/personvern/gyldendal-personvernerklaering/" rel="noreferrer noopener" target="_blank"&gt;Ordnett&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.make.as/personvern/" rel="noreferrer noopener" target="_blank"&gt;Make&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.uio.no/tjenester/it/adm-app/nettskjema/mer-om/personvern/tos.html" rel="noreferrer noopener" target="_blank"&gt;Nettskjema&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://endnote.co.uk/privacy-policy/" rel="noreferrer noopener" target="_blank"&gt;EndNote&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.grammarly.com/privacy-policy" rel="noreferrer noopener" target="_blank"&gt;Grammarly&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://login.proxy.via.mf.no/login" rel="noreferrer noopener" target="_blank"&gt;EZproxy&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://www.zotero.org/support/privacy" rel="noreferrer noopener" target="_blank"&gt;Zotero&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://site.uit.no/dataverseno/about/policy-framework/access-and-use-policy/" rel="noreferrer noopener" target="_blank"&gt;DataverseNO&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://nva.sikt.no/privacy-policy" rel="noreferrer noopener" target="_blank"&gt;NVA&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Norsk Tidsskrift for Misjonsvitenskap | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/norsk-tidsskrift-misjonsvitenskap</div>
+            <div>Avvik: 7 | Bestått: 106</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>3.3.2 Ledetekster eller instruksjoner (2 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 3.3.2</span>
+                        <span class="criterion">(3.3.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Form input only has placeholder, no proper label</p>
+                <div class="element">&lt;input name="firstname" placeholder="Navn" type="text"/&gt;</div>
+                <div class="fix">Add a &lt;label&gt; element with for attribute, or aria-label. Placeholder disappears when typing.</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 3.3.2</span>
+                        <span class="criterion">(3.3.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Form input only has placeholder, no proper label</p>
+                <div class="element">&lt;input name="email" placeholder="E-postadresse" required="" type="email"/&gt;</div>
+                <div class="fix">Add a &lt;label&gt; element with for attribute, or aria-label. Placeholder disappears when typing.</div>
+            </div>
+</details><details><summary>1.3.5 Identifiser inndataformål (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'firstname' missing autocomplete attribute</p>
+                <div class="element">&lt;input name="firstname" placeholder="Navn" type="text"/&gt;</div>
+                <div class="fix">Add autocomplete='name' to help users fill in the form</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.5</span>
+                        <span class="criterion">(1.3.5 - Nivå AA)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Personal data field 'email' missing autocomplete attribute</p>
+                <div class="element">&lt;input name="email" placeholder="E-postadresse" required="" type="email"/&gt;</div>
+                <div class="fix">Add autocomplete='email' to help users fill in the form</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>MFs historiske arkiv | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/bibliotek/mfs-historiske-arkiv</div>
+            <div>Avvik: 9 | Bestått: 129</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;Kontaktperson&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (6 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://www.digitalarkivet.no/" rel="noreferrer noopener" target="_blank"&gt;Digitalarkivet&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://www.arkivportalen.no/" rel="noreferrer noopener" target="_blank"&gt;Arkivportalen&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://www.nb.no/samlingen/privatarkiv/" rel="noreferrer noopener" target="_blank"&gt;NBs privatarkiver&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://www.arkivverket.no/kom-i-gang-med-arkiv" rel="noreferrer noopener" target="_blank"&gt;Arkivverket&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a class="wp-block-button__link" href="https://www.vid.no/misjons-og-diakoniarkivet" rel="noreferrer noopener" target="_blank"&gt;Misjons- og diakoniarkivet&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Gi en gave | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/gi-en-gave</div>
+            <div>Avvik: 4 | Bestått: 113</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="https://minside.mf.no/Default.aspx" rel="noreferrer noopener" target="_blank"&gt;MinSide&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Eksamen | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/Eksamen</div>
+            <div>Avvik: 3 | Bestått: 129</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>MF Lab for Manuscript Studies and Digital Research | MF</h3>
+            <div class="page-url">https://mf.no/en/l-masdr</div>
+            <div>Avvik: 7 | Bestått: 96</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (2 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/mfjuma_0.JPG?itok=rfMFegw_" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1a</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Untitled%20design%20%281%29.jpg?itok=K6YUN33K" width="950"/&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenutoppart-menu"&gt;Hovedlenker topp (engelsk)&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3&gt;News from MF L-MaSDR&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.6 Overskrifter og ledetekster (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.6</span>
+                        <span class="criterion">(2.4.6 - Nivå AA)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>Heading is empty</p>
+                <div class="element">&lt;h2&gt; &lt;br/&gt;&lt;/h2&gt;</div>
+                <div class="fix">Add descriptive text to the heading, or remove it if not needed</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Privacy settings&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Etter- og videreutdanning | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/evu-tilbud</div>
+            <div>Avvik: 4 | Bestått: 111</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3</p>
+                <div class="element">&lt;h3 class="wp-block-heading"&gt;&lt;strong&gt;Kontakt: &lt;/strong&gt;&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Si ifra! | MF vitenskapelig høyskole</h3>
+            <div class="page-url">https://mf.no/si-ifra</div>
+            <div>Avvik: 4 | Bestått: 103</div>
+        </div>
+        <div class="issues">
+<details><summary>1.3.1 Informasjon og relasjoner (1 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication</p>
+                <div class="element">&lt;a href="http://sikresiden.no" rel="noreferrer noopener" target="_blank"&gt;Les mer på sikresiden.no&lt;/a&gt;</div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="page">
+        <div class="page-header">
+            <h3>Recurring Issues in Article/News Pages (2 pages scanned)</h3>
+            <div class="page-url">[ARTICLE PAGES SUMMARY - 2 pages]</div>
+            <div>Avvik: 6 | Bestått: 0</div>
+        </div>
+        <div class="issues">
+<details><summary>1.1.1 Ikke-tekstlig innhold (1 avvik)</summary>
+            <div class="issue critical" data-severity="critical">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.1.1</span>
+                        <span class="criterion">(1.1.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact critical">CRITICAL</span>
+                </div>
+                <p>Image is missing alt attribute (×6 across article pages)</p>
+                <div class="element">&lt;img class="wp-block-mf-preview__image" height="516" loading="lazy" src="/sites/default/files/styles/large/public/inline-images/Sturla_gudstjeneste_jan26.jpg?itok=FQEmn4jI" width="950"&gt;
+&lt;/img&gt;</div>
+                <div class="fix">Add alt attribute describing the image, or alt='' if decorative</div>
+            </div>
+</details><details><summary>1.3.1 Informasjon og relasjoner (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>First heading is h2, should start with h1 (×2 across article pages)</p>
+                <div class="element">&lt;h2 class="visually-hidden" id="block-mf-hamburgermenyovredel-menu"&gt;Hovedlenker topp&lt;/h2&gt;</div>
+                <div class="fix">Start your heading structure with h1</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 1.3.1</span>
+                        <span class="criterion">(1.3.1 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Heading level skipped: h1 to h3 (×2 across article pages)</p>
+                <div class="element">&lt;h3&gt;Deltakere i prosjektet:&lt;/h3&gt;</div>
+                <div class="fix">Don't skip heading levels. Use h2 instead of h3</div>
+            </div>
+</details><details><summary>2.4.4 Formål med lenke (2 avvik)</summary>
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link opens in new window without indication (×4 across article pages)</p>
+                <div class="element">&lt;a aria-label="Share to Facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://mf.no/nyheter/forskning-om-gudstjenester-unge-voksne-far-15-millioner&amp;title=Forskning om gudstjenester </div>
+                <div class="fix">Add text like '(opens in new tab)' or use visually-hidden text for screen readers</div>
+            </div>
+
+            <div class="issue moderate" data-severity="moderate">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 2.4.4</span>
+                        <span class="criterion">(2.4.4 - Nivå A)</span>
+                    </div>
+                    <span class="impact moderate">MODERATE</span>
+                </div>
+                <p>Link with href='#' and onclick should be a button (×2 across article pages)</p>
+                <div class="element">&lt;a class="wp-block-button__link no-border-radius" href="#" onclick="return mf_eu_cookie_banner_toggle();"&gt;Personverninnstillinger&lt;/a&gt;</div>
+                <div class="fix">Use &lt;button&gt; element for interactive controls, or add role='button'</div>
+            </div>
+</details><details><summary>4.1.2 Navn, rolle, verdi (1 avvik)</summary>
+            <div class="issue serious" data-severity="serious">
+                <div class="issue-header">
+                    <div>
+                        <span class="rule-id">Testregel 4.1.2</span>
+                        <span class="criterion">(4.1.2 - Nivå A)</span>
+                    </div>
+                    <span class="impact serious">SERIOUS</span>
+                </div>
+                <p>iframe is missing title attribute (×2 across article pages)</p>
+                <div class="element">&lt;iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-NGLDW5V" style="display:none;visibility:hidden" width="0"&gt;&lt;/iframe&gt;</div>
+                <div class="fix">Add descriptive title attribute to iframe</div>
+            </div>
+</details>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Testreglene er basert på <a href="https://www.uutilsynet.no/regelverk/oversikt-over-testregler-nettsteder/709" target="_blank">UU-tilsynets offisielle testregler</a></p>
+    </div>
+
+    <div class="modal-overlay" id="rescanModal">
+        <div class="modal">
+            <h3>🔄 Start ny skanning</h3>
+            <div class="modal-url">https://mf.no</div>
+            <div class="modal-pages">
+                <label>Antall sider:</label>
+                <input type="number" id="maxPages" value="20" min="1" max="500" onchange="updateCommand()">
+                <span class="modal-pages-hint">1-500</span>
+            </div>
+            <p style="font-size:13px;color:#666;margin:0 0 8px">Kopier kommandoen:</p>
+            <div class="modal-command" id="rescanCommand">python checker.py https://mf.no --max-pages 20 --format html</div>
+            <div class="modal-actions">
+                <button class="modal-btn secondary" onclick="closeRescanModal()">Lukk</button>
+                <button class="modal-btn primary" onclick="copyCommand()">📋 Kopier</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

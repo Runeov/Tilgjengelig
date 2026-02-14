@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vestfold WCAG Skanningsresultater</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+               line-height: 1.6; max-width: 1400px; margin: 0 auto; padding: 20px; background: #f5f5f5; }
+        h1, h2 { color: #003366; }
+        .header { background: #003366; color: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; }
+        .header h1 { margin: 0; color: white; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat { background: white; padding: 20px; border-radius: 8px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-value { font-size: 2em; font-weight: bold; }
+        .stat-label { color: #666; }
+        .stat.critical { background: #fee; color: #c00; }
+        .stat.serious { background: #fff3e0; color: #e65100; }
+        .stat.success { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #003366; color: white; cursor: pointer; }
+        th:hover { background: #004488; }
+        tr:hover { background: #f8f9fa; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 500; }
+        .badge.critical { background: #c00; color: white; }
+        .badge.serious { background: #e65100; color: white; }
+        .badge.moderate { background: #f9a825; color: #333; }
+        .badge.good { background: #2e7d32; color: white; }
+        .badge.error { background: #666; color: white; }
+        a { color: #003366; }
+        .report-link { display: inline-block; padding: 6px 12px; background: #003366; color: white; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+        .report-link:hover { background: #004488; }
+        .footer { text-align: center; padding: 20px; color: #666; margin-top: 30px; }
+        .contact { font-size: 0.85em; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Vestfold WCAG 2.1 Skanningsresultater</h1>
+        <p>Automatisk tilgjengelighetssjekk av offentlige virksomheter i Vestfold</p>
+        <p><strong>Skannet:</strong> 2026-02-12 01:25</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-value">45</div>
+            <div class="stat-label">Nettsteder skannet</div>
+        </div>
+        <div class="stat success">
+            <div class="stat-value">45</div>
+            <div class="stat-label">Vellykkede skanninger</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">625</div>
+            <div class="stat-label">Sider sjekket</div>
+        </div>
+        <div class="stat critical">
+            <div class="stat-value">1901</div>
+            <div class="stat-label">Kritiske feil</div>
+        </div>
+        <div class="stat serious">
+            <div class="stat-value">6149</div>
+            <div class="stat-label">Alvorlige feil</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">15229</div>
+            <div class="stat-label">Totale avvik</div>
+        </div>
+    </div>
+
+    <h2>Resultater per virksomhet</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Virksomhet</th>
+                <th>Kommune</th>
+                <th>Kontakt</th>
+                <th>Sider</th>
+                <th>Kritisk</th>
+                <th>Alvorlig</th>
+                <th>Moderat</th>
+                <th>Totalt</th>
+                <th>Status</th>
+                <th>Rapport</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td><a href="https://www.arena.larvik.no" target="_blank">Larvik Arena IKS</a></td>
+                <td>Larvik</td>
+                <td class="contact"><a href="mailto:post@arena.larvik.no">post@arena.larvik.no</a></td>
+                <td>22</td>
+                <td><span class="badge critical">322</span></td>
+                <td>230</td>
+                <td>64</td>
+                <td>616</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\larvik_arena_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.holmestrand.kirken.no" target="_blank">Holmestrand Kirkelige Fellesråd</a></td>
+                <td>Holmestrand</td>
+                <td class="contact"><a href="mailto:post.holmestrand@kirken.no">post.holmestrand@kirken.no</a><br>33 06 40 50</td>
+                <td>21</td>
+                <td><span class="badge critical">228</span></td>
+                <td>62</td>
+                <td>134</td>
+                <td>426</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\holmestrand_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.horten.kirken.no/" target="_blank">Horten Kirkelige Fellesråd</a></td>
+                <td>Horten</td>
+                <td class="contact"><a href="mailto:post.horten@kirken.no">post.horten@kirken.no</a><br>33 52 91 00</td>
+                <td>21</td>
+                <td><span class="badge critical">204</span></td>
+                <td>41</td>
+                <td>134</td>
+                <td>380</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\horten_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.viv.no" target="_blank">Vestfold Vann IKS</a></td>
+                <td>Larvik</td>
+                <td class="contact"><a href="mailto:post@vestfoldvann.no">post@vestfoldvann.no</a><br>33 11 03 00</td>
+                <td>21</td>
+                <td><span class="badge critical">198</span></td>
+                <td>35</td>
+                <td>646</td>
+                <td>891</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_vann_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestfoldvann.no" target="_blank">Vestfold Vann IKS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge critical">192</span></td>
+                <td>26</td>
+                <td>634</td>
+                <td>859</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_vann_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sandefjord.kirken.no" target="_blank">Sandefjord Kirkelige Fellesråd</a></td>
+                <td>Sandefjord</td>
+                <td class="contact"><a href="mailto:post.sandefjord@kirken.no">post.sandefjord@kirken.no</a><br>33 45 44 50</td>
+                <td>21</td>
+                <td><span class="badge critical">179</span></td>
+                <td>42</td>
+                <td>200</td>
+                <td>422</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sandefjord_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.vibr.no" target="_blank">Vestfold Interkommunale Brannvesen IKS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:post@vibr.no">post@vibr.no</a><br>33 00 36 00</td>
+                <td>19</td>
+                <td><span class="badge critical">157</span></td>
+                <td>124</td>
+                <td>81</td>
+                <td>370</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_interkommunale_brannvesen_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.ferdernasjonalpark.no" target="_blank">Færder Nasjonalparksenter IKS</a></td>
+                <td>Færder</td>
+                <td class="contact"><a href="mailto:post@ferdernasjonalparksenter.no">post@ferdernasjonalparksenter.no</a><br>33 50 76 00</td>
+                <td>22</td>
+                <td><span class="badge critical">118</span></td>
+                <td>487</td>
+                <td>213</td>
+                <td>846</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\færder_nasjonalparksenter_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vestfoldmuseene.no" target="_blank">Vestfoldmuseene IKS</a></td>
+                <td>Sandefjord</td>
+                <td class="contact"><a href="mailto:post@vestfoldmuseene.no">post@vestfoldmuseene.no</a></td>
+                <td>21</td>
+                <td><span class="badge critical">74</span></td>
+                <td>118</td>
+                <td>151</td>
+                <td>393</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfoldmuseene_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.jarlsberg-ikt.no" target="_blank">Jarlsberg Ikt - Kommunalt Oppgavefellesskap</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:postmottak@jarlsberg-ikt.no">postmottak@jarlsberg-ikt.no</a></td>
+                <td>14</td>
+                <td><span class="badge serious">42</span></td>
+                <td>1</td>
+                <td>283</td>
+                <td>326</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\jarlsberg_ikt_-_kommunalt_oppgavefellesskap.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.rense.no" target="_blank">Tønsberg Renseanlegg IKS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:post@rense.no">post@rense.no</a><br>33 35 77 50</td>
+                <td>20</td>
+                <td><span class="badge serious">37</span></td>
+                <td>182</td>
+                <td>427</td>
+                <td>650</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\tønsberg_renseanlegg_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vesar.no" target="_blank">Vesar IKS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>19</td>
+                <td><span class="badge serious">27</span></td>
+                <td>55</td>
+                <td>472</td>
+                <td>560</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vesar_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vkt.no" target="_blank">VKT - Vestfold Kollektivtrafikk AS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>21</td>
+                <td><span class="badge serious">21</span></td>
+                <td>157</td>
+                <td>445</td>
+                <td>645</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vkt_-_vestfold_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/faerder" target="_blank">Færder Kirkelige Fellesråd</a></td>
+                <td>Færder</td>
+                <td class="contact"><a href="mailto:postmottak@faerder.kirken.no">postmottak@faerder.kirken.no</a><br>33 35 11 80</td>
+                <td>21</td>
+                <td><span class="badge serious">21</span></td>
+                <td>670</td>
+                <td>133</td>
+                <td>853</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\færder_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kriminalomsorgen.no" target="_blank">Bastøy fengsel</a></td>
+                <td>Horten</td>
+                <td class="contact">-</td>
+                <td>16</td>
+                <td><span class="badge serious">16</span></td>
+                <td>59</td>
+                <td>174</td>
+                <td>252</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\bastøy_fengsel.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/larvik" target="_blank">Larvik Kirkelige Fellesråd</a></td>
+                <td>Larvik</td>
+                <td class="contact"><a href="mailto:post.kirken@larvik.no">post.kirken@larvik.no</a><br>33 17 30 00</td>
+                <td>18</td>
+                <td><span class="badge serious">15</span></td>
+                <td>834</td>
+                <td>115</td>
+                <td>997</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\larvik_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://kirken.no/tunsberg" target="_blank">Tunsberg bispedømme</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>17</td>
+                <td><span class="badge serious">13</span></td>
+                <td>519</td>
+                <td>86</td>
+                <td>662</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\tunsberg_bispedømme.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.kirken.no/tonsberg" target="_blank">Tønsberg Kirkelige Fellesråd</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:post.tonsberg@kirken.no">post.tonsberg@kirken.no</a><br>33 37 47 00</td>
+                <td>24</td>
+                <td><span class="badge serious">13</span></td>
+                <td>617</td>
+                <td>191</td>
+                <td>835</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\tønsberg_kirkelige_fellesråd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.preusmuseum.no" target="_blank">Preus Museum Sti</a></td>
+                <td>Horten</td>
+                <td class="contact">33 03 16 30</td>
+                <td>21</td>
+                <td><span class="badge serious">12</span></td>
+                <td>43</td>
+                <td>147</td>
+                <td>215</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\preus_museum_sti.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vtfk.no/fylkesbibliotek" target="_blank">Vestfold fylkesbibliotek</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>8</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_fylkesbibliotek.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vtfk.no/kollektiv" target="_blank">Vestfold og Telemark kollektivtrafikk</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>1</td>
+                <td><span class="badge moderate">4</span></td>
+                <td>1</td>
+                <td>3</td>
+                <td>8</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_og_telemark_kollektivtrafikk.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.larvik.havn.no" target="_blank">Larvik Havn KF</a></td>
+                <td>Larvik</td>
+                <td class="contact"><a href="mailto:post@larvik.havn.no">post@larvik.havn.no</a><br>33 16 57 50</td>
+                <td>21</td>
+                <td><span class="badge moderate">3</span></td>
+                <td>148</td>
+                <td>183</td>
+                <td>432</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\larvik_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sorost110.no" target="_blank">Sør-øst 110 IKS</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:post@sorost110.no">post@sorost110.no</a><br>33 31 41 10</td>
+                <td>17</td>
+                <td><span class="badge moderate">1</span></td>
+                <td>4</td>
+                <td>113</td>
+                <td>135</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sør-øst_110_iks.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/agder" target="_blank">Agder lagmannsrett</a></td>
+                <td>Vestfold</td>
+                <td class="contact">-</td>
+                <td>3</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>5</td>
+                <td>6</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\agder_lagmannsrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://statsforvalteren.no/vestfold-og-telemark" target="_blank">Statsforvalteren i Vestfold og Telemark</a></td>
+                <td>Vestfold</td>
+                <td class="contact"><a href="mailto:sfvtpost@statsforvalteren.no">sfvtpost@statsforvalteren.no</a><br>33 37 10 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>5</td>
+                <td>313</td>
+                <td>377</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\statsforvalteren_i_vestfold_og_telemark.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://siv.no" target="_blank">Sykehuset i Vestfold HF</a></td>
+                <td>Vestfold</td>
+                <td class="contact"><a href="mailto:postmottak@so-hf.no">postmottak@so-hf.no</a><br>69 86 00 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>18</td>
+                <td>53</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sykehuset_i_vestfold_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vfrkt.no" target="_blank">Vestfold Kollektivtrafikk AS</a></td>
+                <td>Vestfold</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_kollektivtrafikk_as.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vfrk.no" target="_blank">Vestfold fylkeskommune</a></td>
+                <td>Vestfold</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_fylkeskommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://sandefjord.vgs.no" target="_blank">Sandefjord videregående skole</a></td>
+                <td>Sandefjord</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sandefjord_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://thorheyerdahl.vgs.no" target="_blank">Thor Heyerdahl videregående skole</a></td>
+                <td>Larvik</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\thor_heyerdahl_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.horten.kommune.no/" target="_blank">Horten Kommune</a></td>
+                <td>Horten</td>
+                <td class="contact"><a href="mailto:postmottak@horten.kommune.no">postmottak@horten.kommune.no</a><br>33 08 50 00</td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>384</td>
+                <td>69</td>
+                <td>455</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\horten_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://horten.vgs.no" target="_blank">Horten videregående skole</a></td>
+                <td>Horten</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\horten_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://innovasjonvestfold.no" target="_blank">Innovasjon i Vestfold</a></td>
+                <td>Horten</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\innovasjon_i_vestfold.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://holmestandhavn.no" target="_blank">Holmestrand Havn KF</a></td>
+                <td>Holmestrand</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\holmestrand_havn_kf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.holmestrand.kommune.no/" target="_blank">Holmestrand Kommune</a></td>
+                <td>Holmestrand</td>
+                <td class="contact"><a href="mailto:postmottak@holmestrand.kommune.no">postmottak@holmestrand.kommune.no</a><br>33 05 95 00</td>
+                <td>19</td>
+                <td><span class="badge good">0</span></td>
+                <td>104</td>
+                <td>173</td>
+                <td>289</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\holmestrand_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://ferder.vgs.no" target="_blank">Færder videregående skole</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\færder_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.siv.no" target="_blank">Sykehuset i Vestfold HF</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:post@siv.no">post@siv.no</a><br>33 34 20 00</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>18</td>
+                <td>53</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sykehuset_i_vestfold_hf.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tonsberg.kommune.no" target="_blank">Tønsberg Kommune</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:postmottak@tonsberg.kommune.no">postmottak@tonsberg.kommune.no</a><br>33406000</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>581</td>
+                <td>203</td>
+                <td>809</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\tønsberg_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://tonsberg.vgs.no" target="_blank">Tønsberg videregående skole</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\tønsberg_videregående_skole.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.nasjonalparkstyre.no/Brattefjell-Vindeggen/" target="_blank">Verneområdestyret for Brattefjell-vindeggen Landskapsvernområde</a></td>
+                <td>Tønsberg</td>
+                <td class="contact"><a href="mailto:kristian.herregarden@statsforvalteren.no">kristian.herregarden@statsforvalteren.no</a></td>
+                <td>20</td>
+                <td><span class="badge good">0</span></td>
+                <td>217</td>
+                <td>123</td>
+                <td>347</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\verneområdestyret_for_brattefjell-vindeggen_landsk.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://vffrk.no/tilskudd" target="_blank">Vestfold fylkeskommune tilskudd</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>0</td>
+                <td><span class="badge good">0</span></td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_fylkeskommune_tilskudd.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://domstol.no/vestfold" target="_blank">Vestfold tingrett</a></td>
+                <td>Tønsberg</td>
+                <td class="contact">-</td>
+                <td>3</td>
+                <td><span class="badge good">0</span></td>
+                <td>1</td>
+                <td>5</td>
+                <td>6</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\vestfold_tingrett.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.sandefjord.kommune.no" target="_blank">Sandefjord Kommune</a></td>
+                <td>Sandefjord</td>
+                <td class="contact"><a href="mailto:postmottak@sandefjord.kommune.no">postmottak@sandefjord.kommune.no</a><br>33416000</td>
+                <td>18</td>
+                <td><span class="badge good">0</span></td>
+                <td>305</td>
+                <td>42</td>
+                <td>350</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\sandefjord_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://www.larvik.kommune.no" target="_blank">Larvik Kommune</a></td>
+                <td>Larvik</td>
+                <td class="contact"><a href="mailto:postmottak@larvik.kommune.no">postmottak@larvik.kommune.no</a><br>33171000</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>8</td>
+                <td>443</td>
+                <td>485</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\larvik_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+            <tr>
+                <td><a href="https://faerder.kommune.no" target="_blank">Færder kommune</a></td>
+                <td>Færder</td>
+                <td class="contact"><a href="mailto:postmottak@faerder.kommune.no">postmottak@faerder.kommune.no</a><br>33390000</td>
+                <td>21</td>
+                <td><span class="badge good">0</span></td>
+                <td>87</td>
+                <td>115</td>
+                <td>218</td>
+                <td><span class="badge good">OK</span></td>
+                <td><a href="vestfold\færder_kommune.html" class="report-link">Se rapport</a></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    <div class="footer">
+        <p>Generert av WCAG Checker - Basert på testregler fra UU-tilsynet</p>
+    </div>
+</body>
+</html>
