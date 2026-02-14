@@ -1022,6 +1022,8 @@ class WCAGChecker:
                     html += f'<details><summary>{criterion} ({len(issues)} avvik)</summary>'
                     for issue in issues:
                         element_escaped = issue.element.replace('<', '&lt;').replace('>', '&gt;')
+                        issue_text_escaped = issue.issue.replace('<', '&lt;').replace('>', '&gt;')
+                        fix_escaped = issue.fix.replace('<', '&lt;').replace('>', '&gt;')
                         rule_id = getattr(issue, 'rule_id', issue.criterion_id)
                         # Add data-severity attribute for filtering
                         html += f"""
@@ -1033,9 +1035,9 @@ class WCAGChecker:
                     </div>
                     <span class="impact {issue.impact}">{issue.impact.upper()}</span>
                 </div>
-                <p>{issue.issue}</p>
+                <p>{issue_text_escaped}</p>
                 <div class="element">{element_escaped}</div>
-                <div class="fix">{issue.fix}</div>
+                <div class="fix">{fix_escaped}</div>
             </div>
 """
                     html += '</details>'

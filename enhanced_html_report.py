@@ -626,6 +626,8 @@ def generate_enhanced_html_report(result, site_url=None):
                 
                 for issue in issues:
                     element_escaped = issue.element.replace('<', '&lt;').replace('>', '&gt;')
+                    fix_escaped = issue.fix.replace('<', '&lt;').replace('>', '&gt;')
+                    issue_text_escaped = issue.issue.replace('<', '&lt;').replace('>', '&gt;')
                     rule_id = getattr(issue, 'rule_id', issue.criterion_id)
                     impact = getattr(issue, 'impact', 'moderate')
                     
@@ -638,9 +640,9 @@ def generate_enhanced_html_report(result, site_url=None):
                     </div>
                     <span class="impact {impact}">{impact.upper()}</span>
                 </div>
-                <p>{issue.issue}</p>
+                <p>{issue_text_escaped}</p>
                 <div class="element">{element_escaped}</div>
-                <div class="fix">{issue.fix}</div>
+                <div class="fix">{fix_escaped}</div>
             </div>
 """
                 html += '</details>'
