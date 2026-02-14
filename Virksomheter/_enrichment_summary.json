@@ -1,0 +1,151 @@
+{
+  "generated": "2026-02-08T17:31:21.817195",
+  "total_organizations": 3343,
+  "total_counties": 16,
+  "counties": {
+    "Oslo": {
+      "existing": 1179,
+      "api_new": 44,
+      "contact_enriched": 95,
+      "total": 1118,
+      "with_url": 1095,
+      "with_email": 111,
+      "with_phone": 119
+    },
+    "Rogaland": {
+      "existing": 124,
+      "api_new": 89,
+      "contact_enriched": 16,
+      "total": 183,
+      "with_url": 169,
+      "with_email": 91,
+      "with_phone": 86
+    },
+    "Møre og Romsdal": {
+      "existing": 66,
+      "api_new": 93,
+      "contact_enriched": 5,
+      "total": 131,
+      "with_url": 114,
+      "with_email": 90,
+      "with_phone": 77
+    },
+    "Nordland": {
+      "existing": 124,
+      "api_new": 123,
+      "contact_enriched": 8,
+      "total": 198,
+      "with_url": 173,
+      "with_email": 112,
+      "with_phone": 106
+    },
+    "Østfold": {
+      "existing": 41,
+      "api_new": 37,
+      "contact_enriched": 3,
+      "total": 64,
+      "with_url": 56,
+      "with_email": 31,
+      "with_phone": 30
+    },
+    "Akershus": {
+      "existing": 50,
+      "api_new": 67,
+      "contact_enriched": 3,
+      "total": 99,
+      "with_url": 93,
+      "with_email": 65,
+      "with_phone": 59
+    },
+    "Buskerud": {
+      "existing": 56,
+      "api_new": 92,
+      "contact_enriched": 2,
+      "total": 122,
+      "with_url": 94,
+      "with_email": 65,
+      "with_phone": 72
+    },
+    "Innlandet": {
+      "existing": 107,
+      "api_new": 171,
+      "contact_enriched": 5,
+      "total": 247,
+      "with_url": 212,
+      "with_email": 149,
+      "with_phone": 144
+    },
+    "Vestfold": {
+      "existing": 30,
+      "api_new": 31,
+      "contact_enriched": 2,
+      "total": 53,
+      "with_url": 46,
+      "with_email": 27,
+      "with_phone": 24
+    },
+    "Telemark": {
+      "existing": 38,
+      "api_new": 69,
+      "contact_enriched": 2,
+      "total": 98,
+      "with_url": 80,
+      "with_email": 56,
+      "with_phone": 57
+    },
+    "Agder": {
+      "existing": 84,
+      "api_new": 95,
+      "contact_enriched": 3,
+      "total": 170,
+      "with_url": 153,
+      "with_email": 91,
+      "with_phone": 80
+    },
+    "Vestland": {
+      "existing": 214,
+      "api_new": 148,
+      "contact_enriched": 11,
+      "total": 314,
+      "with_url": 287,
+      "with_email": 140,
+      "with_phone": 120
+    },
+    "Trøndelag": {
+      "existing": 188,
+      "api_new": 162,
+      "contact_enriched": 11,
+      "total": 304,
+      "with_url": 243,
+      "with_email": 137,
+      "with_phone": 121
+    },
+    "Troms": {
+      "existing": 95,
+      "api_new": 61,
+      "contact_enriched": 9,
+      "total": 145,
+      "with_url": 129,
+      "with_email": 61,
+      "with_phone": 50
+    },
+    "Finnmark": {
+      "existing": 57,
+      "api_new": 55,
+      "contact_enriched": 1,
+      "total": 92,
+      "with_url": 84,
+      "with_email": 53,
+      "with_phone": 45
+    },
+    "Svalbard": {
+      "existing": 5,
+      "api_new": 0,
+      "contact_enriched": 1,
+      "total": 5,
+      "with_url": 5,
+      "with_email": 1,
+      "with_phone": 1
+    }
+  }
+}

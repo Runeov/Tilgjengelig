@@ -1,0 +1,93 @@
+﻿Virksomhet,Nettside,Har_app_iOS,Har_app_Android,App_link_iOS,App_link_Android,Har_tilgjengelighetserklæring,Tilgjengelighet_URL,Notes
+Finnmarkseiendommen (FeFo),https://www.fefo.no,No,No,,,No,,
+Sametinget / Sámediggi,https://www.sametinget.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/e1984bd8-4fd5-46b6-ba5c-6707ee5519c6,Accessibility declaration found
+Statsforvalteren i Troms og Finnmark,https://www.statsforvalteren.no/troms-finnmark,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/3603430b-6b15-41e4-9b13-ea13321a42c5,Accessibility declaration found
+Finnmarkssykehuset HF,https://finnmarkssykehuset.no,No,No,,,Yes,https://www.finnmarkssykehuset.no/om-nettstedet/tilbakemelding-om-universell-utforming/,Accessibility declaration found
+Samisk Høgskole / Sámi allaskuvla,https://samas.no,No,No,,,No,,
+UiT Norges arktiske universitet,https://uit.no,No,No,,,No,,
+Snelandia (Finnmark fylkeskommune),https://snelandia.no,Yes,Yes,https://apps.apple.com/no/app/reiseplanlegger-177-finnmark/id561390199,https://play.google.com/store/apps/details?id=no.bouvet.routeplanner.finnmark,Yes,https://uustatus.no/nb/erklaringer/publisert/aedbb74a-6c0c-45bd-83e8-18d5c3c92a6b,App found; Accessibility declaration found
+Varanger Kraft AS,https://www.varanger-kraft.no,No,No,,,No,,
+Lucerna AS (tidl. Hammerfest Energi),https://lucerna.no,No,No,,,Yes,https://www.lucerna.no/tilgjengelighet,Accessibility declaration found
+Alta Havn KF,https://altahavn.no,No,No,,,No,,
+Hammerfest Havn KF,https://hammerfesthavn.no,No,No,,,No,,
+Nordkappregionen Havn IKS,https://nordkapphavn.no,No,No,,,No,,
+Sør-Varanger Havn (Kirkenes),https://kirkeneshavn.no,No,No,,,No,,
+Vardø Havn KF,https://www.vardohavn.no,No,No,,,No,,
+Varanger Museum IKS,https://www.varangermuseum.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/12ee46cf-0bcc-4924-a8b2-e4a0f450ff10/,Accessibility declaration found
+Verdensarvsenter for bergkunst - Alta Museum,https://www.altamuseum.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/3a41b2b7-370f-4bfe-8d75-a2f46f885477,Accessibility declaration found
+RiddoDuottarMuseat,https://rdm.no,No,No,,,No,,
+Barentssekretariatet IKS,https://www.barents.no,No,No,,,No,,
+Finnmark Miljøtjeneste AS,https://www.fimil.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/cc9f2e96-687a-469b-83ee-70164e8e590c,Accessibility declaration found
+Vefas IKS,https://www.vefas.no,Yes,Yes,https://apps.apple.com/no/app/minrenovasjon/id606138819,https://play.google.com/store/apps/details?id=no.norkart.komtek.renovasjon.client&hl=no,No,,App found
+Øst-Finnmark Avfallsselskap AS,https://www.ofas.no,No,No,,,No,,
+Aksis AS,https://aksis.no,No,No,,,Yes,https://www.aksis.no/erklaringer/universell-utforming/,Accessibility declaration found
+IKA Troms og Finnmark IKS,https://ikatf.no,Error,Error,,,Error,,Connection Error
+KomRev NORD IKS,https://komrevnord.no,Error,Error,,,Error,,Connection Error
+Vest-Finnmark Krisesenter IKS,https://vestfinnmarkkrisesenter.no,Error,Error,,,Error,,Connection Error
+Finnmark Friluftsråd,https://www.perletur.no,No,No,,,No,,
+Nord-Troms og Finnmark utmarksråd,https://utmarksrad.no,Error,Error,,,Error,,Connection Error
+Indre Finnmark Prøvingsnemnd,https://reindrift.no,Error,Error,,,Error,,Connection Error
+Øst-Finnmark Krisesenter IKS,https://svk.no/tjenester/helse-og-omsorg/krisesenteret,Error,Error,,,Error,,HTTP Error: 404
+Hammerfest og Måsøy næringshage AS,https://www.linken-nh.no,No,No,,,No,,
+Varanger Næringssenter AS,https://varangern.no,Error,Error,,,Error,,Connection Error
+Kunnskapsparken Orddo AS,https://orddo.no,Error,Error,,,Error,,Connection Error
+Smart Construction Cluster,https://smartconstruction.no,Error,Error,,,Error,,Connection Error
+https://ikatf.no,1992,Error,Error,,,Error,,Connection Error
+https://komrevnord.no,2004,Error,Error,,,Error,,Connection Error
+https://www.ofk.no,2005,Error,Error,,,Error,,Connection Error
+https://www.perletur.no,2003,Error,Error,,,Error,,Connection Error
+https://vestfinnmarkkrisesenter.no,2008,Error,Error,,,Error,,Connection Error
+https://krisesenteret-vadsosoren.no,1990,Error,Error,,,Error,,Connection Error
+https://orddo.no,2000,Error,Error,,,Error,,Connection Error
+https://hermetikken.no,2006,Error,Error,,,Error,,Connection Error
+https://nordkappnaringshage.no,2000,Error,Error,,,Error,,Connection Error
+https://svu.no,1999,Error,Error,,,Error,,Connection Error
+https://linken-nh.no,2001,Error,Error,,,Error,,Connection Error
+https://vardohavn.no,2004,Error,Error,,,Error,,Connection Error
+https://batsfjordhavn.no,1999,Error,Error,,,Error,,Connection Error
+https://masoy.kommune.no/havn,2003,Error,Error,,,Error,,Connection Error
+https://utmarksrad.no,2018,Error,Error,,,Error,,Connection Error
+https://www.reindrift.no,1994,Error,Error,,,Error,,Connection Error
+110-Sentralen Finnmark (Alarmsentralen),https://www.110-finnmark.no,No,No,,,No,,
+Nordlysbadet KF,https://nordlysbadet.no,No,No,,,No,,
+Sámi Ealáhusguovddáš (Samisk Næringshage),https://seg.no,No,No,,,No,,
+Samisk videregående skole og reindriftsskole,https://samisk.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/6487f91e-0472-45a1-8718-0b3dad28123b,Accessibility declaration found
+Repvåg Kraftlag SA (Nett),https://rka.no,Error,Error,,,Error,,Connection Error
+Sameskolen i Tana (Deanun sameskuvla),https://www.sameskolen.no,No,No,,,No,,
+Alta kirkelige fellesråd,https://alta.kirken.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/cf0065e1-cc1b-4a33-adf0-5d66460e484c,Accessibility declaration found
+Sør-Varanger kirkelige fellesråd,https://svk.kirken.no,Error,Error,,,Error,,Connection Error
+Hammerfest kirkelige fellesråd,https://hammerfest.kirken.no,Error,Error,,,Error,,Connection Error
+Finnmark fotballkrets,https://www.fotball.no/kretser/finnmark/,No,No,,,No,,
+Finnmarksløpet AS,https://www.finnmarkslopet.no,No,No,,,No,,
+Vardøhus Festning (Forsvarsbygg),https://www.forsvarsbygg.no,No,No,,,No,,
+Pikene på Broen,https://www.pikene.no,No,No,,,No,,
+Vest-Finnmark Rådet,https://www.vestfinnmark.no,Error,Error,,,Error,,Connection Error
+Øst-Finnmarkrådet,https://www.ost-finnmark.no,Error,Error,,,Error,,Connection Error
+Alta kommunale boligselskap KF,https://www.altabolig.no,Error,Error,,,Error,,Connection Error
+Hammerfest kommunale boligstiftelse,https://www.hkb.no,Error,Error,,,Error,,Connection Error
+Alta videregående skole,https://alta.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/58c05c56-eb51-47b8-ad24-5a46bee2b76c,Accessibility declaration found
+Hammerfest videregående skole,https://hammerfest.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/a0da34f0-0538-4718-a1c7-119ebfd90416,Accessibility declaration found
+Båtsfjord Havn KF,https://www.batsfjordhavn.no,No,No,,,No,,
+Hasvik Havn KF,https://www.hasvikhavn.no,Error,Error,,,Error,,Connection Error
+Finnmarkshallen AS,https://www.finnmarkshallen.no,No,No,,,No,,
+Sami Giellagáldu (Samisk språkråd),https://www.giella.org,No,No,,,No,,
+Vest-Finnmark Rådet,https://www.vestfinnmark.no,Error,Error,,,Error,,Connection Error
+Øst-Finnmarkrådet,https://www.ost-finnmark.no,Error,Error,,,Error,,Connection Error
+Alta kommunale boligselskap KF,https://www.altabolig.no,Error,Error,,,Error,,Connection Error
+Hammerfest kommunale boligstiftelse,https://www.hkb.no,Error,Error,,,Error,,Connection Error
+Alta videregående skole,https://alta.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/58c05c56-eb51-47b8-ad24-5a46bee2b76c,Accessibility declaration found
+Hammerfest videregående skole,https://hammerfest.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/a0da34f0-0538-4718-a1c7-119ebfd90416,Accessibility declaration found
+Båtsfjord Havn KF,https://www.batsfjordhavn.no,No,No,,,No,,
+Hasvik Havn KF,https://www.hasvikhavn.no,Error,Error,,,Error,,Connection Error
+Finnmarkshallen AS,https://www.finnmarkshallen.no,No,No,,,No,,
+Sami Giellagáldu (Samisk språkråd),https://www.giella.org,No,No,,,No,,
+Finnmark IKT IKS,https://www.finnmark-ikt.no,Error,Error,,,Error,,Connection Error
+Alta Kommune - ACOS Interact (Skjema),https://skjema.alta.kommune.no,Error,Error,,,Error,,Connection Error
+Vadsø videregående skole,https://vadso.vgs.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/4d39c46b-0abe-40d6-8e30-ae023c824878,Accessibility declaration found
+Vadsø kirkelige fellesråd,https://vadso.kirken.no,Error,Error,,,Error,,Connection Error
+Porsanger Vekst AS,https://porsanger-vekst.no,Error,Error,,,Error,,Connection Error
+Vardø Produkter AS,https://vardoprodukter.no,Error,Error,,,Error,,Connection Error
+Tana og Varanger Museumssiida,https://monit.no,Error,Error,,,Error,,Connection Error
+Sør-Varanger/Lebesby Brann (IKS-avtale),https://www.lebesby.kommune.no,No,No,,,Yes,https://uustatus.no/nb/erklaringer/publisert/581f0e7b-eb59-4001-aa1c-46fbb8c221a8,Accessibility declaration found
+Loppa Havn KF,https://www.loppa.kommune.no/havn,Error,Error,,,Error,,HTTP Error: 404
+Komsoparken AS (Næringspark),https://komsoparken.no,Error,Error,,,Error,,Connection Error

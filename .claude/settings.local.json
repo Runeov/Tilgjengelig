@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "WebSearch",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:data.brreg.no)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(python:*)",
+      "Bash(tasklist:*)",
+      "Bash(ps:*)",
+      "Bash(wc:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
