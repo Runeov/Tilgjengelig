@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reiselivssjekk – Nordkapp AS</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                line-height: 1.6; max-width: 1300px; margin: 0 auto; padding: 20px;
+                background: #f0f4f8; color: #222; }
+        .header { background: linear-gradient(135deg, #1a3a5c, #0e5f8a);
+                   color: white; padding: 30px; border-radius: 10px; margin-bottom: 24px; }
+        .header h1 { margin: 0 0 6px; font-size: 1.6em; }
+        .header p { margin: 4px 0; opacity: 0.85; font-size: 0.95em; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                  gap: 14px; margin-bottom: 24px; }
+        .stat { background: white; padding: 18px; border-radius: 8px; text-align: center;
+                 box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .stat-val { font-size: 2.2em; font-weight: 700; }
+        .stat-lbl { color: #666; font-size: 0.85em; margin-top: 4px; }
+        .stat.critical { background: #fff0f0; }  .stat.critical .stat-val { color: #c00; }
+        .stat.serious  { background: #fff8f0; }  .stat.serious  .stat-val { color: #e05800; }
+        .stat.good     { background: #f0fff4; }  .stat.good     .stat-val { color: #1a7a3c; }
+        section { background: white; border-radius: 8px; padding: 24px;
+                   margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        section h2 { color: #1a3a5c; margin-top: 0; border-bottom: 2px solid #e8eef4;
+                      padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+        th { background: #1a3a5c; color: white; padding: 10px 12px; text-align: left; }
+        td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+        .criterion-header { background: #f0f4f8; font-weight: 600; color: #1a3a5c;
+                              padding: 10px 12px; }
+        .more-note { color: #888; font-style: italic; font-size: 0.88em; }
+        .fix-text { color: #555; font-size: 0.9em; max-width: 340px; }
+        .selector { font-size: 0.82em; color: #666; background: #f5f5f5;
+                     padding: 2px 5px; border-radius: 3px; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px;
+                  font-size: 0.82em; font-weight: 600; white-space: nowrap; }
+        .badge.critical { background: #c00;    color: #fff; }
+        .badge.serious   { background: #e05800; color: #fff; }
+        .badge.moderate  { background: #f9a825; color: #333; }
+        .badge.minor     { background: #7cb9e8; color: #000; }
+        .badge.good      { background: #1a7a3c; color: #fff; }
+        .passed-list, .warn-list { list-style: none; padding: 0; margin: 0; }
+        .passed-list li { padding: 5px 0 5px 24px; border-bottom: 1px solid #f0f4f8;
+                           position: relative; }
+        .passed-list li::before { content: '✓'; color: #1a7a3c; position: absolute; left: 4px; }
+        .warn-item { padding: 6px 0 6px 24px; border-bottom: 1px solid #fff8ee;
+                      position: relative; color: #7a5500; }
+        .warn-item::before { content: '⚠'; position: absolute; left: 2px; }
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+                      font-size: 0.92em; }
+        .meta-item { background: #f8f9fa; padding: 10px 14px; border-radius: 6px; }
+        .meta-item strong { display: block; color: #1a3a5c; margin-bottom: 2px; }
+        .footer { text-align: center; color: #888; padding: 20px; font-size: 0.85em; }
+        @media (max-width: 700px) {
+            .meta-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Reiselivssjekk — Nordkapp AS</h1>
+    <p><strong>Nettsted:</strong> <a href="https://www.nordkapp.no" style="color:#7ec8f0">https://www.nordkapp.no</a></p>
+    <p><strong>Kategori:</strong> Opplevelse og aktivitet &nbsp;|&nbsp;
+       <strong>Kommune:</strong> Nordkapp &nbsp;|&nbsp;
+       <strong>Region:</strong> Finnmark</p>
+    <p><strong>Skannet:</strong> 2026-03-31 03:13 &nbsp;|&nbsp; <strong>Sider sjekket:</strong> 10</p>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <div class="stat-val">95</div>
+        <div class="stat-lbl">Totale avvik</div>
+    </div>
+    <div class="stat critical">
+        <div class="stat-val">1</div>
+        <div class="stat-lbl">Kritiske</div>
+    </div>
+    <div class="stat serious">
+        <div class="stat-val">50</div>
+        <div class="stat-lbl">Alvorlige</div>
+    </div>
+    <div class="stat">
+        <div class="stat-val">35</div>
+        <div class="stat-lbl">Moderate</div>
+    </div>
+    <div class="stat">
+        <div class="stat-val">9</div>
+        <div class="stat-lbl">Mindre</div>
+    </div>
+    <div class="stat good">
+        <div class="stat-val">47</div>
+        <div class="stat-lbl">Bestått</div>
+    </div>
+</div>
+
+<section>
+    <h2>Virksomhetsinformasjon</h2>
+    <div class="meta-grid">
+        <div class="meta-item"><strong>Virksomhet</strong>Nordkapp AS</div>
+        <div class="meta-item"><strong>Org.nr.</strong>940436216</div>
+        <div class="meta-item"><strong>Kategori</strong>Opplevelse og aktivitet</div>
+        <div class="meta-item"><strong>Kommune / Region</strong>Nordkapp, Finnmark</div>
+        <div class="meta-item"><strong>Nettsted</strong><a href="https://www.nordkapp.no">https://www.nordkapp.no</a></div>
+        <div class="meta-item"><strong>Notater</strong>Nordkapp-platået – norges fremste reisemål</div>
+    </div>
+</section>
+
+<section>
+    <h2>Avvik etter lovkrav og beste praksis</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Alvorlighetsgrad</th>
+                <th>Regel-ID</th>
+                <th>Problem</th>
+                <th>Løsning</th>
+                <th>Selektor</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        <tr>
+            <td colspan="5" class="criterion-header">
+                booking.1 — Bestillingsopplevelse / Booking experience
+                <span class="badge serious">
+                    10 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>booking.1a</code></td>
+            <td>Ingen tydelig bestillingsknapp (CTA) funnet på siden</td>
+            <td class="fix-text">Legg til en fremtredende 'Bestill nå'- eller 'Book'-knapp synlig uten scrolling. Dette er god praksis for reiselivssider og øker konverteringsraten.</td>
+            <td><code class="selector">main a, header a, .cta, .booking-btn</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                contact.1 — Kontaktinformasjon / Contact information
+                <span class="badge critical">
+                    15 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge minor">minor</span></td>
+            <td><code>contact.1c</code></td>
+            <td>Ingen fysisk adresse eller postnummer funnet på siden</td>
+            <td class="fix-text">Legg til besøks- eller postadresse (gateadresse + postnummer + sted) i footer. Dette øker tilliten og er anbefalt av ehandelsloven §8.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>contact.1a</code></td>
+            <td>Ingen norsk telefonnummer funnet på siden</td>
+            <td class="fix-text">Legg til et synlig norsk telefonnummer (format: 77 XX XX XX eller +47 XX XX XX XX) i header eller footer. Hjemmel: ehandelsloven §8 og Markedsføringsloven §6.</td>
+            <td><code class="selector">header, footer</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                content.1 — Innholdskvalitet / Content quality
+                <span class="badge serious">
+                    9 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>content.1a</code></td>
+            <td>Siden mangler norsk lang-attributt og ser ikke ut til å ha norsk innhold</td>
+            <td class="fix-text">Sett lang="nb" på <html>-elementet og sørg for at innholdet er tilgjengelig på norsk. Hjemmel: Språkloven §17.</td>
+            <td><code class="selector">html</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                gdpr.1 — Personvern / Privacy
+                <span class="badge critical">
+                    19 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1a</code></td>
+            <td>Ingen lenke til personvernerklæring funnet på siden</td>
+            <td class="fix-text">Legg til en synlig lenke til personvernerklæringen i footer. Hjemmel: GDPR Art. 13 — behandlingsansvarlig må informere om databehandling.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>gdpr.1b</code></td>
+            <td>Ingen cookie-samtykkesbanner eller CMP-script funnet på siden</td>
+            <td class="fix-text">Implementer et cookie-samtykkeverktøy (f.eks. Cookiebot, CookieYes, OneTrust) som ber om samtykke før ikke-nødvendige cookies settes. Hjemmel: ekomloven §2-7b, GDPR Art. 6.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                org.1 — Regulatorisk identitet / Regulatory identity
+                <span class="badge serious">
+                    10 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>org.1a</code></td>
+            <td>Organisasjonsnummer (org.nr.) ikke funnet på siden</td>
+            <td class="fix-text">Legg til org.nr. tydelig i footer, f.eks. 'Org.nr.: 123 456 789'. Hjemmel: Enhetsregisterloven §21 og Markedsføringsloven §6.</td>
+            <td><code class="selector">footer</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                policy.1 — Avbestillingsvilkår / Cancellation policy
+                <span class="badge critical">
+                    20 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1a</code></td>
+            <td>Ingen avbestillingsvilkår eller avbestillingspolicy funnet på siden</td>
+            <td class="fix-text">Publiser tydelige avbestillingsvilkår og lenk til dem fra footer og bestillingsflyt. Hjemmel: Angrerettloven §11, Pakkereiseloven §31.</td>
+            <td><code class="selector">footer a, nav a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>policy.1b</code></td>
+            <td>14-dagers angrerett (Angrerettloven) er ikke nevnt på siden</td>
+            <td class="fix-text">Informer kundene om 14-dagers angreretten ved nettkjøp der den gjelder. Merk: pakketurer er unntatt, men dette må da opplyses eksplisitt. Hjemmel: Angrerettloven §22.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                policy.2 — Vilkår og betingelser / Terms and conditions
+                <span class="badge serious">
+                    10 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge moderate">moderate</span></td>
+            <td><code>policy.2a</code></td>
+            <td>Ingen lenke til vilkår og betingelser funnet på siden</td>
+            <td class="fix-text">Legg til en lenke til 'Vilkår og betingelser' eller 'Kjøpsvilkår' i footer. Hjemmel: Avtaleloven — vilkår må være tilgjengelige før kjøp.</td>
+            <td><code class="selector">footer a</code></td>
+        </tr>
+        <tr>
+            <td colspan="5" class="criterion-header">
+                price.1 — Prisgjennomsiktighet / Price transparency
+                <span class="badge serious">
+                    2 avvik
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="badge serious">serious</span></td>
+            <td><code>price.1a</code></td>
+            <td>Priser vises uten tydelig angivelse av mva-status (inkl. eller ekskl. mva)</td>
+            <td class="fix-text">Legg til 'inkl. mva' eller 'ekskl. mva' ved siden av alle priser. Eksempel: 'Fra 999 kr inkl. mva'. Hjemmel: Prisopplysningsforskriften §3.</td>
+            <td><code class="selector">body</code></td>
+        </tr>
+        <tr>
+            <td><span class="badge critical">critical</span></td>
+            <td><code>price.1b</code></td>
+            <td>Ingen tydelig totalpris funnet i nærheten av bestillingsknappen</td>
+            <td class="fix-text">Vis totalprisen (inkl. alle avgifter og gebyrer) direkte ved siden av bestillingsknappen. Hjemmel: Pakkereiseloven §28, Angrerettloven §8.</td>
+            <td><code class="selector">a, button</code></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h2>Bestått (47 sjekker)</h2>
+    <ul class="passed-list">
+        <li>E-postadresse funnet (contact.1b): 'info@northcape.no'</li><li>Engelsk språkalternativ funnet (content.1b)</li><li>Fysisk adresse / postnummer funnet (contact.1c)</li><li>Ingen bestillingsknapp funnet på denne siden — price.1b ikke aktuelt</li><li>Ingen pakkereisetegn funnet — org.2a ikke aktuelt for denne siden</li><li>Ingen separate gebyrmerkinger funnet (price.2a)</li><li>Kontaktskjema funnet på siden (contact.1b)</li><li>Nettstedet er merket som norskspråklig i HTML (content.1a)</li><li>Norsk telefonnummer funnet (contact.1a): 'Follow our Instagram760Open post by visi'</li><li>Norsk telefonnummer funnet (contact.1a): 'Følg oss på Instagram760Open post by vis'</li><li>Norsk telefonnummer funnet (contact.1a): 'How to get hereGjesvær is located about '</li><li>Personvernerklæring lenket til (gdpr.1a): 'Personvern & Policy'</li>
+    </ul>
+</section>
+
+
+<section>
+    <h2>Advarsler (23)</h2>
+    <ul class="warn-list">
+        <li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Telefonnummer funnet, men ikke i <footer> — vurder å flytte det dit for bedre synlighet og samsvar med konvensjon (contact.1a)</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Telefonnummer funnet, men ikke i <footer> — vurder å flytte det dit for bedre synlighet og samsvar med konvensjon (contact.1a)</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Telefonnummer funnet, men ikke i <footer> — vurder å flytte det dit for bedre synlighet og samsvar med konvensjon (contact.1a)</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li><li class='warn-item'>Telefonnummer funnet, men ikke i <footer> — vurder å flytte det dit for bedre synlighet og samsvar med konvensjon (contact.1a)</li><li class='warn-item'>Ingen online bestillingsmulig het funnet (booking.1b) — nettstedet ser ut til å kun tilby kontakt via telefon/e-post. Vurder å implementere online booking for bedre kundeopplevelse.</li><li class='warn-item'>Ingen priser funnet på denne siden (price.1a) — kan være en informasjonsside</li>
+    </ul>
+</section>
+
+
+<div class="footer">
+    Generert av Tilgjengelig Reiselivssjekker &mdash; Basert på norsk reiselivslovgivning og GDPR
+</div>
+</body>
+</html>

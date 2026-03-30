@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reiselivssjekk – Varanger Samisk Museum Overnatting</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                line-height: 1.6; max-width: 1300px; margin: 0 auto; padding: 20px;
+                background: #f0f4f8; color: #222; }
+        .header { background: linear-gradient(135deg, #1a3a5c, #0e5f8a);
+                   color: white; padding: 30px; border-radius: 10px; margin-bottom: 24px; }
+        .header h1 { margin: 0 0 6px; font-size: 1.6em; }
+        .header p { margin: 4px 0; opacity: 0.85; font-size: 0.95em; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+                  gap: 14px; margin-bottom: 24px; }
+        .stat { background: white; padding: 18px; border-radius: 8px; text-align: center;
+                 box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        .stat-val { font-size: 2.2em; font-weight: 700; }
+        .stat-lbl { color: #666; font-size: 0.85em; margin-top: 4px; }
+        .stat.critical { background: #fff0f0; }  .stat.critical .stat-val { color: #c00; }
+        .stat.serious  { background: #fff8f0; }  .stat.serious  .stat-val { color: #e05800; }
+        .stat.good     { background: #f0fff4; }  .stat.good     .stat-val { color: #1a7a3c; }
+        section { background: white; border-radius: 8px; padding: 24px;
+                   margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+        section h2 { color: #1a3a5c; margin-top: 0; border-bottom: 2px solid #e8eef4;
+                      padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.92em; }
+        th { background: #1a3a5c; color: white; padding: 10px 12px; text-align: left; }
+        td { padding: 9px 12px; border-bottom: 1px solid #eee; vertical-align: top; }
+        .criterion-header { background: #f0f4f8; font-weight: 600; color: #1a3a5c;
+                              padding: 10px 12px; }
+        .more-note { color: #888; font-style: italic; font-size: 0.88em; }
+        .fix-text { color: #555; font-size: 0.9em; max-width: 340px; }
+        .selector { font-size: 0.82em; color: #666; background: #f5f5f5;
+                     padding: 2px 5px; border-radius: 3px; }
+        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px;
+                  font-size: 0.82em; font-weight: 600; white-space: nowrap; }
+        .badge.critical { background: #c00;    color: #fff; }
+        .badge.serious   { background: #e05800; color: #fff; }
+        .badge.moderate  { background: #f9a825; color: #333; }
+        .badge.minor     { background: #7cb9e8; color: #000; }
+        .badge.good      { background: #1a7a3c; color: #fff; }
+        .passed-list, .warn-list { list-style: none; padding: 0; margin: 0; }
+        .passed-list li { padding: 5px 0 5px 24px; border-bottom: 1px solid #f0f4f8;
+                           position: relative; }
+        .passed-list li::before { content: '✓'; color: #1a7a3c; position: absolute; left: 4px; }
+        .warn-item { padding: 6px 0 6px 24px; border-bottom: 1px solid #fff8ee;
+                      position: relative; color: #7a5500; }
+        .warn-item::before { content: '⚠'; position: absolute; left: 2px; }
+        .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+                      font-size: 0.92em; }
+        .meta-item { background: #f8f9fa; padding: 10px 14px; border-radius: 6px; }
+        .meta-item strong { display: block; color: #1a3a5c; margin-bottom: 2px; }
+        .footer { text-align: center; color: #888; padding: 20px; font-size: 0.85em; }
+        @media (max-width: 700px) {
+            .meta-grid { grid-template-columns: 1fr; }
+            .stats { grid-template-columns: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Reiselivssjekk — Varanger Samisk Museum Overnatting</h1>
+    <p><strong>Nettsted:</strong> <a href="https://www.varanger-samisk.no" style="color:#7ec8f0">https://www.varanger-samisk.no</a></p>
+    <p><strong>Kategori:</strong> Overnatting &nbsp;|&nbsp;
+       <strong>Kommune:</strong> Nesseby &nbsp;|&nbsp;
+       <strong>Region:</strong> Finnmark</p>
+    <p><strong>Skannet:</strong> 2026-03-31 03:14 &nbsp;|&nbsp; <strong>Sider sjekket:</strong> 1</p>
+</div>
+
+<div class="stats">
+    <div class="stat">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Totale avvik</div>
+    </div>
+    <div class="stat critical">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Kritiske</div>
+    </div>
+    <div class="stat serious">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Alvorlige</div>
+    </div>
+    <div class="stat">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Moderate</div>
+    </div>
+    <div class="stat">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Mindre</div>
+    </div>
+    <div class="stat good">
+        <div class="stat-val">0</div>
+        <div class="stat-lbl">Bestått</div>
+    </div>
+</div>
+
+<section>
+    <h2>Virksomhetsinformasjon</h2>
+    <div class="meta-grid">
+        <div class="meta-item"><strong>Virksomhet</strong>Varanger Samisk Museum Overnatting</div>
+        <div class="meta-item"><strong>Org.nr.</strong>976123456</div>
+        <div class="meta-item"><strong>Kategori</strong>Overnatting</div>
+        <div class="meta-item"><strong>Kommune / Region</strong>Nesseby, Finnmark</div>
+        <div class="meta-item"><strong>Nettsted</strong><a href="https://www.varanger-samisk.no">https://www.varanger-samisk.no</a></div>
+        <div class="meta-item"><strong>Notater</strong>Kulturopplevelse med overnatting</div>
+    </div>
+</section>
+
+<section>
+    <h2>Avvik etter lovkrav og beste praksis</h2>
+    <p><em>Ingen avvik funnet.</em></p>
+</section>
+
+<section>
+    <h2>Bestått (0 sjekker)</h2>
+    <ul class="passed-list">
+        <li>Ingen beståtte sjekker registrert</li>
+    </ul>
+</section>
+
+
+<section>
+    <h2>Advarsler (1)</h2>
+    <ul class="warn-list">
+        <li class='warn-item'>Feil ved henting: HTTPSConnectionPool(host='www.varanger-samisk.no', port=443): Max retries exceeded with url: / (Caused by NameResolutionError("HTTPSConnection(host='www.varanger-samisk.no', port=443): Failed to resolve 'www.varanger-samisk.no' ([Errno 11001] getaddrinfo failed)"))</li>
+    </ul>
+</section>
+
+
+<div class="footer">
+    Generert av Tilgjengelig Reiselivssjekker &mdash; Basert på norsk reiselivslovgivning og GDPR
+</div>
+</body>
+</html>

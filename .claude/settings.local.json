@@ -12,7 +12,10 @@
       "Bash(tasklist:*)",
       "Bash(ps:*)",
       "Bash(wc:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(.venv/Scripts/python.exe batch_scan_finnmark_travel.py --max-pages 2 --category \"Destinasjonsselskaper\")",
+      "Bash(.venv/Scripts/python.exe -c \"import json; d=json.load\\(open\\(''travel_finnmark_results.json'',''r'',encoding=''utf-8''\\)\\); [print\\(f\"\"{r[''name''][:30]:30} pages={r[''pages'']} issues={r[''issues'']} crit={r[''critical'']} serious={r[''serious'']}\"\"\\) for r in d]\")",
+      "Bash(git rm:*)"
     ]
   }
 }
