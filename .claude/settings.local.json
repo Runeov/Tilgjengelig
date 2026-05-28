@@ -15,7 +15,29 @@
       "Bash(git commit:*)",
       "Bash(.venv/Scripts/python.exe batch_scan_finnmark_travel.py --max-pages 2 --category \"Destinasjonsselskaper\")",
       "Bash(.venv/Scripts/python.exe -c \"import json; d=json.load\\(open\\(''travel_finnmark_results.json'',''r'',encoding=''utf-8''\\)\\); [print\\(f\"\"{r[''name''][:30]:30} pages={r[''pages'']} issues={r[''issues'']} crit={r[''critical'']} serious={r[''serious'']}\"\"\\) for r in d]\")",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "WebFetch(domain:weedmaps.com)",
+      "WebFetch(domain:cannabisforthailand.com)",
+      "WebFetch(domain:thaidispos.com)",
+      "WebFetch(domain:weed.th)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://thaidispos.com/\" -UseBasicParsing -UserAgent \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\"; $r.Content.Length; $r.Content.Substring\\(0, [Math]::Min\\(15000, $r.Content.Length\\)\\))",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://thaidispos.com/robots.txt\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $r.Content)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://weed.th/robots.txt\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $r.Content)",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://thaidispos.com/sitemap.xml\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $r.Content.Substring\\(0, [Math]::Min\\(8000, $r.Content.Length\\)\\))",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://thaidispos.com/dispensaries/wonderland-bangkok\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $start = $r.Content.IndexOf\\('\"@type\":\"LocalBusiness\"'\\); if \\($start -lt 0\\) { $start = $r.Content.IndexOf\\('\"@type\":\"Place\"'\\) }; if \\($start -lt 0\\) { $start = $r.Content.IndexOf\\('application/ld+json'\\) }; \"JSON-LD start: $start\"; if \\($start -ge 0\\) { $r.Content.Substring\\($start, [Math]::Min\\(4000, $r.Content.Length - $start\\)\\) })",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://weed.th/sitemap.xml\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; $r.Content.Substring\\(0, [Math]::Min\\(4000, $r.Content.Length\\)\\))",
+      "PowerShell(python scrapers/thailand_cannabis/scrape_thaidispos.py)",
+      "PowerShell(Get-ChildItem -Path . -Directory | Where-Object { $_.Name -in @\\('venv','env','.venv','.env'\\) } | Select-Object Name; Test-Path requirements.txt; Get-Content requirements.txt)",
+      "PowerShell(py -0)",
+      "PowerShell(py -c \"import requests; print\\('requests:', requests.__version__\\); import bs4; print\\('bs4:', bs4.__version__\\)\")",
+      "PowerShell($r = Invoke-WebRequest -Uri \"https://weed.th/sitemap.xml\" -UseBasicParsing -UserAgent \"Mozilla/5.0\"; \"ContentLength: $\\($r.Content.Length\\)\"; \"ShopUrlCount: $\\(\\(Select-String -InputObject $r.Content -Pattern '<loc>https://weed\\\\.th/shop/' -AllMatches\\).Matches.Count\\)\"; \"OtherUrlCount: $\\(\\(Select-String -InputObject $r.Content -Pattern '<loc>\\(?!https://weed\\\\.th/shop/\\)' -AllMatches\\).Matches.Count\\)\"; \"EndsWith: ...$\\($r.Content.Substring\\([Math]::Max\\(0, $r.Content.Length - 200\\)\\)\\)\")",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; python scrapers/thailand_cannabis/scrape_weed_th.py)",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; python scrapers/thailand_cannabis/merge.py)",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; python scrapers/thailand_cannabis/report.py; if \\($?\\) { \"REPORT_PATH=\" + \\(Resolve-Path scrapers/thailand_cannabis/data/report.html\\).Path; \"Bytes=\" + \\(Get-Item scrapers/thailand_cannabis/data/report.html\\).Length })",
+      "PowerShell($rows = Import-Csv scrapers/thailand_cannabis/data/weed_th.csv; $ud = $rows | Where-Object { $_.city -match 'Udon Thani' }; \"Udon Thani shop count: $\\($ud.Count\\)\"; \"--- first 5 ---\"; $ud | Select-Object -First 5 | ForEach-Object { \"$\\($_.source_id\\) | $\\($_.name\\)\" })",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; python scrapers/thailand_cannabis/scrape_weed_th_detail.py \"Udon Thani\" --limit 3)",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; $sw = [System.Diagnostics.Stopwatch]::StartNew\\(\\); python scrapers/thailand_cannabis/scrape_weed_th_detail.py \"Udon Thani\" 2>&1 | Select-Object -Last 20; \"Elapsed: $\\($sw.Elapsed.TotalSeconds.ToString\\('0.0'\\)\\)s\")",
+      "PowerShell($env:PYTHONIOENCODING = \"utf-8\"; python scrapers/thailand_cannabis/enrich_google_places.py --help)"
     ]
   }
 }

@@ -1,0 +1,9 @@
+{
+  "licensed_count": 8,
+  "listed_count": 11271,
+  "matched_count": 7,
+  "unmatched_licensed_count": 1,
+  "merged_count": 11272,
+  "jaccard_threshold": 0.4,
+  "licensed_ratio_of_listed": 0.000621
+}
