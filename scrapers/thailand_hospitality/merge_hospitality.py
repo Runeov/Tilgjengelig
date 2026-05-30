@@ -46,11 +46,25 @@ TOURISM_SUBCATEGORIES_OSM = {
     "hotel", "guest_house", "hostel", "motel", "apartment", "resort",
     # Attractions
     "attraction", "viewpoint", "museum", "gallery", "theme_park",
-    # Nightlife
-    "bar", "pub", "nightclub", "spa",
+    # Nightlife / bars
+    "bar", "pub", "nightclub", "stripclub", "spa",
+    # Shows / entertainment (cabaret, theatre, Muay Thai, theme-park shows)
+    "theatre", "cinema", "arts_centre", "stadium", "dance",
+    "adult_gaming_centre", "muay_thai", "boxing", "martial_arts",
     # Food & drink (added — user's primary B2B target)
     "restaurant", "cafe", "fast_food", "food_court", "biergarten", "ice_cream",
 }
+
+# Wongnai category-name keywords that mark a row as a bar/nightlife venue.
+_BAR_KEYWORDS = ("ผับ", "บาร์", "ร้านเหล้า", "bar", "pub", "club", "lounge", "บาร์/ผับ")
+
+
+def wongnai_venue_type(category_text: str) -> str:
+    """Coarse venue_type for a Wongnai row from its category string ('|'-joined)."""
+    low = (category_text or "").lower()
+    if any(kw.lower() in low for kw in _BAR_KEYWORDS):
+        return "bar"
+    return ""
 
 # URL hosts that are NOT real websites (social-only presence)
 SOCIAL_HOSTS = {
@@ -142,6 +156,7 @@ def build_unified_rows(slug: str) -> list[dict]:
             "name_en": r.get("name_english", ""),
             "category_raw": r.get("primary_category", ""),
             "subcategory": r.get("primary_category", ""),
+            "venue_type": wongnai_venue_type(r.get("categories", "")),
             "is_food": r.get("is_likely_food") == "1",
             "lat": r.get("lat", ""),
             "lng": r.get("lng", ""),
@@ -170,6 +185,7 @@ def build_unified_rows(slug: str) -> list[dict]:
             "name_en": r.get("name_en", ""),
             "category_raw": r.get("subcategory", ""),
             "subcategory": r.get("subcategory", ""),
+            "venue_type": r.get("venue_type", ""),
             "is_food": r.get("subcategory") in ("restaurant", "cafe", "bar", "pub", "fast_food"),
             "lat": r.get("lat", ""),
             "lng": r.get("lng", ""),
@@ -234,7 +250,7 @@ def dedup(rows: list[dict], distance_km: float = 0.25, jaccard_threshold: float 
             mergedrow = dict(w)
             mergedrow["sources"] = "wongnai+osm"
             mergedrow["src_id_alt"] = best["src_id"]
-            for k in ("address", "phone", "website", "email"):
+            for k in ("address", "phone", "website", "email", "venue_type"):
                 if not mergedrow.get(k) and best.get(k):
                     mergedrow[k] = best[k]
             if not mergedrow.get("osm_subcategory"):
@@ -312,7 +328,7 @@ def compute_score(row: dict) -> tuple[int, str, str]:
 CSV_FIELDS = [
     "src_id", "src_id_alt", "sources",
     "name", "name_thai", "name_en",
-    "category_raw", "subcategory", "is_food",
+    "category_raw", "subcategory", "venue_type", "is_food",
     "lat", "lng", "zipcode", "address",
     "phone", "website", "email",
     "wongnai_categories", "osm_subcategory",
