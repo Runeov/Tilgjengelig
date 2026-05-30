@@ -33,14 +33,14 @@ density OSM lacks. Bottleneck: Wongnai IP-bans ~80 req/2min → 15s delay + resu
 | **BK Magazine** | 🔬 | HTML | `bkmagazine.com` | Curated Bangkok bars / live-music venues / nightlife — strong **show** + cocktail-bar signal OSM misses | Editorial lists, low volume, high quality. Bangkok-centric. |
 | **Time Out Bangkok** | 🔬 | HTML | `timeout.com` | Bars, rooftop, live music, cabaret listings | Similar to BK Mag; cross-source to dedupe. |
 | **Siam2nite** | 🔬 | HTML | `siam2nite.com` | Club/party/event venues nationwide — **bar/club** focus | Event-driven; good for nightlife venue discovery. |
-| **Ticketmelon** | 🔬 | HTML/API | `ticketmelon.com` | Ticketed live **shows** / concerts / Muay Thai / cabaret + venue | Maps events→venues; strongest pure "show" source. |
+| **Ticketmelon** | 🛠️ | HTML/API | `ticketmelon.com` | Ticketed live **shows** / concerts / Muay Thai / cabaret + venue | **Built:** `scrape_ticketmelon.py` (events→`venue_type=show`, parses `__NEXT_DATA__`/`ld+json`). Mapping self-tested offline; JSON key paths + merge wiring pending a networked run. Strongest pure "show" source. |
 
 ### Tier 2 — restaurant/bar density & contact enrichment
 
 | Source | Status | Access | Allowlist host | Why / what it adds | Notes & caveats |
 |--------|--------|--------|----------------|--------------------|-----------------|
 | **Tripadvisor** | 🔬 | HTML | `tripadvisor.com` | Restaurants + bars + "fun & games"/shows, ratings, reviews, nationwide incl. tourist towns | Aggressive anti-bot; needs headless browser + slow rate. ToS prohibits scraping — review before use. |
-| **Eatigo** | 🔬 | HTML/API | `eatigo.com` | Reservation-discount restaurants incl. many bars/buffets, by region | Region pages enumerate venues cleanly. |
+| **Eatigo** | 🛠️ | HTML/API | `eatigo.com` | Reservation-discount restaurants incl. many bars/buffets, by region | **Built:** `scrape_eatigo.py` (region pages → restaurant/bar rows via `__NEXT_DATA__`, cuisine→`venue_type`). Mapping self-tested offline; `pageProps` shape + merge wiring pending a networked run. |
 | **Hungry Hub** | 🔬 | HTML/API | `hungryhub.com` | #1 TH reservation app — buffet/à-la-carte venues, contact + booking | Good for contactable/outreach subset. |
 | **GrabFood** | 🔬 | HTML/API | `grab.com` | Huge delivery restaurant coverage incl. small local spots | JS-heavy; per-area listing pages. Delivery ≠ dine-in/bar. |
 | **Zomato** | 🔬 | API/HTML | `zomato.com` | Restaurant + **bar/cocktail/beverage** menus, SEA coverage | Has bar-menu depth (cocktails/whisky/beer). API access gated. |
