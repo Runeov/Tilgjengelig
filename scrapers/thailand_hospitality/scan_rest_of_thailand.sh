@@ -85,6 +85,24 @@ echo ">>> Aggregating country-wide..."
 "$PY" aggregate_country.py
 "$PY" finalize_country.py
 
+# 6. Auto-commit results (skip with NO_COMMIT=1)
+if [ -z "${NO_COMMIT:-}" ]; then
+  echo ""
+  echo ">>> Committing results..."
+  REPO_ROOT="$(git rev-parse --show-toplevel)"
+  git -C "$REPO_ROOT" add scrapers/thailand_hospitality/data/
+  if git -C "$REPO_ROOT" diff --cached --quiet; then
+    echo ">>> No data changes to commit."
+  else
+    N=$(ls -1 data/hospitality_*.csv 2>/dev/null | grep -v _country | wc -l | tr -d ' ')
+    git -C "$REPO_ROOT" commit -q -m "Add scanned hospitality data for rest of Thailand (bars & shows)
+
+Scanned remaining provinces via Wongnai + OSM (incl. venue_type bar/show) and
+re-aggregated country-wide files. ${N} per-province hospitality files present."
+    echo ">>> Committed. Push with: git push -u origin \$(git -C \"$REPO_ROOT\" rev-parse --abbrev-ref HEAD)"
+  fi
+fi
+
 echo ""
 echo "============================================================"
 echo "  DONE. Outputs in data/:"
