@@ -74,13 +74,18 @@ ENRICH_FIELDS = [
 ]
 
 
-def build_query(row: dict) -> str:
-    """Build a Text Search query from a scraped row."""
-    parts = [row.get("name", "").strip()]
+def build_query(row: dict, name_col: str = "name", default_city: str = "") -> str:
+    """Build a Text Search query from a scraped row.
+
+    `name_col` lets callers point at non-standard column names (e.g. Wongnai's
+    `displayName`). `default_city` is appended when the row's `city` field is
+    empty (useful when scraping a single-city dataset).
+    """
+    parts = [(row.get(name_col) or row.get("name") or "").strip()]
     addr = (row.get("address") or "").strip()
     if addr:
         parts.append(addr)
-    city = (row.get("city") or "").strip()
+    city = (row.get("city") or "").strip() or default_city.strip()
     if city and city.lower() not in addr.lower():
         parts.append(city)
     parts.append("Thailand")
@@ -119,12 +124,12 @@ def search_place(query: str, api_key: str) -> dict | None:
     return places[0] if places else None
 
 
-def enrich_row(row: dict, api_key: str) -> dict:
+def enrich_row(row: dict, api_key: str, name_col: str = "name", default_city: str = "") -> dict:
     """Return a copy of row with enrichment fields populated (empty on miss)."""
     out = dict(row)
     for f in ENRICH_FIELDS:
         out.setdefault(f, "")
-    query = build_query(row)
+    query = build_query(row, name_col=name_col, default_city=default_city)
     try:
         place = search_place(query, api_key)
     except Exception as e:
@@ -159,6 +164,12 @@ def main() -> int:
     parser.add_argument("--resume", action="store_true",
                         help="Skip rows that already have google_place_id in the existing output")
     parser.add_argument("--output", default=None, help="Output CSV path (default: <input>_google.csv)")
+    parser.add_argument("--name-col", default="name",
+                        help="CSV column to use as shop name in the search query "
+                             "(default: 'name'; e.g. use 'displayName' for Wongnai CSVs)")
+    parser.add_argument("--default-city", default="",
+                        help="Append this city when the row has no 'city' field "
+                             "(useful for single-city datasets like Wongnai region scrapes)")
     args = parser.parse_args()
 
     api_key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
@@ -177,57 +188,67 @@ def main() -> int:
 
     out_path = args.output or args.input_csv.replace(".csv", "_google.csv")
 
-    # Resume support: load existing output and skip rows already enriched.
-    already_done: dict[str, dict] = {}
-    if args.resume and os.path.exists(out_path):
-        with open(out_path, "r", encoding="utf-8", newline="") as f:
+    # Resume support: scan existing output file for already-enriched source_ids.
+    # Streaming append below means existing rows stay where they are; we just skip
+    # them during fetch so we don't re-spend on them.
+    already_done_sids: set[str] = set()
+    file_existed = os.path.exists(out_path)
+    if args.resume and file_existed:
+        with open(out_path, "r", encoding="utf-8-sig", newline="") as f:
             for r in csv.DictReader(f):
-                if r.get("google_place_id"):
-                    already_done[r["source_id"]] = r
-        print(f"[gplaces] resume: {len(already_done)} rows already enriched, will skip")
+                if r.get("google_place_id") and r.get("source_id"):
+                    already_done_sids.add(r["source_id"])
+        print(f"[gplaces] resume: {len(already_done_sids)} rows already enriched in {out_path}, will skip")
 
     in_fields = list(rows[0].keys()) if rows else []
     out_fields = in_fields + [f for f in ENRICH_FIELDS if f not in in_fields]
 
+    new_rows = [r for r in rows if r.get("source_id") not in already_done_sids]
     print(f"[gplaces] input={args.input_csv}")
-    print(f"[gplaces] rows={len(rows)} interval={REQUEST_INTERVAL}s "
-          f"est_runtime~{len(rows) * REQUEST_INTERVAL:.0f}s")
+    print(f"[gplaces] total={len(rows)}  to_fetch={len(new_rows)}  "
+          f"interval={REQUEST_INTERVAL}s  est_runtime~{len(new_rows) * REQUEST_INTERVAL:.0f}s "
+          f"({len(new_rows) * REQUEST_INTERVAL / 60:.1f} min)")
     print(f"[gplaces] output={out_path}")
 
-    results: list[dict] = []
+    if not new_rows:
+        print("[gplaces] nothing to do (all rows already enriched).")
+        return 0
+
+    # Streaming append: write each row + flush immediately so a crash never
+    # loses prior work. Headers are written only when creating a new file.
+    mode = "a" if (args.resume and file_existed) else "w"
+    out_f = open(out_path, mode, encoding="utf-8", newline="")
+    writer = csv.DictWriter(out_f, fieldnames=out_fields)
+    if mode == "w":
+        writer.writeheader()
+        out_f.flush()
+
     hits = 0
     misses = 0
     errors = 0
-    for i, row in enumerate(rows, 1):
-        if row.get("source_id") in already_done:
-            results.append(already_done[row["source_id"]])
-            continue
-        if i > 1:
-            time.sleep(REQUEST_INTERVAL)
-        enriched = enrich_row(row, api_key)
-        results.append(enriched)
-        conf = enriched.get("google_match_confidence", "")
-        phone = enriched.get("google_phone", "") or "-"
-        if conf.startswith("error"):
-            errors += 1
-        elif conf == "no_result":
-            misses += 1
-        else:
-            hits += 1
-        print(f"  [{i}/{len(rows)}] {row.get('name','')[:32]:32s} "
-              f"| conf={conf:8s} | phone={phone}")
+    try:
+        for i, row in enumerate(new_rows, 1):
+            if i > 1:
+                time.sleep(REQUEST_INTERVAL)
+            enriched = enrich_row(row, api_key, name_col=args.name_col, default_city=args.default_city)
+            conf = enriched.get("google_match_confidence", "")
+            phone = enriched.get("google_phone", "") or "-"
+            if conf.startswith("error"):
+                errors += 1
+            elif conf == "no_result":
+                misses += 1
+            else:
+                hits += 1
+            writer.writerow({k: enriched.get(k, "") for k in out_fields})
+            out_f.flush()
+            display = (row.get(args.name_col) or row.get("name") or "")[:32]
+            print(f"  [{i}/{len(new_rows)}] {display:32s} "
+                  f"| conf={conf:8s} | phone={phone}")
+    finally:
+        out_f.close()
 
-    # Write output (always rewrite — resume just avoided refetching)
-    with open(out_path, "w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=out_fields)
-        writer.writeheader()
-        for r in results:
-            writer.writerow({k: r.get(k, "") for k in out_fields})
-
-    with_phone = sum(1 for r in results if r.get("google_phone"))
-    print(f"\n[gplaces] hits={hits}  misses={misses}  errors={errors}")
-    print(f"[gplaces] with phone: {with_phone}/{len(results)} ({100*with_phone/max(1,len(results)):.0f}%)")
-    print(f"[gplaces] wrote {out_path}")
+    print(f"\n[gplaces] this run: hits={hits}  misses={misses}  errors={errors}")
+    print(f"[gplaces] cumulative phones in {out_path}: see file or re-run with --resume to see counts")
     return 0
 
 

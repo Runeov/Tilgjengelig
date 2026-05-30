@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Search: {{ q }}{% endblock %}
+{% block body %}
+<div class="page">
+  <h1>Search results for "{{ q }}"</h1>
+  <p class="muted">{{ rows|length }} matches.</p>
+
+  {% if rows %}
+  <table class="shops">
+    <thead><tr><th>Name</th><th>City</th><th>Phone</th><th>Score</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for s in rows %}
+      {% set s_dict = dict(s) %}
+      <tr>
+        <td><a href="{{ url_for('shop', sid=s['source_id']) }}"><strong>{{ s['name'] }}</strong></a></td>
+        <td>{{ s['canonical_city'] or '' }}</td>
+        <td>{{ shop_phone(s_dict) or '&mdash;' | safe }}</td>
+        <td>{% if s['lead_quality'] %}{{ s['lead_quality'] }}{% else %}&mdash;{% endif %}</td>
+        <td><span class="status status-{{ s['status'] }}">{{ s['status'].replace('_', ' ') }}</span></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Cities &mdash; TH Cannabis Outreach{% endblock %}
+{% block body %}
+<div class="page">
+  <h1>Provinces</h1>
+  <p class="muted">
+    {{ "{:,}".format(totals['total'] or 0) }} shops total &middot;
+    {{ totals['high_total'] or 0 }} high-quality leads (score 8+).
+    Click any province to start outreach.
+  </p>
+
+  <table class="cities">
+    <thead>
+      <tr>
+        <th>Province</th>
+        <th class="num">Shops</th>
+        <th class="num">With phone</th>
+        <th class="num">High quality (8+)</th>
+        <th class="num">Messaged</th>
+        <th class="num">Replied</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for c in cities %}
+      <tr>
+        <td><a href="{{ url_for('city', canon=c['city'].replace(' ', '_').lower()) }}"><strong>{{ c['city'] }}</strong></a></td>
+        <td class="num">{{ "{:,}".format(c['shop_count']) }}</td>
+        <td class="num">{{ "{:,}".format(c['phone_count'] or 0) }}</td>
+        <td class="num">{% if c['high_quality'] %}<span class="badge badge-high">{{ c['high_quality'] }}</span>{% else %}&mdash;{% endif %}</td>
+        <td class="num">{% if c['messaged_count'] %}{{ c['messaged_count'] }}{% else %}&mdash;{% endif %}</td>
+        <td class="num">{% if c['replied_count'] %}<span class="badge badge-replied">{{ c['replied_count'] }}</span>{% else %}&mdash;{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

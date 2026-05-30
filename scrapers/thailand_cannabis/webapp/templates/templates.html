@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Message templates{% endblock %}
+{% block body %}
+<div class="page">
+  <h1>Message templates</h1>
+  <p class="muted">Use <code>{shop_name}</code> and <code>{city}</code> as merge fields. The default WhatsApp template is used by the WhatsApp buttons.</p>
+
+  <section class="card">
+    <h2>Existing</h2>
+    {% if templates %}
+    <table class="templates">
+      <thead><tr><th>Channel</th><th>Name</th><th>Body</th><th>Default</th><th></th></tr></thead>
+      <tbody>
+        {% for t in templates %}
+        <tr>
+          <td>{{ t['channel'] }}</td>
+          <td><strong>{{ t['name'] }}</strong></td>
+          <td>{{ t['body'] }}</td>
+          <td>{% if t['is_default'] %}&starf;{% else %}&mdash;{% endif %}</td>
+          <td>
+            <form action="{{ url_for('template_delete', tid=t['id']) }}" method="post" style="display:inline">
+              <button type="submit" class="btn btn-danger" onclick="return confirm('Delete template?')">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="muted">No templates yet. Create one below.</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2>Create new</h2>
+    <form action="{{ url_for('templates_page') }}" method="post">
+      <label>Name
+        <input type="text" name="name" required placeholder="e.g. Bangkok intro v2">
+      </label>
+      <label>Channel
+        <select name="channel">
+          <option value="whatsapp" selected>WhatsApp</option>
+          <option value="email">Email</option>
+        </select>
+      </label>
+      <label>Body
+        <textarea name="body" rows="6" required placeholder="Hi {shop_name}, I came across your shop in {city}..."></textarea>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="is_default" value="1"> Make this the default for its channel
+      </label>
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Save template</button>
+      </div>
+    </form>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}{{ city }} &mdash; outreach{% endblock %}
+{% block body %}
+<div class="page page-wide">
+  <div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Provinces</a> &rsaquo; <strong>{{ city }}</strong>
+  </div>
+
+  <div class="city-header">
+    <h1>{{ city }}</h1>
+    <p class="muted">{{ shops|length }} shops shown.</p>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <span class="filter-label">Status:</span>
+      {% set statuses = ['new', 'messaged', 'replied', 'interested', 'no_answer', 'closed'] %}
+      <a class="chip {% if not current_status %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), min_score=current_min_score, sort=current_sort, hide_low='1' if current_hide_low else '0', group_phones='1' if current_group_phones else '0') }}">
+        All
+      </a>
+      {% for s in statuses %}
+      <a class="chip status-{{ s }} {% if current_status == s %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=s, min_score=current_min_score, sort=current_sort, hide_low='1' if current_hide_low else '0', group_phones='1' if current_group_phones else '0') }}">
+        {{ s.replace('_', ' ') }} ({{ status_counts.get(s, 0) }})
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Min score:</span>
+      {% for ms in [0, 5, 7, 8, 9] %}
+      <a class="chip {% if current_min_score == ms %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=ms, sort=current_sort, hide_low='1' if current_hide_low else '0', group_phones='1' if current_group_phones else '0') }}">
+        {{ ms }}+
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Sort:</span>
+      {% for s, label in [('score', 'Score'), ('reviews', 'Reviews'), ('name', 'Name'), ('status_changed', 'Recently changed')] %}
+      <a class="chip {% if current_sort == s %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=current_min_score, sort=s, hide_low='1' if current_hide_low else '0', group_phones='1' if current_group_phones else '0') }}">
+        {{ label }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <div class="filter-group">
+      <span class="filter-label">Quality:</span>
+      <a class="chip {% if current_hide_low %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=current_min_score, sort=current_sort, hide_low='1', group_phones='1' if current_group_phones else '0') }}"
+         title="Hide rows Google flagged as low-confidence or no-result match. These are usually wrong businesses (hotels, malls, etc.) matched to weed.th names by mistake.">
+        Hide low-conf matches
+      </a>
+      <a class="chip {% if not current_hide_low %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=current_min_score, sort=current_sort, hide_low='0', group_phones='1' if current_group_phones else '0') }}">
+        Show all
+      </a>
+      <span class="filter-label" style="margin-left:20px">Dedup:</span>
+      <a class="chip {% if current_group_phones %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=current_min_score, sort=current_sort, hide_low='1' if current_hide_low else '0', group_phones='1') }}"
+         title="Multi-listing operators (same phone, different names) collapse to one row showing the top-scored listing + a count of others.">
+        Group by phone
+      </a>
+      <a class="chip {% if not current_group_phones %}active{% endif %}"
+         href="{{ url_for('city', canon=city.replace(' ', '_').lower(), status=current_status, min_score=current_min_score, sort=current_sort, hide_low='1' if current_hide_low else '0', group_phones='0') }}">
+        Show duplicates
+      </a>
+    </div>
+  </div>
+
+  {% if default_template %}
+  <div class="template-bar">
+    <strong>Active WhatsApp template:</strong>
+    <span class="template-name">{{ default_template['name'] }}</span>
+    <span class="muted small">&mdash; "{{ default_template['body'][:80] }}{% if default_template['body']|length > 80 %}...{% endif %}"</span>
+    <a href="{{ url_for('templates_page') }}" class="small">edit templates &rarr;</a>
+  </div>
+  {% else %}
+  <div class="callout warn">No WhatsApp templates defined yet. <a href="{{ url_for('templates_page') }}">Create one</a> before using the WhatsApp button.</div>
+  {% endif %}
+
+  <table class="shops">
+    <thead>
+      <tr>
+        <th>Score</th>
+        <th>Shop</th>
+        <th class="num">Reviews</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in shops %}
+      {% set s_dict = dict(s) %}
+      {% set phone = shop_phone(s_dict) %}
+      {% set email = shop_email(s_dict) %}
+      <tr data-sid="{{ s['source_id'] }}">
+        <td>
+          {% if s['lead_score'] is not none %}
+            {% set q = s['lead_quality'] or 0 %}
+            <span class="score-badge {% if q >= 8 %}score-high{% elif q >= 5 %}score-mid{% else %}score-low{% endif %}">{{ q }}</span>
+          {% else %}&mdash;{% endif %}
+        </td>
+        <td>
+          <a href="{{ url_for('shop', sid=s['source_id']) }}"><strong>{{ s['name'] }}</strong></a>
+          {% if s['google_match_confidence'] == 'low' %}
+            <span class="badge badge-warn">low conf</span>
+          {% endif %}
+        </td>
+        <td class="num nowrap">
+          {% if s['google_user_ratings'] %}
+            <strong>{{ "{:,}".format(s['google_user_ratings']) }}</strong>
+            {% if s['google_rating'] %}<div class="meta">&#9733; {{ s['google_rating'] }}</div>{% endif %}
+          {% else %}
+            <span class="muted">&mdash;</span>
+          {% endif %}
+        </td>
+        <td class="nowrap">
+          {% if phone %}{{ phone }}{% else %}<span class="muted">no phone</span>{% endif %}
+          {% if s.get('phone_group_size', 1) > 1 %}
+            <span class="badge badge-group" title="{{ s['phone_group_size'] }} listings share this phone (likely a multi-shop operator). Toggle 'Show duplicates' to see them.">+{{ s['phone_group_size'] - 1 }} more</span>
+          {% endif %}
+          {% if email %}<div class="meta">{{ email }}</div>{% endif %}
+        </td>
+        <td class="addr">{{ s['address'] or '' }}</td>
+        <td><span class="status status-{{ s['status'] }}">{{ s['status'].replace('_', ' ') }}</span></td>
+        <td class="nowrap actions">
+          {% if phone %}
+          <button type="button" class="btn btn-whatsapp" data-action="whatsapp" title="Open WhatsApp Web with pre-filled message">WhatsApp</button>
+          <a class="btn btn-call" href="tel:{{ phone }}" data-action="call">Call</a>
+          {% endif %}
+          {% if email %}<a class="btn btn-email" href="mailto:{{ email }}" data-action="email">Email</a>{% endif %}
+          <a class="btn btn-edit" href="{{ url_for('shop', sid=s['source_id']) }}">Edit</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

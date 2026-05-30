@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}TH Cannabis Outreach{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}?v={{ range(100000, 999999) | random }}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}">TH Cannabis Outreach</a>
+  <form action="{{ url_for('search') }}" method="get" class="search-form">
+    <input type="search" name="q" placeholder="Search shop, address, phone..." value="{{ request.args.get('q', '') }}">
+    <button type="submit">Search</button>
+  </form>
+  <nav>
+    <a href="{{ url_for('templates_page') }}">Templates</a>
+  </nav>
+</header>
+
+<main>{% block body %}{% endblock %}</main>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

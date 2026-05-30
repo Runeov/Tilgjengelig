@@ -31,6 +31,21 @@ start scrapers/thailand_cannabis/data/report.html
 
 Total runtime: ~30 seconds (mostly the thaidispos detail-page fetches).
 
+## How weed.th publishes contact info (and why this matters)
+
+I probed how weed.th's "Call" button works. Findings:
+
+- The Call button fires a tRPC call to `user.getDispensaryContactInfo?contact_method=phone`. The `user.` prefix means **the endpoint requires authentication** — anonymous requests get `401 UNAUTHORIZED`. This is a deliberate product decision.
+- The corresponding *public* endpoint `public.getDispensary` returns a blob that is base64 → XOR with the literal key `1234567890` (10 chars cycling, no kidding). Decoding that blob reveals **boolean flags** (`"phone":true`, `"line":true`, ...) but not the actual values — those are gated to logged-in users.
+- See [probe_call_button.py](probe_call_button.py) and [probe_public_api.py](probe_public_api.py) for the source-of-truth probes.
+
+So you have **two paths to get phone numbers per shop**:
+
+| Path | Risk | Effort | Cost | Coverage |
+|---|---|---|---|---|
+| Google Places enrichment | None — Google publishes phones with shop consent | API key setup (5 min) | ~$0.03/shop | Whatever Google has |
+| weed.th authenticated fetch | **High — violates weed.th's implicit ToS for scraping login-gated data** | Manual signup + login | Free | Whatever weed.th has |
+
 ## Getting contact info per city (addresses + phone numbers)
 
 The bulk pipeline above gives you names and cities only. To get **addresses, phones, websites, and hours per shop**, run the per-city enrichment in two stages:
@@ -58,6 +73,54 @@ python scrapers/thailand_cannabis/enrich_google_places.py data/weed_th_udon_than
 5. `$env:GOOGLE_MAPS_API_KEY = "AIza..."` in your PowerShell session
 
 Cost for typical city scrapes: Udon Thani ~135 shops ≈ $4. Bangkok ~2,093 shops ≈ $63 (would consume one-third of the monthly free credit).
+
+### Path B: weed.th authenticated fetch (free, ToS risk — read this first)
+
+This path scrapes phone/email/LINE/etc. directly from weed.th using your own logged-in session. It will work, but it is **outside what weed.th wants you to do**:
+
+- weed.th puts contact info behind login deliberately. Scraping it with an automated tool likely violates their terms of service.
+- Volume detection is real — any single account hammering ~hundreds of contact lookups will look suspicious.
+- Account ban and IP block are realistic outcomes. The tooling makes no attempt to evade detection (no proxy rotation, no user-agent spoofing beyond a normal Chrome string). It respects the site's stated `Crawl-delay: 1`.
+- Legal exposure varies by jurisdiction (CFAA-like statutes in some countries). If you're unsure, default to Path A.
+
+If you accept that and want to proceed:
+
+```powershell
+pip install playwright
+playwright install chromium     # one-time, ~150 MB
+
+# 1) Open a real browser, log in to weed.th manually, save the session
+python scrapers/thailand_cannabis/weed_th_auth_login.py
+# (A Chromium window opens. Register an account or log in. Press Enter in
+#  the terminal once you're logged in. Session saves to data/weed_th_auth.json.)
+
+# 2) Sanity-test with 3 shops before burning rate
+python scrapers/thailand_cannabis/weed_th_auth_fetch_contacts.py "Udon Thani" --limit 3
+
+# 3) Full run (1 shop per ~5 sec with +/-20% jitter, ~12 min for 135 shops, resumable)
+python scrapers/thailand_cannabis/weed_th_auth_fetch_contacts.py "Udon Thani"
+
+# Or spread across days (recommended for large cities):
+python scrapers/thailand_cannabis/weed_th_auth_fetch_contacts.py "Udon Thani" \
+    --max-shops-per-run 30
+# ...next day:
+python scrapers/thailand_cannabis/weed_th_auth_fetch_contacts.py "Udon Thani" \
+    --resume --max-shops-per-run 30
+
+# Only fetch what you actually need (cuts per-shop request count from 8 to 2):
+python scrapers/thailand_cannabis/weed_th_auth_fetch_contacts.py "Udon Thani" \
+    --methods phone,line
+# -> data/weed_th_contacts_udon_thani.csv with columns:
+#    source_id, name, weed_phone, weed_email, weed_line, weed_website,
+#    weed_facebook, weed_instagram, weed_google_url, weed_whatsapp
+
+# 4) Regenerate the city report; it auto-merges the contacts file
+python scrapers/thailand_cannabis/report_city.py "Udon Thani"
+```
+
+The fetcher bails immediately on HTTP 401 (session expired or banned), persists results after every shop (crash-safe), and supports `--resume`. If the session expires mid-run, re-run `weed_th_auth_login.py` to refresh cookies and re-run the fetcher with `--resume`.
+
+In the regenerated report, the table gains a **Channels** column showing LINE / Facebook / Instagram / WhatsApp / Google Maps as small clickable chips. The Phone column prefers the weed.th-sourced value over the Google one. Cell precedence in the editor remains: **manual override &rsaquo; weed.th &rsaquo; Google &rsaquo; empty**.
 
 ## Output files
 
@@ -105,20 +168,28 @@ To add `cannabisforthailand.com` (the JS-rendered ~829-listing source), reuse th
 scrapers/thailand_cannabis/
   __init__.py
   README.md              (this file)
-  common.py                  (Dispensary dataclass, fetch, sitemap parser, normalization)
-  scrape_thaidispos.py       (licensed tier — full structured data via JSON-LD)
-  scrape_weed_th.py          (bulk universe — sitemap only, no detail fetches)
-  scrape_weed_th_detail.py   (per-city: address + rating via JSON-LD, respects Crawl-delay)
-  enrich_google_places.py    (per-city: + phone/website/hours via Google Places API)
-  merge.py                   (cross-reference licensed vs listed tiers)
-  report.py                  (HTML summary)
-  data/                      (output, gitignored if you choose)
+  common.py                       (Dispensary dataclass, fetch, sitemap parser, normalization)
+  scrape_thaidispos.py            (licensed tier — full structured data via JSON-LD)
+  scrape_weed_th.py               (bulk universe — sitemap only, no detail fetches)
+  scrape_weed_th_detail.py        (per-city: address + rating via JSON-LD, respects Crawl-delay)
+  enrich_google_places.py         (per-city: + phone/website/hours via Google Places API)
+  weed_th_auth_login.py           (Path B: opens browser, you log in, saves session)
+  weed_th_auth_fetch_contacts.py  (Path B: uses saved session to fetch gated contacts)
+  probe_call_button.py            (forensic probe — how Call button works)
+  probe_public_api.py             (forensic probe — XOR decode of public blob)
+  merge.py                        (cross-reference licensed vs listed tiers)
+  report.py                       (HTML summary of the licensed vs bulk picture)
+  report_city.py                  (per-city interactive directory + manual editor)
+  data/                           (output, gitignored if you choose)
     thaidispos.csv
     weed_th.csv
     weed_th_<city>.csv
     weed_th_<city>_google.csv
+    weed_th_contacts_<city>.csv   (Path B output)
+    weed_th_auth.json             (your saved session — keep private, do not commit)
     merged.csv
     matches.csv
     summary.json
     report.html
+    report_<city>.html
 ```

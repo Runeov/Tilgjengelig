@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}{{ shop['name'] }}{% endblock %}
+{% block body %}
+{% set s_dict = dict(shop) %}
+{% set phone = shop_phone(s_dict) %}
+{% set email = shop_email(s_dict) %}
+<div class="page page-shop">
+  <div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Provinces</a> &rsaquo;
+    <a href="{{ url_for('city', canon=shop['canonical_city'].replace(' ', '_').lower()) }}">{{ shop['canonical_city'] }}</a>
+    &rsaquo; <strong>{{ shop['name'] }}</strong>
+  </div>
+
+  <div class="shop-header" data-sid="{{ shop['source_id'] }}">
+    <div>
+      <h1>{{ shop['name'] }}</h1>
+      <p class="muted">{{ shop['address'] or '(no address)' }}</p>
+      {% if shop['google_user_ratings'] %}
+      <p class="muted small">Google: {{ shop['google_rating'] }} stars &middot; {{ shop['google_user_ratings'] }} reviews &middot; {{ shop['google_match_confidence'] }} confidence</p>
+      {% endif %}
+    </div>
+    <div class="shop-actions">
+      {% if phone %}
+      <button type="button" class="btn btn-whatsapp btn-lg" data-action="whatsapp">WhatsApp</button>
+      <a class="btn btn-call btn-lg" href="tel:{{ phone }}" data-action="call">Call {{ phone }}</a>
+      {% endif %}
+      {% if email %}<a class="btn btn-email" href="mailto:{{ email }}" data-action="email">Email {{ email }}</a>{% endif %}
+      {% if shop['google_maps_uri'] %}<a class="btn" href="{{ shop['google_maps_uri'] }}" target="_blank" rel="noopener">Open in Maps</a>{% endif %}
+      {% if shop['detail_url'] %}<a class="btn" href="{{ shop['detail_url'] }}" target="_blank" rel="noopener">weed.th profile</a>{% endif %}
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <section class="card">
+      <h2>Outreach state</h2>
+      <form id="outreach-form" data-sid="{{ shop['source_id'] }}">
+        <label>Status
+          <select name="status">
+            {% for s in ['new', 'messaged', 'replied', 'interested', 'no_answer', 'closed'] %}
+            <option value="{{ s }}" {% if shop['status'] == s %}selected{% endif %}>{{ s.replace('_', ' ') }}</option>
+            {% endfor %}
+          </select>
+        </label>
+        <label>Manual phone (overrides Google's)
+          <input type="tel" name="manual_phone" value="{{ shop['manual_phone'] or '' }}" placeholder="{{ shop['google_phone'] or '+66...' }}">
+        </label>
+        <label>Manual email
+          <input type="email" name="manual_email" value="{{ shop['manual_email'] or '' }}" placeholder="{{ shop['scraped_email'] or 'shop@example.com' }}">
+        </label>
+        <label>Notes
+          <textarea name="notes" rows="4" placeholder="Anything you want to remember about this shop">{{ shop['notes'] or '' }}</textarea>
+        </label>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <span class="save-status" id="save-status"></span>
+        </div>
+      </form>
+      {% if shop['outreach_updated_at'] %}
+      <p class="muted small">Last updated: {{ shop['outreach_updated_at'] }}</p>
+      {% endif %}
+    </section>
+
+    <section class="card">
+      <h2>Activity log</h2>
+      {% if log %}
+      <ul class="log">
+        {% for entry in log %}
+        <li>
+          <span class="log-time">{{ entry['created_at'] }}</span>
+          <strong>{{ entry['action'].replace('_', ' ') }}</strong>
+          {% if entry['detail'] %}<span class="muted">&mdash; {{ entry['detail'] }}</span>{% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="muted">No activity yet. Open WhatsApp / Call / Email above to log your first action.</p>
+      {% endif %}
+    </section>
+  </div>
+
+  {% if templates|length > 1 %}
+  <section class="card">
+    <h2>WhatsApp template picker</h2>
+    <p class="muted small">Click any template to use it for the next WhatsApp action on this shop.</p>
+    <div class="template-picker">
+      {% for t in templates %}
+      <button type="button" class="btn btn-template" data-tid="{{ t['id'] }}">
+        {{ t['name'] }} {% if t['is_default'] %}<span class="badge badge-default">default</span>{% endif %}
+      </button>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
