@@ -27,13 +27,28 @@ needs a hand-curated bbox.
 
 ## How to run (needs open network egress)
 
-> ⚠️ Wongnai 403-bans aggressively and Overpass/Nominatim must be reachable. This must run from an
-> environment whose network policy allows `wongnai.com`, `overpass-api.de`, and
-> `nominatim.openstreetmap.org`. (The remote web session this was built in blocks them.)
+> ⚠️ This must run from an environment whose network policy allowlists the three data-source
+> hosts. The default Claude Code web session blocks them (only pypi/github are allowed).
+
+### Required allowlist hosts
+
+| Host | Used for |
+|------|----------|
+| `overpass-api.de` | OSM bars & shows (the venue_type=show/bar venues) |
+| `nominatim.openstreetmap.org` | province bounding boxes (`scrape_osm --place`) |
+| `www.wongnai.com` | restaurants & bars (Wongnai bulk listings) |
+
+To enable: start a **new Claude Code web session** with a network policy that allows these hosts
+(custom allowlist or a more open policy — see
+https://code.claude.com/docs/en/claude-code-on-the-web), or run on a machine with open network.
+
+### Verify reachability, then scrape
 
 ```bash
 cd scrapers/thailand_hospitality
+pip install -r ../../requirements.txt      # beautifulsoup4, requests, lxml
 
+python run_remaining_provinces.py --check         # preflight: confirms all 3 hosts reachable
 python run_remaining_provinces.py --list          # preview the 39 remaining provinces
 python run_remaining_provinces.py --limit 8       # one safe batch (~80-req Wongnai limit)
 # ...repeat batches, or run all at once (long):
@@ -43,6 +58,9 @@ python run_remaining_provinces.py
 python aggregate_country.py
 python finalize_country.py
 ```
+
+The runner runs a network preflight automatically and aborts (exit 2) if any host is blocked, so
+you never get an empty scrape. Use `--no-preflight` to bypass.
 
 Useful flags: `--skip-wongnai` (OSM bars+shows only, no 403 risk), `--max-pages N`,
 `--wongnai-delay 15`, `--inter-city-delay 60`, `--include-done` (re-scan the OSM-only

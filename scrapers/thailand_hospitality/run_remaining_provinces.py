@@ -41,6 +41,14 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 REGIONS_PATH = os.path.join(SCRIPT_DIR, "wongnai_regions.json")
 
+# Hosts that MUST be reachable for a live scrape. A new Claude Code web session
+# needs a network policy that allowlists all three (see SCAN_REST_OF_THAILAND.md).
+REQUIRED_HOSTS = {
+    "Overpass (OSM bars+shows)": "https://overpass-api.de/api/status",
+    "Nominatim (province bboxes)": "https://nominatim.openstreetmap.org/status",
+    "Wongnai (restaurants+bars)": "https://www.wongnai.com/_api/regions/udonthani/businesses.json?page.number=1&page.size=1",
+}
+
 # Provinces whose preferred Wongnai slug / output name differ from a naive
 # transliteration of the English name. Keep this small and explicit.
 SLUG_OVERRIDES = {
@@ -94,6 +102,35 @@ def already_done(slug: str) -> bool:
     return os.path.exists(os.path.join(DATA_DIR, f"hospitality_{slug}.csv"))
 
 
+def preflight(require: bool) -> bool:
+    """Check the required hosts are reachable. Returns True if all OK.
+
+    `require=True` aborts the run on failure; otherwise it's just a warning.
+    """
+    try:
+        import requests
+    except ImportError:
+        print("[preflight] 'requests' not installed: pip install -r requirements.txt")
+        return not require
+    print("[preflight] checking data-source reachability...")
+    ua = {"User-Agent": "Mozilla/5.0 (TH-hospitality-research)"}
+    all_ok = True
+    for label, url in REQUIRED_HOSTS.items():
+        try:
+            r = requests.get(url, headers=ua, timeout=15)
+            ok = r.status_code < 400
+            print(f"    {'OK ' if ok else 'BLOCKED'}  {label}  (HTTP {r.status_code})")
+        except Exception as e:
+            ok = False
+            print(f"    BLOCKED  {label}  ({type(e).__name__}: {str(e)[:60]})")
+        all_ok = all_ok and ok
+    if not all_ok:
+        print("[preflight] one or more hosts are blocked. This session's network policy "
+              "must allowlist overpass-api.de, nominatim.openstreetmap.org and "
+              "www.wongnai.com. See SCAN_REST_OF_THAILAND.md.")
+    return all_ok
+
+
 def run(cmd: list[str], label: str) -> bool:
     print(f"\n>>> {label}\n    cmd: {' '.join(cmd)}")
     env = os.environ.copy()
@@ -116,6 +153,10 @@ def run(cmd: list[str], label: str) -> bool:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--list", action="store_true", help="Print remaining provinces and exit")
+    parser.add_argument("--check", action="store_true",
+                        help="Only run the network preflight (check data-source reachability) and exit")
+    parser.add_argument("--no-preflight", action="store_true",
+                        help="Skip the reachability check before scraping")
     parser.add_argument("--limit", type=int, default=None, help="Only process the next N remaining provinces")
     parser.add_argument("--max-pages", type=int, default=50,
                         help="Max Wongnai pages per province (default 50 = ~1K shops)")
@@ -129,6 +170,9 @@ def main() -> int:
     parser.add_argument("--include-done", action="store_true",
                         help="Don't skip provinces that already have hospitality_<slug>.csv")
     args = parser.parse_args()
+
+    if args.check:
+        return 0 if preflight(require=True) else 2
 
     provinces = load_provinces()
     remaining = [p for p in provinces if args.include_done or not already_done(p["slug"])]
@@ -144,6 +188,12 @@ def main() -> int:
         return 0
 
     print(f"[remaining] {len(remaining)} provinces to scan")
+
+    if not args.no_preflight and not preflight(require=True):
+        print("[abort] data sources unreachable; nothing scraped. "
+              "Use --no-preflight to override, or fix the network policy.")
+        return 2
+
     py = sys.executable
     failures = []
     for i, p in enumerate(remaining, 1):
