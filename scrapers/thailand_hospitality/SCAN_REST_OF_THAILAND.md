@@ -42,10 +42,28 @@ To enable: start a **new Claude Code web session** with a network policy that al
 (custom allowlist or a more open policy — see
 https://code.claude.com/docs/en/claude-code-on-the-web), or run on a machine with open network.
 
-### Verify reachability, then scrape
+### Easiest: one-shot script (preflight → all 39 provinces → aggregation)
 
 ```bash
 cd scrapers/thailand_hospitality
+./scan_rest_of_thailand.sh
+```
+
+Resume-safe (Ctrl-C and re-run; done provinces are skipped). Tunable via env vars:
+
+```bash
+SKIP_WONGNAI=1 ./scan_rest_of_thailand.sh      # OSM bars+shows only — fast, no 403 risk
+LIMIT=8 ./scan_rest_of_thailand.sh             # just the next 8 provinces (one batch)
+MAX_PAGES=50 WONGNAI_DELAY=20 ./scan_rest_of_thailand.sh
+```
+
+Defaults: `MAX_PAGES=50 WONGNAI_DELAY=15 INTER_CITY_DELAY=60 PASSES=3`. It installs deps if needed,
+runs the reachability preflight (aborts with exit 2 if blocked), scrapes in up to 3 resume passes
+(retrying provinces that hit a transient 403), then runs `aggregate_country.py` + `finalize_country.py`.
+
+### Manual / step-by-step
+
+```bash
 pip install -r ../../requirements.txt      # beautifulsoup4, requests, lxml
 
 python run_remaining_provinces.py --check         # preflight: confirms all 3 hosts reachable
@@ -61,6 +79,15 @@ python finalize_country.py
 
 The runner runs a network preflight automatically and aborts (exit 2) if any host is blocked, so
 you never get an empty scrape. Use `--no-preflight` to bypass.
+
+### Filtering results to bars / shows
+
+`hospitality_country.csv` has a `venue_type` column (`bar`, `show`, `lodging`, `attraction`, `spa`):
+
+```bash
+awk -F, 'NR==1 || $0 ~ /,bar,/'  data/hospitality_country.csv > bars_country.csv
+awk -F, 'NR==1 || $0 ~ /,show,/' data/hospitality_country.csv > shows_country.csv
+```
 
 Useful flags: `--skip-wongnai` (OSM bars+shows only, no 403 risk), `--max-pages N`,
 `--wongnai-delay 15`, `--inter-city-delay 60`, `--include-done` (re-scan the OSM-only
