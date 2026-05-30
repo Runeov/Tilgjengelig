@@ -8,6 +8,13 @@ Legend — **Status**: ✅ live · 🛠️ built, pending live validation · �
 (evaluated, not yet built) · 🚫 rejected (ToS / not feasible). **Access**: API =
 documented API · HTML = scrape rendered pages · Bulk = downloadable dataset.
 
+> **Manual web-search dataset:** `data/search_bars_shows_thailand.csv` (65 venues,
+> 54 bars + 11 shows across 7 provinces) was compiled by hand from Google/web-search
+> result summaries when all scrape hosts + WebFetch were egress-blocked. It's
+> **listicle-derived and partial** (no coords/phone/website, tourist-city-biased) —
+> a quick-start outreach list, not a substitute for the scrapers. Provenance is in
+> its `source` column.
+
 ---
 
 ## Currently used (live)
