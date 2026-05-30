@@ -167,6 +167,42 @@ git push -u origin claude/gracious-ride-CN6xL
 
 ---
 
+## Alternative data paths (also on this branch)
+
+Parallel work added more sources beyond the live Overpass+Wongnai pipeline. See
+`DATA_SOURCES.md` for the full catalogue. The most useful:
+
+### A. Geofabrik bulk-OSM — **best for whole-country bars & shows, no rate limit**
+
+One national download, parsed offline — covers all 77 provinces, zero Overpass/403 risk.
+Only needs egress to `download.geofabrik.de` (once).
+
+```bash
+pip install pyrosm                              # parses .osm.pbf
+python scrape_geofabrik.py --selftest           # verify logic, no network/deps needed
+python scrape_geofabrik.py --download           # download Thailand extract once
+python scrape_geofabrik.py --slug rayong --bbox 12.5,101.0,13.2,101.9   # per-province file
+# ...repeat per province (bboxes via Nominatim or scrape_osm KNOWN_BBOXES), then:
+python aggregate_country.py && python finalize_country.py
+```
+
+Output is a byte-compatible `data/osm_<slug>.csv` the merge pipeline already consumes.
+(pyrosm's tag layout should be confirmed on the first real run — see the note in the script.)
+
+### B. Event/booking platforms
+
+```bash
+python scrape_ticketmelon.py   # live SHOWS: concerts, Muay Thai, cabaret (strongest show source)
+python scrape_eatigo.py        # restaurants & bars (reservation platform, contactable subset)
+```
+
+### C. Manual dataset — usable right now, no network
+
+`data/search_bars_shows_thailand.csv` — 65 hand-compiled venues (54 bars + 11 shows, 7 provinces).
+Listicle-derived and partial (no coords/phone/website), but a ready quick-start outreach list.
+
+---
+
 ## Reference — what was built
 
 - `scrape_osm.py` — captures bars (`bar/pub/nightclub/stripclub`) + shows
