@@ -66,24 +66,34 @@ python run_remaining_provinces.py --list      # ~39 remaining provinces
 
 ## 4. Run the scan
 
-### Recommended: fast OSM-only first pass (bars + shows, zero ban risk)
+### Windows / PowerShell (no bash needed — recommended on Windows)
 
-OpenStreetMap has no rate-ban risk, so grab all the **bars & shows** first:
-
-```bash
-SKIP_WONGNAI=1 ./scan_rest_of_thailand.sh
-```
-
-On Windows (PowerShell), set the var separately:
+The `.sh` wrapper is bash-only (`SKIP_WONGNAI=1 ./...` fails in PowerShell). Run the
+Python steps directly — the runner takes **flags**, so there's nothing to `set`:
 
 ```powershell
-$env:SKIP_WONGNAI=1 ; bash scan_rest_of_thailand.sh
+python run_remaining_provinces.py --check          # verify reachability (want 3x OK)
+python run_remaining_provinces.py --skip-wongnai    # fast: bars + shows from OSM, no ban risk
+python run_remaining_provinces.py                   # full: adds Wongnai restaurants & bars
+python aggregate_country.py
+python finalize_country.py
+
+git add scrapers/thailand_hospitality/data          # Python runner does NOT auto-commit
+git commit -m "Add scan results for rest of Thailand (bars & shows)"
+git push -u origin claude/gracious-ride-CN6xL
 ```
 
-### Full run (adds Wongnai restaurants & bars)
+Flags: `--limit 8` (one batch), `--max-pages 50`, `--wongnai-delay 20` (raise if 403s),
+`--inter-city-delay 60`, `--no-preflight`.
+
+> Prefer the one-shot script on Windows? Open **Git Bash** (or its profile in VS Code's
+> terminal dropdown), then `SKIP_WONGNAI=1 ./scan_rest_of_thailand.sh`.
+
+### macOS / Linux / Git Bash — one-shot script
 
 ```bash
-./scan_rest_of_thailand.sh
+SKIP_WONGNAI=1 ./scan_rest_of_thailand.sh    # fast OSM bars+shows first (zero ban risk)
+./scan_rest_of_thailand.sh                   # then the full run
 ```
 
 This: preflight → scrapes each remaining province (Wongnai + OSM + merge) in up to
