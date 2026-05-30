@@ -4,9 +4,9 @@ Running catalogue of sources we scrape from, plus researched candidates to add.
 Keep appending as we evaluate more. "Allowlist host" is what a session's network
 policy must permit (see `SCAN_REST_OF_THAILAND.md`).
 
-Legend — **Status**: ✅ live · 🔬 candidate (evaluated, not yet built) · 🚫 rejected
-(ToS / not feasible). **Access**: API = documented API · HTML = scrape rendered pages ·
-Bulk = downloadable dataset.
+Legend — **Status**: ✅ live · 🛠️ built, pending live validation · 🔬 candidate
+(evaluated, not yet built) · 🚫 rejected (ToS / not feasible). **Access**: API =
+documented API · HTML = scrape rendered pages · Bulk = downloadable dataset.
 
 ---
 
@@ -29,7 +29,7 @@ density OSM lacks. Bottleneck: Wongnai IP-bans ~80 req/2min → 15s delay + resu
 
 | Source | Status | Access | Allowlist host | Why / what it adds | Notes & caveats |
 |--------|--------|--------|----------------|--------------------|-----------------|
-| **OSM bulk (Geofabrik / Planet)** | 🔬 | Bulk | `download.geofabrik.de` | Whole-Thailand `.osm.pbf`, query offline with `osm2pgsql`+PostGIS or `osmium` | **Removes Overpass rate-limit entirely.** One ~download covers all 77 provinces; re-run venue_type tagging locally. Best ROI. |
+| **OSM bulk (Geofabrik / Planet)** | 🛠️ | Bulk | `download.geofabrik.de` | Whole-Thailand `.osm.pbf`, parsed offline via `pyrosm` | **Built:** `scrape_geofabrik.py` (drop-in for `scrape_osm.py`, same schema/`venue_type`). **Removes Overpass rate-limit entirely.** One download covers all 77 provinces. Logic self-tested offline; pyrosm parse pending a networked run. Best ROI. |
 | **BK Magazine** | 🔬 | HTML | `bkmagazine.com` | Curated Bangkok bars / live-music venues / nightlife — strong **show** + cocktail-bar signal OSM misses | Editorial lists, low volume, high quality. Bangkok-centric. |
 | **Time Out Bangkok** | 🔬 | HTML | `timeout.com` | Bars, rooftop, live music, cabaret listings | Similar to BK Mag; cross-source to dedupe. |
 | **Siam2nite** | 🔬 | HTML | `siam2nite.com` | Club/party/event venues nationwide — **bar/club** focus | Event-driven; good for nightlife venue discovery. |
