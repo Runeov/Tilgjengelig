@@ -12,8 +12,28 @@ from . import db
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(REPO, "scrapers", "thailand_hospitality", "data")
-HOSPITALITY = os.path.join(DATA, "hospitality_udonthani.csv")
-CONTACTS = os.path.join(DATA, "udon_barshow_contacts.csv")
+
+# Per-city contact overlays: the reusable engine writes contacts_<slug>.csv;
+# Udon also has the original udon_barshow_contacts.csv. Both share the columns
+# _overlay_contacts reads (name/phone/email/website/facebook/address).
+LEGACY_CONTACTS = {"udonthani": "udon_barshow_contacts.csv"}
+
+
+def hospitality_path(slug: str) -> str:
+    return os.path.join(DATA, f"hospitality_{slug}.csv")
+
+
+def contacts_paths(slug: str) -> list:
+    # Prefer the engine's standard file; fall back to a legacy file only if the
+    # standard one doesn't exist yet (avoids double-counting the same venues).
+    std = os.path.join(DATA, f"contacts_{slug}.csv")
+    if os.path.exists(std):
+        return [std]
+    if slug in LEGACY_CONTACTS:
+        legacy = os.path.join(DATA, LEGACY_CONTACTS[slug])
+        if os.path.exists(legacy):
+            return [legacy]
+    return []
 
 
 def _norm(s: str) -> str:
@@ -43,13 +63,20 @@ def classify(*texts) -> str:
 
 
 def seed_udon(verbose: bool = True) -> dict:
-    if not os.path.exists(HOSPITALITY):
-        raise FileNotFoundError(HOSPITALITY)
+    return seed_city("udonthani", "Udon Thani", verbose)
+
+
+def seed_city(slug: str, province: str, verbose: bool = True) -> dict:
+    """Generic importer: hospitality_<slug>.csv directory + contacts_<slug>.csv
+    overlay. This is the one call that onboards a new city."""
+    hp = hospitality_path(slug)
+    if not os.path.exists(hp):
+        raise FileNotFoundError(hp)
 
     conn = db.connect()
     inserted = skipped = 0
     with conn:
-        with open(HOSPITALITY, encoding="utf-8") as f:
+        with open(hp, encoding="utf-8") as f:
             for r in csv.DictReader(f):
                 name = (r.get("name") or "").strip()
                 if not name:
@@ -58,7 +85,7 @@ def seed_udon(verbose: bool = True) -> dict:
                 sub = r.get("subcategory") or r.get("osm_subcategory") or ""
                 vt = (r.get("venue_type") or "").strip() or classify(
                     sub, r.get("wongnai_categories"), r.get("category_raw"))
-                city = (r.get("city") or "Udon Thani").strip() or "Udon Thani"
+                city = (r.get("city") or province).strip() or province
                 try:
                     conn.execute(
                         """INSERT OR IGNORE INTO companies
@@ -66,35 +93,36 @@ def seed_udon(verbose: bool = True) -> dict:
                             phone,email,website,address,lat,lng,source,status,
                             created_at,updated_at)
                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?, 'prospect', ?, ?)""",
-                        (name, r.get("name_thai") or None, "Udon Thani", city, vt or None,
+                        (name, r.get("name_thai") or None, province, city, vt or None,
                          r.get("subcategory") or r.get("osm_subcategory") or None,
                          r.get("phone") or None, r.get("email") or None,
                          r.get("website") or None, r.get("address") or None,
                          _f(r.get("lat")), _f(r.get("lng")),
-                         r.get("sources") or "hospitality_udonthani", db.now(), db.now()),
+                         r.get("sources") or f"hospitality_{slug}", db.now(), db.now()),
                     )
                     inserted += conn.total_changes and 1 or 0
                 except Exception:
                     skipped += 1
-        # recount precisely
         total = conn.execute("SELECT COUNT(*) c FROM companies").fetchone()["c"]
 
-    enriched = _overlay_contacts(conn)
+    enriched = 0
+    for cp in contacts_paths(slug):
+        enriched += _overlay_contacts(conn, cp, province)
     conn.close()
     stats = {"companies_total": total, "rows_read": inserted + skipped,
              "enriched_from_contacts": enriched}
     if verbose:
-        print(f"[seed] companies in directory: {total}")
-        print(f"[seed] enriched from bar/show contacts: {enriched}")
+        print(f"[seed:{slug}] companies in directory: {total}")
+        print(f"[seed:{slug}] enriched from contacts: {enriched}")
     return stats
 
 
-def _overlay_contacts(conn) -> int:
-    if not os.path.exists(CONTACTS):
+def _overlay_contacts(conn, contacts_file: str, province: str) -> int:
+    if not os.path.exists(contacts_file):
         return 0
     enriched = 0
     with conn:
-        for r in csv.DictReader(open(CONTACTS, encoding="utf-8")):
+        for r in csv.DictReader(open(contacts_file, encoding="utf-8")):
             name = (r.get("name") or "").strip()
             if not name:
                 continue
@@ -105,14 +133,14 @@ def _overlay_contacts(conn) -> int:
             ).fetchone()
             if not row:
                 # Enriched venue not yet in the directory → add it as a prospect.
-                vt = classify(r.get("note"), name) or "bar"
+                vt = (r.get("venue_type") or "").strip() or classify(r.get("note"), name) or "bar"
                 cur = conn.execute(
                     """INSERT OR IGNORE INTO companies
                        (name,province,city,venue_type,phone,email,website,facebook,
                         address,source,status,created_at,updated_at)
-                       VALUES (?, 'Udon Thani','Udon Thani',?,?,?,?,?,?,
-                               'udon_barshow_contacts','prospect',?,?)""",
-                    (key, vt, r.get("phone") or None, r.get("email") or None,
+                       VALUES (?,?,?,?,?,?,?,?,?, 'contacts_overlay','prospect',?,?)""",
+                    (key, province, r.get("city") or province, vt,
+                     r.get("phone") or None, r.get("email") or None,
                      r.get("website") or None, r.get("facebook") or None,
                      r.get("address") or None, db.now(), db.now()))
                 row = conn.execute("SELECT id FROM companies WHERE lower(name)=? LIMIT 1",

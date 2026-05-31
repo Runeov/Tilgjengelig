@@ -48,6 +48,11 @@ def cmd_seed_udon(a):
     seedmod.seed_udon()
 
 
+def cmd_seed_city(a):
+    db.init_db()
+    seedmod.seed_city(a.slug, a.province)
+
+
 def cmd_company_list(a):
     conn = db.connect()
     q = "SELECT id,name,venue_type,status,phone,facebook FROM companies WHERE 1=1"
@@ -300,6 +305,8 @@ def build_parser():
 
     sub.add_parser("init").set_defaults(fn=cmd_init)
     sub.add_parser("seed-udon").set_defaults(fn=cmd_seed_udon)
+    sc = sub.add_parser("seed-city"); sc.add_argument("slug")
+    sc.add_argument("--province", required=True); sc.set_defaults(fn=cmd_seed_city)
     sub.add_parser("stats").set_defaults(fn=cmd_stats)
 
     co = sub.add_parser("company").add_subparsers(dest="sub", required=True)
