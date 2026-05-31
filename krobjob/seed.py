@@ -104,6 +104,26 @@ def _overlay_contacts(conn) -> int:
                 "SELECT id FROM companies WHERE lower(name)=? LIMIT 1", (_norm(key),)
             ).fetchone()
             if not row:
+                # Enriched venue not yet in the directory → add it as a prospect.
+                vt = classify(r.get("note"), name) or "bar"
+                cur = conn.execute(
+                    """INSERT OR IGNORE INTO companies
+                       (name,province,city,venue_type,phone,email,website,facebook,
+                        address,source,status,created_at,updated_at)
+                       VALUES (?, 'Udon Thani','Udon Thani',?,?,?,?,?,?,
+                               'udon_barshow_contacts','prospect',?,?)""",
+                    (key, vt, r.get("phone") or None, r.get("email") or None,
+                     r.get("website") or None, r.get("facebook") or None,
+                     r.get("address") or None, db.now(), db.now()))
+                row = conn.execute("SELECT id FROM companies WHERE lower(name)=? LIMIT 1",
+                                   (_norm(key),)).fetchone()
+                if not row:
+                    continue
+                if r.get("facebook"):
+                    conn.execute(
+                        """INSERT OR IGNORE INTO social_profiles(company_id,platform,url,last_checked)
+                           VALUES (?, 'facebook', ?, ?)""", (row["id"], r["facebook"], db.now()))
+                enriched += 1
                 continue
             conn.execute(
                 """UPDATE companies SET
