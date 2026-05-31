@@ -170,6 +170,9 @@ def fetch_page(slug: str, page: int, allow_retry: bool = True) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("region", nargs="?", help="Region slug or city name (e.g. 'udonthani' or 'Bangkok')")
+    parser.add_argument("--out-slug", help="Clean slug for the output filename (wongnai_<slug>.csv). "
+                                           "Use when 'region' is a name or URL-encoded slug, so the "
+                                           "output filename stays clean and matches the merge step.")
     parser.add_argument("--limit", type=int, default=None, help="Only fetch N entities (sanity-test)")
     parser.add_argument("--max-pages", type=int, default=None,
                         help="Cap at N pages (PAGE_SIZE=20). Use to control big cities (Bangkok has 40K+ pages).")
@@ -217,7 +220,8 @@ def main() -> int:
     est_secs = cap_pages * (CRAWL_DELAY + 1)
     print(f"[wongnai] est runtime: ~{est_secs:.0f}s ({est_secs/60:.1f} min)")
 
-    out_path = os.path.join(DATA_DIR, f"wongnai_{slug}.csv")
+    out_slug = (args.out_slug or slug).strip()
+    out_path = os.path.join(DATA_DIR, f"wongnai_{out_slug}.csv")
     print(f"[wongnai] output: {out_path}")
 
     # Resume: count existing rows, compute starting page

@@ -12,3 +12,7 @@ __pycache__/
 
 # Temporary test files
 hamsunsenteret_html.html
+
+# KrobJob generated artifacts (DB + rendered reports)
+krobjob/*.db
+krobjob/reports/

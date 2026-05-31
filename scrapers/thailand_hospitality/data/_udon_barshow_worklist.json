@@ -1,0 +1,1034 @@
+[
+ {
+  "name": "เพลินจิต ชิดลม",
+  "subtype": "bar",
+  "lat": "17.4220874",
+  "lng": "102.781943",
+  "address": "",
+  "src_id": "osm:1313558728"
+ },
+ {
+  "name": "อีลีท อุดรธานี",
+  "subtype": "nightclub",
+  "lat": "17.4019195",
+  "lng": "102.8007158",
+  "address": "",
+  "src_id": "osm:2604541970"
+ },
+ {
+  "name": "Chill Out Bar",
+  "subtype": "bar",
+  "lat": "17.4067277",
+  "lng": "102.8018274",
+  "address": "",
+  "src_id": "osm:3256426264"
+ },
+ {
+  "name": "Vikings corner bar",
+  "subtype": "bar",
+  "lat": "17.4074794",
+  "lng": "102.8029064",
+  "address": "",
+  "src_id": "osm:3949487073"
+ },
+ {
+  "name": "Piddle K Pub",
+  "subtype": "bar",
+  "lat": "17.3330351",
+  "lng": "102.963722",
+  "address": "",
+  "src_id": "osm:6795237686"
+ },
+ {
+  "name": "Meeting Point",
+  "subtype": "bar",
+  "lat": "17.4048456",
+  "lng": "102.8015984",
+  "address": "",
+  "src_id": "osm:9549296618"
+ },
+ {
+  "name": "Nuchy Music Bar",
+  "subtype": "bar",
+  "lat": "17.4072595",
+  "lng": "102.8029552",
+  "address": "",
+  "src_id": "osm:10211128789"
+ },
+ {
+  "name": "Pegasus Bar",
+  "subtype": "bar",
+  "lat": "17.4058118",
+  "lng": "102.8020118",
+  "address": "17/2, Soi Samphan",
+  "src_id": "osm:10212305175"
+ },
+ {
+  "name": "Fun Bar",
+  "subtype": "bar",
+  "lat": "17.405786",
+  "lng": "102.8019893",
+  "address": "17/13",
+  "src_id": "osm:10713531985"
+ },
+ {
+  "name": "Irish Clock",
+  "subtype": "pub",
+  "lat": "17.4059289",
+  "lng": "102.8020546",
+  "address": "",
+  "src_id": "osm:10713561444"
+ },
+ {
+  "name": "Smile Bar - Udonthani",
+  "subtype": "bar",
+  "lat": "17.4273127",
+  "lng": "102.78374",
+  "address": "187/4, ถนนโนนพิบูลย์, หมากแข้ง, 41000",
+  "src_id": "osm:11264158561"
+ },
+ {
+  "name": "Blue Coral Bar",
+  "subtype": "bar",
+  "lat": "17.4043989",
+  "lng": "102.8022451",
+  "address": "",
+  "src_id": "osm:11413936149"
+ },
+ {
+  "name": "Fairy Bar",
+  "subtype": "bar",
+  "lat": "17.4062041",
+  "lng": "102.8023437",
+  "address": "",
+  "src_id": "osm:11414000377"
+ },
+ {
+  "name": "Happy Bar",
+  "subtype": "bar",
+  "lat": "17.4061767",
+  "lng": "102.8023292",
+  "address": "",
+  "src_id": "osm:11414000378"
+ },
+ {
+  "name": "B&C Bar",
+  "subtype": "bar",
+  "lat": "17.4048101",
+  "lng": "102.8020961",
+  "address": "",
+  "src_id": "osm:12912535285"
+ },
+ {
+  "name": "Seven Stars",
+  "subtype": "bar",
+  "lat": "17.4066042",
+  "lng": "102.8023199",
+  "address": "",
+  "src_id": "osm:13119627908"
+ },
+ {
+  "name": "Tinder Bar",
+  "subtype": "bar",
+  "lat": "17.406664",
+  "lng": "102.8019573",
+  "address": "",
+  "src_id": "osm:13119627909"
+ },
+ {
+  "name": "Honey Bar 1",
+  "subtype": "bar",
+  "lat": "17.4067618",
+  "lng": "102.8020078",
+  "address": "",
+  "src_id": "osm:13119627910"
+ },
+ {
+  "name": "ตะวันแดง สาดแสงเดือน",
+  "subtype": "nightclub",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:319228488"
+ },
+ {
+  "name": "Nutty Park Bar Area",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:668487618"
+ },
+ {
+  "name": "Nutty Park",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:668487619"
+ },
+ {
+  "name": "The Library",
+  "subtype": "nightclub",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:668487626"
+ },
+ {
+  "name": "ยูดีทาวน์",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:668488526"
+ },
+ {
+  "name": "Full Throttle Bar & Grill",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1230758283"
+ },
+ {
+  "name": "Red Bar",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1230758287"
+ },
+ {
+  "name": "Zur Pflaz",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1230758315"
+ },
+ {
+  "name": "The Red Lion",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1230758317"
+ },
+ {
+  "name": "ATM Bar",
+  "subtype": "bar",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1427134863"
+ },
+ {
+  "name": "Deja vu",
+  "subtype": "pub",
+  "lat": "17.964243",
+  "lng": "102.6083197",
+  "address": "",
+  "src_id": "osm:486300912"
+ },
+ {
+  "name": "Mai Phai",
+  "subtype": "pub",
+  "lat": "17.9670277",
+  "lng": "102.5898412",
+  "address": "",
+  "src_id": "osm:486300979"
+ },
+ {
+  "name": "On the Rock",
+  "subtype": "pub",
+  "lat": "17.9690719",
+  "lng": "102.5895103",
+  "address": "",
+  "src_id": "osm:486301010"
+ },
+ {
+  "name": "@Home",
+  "subtype": "nightclub",
+  "lat": "17.9687899",
+  "lng": "102.5920969",
+  "address": "",
+  "src_id": "osm:486301011"
+ },
+ {
+  "name": "Mark One",
+  "subtype": "nightclub",
+  "lat": "17.9687042",
+  "lng": "102.5932204",
+  "address": "",
+  "src_id": "osm:486301013"
+ },
+ {
+  "name": "Mithapab Nightclub",
+  "subtype": "nightclub",
+  "lat": "17.967674",
+  "lng": "102.5973609",
+  "address": "",
+  "src_id": "osm:486301020"
+ },
+ {
+  "name": "Liquid Bar",
+  "subtype": "pub",
+  "lat": "17.9675946",
+  "lng": "102.603546",
+  "address": "",
+  "src_id": "osm:525511738"
+ },
+ {
+  "name": "Relax",
+  "subtype": "bar",
+  "lat": "17.9763138",
+  "lng": "102.6187035",
+  "address": "",
+  "src_id": "osm:537919784"
+ },
+ {
+  "name": "Lunar 36",
+  "subtype": "nightclub",
+  "lat": "17.9544557",
+  "lng": "102.6147033",
+  "address": "",
+  "src_id": "osm:540555770"
+ },
+ {
+  "name": "Juke Box",
+  "subtype": "bar",
+  "lat": "17.9544164",
+  "lng": "102.6251254",
+  "address": "",
+  "src_id": "osm:541304939"
+ },
+ {
+  "name": "Paris Cocktail",
+  "subtype": "bar",
+  "lat": "17.9496926",
+  "lng": "102.6191763",
+  "address": "",
+  "src_id": "osm:1316172295"
+ },
+ {
+  "name": "Anou Cabaret",
+  "subtype": "nightclub",
+  "lat": "17.9674616",
+  "lng": "102.6044204",
+  "address": "",
+  "src_id": "osm:1444036282"
+ },
+ {
+  "name": "D'Tech",
+  "subtype": "nightclub",
+  "lat": "17.9694732",
+  "lng": "102.59399",
+  "address": "",
+  "src_id": "osm:1446297426"
+ },
+ {
+  "name": "Samlo Pub",
+  "subtype": "pub",
+  "lat": "17.9659832",
+  "lng": "102.604503",
+  "address": "",
+  "src_id": "osm:1446297581"
+ },
+ {
+  "name": "Le Sen",
+  "subtype": "bar",
+  "lat": "17.9650146",
+  "lng": "102.604761",
+  "address": "",
+  "src_id": "osm:1937921957"
+ },
+ {
+  "name": "Wine 95",
+  "subtype": "bar",
+  "lat": "17.9645187",
+  "lng": "102.6069735",
+  "address": "",
+  "src_id": "osm:1937921965"
+ },
+ {
+  "name": "Marktwo",
+  "subtype": "bar",
+  "lat": "17.9689847",
+  "lng": "102.5933942",
+  "address": "",
+  "src_id": "osm:1954203136"
+ },
+ {
+  "name": "Sea Sunset",
+  "subtype": "bar",
+  "lat": "17.9577505",
+  "lng": "102.6313376",
+  "address": "",
+  "src_id": "osm:2195284282"
+ },
+ {
+  "name": "Gaia",
+  "subtype": "bar",
+  "lat": "17.883982",
+  "lng": "102.741589",
+  "address": "",
+  "src_id": "osm:2257644015"
+ },
+ {
+  "name": "Bao Dan Night Club",
+  "subtype": "nightclub",
+  "lat": "17.1932354",
+  "lng": "102.4327219",
+  "address": "",
+  "src_id": "osm:2343064816"
+ },
+ {
+  "name": "Highland Bar",
+  "subtype": "pub",
+  "lat": "17.9667348",
+  "lng": "102.5910225",
+  "address": "",
+  "src_id": "osm:2524977422"
+ },
+ {
+  "name": "ຮ້ານເພື່ອນເບຍ",
+  "subtype": "pub",
+  "lat": "17.9528521",
+  "lng": "102.6435048",
+  "address": "",
+  "src_id": "osm:3584763993"
+ },
+ {
+  "name": "Batman Pub",
+  "subtype": "bar",
+  "lat": "17.9079397",
+  "lng": "102.6609991",
+  "address": "",
+  "src_id": "osm:3667494461"
+ },
+ {
+  "name": "Seng Champa",
+  "subtype": "nightclub",
+  "lat": "17.9695575",
+  "lng": "102.5902136",
+  "address": "",
+  "src_id": "osm:3687727591"
+ },
+ {
+  "name": "Le Select",
+  "subtype": "nightclub",
+  "lat": "17.9586084",
+  "lng": "102.6404206",
+  "address": "",
+  "src_id": "osm:3868560362"
+ },
+ {
+  "name": "249 Beer Garden",
+  "subtype": "bar",
+  "lat": "17.9664189",
+  "lng": "102.5924234",
+  "address": "",
+  "src_id": "osm:3930618682"
+ },
+ {
+  "name": "Paris Cocktail Riverside Bar",
+  "subtype": "bar",
+  "lat": "17.9662454",
+  "lng": "102.594191",
+  "address": "",
+  "src_id": "osm:3930618690"
+ },
+ {
+  "name": "Khondee Cocktail Bar",
+  "subtype": "bar",
+  "lat": "17.9664228",
+  "lng": "102.5922692",
+  "address": "",
+  "src_id": "osm:3930618706"
+ },
+ {
+  "name": "Casual Bar",
+  "subtype": "bar",
+  "lat": "17.9674063",
+  "lng": "102.5945945",
+  "address": "",
+  "src_id": "osm:3930642160"
+ },
+ {
+  "name": "Country Road",
+  "subtype": "bar",
+  "lat": "17.9662507",
+  "lng": "102.60392",
+  "address": "",
+  "src_id": "osm:4090057703"
+ },
+ {
+  "name": "Ton Khao",
+  "subtype": "pub",
+  "lat": "17.9041811",
+  "lng": "102.663163",
+  "address": "ຖະໜົນ ດົງຄຳຊ້າງ",
+  "src_id": "osm:4113608990"
+ },
+ {
+  "name": "Seventynine",
+  "subtype": "pub",
+  "lat": "17.9792207",
+  "lng": "102.5848504",
+  "address": "",
+  "src_id": "osm:4157836689"
+ },
+ {
+  "name": "NoName",
+  "subtype": "bar",
+  "lat": "17.9680143",
+  "lng": "102.6032504",
+  "address": "",
+  "src_id": "osm:4202130790"
+ },
+ {
+  "name": "Sky",
+  "subtype": "bar",
+  "lat": "17.9694038",
+  "lng": "102.6092223",
+  "address": "",
+  "src_id": "osm:4204317389"
+ },
+ {
+  "name": "Welcome bar",
+  "subtype": "bar",
+  "lat": "17.8817249",
+  "lng": "102.7472972",
+  "address": "",
+  "src_id": "osm:4356754989"
+ },
+ {
+  "name": "Tennessee",
+  "subtype": "bar",
+  "lat": "17.9641031",
+  "lng": "102.6051686",
+  "address": "Rue Nokeokoummane",
+  "src_id": "osm:4367694589"
+ },
+ {
+  "name": "Musso",
+  "subtype": "bar",
+  "lat": "17.9711573",
+  "lng": "102.5862919",
+  "address": "",
+  "src_id": "osm:4373229347"
+ },
+ {
+  "name": "ຈີມມີ",
+  "subtype": "bar",
+  "lat": "17.9978459",
+  "lng": "102.653341",
+  "address": "",
+  "src_id": "osm:4375156090"
+ },
+ {
+  "name": "Boseugaraoke",
+  "subtype": "pub",
+  "lat": "17.9646129",
+  "lng": "102.6321185",
+  "address": "",
+  "src_id": "osm:4539565728"
+ },
+ {
+  "name": "In Café",
+  "subtype": "bar",
+  "lat": "17.936792",
+  "lng": "102.6200538",
+  "address": "",
+  "src_id": "osm:4620068672"
+ },
+ {
+  "name": "Bar The Way",
+  "subtype": "bar",
+  "lat": "17.9632737",
+  "lng": "102.6241982",
+  "address": "",
+  "src_id": "osm:4634522182"
+ },
+ {
+  "name": "ດີດີ",
+  "subtype": "pub",
+  "lat": "17.9692612",
+  "lng": "102.6414364",
+  "address": "",
+  "src_id": "osm:4658636757"
+ },
+ {
+  "name": "ລານເບຍ",
+  "subtype": "pub",
+  "lat": "17.9252063",
+  "lng": "102.6485534",
+  "address": "",
+  "src_id": "osm:4672265824"
+ },
+ {
+  "name": "Tumjork",
+  "subtype": "bar",
+  "lat": "17.9787258",
+  "lng": "102.6152562",
+  "address": "",
+  "src_id": "osm:4727204692"
+ },
+ {
+  "name": "Easy Bar",
+  "subtype": "pub",
+  "lat": "17.968298",
+  "lng": "102.6003489",
+  "address": "",
+  "src_id": "osm:4771104861"
+ },
+ {
+  "name": "Dihao night club and karaoke",
+  "subtype": "nightclub",
+  "lat": "17.9772555",
+  "lng": "102.6243123",
+  "address": "",
+  "src_id": "osm:4952505942"
+ },
+ {
+  "name": "Tummix",
+  "subtype": "bar",
+  "lat": "17.9481974",
+  "lng": "102.6195297",
+  "address": "",
+  "src_id": "osm:5058223027"
+ },
+ {
+  "name": "Hang Out",
+  "subtype": "pub",
+  "lat": "17.9604595",
+  "lng": "102.6259278",
+  "address": "",
+  "src_id": "osm:5082786748"
+ },
+ {
+  "name": "Moonlight Lounge",
+  "subtype": "bar",
+  "lat": "17.9645439",
+  "lng": "102.6084483",
+  "address": "",
+  "src_id": "osm:5142533360"
+ },
+ {
+  "name": "Queen Bee Bar&Grill",
+  "subtype": "bar",
+  "lat": "17.9654948",
+  "lng": "102.6093475",
+  "address": "",
+  "src_id": "osm:5144423160"
+ },
+ {
+  "name": "ອ້ຳຄຳ",
+  "subtype": "pub",
+  "lat": "17.9681996",
+  "lng": "102.5939047",
+  "address": "",
+  "src_id": "osm:5222602003"
+ },
+ {
+  "name": "Déjà vu",
+  "subtype": "bar",
+  "lat": "17.9655537",
+  "lng": "102.6058713",
+  "address": "",
+  "src_id": "osm:5365147797"
+ },
+ {
+  "name": "League of Brewers Café and Lounge Bar",
+  "subtype": "bar",
+  "lat": "17.9693851",
+  "lng": "102.6093063",
+  "address": "",
+  "src_id": "osm:5519703083"
+ },
+ {
+  "name": "Green Corner",
+  "subtype": "pub",
+  "lat": "17.9652847",
+  "lng": "102.6059345",
+  "address": "",
+  "src_id": "osm:5560894464"
+ },
+ {
+  "name": "Hug You",
+  "subtype": "pub",
+  "lat": "17.9046143",
+  "lng": "102.6532432",
+  "address": "",
+  "src_id": "osm:5852809784"
+ },
+ {
+  "name": "For You",
+  "subtype": "pub",
+  "lat": "17.9671129",
+  "lng": "102.606706",
+  "address": "",
+  "src_id": "osm:5892390200"
+ },
+ {
+  "name": "Winner Bar",
+  "subtype": "pub",
+  "lat": "17.9672127",
+  "lng": "102.606762",
+  "address": "",
+  "src_id": "osm:5892390203"
+ },
+ {
+  "name": "ຕຳຕຳ",
+  "subtype": "pub",
+  "lat": "17.9672938",
+  "lng": "102.6066096",
+  "address": "",
+  "src_id": "osm:5892390204"
+ },
+ {
+  "name": "ຕັ້ງຫລັກ",
+  "subtype": "bar",
+  "lat": "17.9671656",
+  "lng": "102.6065431",
+  "address": "",
+  "src_id": "osm:5892390206"
+ },
+ {
+  "name": "ສາລາເບຍ",
+  "subtype": "pub",
+  "lat": "17.9672704",
+  "lng": "102.60669",
+  "address": "",
+  "src_id": "osm:5892390207"
+ },
+ {
+  "name": "ຕຳຈອກ 2",
+  "subtype": "pub",
+  "lat": "17.925921",
+  "lng": "102.6251898",
+  "address": "",
+  "src_id": "osm:5892851429"
+ },
+ {
+  "name": "ຮ້ານວາດສະໜາ ປີ້ງເປັດຫຼັກ 14",
+  "subtype": "bar",
+  "lat": "17.8729387",
+  "lng": "102.6728024",
+  "address": "",
+  "src_id": "osm:5918181886"
+ },
+ {
+  "name": "ຮ້ານ 10 ລໍ້ເບຍ",
+  "subtype": "pub",
+  "lat": "17.9770021",
+  "lng": "102.5410682",
+  "address": "",
+  "src_id": "osm:6109030280"
+ },
+ {
+  "name": "Like Beer",
+  "subtype": "pub",
+  "lat": "17.9286272",
+  "lng": "102.6171407",
+  "address": "",
+  "src_id": "osm:6145003411"
+ },
+ {
+  "name": "The Travel Drink",
+  "subtype": "bar",
+  "lat": "17.9598119",
+  "lng": "102.6104954",
+  "address": "",
+  "src_id": "osm:6337487285"
+ },
+ {
+  "name": "Laodi Bar",
+  "subtype": "bar",
+  "lat": "17.9655866",
+  "lng": "102.5973947",
+  "address": "",
+  "src_id": "osm:6830997687"
+ },
+ {
+  "name": "The long room bar",
+  "subtype": "bar",
+  "lat": "17.9688924",
+  "lng": "102.5998635",
+  "address": "",
+  "src_id": "osm:6969671190"
+ },
+ {
+  "name": "Diamond",
+  "subtype": "pub",
+  "lat": "17.9710101",
+  "lng": "102.6279978",
+  "address": "",
+  "src_id": "osm:7270692985"
+ },
+ {
+  "name": "TH Karaoke",
+  "subtype": "pub",
+  "lat": "17.9744004",
+  "lng": "102.6344998",
+  "address": "",
+  "src_id": "osm:7270693085"
+ },
+ {
+  "name": "what club",
+  "subtype": "pub",
+  "lat": "17.985904",
+  "lng": "102.6235612",
+  "address": "",
+  "src_id": "osm:7270693086"
+ },
+ {
+  "name": "Moon Shine Bar 1",
+  "subtype": "bar",
+  "lat": "17.8800932",
+  "lng": "102.7478981",
+  "address": "",
+  "src_id": "osm:9808998750"
+ },
+ {
+  "name": "Le Ballon Rouge Bar",
+  "subtype": "bar",
+  "lat": "17.9032076",
+  "lng": "102.6284539",
+  "address": "",
+  "src_id": "osm:10294628389"
+ },
+ {
+  "name": "Scoop-Bar & Restaurant",
+  "subtype": "bar",
+  "lat": "17.9662605",
+  "lng": "102.5940746",
+  "address": "",
+  "src_id": "osm:10803883655"
+ },
+ {
+  "name": "F1 Club",
+  "subtype": "nightclub",
+  "lat": "17.9790344",
+  "lng": "102.5547331",
+  "address": "",
+  "src_id": "osm:12345226002"
+ },
+ {
+  "name": "Green Bar",
+  "subtype": "bar",
+  "lat": "17.9656951",
+  "lng": "102.5973207",
+  "address": "",
+  "src_id": "osm:12645480801"
+ },
+ {
+  "name": "Romeo",
+  "subtype": "nightclub",
+  "lat": "17.9251395",
+  "lng": "102.6488726",
+  "address": "",
+  "src_id": "osm:12648228201"
+ },
+ {
+  "name": "GO-DUNK Restaurant and Live Music Nightclub",
+  "subtype": "nightclub",
+  "lat": "17.9689758",
+  "lng": "102.6104142",
+  "address": "",
+  "src_id": "osm:13374242076"
+ },
+ {
+  "name": "Vegas Music Bar",
+  "subtype": "bar",
+  "lat": "17.9876625",
+  "lng": "102.6235295",
+  "address": "",
+  "src_id": "osm:13374326581"
+ },
+ {
+  "name": "Tipsy Elephant",
+  "subtype": "bar",
+  "lat": "17.9650606",
+  "lng": "102.6027358",
+  "address": "",
+  "src_id": "osm:13574966001"
+ },
+ {
+  "name": "CoreBeer Brewery",
+  "subtype": "pub",
+  "lat": "17.949229",
+  "lng": "102.6190499",
+  "address": "Rue Thadeua",
+  "src_id": "osm:13705109501"
+ },
+ {
+  "name": "Marina",
+  "subtype": "nightclub",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:40306707"
+ },
+ {
+  "name": "GPH Niteclub",
+  "subtype": "nightclub",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:310327791"
+ },
+ {
+  "name": "Wind West",
+  "subtype": "pub",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:374198543"
+ },
+ {
+  "name": "ศูนย์ส่งเสริมอุตสาหกรรมภาคที่๔",
+  "subtype": "public_building",
+  "lat": "17.2709582",
+  "lng": "102.8779766",
+  "address": "",
+  "src_id": "osm:1613716908"
+ },
+ {
+  "name": "สถานีวิจัยทดสอบพันธู์สัตว์อุดรธานี",
+  "subtype": "public_building",
+  "lat": "17.6524691",
+  "lng": "102.7891029",
+  "address": "",
+  "src_id": "osm:2395501677"
+ },
+ {
+  "name": "สถานีวิทยุโทรทัศน์แห่งประเทศไทย",
+  "subtype": "public_building",
+  "lat": "17.6539443",
+  "lng": "102.7898628",
+  "address": "",
+  "src_id": "osm:2395503184"
+ },
+ {
+  "name": "Community Development Technical Assistance Center 4",
+  "subtype": "public_building",
+  "lat": "17.6545855",
+  "lng": "102.7906783",
+  "address": "",
+  "src_id": "osm:2395508917"
+ },
+ {
+  "name": "องค์การบริหารส่วนตำบลสระใคร",
+  "subtype": "public_building",
+  "lat": "17.6972173",
+  "lng": "102.7823533",
+  "address": "",
+  "src_id": "osm:2608800098"
+ },
+ {
+  "name": "Lao National Opera",
+  "subtype": "theatre",
+  "lat": "17.9697457",
+  "lng": "102.6053259",
+  "address": "",
+  "src_id": "osm:534692613"
+ },
+ {
+  "name": "Cinemax",
+  "subtype": "cinema",
+  "lat": "17.9619592",
+  "lng": "102.6466298",
+  "address": "",
+  "src_id": "osm:711335657"
+ },
+ {
+  "name": "หมวดทางการหนองคายที่1",
+  "subtype": "public_building",
+  "lat": "17.7876632",
+  "lng": "102.7649786",
+  "address": "",
+  "src_id": "osm:2396680749"
+ },
+ {
+  "name": "ພາໂຕກລາວເດີມ",
+  "subtype": "arts_centre",
+  "lat": "17.9669761",
+  "lng": "102.6038669",
+  "address": "",
+  "src_id": "osm:3645511711"
+ },
+ {
+  "name": "SF Cinema City",
+  "subtype": "cinema",
+  "lat": "17.4090784",
+  "lng": "102.7922829",
+  "address": "",
+  "src_id": "osm:3951186688"
+ },
+ {
+  "name": "Fivestars Multiplex",
+  "subtype": "cinema",
+  "lat": "17.8713488",
+  "lng": "102.7426305",
+  "address": "",
+  "src_id": "osm:4261863989"
+ },
+ {
+  "name": "เมเจอร์ ซีนีเพล็กซ์",
+  "subtype": "cinema",
+  "lat": "17.2146016",
+  "lng": "102.4320881",
+  "address": "",
+  "src_id": "osm:7710402885"
+ },
+ {
+  "name": "ຫໍວັດທະນະທຳແຫ່ງຊາດ",
+  "subtype": "theatre",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:39349930"
+ },
+ {
+  "name": "ໂຮງກາຍະສີນ",
+  "subtype": "theatre",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:42760389"
+ },
+ {
+  "name": "เมเจอร์ซีนีเพล็กซ์",
+  "subtype": "cinema",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1119344069"
+ },
+ {
+  "name": "5star Multiplex",
+  "subtype": "cinema",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1119352841"
+ },
+ {
+  "name": "E.G.V Cinémas",
+  "subtype": "cinema",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1423066334"
+ },
+ {
+  "name": "Khao niew Lao theater",
+  "subtype": "theatre",
+  "lat": "",
+  "lng": "",
+  "address": "",
+  "src_id": "osm:1467072823"
+ }
+]

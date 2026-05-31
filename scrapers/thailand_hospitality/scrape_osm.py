@@ -29,7 +29,32 @@ DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 OVERPASS = "https://overpass-api.de/api/interpreter"
+NOMINATIM = "https://nominatim.openstreetmap.org/search"
 UA = "TH-hospitality-research/0.1"
+
+
+def resolve_bbox_nominatim(place: str) -> str | None:
+    """Look up a place's bounding box via OSM Nominatim.
+
+    Lets us scan provinces that aren't in KNOWN_BBOXES (i.e. the rest of
+    Thailand) without hand-curating coordinates. Returns 'south,west,north,east'
+    or None if the place can't be geocoded.
+    """
+    r = requests.get(
+        NOMINATIM,
+        params={"q": place, "format": "json", "limit": 1},
+        headers={"User-Agent": UA},
+        timeout=30,
+    )
+    r.raise_for_status()
+    data = r.json()
+    if not data:
+        return None
+    bb = data[0].get("boundingbox")  # [south, north, west, east] (strings)
+    if not bb or len(bb) != 4:
+        return None
+    south, north, west, east = bb
+    return f"{south},{west},{north},{east}"
 
 # Bounding boxes for cities we care about. (south, west, north, east).
 KNOWN_BBOXES = {
@@ -49,19 +74,60 @@ KNOWN_BBOXES = {
 
 # OSM amenity/tourism tags to query. Restaurants/cafés are intentionally NOT
 # here — we get those from Wongnai which has way better coverage.
+#
+# Coverage groups (each row is tagged with a `venue_type` — see extract_row):
+#   lodging      tourism=hotel|guest_house|hostel|motel|apartment|resort
+#   attraction   tourism=attraction|viewpoint|museum|gallery
+#   bar          amenity=bar|pub|nightclub|stripclub  (nightlife / drinking)
+#   show         amenity=theatre|cinema|arts_centre,
+#                leisure=stadium|dance|adult_gaming_centre,
+#                sport=muay_thai|boxing|martial_arts,
+#                tourism=theme_park            (cabaret, Muay Thai, theme-park shows)
+#   spa          amenity=spa
+# `out center;` so that ways (stadiums, theme parks, large venues) get coords.
 QUERY_TEMPLATE = """
-[out:json][timeout:90];
+[out:json][timeout:120];
 (
   node["tourism"~"hotel|guest_house|hostel|motel|apartment|resort|attraction|viewpoint|museum|gallery|theme_park"]({bbox});
   way["tourism"~"hotel|guest_house|hostel|motel|apartment|resort|attraction|viewpoint|museum|gallery|theme_park"]({bbox});
-  node["amenity"~"nightclub|pub|spa|bar"]({bbox});
-  way["amenity"~"nightclub|pub|spa|bar"]({bbox});
+  node["amenity"~"nightclub|pub|spa|bar|theatre|cinema|arts_centre|stripclub"]({bbox});
+  way["amenity"~"nightclub|pub|spa|bar|theatre|cinema|arts_centre|stripclub"]({bbox});
+  node["leisure"~"stadium|dance|adult_gaming_centre"]({bbox});
+  way["leisure"~"stadium|dance|adult_gaming_centre"]({bbox});
+  node["sport"~"muay_thai|boxing|martial_arts"]({bbox});
+  way["sport"~"muay_thai|boxing|martial_arts"]({bbox});
 );
-out body;
+out center;
 """
 
+# Map an OSM subcategory (tourism/amenity/leisure/sport value) to a coarse
+# venue_type used downstream for filtering "bars and shows".
+BAR_SUBCATS = {"bar", "pub", "nightclub", "stripclub"}
+SHOW_SUBCATS = {
+    "theatre", "cinema", "arts_centre",          # amenity
+    "stadium", "dance", "adult_gaming_centre",   # leisure
+    "muay_thai", "boxing", "martial_arts",       # sport
+    "theme_park",                                # tourism (theme-park shows)
+}
+LODGING_SUBCATS = {"hotel", "guest_house", "hostel", "motel", "apartment", "resort"}
+ATTRACTION_SUBCATS = {"attraction", "viewpoint", "museum", "gallery"}
+
+
+def venue_type_for(subcategory: str) -> str:
+    if subcategory in BAR_SUBCATS:
+        return "bar"
+    if subcategory in SHOW_SUBCATS:
+        return "show"
+    if subcategory in LODGING_SUBCATS:
+        return "lodging"
+    if subcategory in ATTRACTION_SUBCATS:
+        return "attraction"
+    if subcategory == "spa":
+        return "spa"
+    return ""
+
 CSV_FIELDS = [
-    "osm_id", "osm_type", "category", "subcategory",
+    "osm_id", "osm_type", "category", "subcategory", "venue_type",
     "name", "name_en", "name_th",
     "lat", "lng",
     "phone", "website",
@@ -100,8 +166,13 @@ def address_from_tags(t: dict) -> str:
 def extract_row(e: dict) -> dict:
     t = e.get("tags") or {}
     lat, lng = get_lat_lng(e)
-    category = "tourism" if t.get("tourism") else "amenity" if t.get("amenity") else "?"
-    subcategory = t.get("tourism") or t.get("amenity") or ""
+    category = ("tourism" if t.get("tourism")
+                else "amenity" if t.get("amenity")
+                else "leisure" if t.get("leisure")
+                else "sport" if t.get("sport")
+                else "?")
+    subcategory = (t.get("tourism") or t.get("amenity")
+                   or t.get("leisure") or t.get("sport") or "")
     # Find a FB URL from contact: tags or website-with-facebook.com
     fb = t.get("contact:facebook") or ""
     if not fb and "facebook.com" in (t.get("website") or "").lower():
@@ -111,6 +182,7 @@ def extract_row(e: dict) -> dict:
         "osm_type": e.get("type", ""),
         "category": category,
         "subcategory": subcategory,
+        "venue_type": venue_type_for(subcategory),
         "name": t.get("name", ""),
         "name_en": t.get("name:en", ""),
         "name_th": t.get("name:th", ""),
@@ -133,8 +205,11 @@ def extract_row(e: dict) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("city", nargs="?", help="City slug (e.g. 'udonthani')")
+    parser.add_argument("city", nargs="?", help="City slug (e.g. 'udonthani') — used for output filename")
     parser.add_argument("--bbox", help="Override bounding box: 'south,west,north,east'")
+    parser.add_argument("--place", help="Geocode this place name (e.g. 'Rayong, Thailand') "
+                                        "via Nominatim to get a bbox. Used for provinces not "
+                                        "in the built-in KNOWN_BBOXES list.")
     parser.add_argument("--list-cities", action="store_true")
     args = parser.parse_args()
 
@@ -145,9 +220,16 @@ def main() -> int:
     if not args.city:
         parser.error("city argument required (or use --list-cities)")
 
+    # Resolution order: explicit --bbox > built-in KNOWN_BBOXES > Nominatim --place lookup.
     bbox = args.bbox or KNOWN_BBOXES.get(args.city.lower())
+    if not bbox and args.place:
+        print(f"[osm] no built-in bbox for {args.city!r}; geocoding {args.place!r} via Nominatim...")
+        bbox = resolve_bbox_nominatim(args.place)
+        if bbox:
+            print(f"[osm] Nominatim bbox: {bbox}")
     if not bbox:
-        parser.error(f"No bbox known for {args.city!r}. Provide --bbox 'south,west,north,east'.")
+        parser.error(f"No bbox for {args.city!r}. Provide --bbox 'south,west,north,east' "
+                     f"or --place 'Province, Thailand'.")
 
     print(f"[osm] querying Overpass for {args.city} bbox={bbox}")
     query = QUERY_TEMPLATE.format(bbox=bbox)
